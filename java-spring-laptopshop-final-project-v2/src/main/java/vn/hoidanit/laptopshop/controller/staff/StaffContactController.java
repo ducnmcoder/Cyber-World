@@ -74,17 +74,17 @@ public class StaffContactController {
         return "redirect:/staff/contact";
     }
 
-    @GetMapping("/staff/contact/delete/{id}")
-    public String getDeleteContactPage(Model model, @PathVariable long id) {
-        model.addAttribute("id", id);
-        model.addAttribute("newContact", new Contact());
-        return "staff/contact/delete";
-    }
+    // @GetMapping("/staff/contact/delete/{id}")
+    // public String getDeleteContactPage(Model model, @PathVariable long id) {
+    //     model.addAttribute("id", id);
+    //     model.addAttribute("newContact", new Contact());
+    //     return "staff/contact/delete";
+    // }
 
-    @PostMapping("/staff/contact/delete")
-    public String postDeleteContact(@ModelAttribute("newContact") Contact contact) {
-        this.contactService.deleteContactById(contact.getId());
-        return "redirect:/staff/contact";
-    }
+    // @PostMapping("/staff/contact/delete")
+    // public String postDeleteContact(@ModelAttribute("newContact") Contact contact) {
+    //     this.contactService.deleteContactById(contact.getId());
+    //     return "redirect:/staff/contact";
+    // }
 
 }

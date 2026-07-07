@@ -8,7 +8,7 @@
 
                 <head>
                     <meta charset="utf-8">
-                    <title> Thanh toán - Cyber World</title>
+                    <title> Checkout - Cyber World</title>
                     <meta content="width=device-width, initial-scale=1.0" name="viewport">
                     <meta content="" name="keywords">
                     <meta content="" name="description">
@@ -55,7 +55,7 @@
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="/">Home</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Thông tin thanh toán</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Checkout Information</li>
                                     </ol>
                                 </nav>
                             </div>
@@ -64,18 +64,18 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Sản phẩm</th>
-                                            <th scope="col">Tên</th>
-                                            <th scope="col">Price cả</th>
+                                            <th scope="col">Product</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Price</th>
                                             <th scope="col">Quantity</th>
-                                            <th scope="col">Thành tiền</th>
+                                            <th scope="col">Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <c:if test="${ empty cartDetails}">
                                             <tr>
                                                 <td colspan="6">
-                                                    Không có sản phẩm trong giỏ hàng
+                                                    No products in cart
                                                 </td>
                                             </tr>
                                         </c:if>
@@ -126,15 +126,15 @@
                                     <div class="mt-5 row g-4 justify-content-start">
                                         <div class="col-12 col-md-6">
                                             <div class="p-4 ">
-                                                <h5>Thông Tin Người Nhận
+                                                <h5>Receiver Information
                                                 </h5>
                                                 <div class="row">
                                                     <div class="col-12 form-group mb-3">
-                                                        <label>Tên người nhận</label>
+                                                        <label>Receiver Name</label>
                                                         <input class="form-control" name="receiverName" required />
                                                     </div>
                                                     <div class="col-12 form-group mb-3">
-                                                        <label>Địa chỉ người nhận</label>
+                                                        <label>Receiver Address</label>
                                                         <input class="form-control" name="receiverAddress" required />
                                                     </div>
                                                     <div class="col-12 form-group mb-3">
@@ -143,7 +143,7 @@
                                                     </div>
                                                     <div class="mt-4">
                                                         <i class="fas fa-arrow-left"></i>
-                                                        <a href="/cart">Back giỏ hàng</a>
+                                                        <a href="/cart">Back to cart</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -151,8 +151,7 @@
                                         <div class="col-12 col-md-6">
                                             <div class="bg-light rounded">
                                                 <div class="p-4">
-                                                    <h1 class="display-6 mb-4">Thông Tin <span class="fw-normal">Thanh
-                                                            Toán</span>
+                                                    <h1 class="display-6 mb-4">Payment <span class="fw-normal">Information</span>
                                                     </h1>
 
                                                     <div class="d-flex justify-content-between">
@@ -162,15 +161,15 @@
                                                         </div>
                                                     </div>
                                                     <div class="mt-3 d-flex justify-content-between">
-                                                        <h5 class="mb-0 me-4">Hình thức</h5>
+                                                        <h5 class="mb-0 me-4">Payment Method</h5>
                                                         <div class="">
-                                                            <p class="mb-0">Thanh toán khi nhận hàng (COD)</p>
+                                                            <p class="mb-0">Cash on Delivery (COD)</p>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div
                                                     class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                                                    <h5 class="mb-0 ps-4 me-4">Total tiền</h5>
+                                                    <h5 class="mb-0 ps-4 me-4">Total</h5>
                                                     <p class="mb-0 pe-4" data-cart-total-price="${totalPrice}">
                                                         <fmt:formatNumber type="number" value="${totalPrice}" /> đ
                                                     </p>
@@ -178,7 +177,7 @@
 
                                                 <button
                                                     class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4">
-                                                    Xác nhận thanh toán
+                                                    Confirm Payment
                                                 </button>
 
                                             </div>

@@ -72,8 +72,6 @@
                                                                 class="btn btn-success">View</a>
                                                             <a href="/staff/contact/update/${contact.id}"
                                                                 class="btn btn-warning mx-2">Update</a>
-                                                            <a href="/staff/contact/delete/${contact.id}"
-                                                                class="btn btn-danger">Delete</a>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>

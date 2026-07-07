@@ -8,7 +8,7 @@
 
                 <head>
                     <meta charset="utf-8">
-                    <title> Giỏ hàng - Cyber World</title>
+                    <title> Cart - Cyber World</title>
                     <meta content="width=device-width, initial-scale=1.0" name="viewport">
                     <meta content="" name="keywords">
                     <meta content="" name="description">
@@ -55,7 +55,7 @@
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="/">Home</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Chi Tiết Cart</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Cart Details</li>
                                     </ol>
                                 </nav>
                             </div>
@@ -63,19 +63,19 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Sản phẩm</th>
-                                            <th scope="col">Tên</th>
-                                            <th scope="col">Price cả</th>
+                                            <th scope="col">Product</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Price</th>
                                             <th scope="col">Quantity</th>
-                                            <th scope="col">Thành tiền</th>
-                                            <th scope="col">Xử lý</th>
+                                            <th scope="col">Total</th>
+                                            <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <c:if test="${ empty cartDetails}">
                                             <tr>
                                                 <td colspan="6">
-                                                    Không có sản phẩm trong giỏ hàng
+                                                    No products in cart
                                                 </td>
                                             </tr>
                                         </c:if>
@@ -149,8 +149,7 @@
                                     <div class="col-12 col-md-8">
                                         <div class="bg-light rounded">
                                             <div class="p-4">
-                                                <h1 class="display-6 mb-4">Thông Tin <span class="fw-normal">Đơn
-                                                        Hàng</span>
+                                                <h1 class="display-6 mb-4">Order <span class="fw-normal">Summary</span>
                                                 </h1>
                                                 <div class="d-flex justify-content-between mb-4">
                                                     <h5 class="mb-0 me-4">Subtotal:</h5>
@@ -167,7 +166,7 @@
                                             </div>
                                             <div
                                                 class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                                                <h5 class="mb-0 ps-4 me-4">Total tiền</h5>
+                                                <h5 class="mb-0 ps-4 me-4">Total</h5>
                                                 <p class="mb-0 pe-4" data-cart-total-price="${totalPrice}">
                                                     <fmt:formatNumber type="number" value="${totalPrice}" /> đ
                                                 </p>
@@ -195,8 +194,7 @@
                                                     </c:forEach>
                                                 </div>
                                                 <button
-                                                    class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4">Xác
-                                                    nhận thanh toán
+                                                    class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4">Checkout
                                                 </button>
                                             </form:form>
                                         </div>

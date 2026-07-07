@@ -51,6 +51,51 @@ INSERT INTO `products` VALUES (1,'ASUS TUF Gaming F15 FX506HF HN017W là chiếc
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
+--
+-- Table structure for table `roles`
+--
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE `roles` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `description` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `roles`
+--
+LOCK TABLES `roles` WRITE;
+INSERT INTO `roles` VALUES (1,'Admin role','ADMIN'),(2,'Owner role','OWNER'),(3,'Staff role','STAFF'),(4,'User role','USER');
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `address` varchar(255) DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `full_name` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `role_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKp56c1712k691lhsyewcssf40f` (`role_id`),
+  CONSTRAINT `FKp56c1712k691lhsyewcssf40f` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `users`
+--
+LOCK TABLES `users` WRITE;
+INSERT INTO `users` VALUES 
+(1,NULL,NULL,'admin@gmail.com','Admin User','$2a$10$oClXt1y512M.0YeGKA1s5utpmusrAIGHHv/NP4nD9aiMsZfknx8HW',NULL,1),
+(2,NULL,NULL,'owner@gmail.com','Owner User','$2a$10$oClXt1y512M.0YeGKA1s5utpmusrAIGHHv/NP4nD9aiMsZfknx8HW',NULL,2),
+(3,NULL,NULL,'staff@gmail.com','Staff User','$2a$10$oClXt1y512M.0YeGKA1s5utpmusrAIGHHv/NP4nD9aiMsZfknx8HW',NULL,3);
+UNLOCK TABLES;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;

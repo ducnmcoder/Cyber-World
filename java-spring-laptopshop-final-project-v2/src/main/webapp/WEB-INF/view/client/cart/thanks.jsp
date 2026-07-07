@@ -6,7 +6,7 @@
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Đơn hàng - Cyber World</title>
+                <title>Order - Cyber World</title>
 
                 <!-- Google Web Fonts -->
                 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,7 +49,7 @@
                     <div class="row ">
                         <div class="col-12 mt-5">
                             <div class="alert alert-success" role="alert">
-                                Cảm ơn bạn đã đặt hàng, đơn hàng đã được xác nhận thành công.
+                                Thank you for your order, your order has been confirmed successfully.
                             </div>
                         </div>
                     </div>
