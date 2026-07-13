@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 import jakarta.servlet.http.HttpSession;
 import laptopshop.domain.Cart;
 import laptopshop.domain.CartDetail;
@@ -237,6 +239,7 @@ public class ProductService {
                     sum += cd.getPrice();
                 }
                 order.setTotalPrice(sum);
+                order.setCreatedAt(LocalDateTime.now());
                 order = this.orderRepository.save(order);
 
                 // create orderDetail

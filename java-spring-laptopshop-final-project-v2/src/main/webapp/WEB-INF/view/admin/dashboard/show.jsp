@@ -57,9 +57,68 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
 
+                            <div class="row">
+                                <div class="col-xl-4">
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <i class="fas fa-chart-bar me-1"></i>
+                                            Revenue by Month
+                                        </div>
+                                        <div class="card-body"><canvas id="monthlyRevenueChart" width="100%" height="40"></canvas></div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4">
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <i class="fas fa-chart-bar me-1"></i>
+                                            Revenue by Day
+                                        </div>
+                                        <div class="card-body"><canvas id="dailyRevenueChart" width="100%" height="40"></canvas></div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4">
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <i class="fas fa-chart-bar me-1"></i>
+                                            Revenue by Hour
+                                        </div>
+                                        <div class="card-body"><canvas id="hourlyRevenueChart" width="100%" height="40"></canvas></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-table me-1"></i>
+                                    Top Products by Revenue
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Product ID</th>
+                                                    <th>Product Name</th>
+                                                    <th>Quantity Sold</th>
+                                                    <th>Revenue</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach items="${topProducts}" var="product" varStatus="loop">
+                                                    <tr>
+                                                        <td>${product[0]}</td>
+                                                        <td>${product[1]}</td>
+                                                        <td>${product[2]}</td>
+                                                        <td>${product[3]}</td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </main>
                     <jsp:include page="../layout/footer.jsp" />
@@ -70,8 +129,85 @@
             <script src="js/scripts.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
                 crossorigin="anonymous"></script>
-            <script src="js/chart-area-demo.js"></script>
-            <script src="js/chart-bar-demo.js"></script>
+            <script>
+                const monthlyRevenueData = [
+                    <c:forEach items="${monthlyRevenue}" var="entry" varStatus="status">
+                        ${entry[1]}<c:if test="${!status.last}">,</c:if>
+                    </c:forEach>
+                ];
+                const monthlyRevenueLabels = [
+                    <c:forEach items="${monthlyRevenue}" var="entry" varStatus="status">
+                        "${entry[0]}"<c:if test="${!status.last}">,</c:if>
+                    </c:forEach>
+                ];
+
+                const dailyRevenueData = [
+                    <c:forEach items="${dailyRevenue}" var="entry" varStatus="status">
+                        ${entry[1]}<c:if test="${!status.last}">,</c:if>
+                    </c:forEach>
+                ];
+                const dailyRevenueLabels = [
+                    <c:forEach items="${dailyRevenue}" var="entry" varStatus="status">
+                        "${entry[0]}"<c:if test="${!status.last}">,</c:if>
+                    </c:forEach>
+                ];
+
+                const hourlyRevenueData = [
+                    <c:forEach items="${hourlyRevenue}" var="entry" varStatus="status">
+                        ${entry[1]}<c:if test="${!status.last}">,</c:if>
+                    </c:forEach>
+                ];
+                const hourlyRevenueLabels = [
+                    <c:forEach items="${hourlyRevenue}" var="entry" varStatus="status">
+                        "${entry[0]}"<c:if test="${!status.last}">,</c:if>
+                    </c:forEach>
+                ];
+
+                function createRevenueChart(elementId, labels, data, label) {
+                    const ctx = document.getElementById(elementId).getContext('2d');
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: label,
+                                data: data,
+                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        callback: function(value) {
+                                            return '$' + value.toLocaleString();
+                                        }
+                                    }
+                                }]
+                            },
+                            legend: {
+                                display: false
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function(tooltipItem, data) {
+                                        return '$' + tooltipItem.yLabel.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                createRevenueChart('monthlyRevenueChart', monthlyRevenueLabels, monthlyRevenueData, 'Monthly Revenue');
+                createRevenueChart('dailyRevenueChart', dailyRevenueLabels, dailyRevenueData, 'Daily Revenue');
+                createRevenueChart('hourlyRevenueChart', hourlyRevenueLabels, hourlyRevenueData, 'Hourly Revenue');
+            </script>
             <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
                 crossorigin="anonymous"></script>
             <script src="js/datatables-simple-demo.js"></script>

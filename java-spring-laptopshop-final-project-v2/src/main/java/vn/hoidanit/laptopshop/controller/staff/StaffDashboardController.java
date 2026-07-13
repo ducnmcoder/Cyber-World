@@ -24,9 +24,6 @@ public class StaffDashboardController {
 
     @GetMapping("/staff")
     public String getStaffDashboard(Model model) {
-        model.addAttribute("countOrders", this.userService.countOrders());
-        model.addAttribute("countBlogs", this.blogService.countBlogs());
-        model.addAttribute("countContacts", this.contactService.countContacts());
-        return "staff/dashboard/show";
+        return "redirect:/staff/order";
     }
 }

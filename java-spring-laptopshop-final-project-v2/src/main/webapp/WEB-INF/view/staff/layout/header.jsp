@@ -2,7 +2,7 @@
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3 d-flex align-items-center" href="/staff">
+            <a class="navbar-brand ps-3 d-flex align-items-center" href="javascript:void(0)" onclick="return false;" style="cursor: default;">
                 <img src="/images/logo.png" alt="Logo" style="height: 30px; margin-right: 10px;" />
                 Cyber World
             </a>
