@@ -8,9 +8,9 @@
                 <meta charset="utf-8" />
                 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-                <meta name="description" content="Hỏi Dân IT - Dự án cyberworld" />
-                <meta name="author" content="Hỏi Dân IT" />
-                <title>Update User - Hỏi Dân IT</title>
+                <meta name="description" content="Cyber World- Dự án cyberworld" />
+                <meta name="author" content="Cyber World" />
+                <title>Update User - Cyber World</title>
                 <link href="/css/styles.css" rel="stylesheet" />
 
                 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -49,15 +49,18 @@
 
                                                 <div class="mb-3">
                                                     <label class="form-label">Phone number:</label>
-                                                    <form:input type="text" class="form-control" path="phone" readonly="true" />
+                                                    <form:input type="text" class="form-control" path="phone"
+                                                        readonly="true" />
                                                 </div>
                                                 <div class="mb-3">
                                                     <label class="form-label">Full Name:</label>
-                                                    <form:input type="text" class="form-control" path="fullName" readonly="true" />
+                                                    <form:input type="text" class="form-control" path="fullName"
+                                                        readonly="true" />
                                                 </div>
                                                 <div class="mb-3">
                                                     <label class="form-label">Address:</label>
-                                                    <form:input type="text" class="form-control" path="address" readonly="true" />
+                                                    <form:input type="text" class="form-control" path="address"
+                                                        readonly="true" />
                                                 </div>
                                                 <div class="mb-3">
                                                     <label class="form-label">Role:</label>

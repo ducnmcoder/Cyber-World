@@ -7,9 +7,9 @@
             <meta charset="utf-8" />
             <meta http-equiv="X-UA-Compatible" content="IE=edge" />
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-            <meta name="description" content="Hỏi Dân IT - Dự án cyberworld" />
-            <meta name="author" content="Hỏi Dân IT" />
-            <title>Dashboard - Hỏi Dân IT</title>
+            <meta name="description" content="Cyber World - Dự án cyberworld" />
+            <meta name="author" content="Cyber World" />
+            <title>Dashboard - Cyber World</title>
             <link href="/css/styles.css" rel="stylesheet" />
             <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         </head>
@@ -23,7 +23,9 @@
                         <div class="container-fluid px-4">
                             <h1 class="mt-4">Manage Users</h1>
                             <ol class="breadcrumb mb-4">
-                                <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+                                <c:if test="${pageContext.request.isUserInRole('ROLE_OWNER')}">
+                                    <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+                                </c:if>
                                 <li class="breadcrumb-item active">Users</li>
                             </ol>
                             <div class="mt-5">
