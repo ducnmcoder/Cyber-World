@@ -60,7 +60,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-xl-4">
+                                <div class="col-12">
                                     <div class="card mb-4">
                                         <div class="card-header">
                                             <i class="fas fa-chart-bar me-1"></i>
@@ -69,7 +69,9 @@
                                         <div class="card-body"><canvas id="monthlyRevenueChart" width="100%" height="40"></canvas></div>
                                     </div>
                                 </div>
-                                <div class="col-xl-4">
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
                                     <div class="card mb-4">
                                         <div class="card-header">
                                             <i class="fas fa-chart-bar me-1"></i>
@@ -78,7 +80,9 @@
                                         <div class="card-body"><canvas id="dailyRevenueChart" width="100%" height="40"></canvas></div>
                                     </div>
                                 </div>
-                                <div class="col-xl-4">
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
                                     <div class="card mb-4">
                                         <div class="card-header">
                                             <i class="fas fa-chart-bar me-1"></i>
