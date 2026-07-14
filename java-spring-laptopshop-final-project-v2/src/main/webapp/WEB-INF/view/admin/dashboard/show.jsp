@@ -176,23 +176,49 @@
                             datasets: [{
                                 label: label,
                                 data: data,
-                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                backgroundColor: 'rgba(54, 162, 235, 0.75)',
                                 borderColor: 'rgba(54, 162, 235, 1)',
-                                borderWidth: 1
+                                borderWidth: 1,
+                                barPercentage: 0.75,
+                                categoryPercentage: 0.9,
+                                maxBarThickness: 40
                             }]
                         },
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
                             scales: {
+                                xAxes: [{
+                                    barPercentage: 0.75,
+                                    categoryPercentage: 0.9,
+                                    gridLines: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        autoSkip: false,
+                                        maxRotation: 0,
+                                        minRotation: 0
+                                    }
+                                }],
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true,
                                         callback: function(value) {
                                             return '$' + value.toLocaleString();
                                         }
+                                    },
+                                    gridLines: {
+                                        color: 'rgba(200, 200, 200, 0.2)'
                                     }
                                 }]
+                            },
+                            layout: {
+                                padding: {
+                                    top: 10,
+                                    right: 10,
+                                    left: 10,
+                                    bottom: 10
+                                }
                             },
                             legend: {
                                 display: false
