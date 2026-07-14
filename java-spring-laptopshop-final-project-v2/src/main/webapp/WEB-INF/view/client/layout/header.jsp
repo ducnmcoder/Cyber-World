@@ -4,10 +4,20 @@
         <div class="container-fluid fixed-top">
             <div class="container px-0">
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="/" class="navbar-brand d-flex align-items-center">
-                        <img src="/images/logo.png" alt="Logo" style="height: 40px; margin-right: 10px;" />
-                        <h1 class="text-primary display-6 mb-0" style="color: blue !important;">Cyber World</h1>
-                    </a>
+                    <c:choose>
+                        <c:when test="${pageContext.request.isUserInRole('ROLE_OWNER')}">
+                            <a class="navbar-brand d-flex align-items-center" href="javascript:void(0)" onclick="return false;" style="cursor: default;">
+                                <img src="/images/logo.png" alt="Logo" style="height: 40px; margin-right: 10px;" />
+                                <h1 class="text-primary display-6 mb-0" style="color: blue !important;">Cyber World</h1>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="/" class="navbar-brand d-flex align-items-center">
+                                <img src="/images/logo.png" alt="Logo" style="height: 40px; margin-right: 10px;" />
+                                <h1 class="text-primary display-6 mb-0" style="color: blue !important;">Cyber World</h1>
+                            </a>
+                        </c:otherwise>
+                    </c:choose>
                     <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars text-primary"></span>
@@ -47,7 +57,16 @@
                                             </div>
                                         </li>
 
-                                        <li><a class="dropdown-item" href="/account/manage">Manage Account</a></li>
+                                        <li>
+                                            <c:choose>
+                                                <c:when test="${pageContext.request.isUserInRole('ROLE_OWNER')}">
+                                                    <a class="dropdown-item" href="/admin">Manage Account</a>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <a class="dropdown-item" href="/account/manage">Manage Account</a>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </li>
 
                                         <li><a class="dropdown-item" href="/order-history">Order History</a></li>
                                         <li>

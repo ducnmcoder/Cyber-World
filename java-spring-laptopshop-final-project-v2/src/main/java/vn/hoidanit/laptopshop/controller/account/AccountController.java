@@ -44,9 +44,11 @@ public class AccountController {
         model.addAttribute("currentUser", dto);
 
         String roleName = currentUser.getRole().getName();
-        if ("ADMIN".equals(roleName) || "OWNER".equals(roleName)) {
+        if (roleName != null && ("ROLE_OWNER".equals(roleName) || "OWNER".equals(roleName) || roleName.contains("OWNER"))) {
+            return "redirect:/admin";
+        } else if (roleName != null && ("ROLE_ADMIN".equals(roleName) || "ADMIN".equals(roleName) || roleName.contains("ADMIN"))) {
             return "admin/account/manage";
-        } else if ("STAFF".equals(roleName)) {
+        } else if ("STAFF".equals(roleName) || (roleName != null && roleName.contains("STAFF"))) {
             return "staff/account/manage";
         } else {
             return "client/account/manage";
