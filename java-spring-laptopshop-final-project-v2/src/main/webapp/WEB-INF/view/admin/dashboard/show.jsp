@@ -66,7 +66,7 @@
                                             <i class="fas fa-chart-bar me-1"></i>
                                             Revenue by Month
                                         </div>
-                                        <div class="card-body" style="min-height: 320px;"><canvas id="monthlyRevenueChart" width="100%" height="280"></canvas></div>
+                                        <div class="card-body" style="min-height: 320px;"><canvas id="monthlyRevenueChart" style="width: 100%; height: 100%;"></canvas></div>
                                     </div>
                                 </div>
                             </div>
@@ -77,7 +77,7 @@
                                             <i class="fas fa-chart-bar me-1"></i>
                                             Revenue by Day
                                         </div>
-                                        <div class="card-body" style="min-height: 320px;"><canvas id="dailyRevenueChart" width="100%" height="280"></canvas></div>
+                                        <div class="card-body" style="min-height: 320px;"><canvas id="dailyRevenueChart" style="width: 100%; height: 100%;"></canvas></div>
                                     </div>
                                 </div>
                             </div>
@@ -88,7 +88,7 @@
                                             <i class="fas fa-chart-bar me-1"></i>
                                             Revenue by Hour
                                         </div>
-                                        <div class="card-body" style="min-height: 320px;"><canvas id="hourlyRevenueChart" width="100%" height="280"></canvas></div>
+                                        <div class="card-body" style="min-height: 320px;"><canvas id="hourlyRevenueChart" style="width: 100%; height: 100%;"></canvas></div>
                                     </div>
                                 </div>
                             </div>
