@@ -60,4 +60,20 @@ public class OrderService {
         return this.orderRepository.findByUser(user);
     }
 
+    public List<Object[]> fetchMonthlyRevenue() {
+        return this.orderRepository.findMonthlyRevenue();
+    }
+
+    public List<Object[]> fetchDailyRevenue() {
+        return this.orderRepository.findDailyRevenue();
+    }
+
+    public List<Object[]> fetchHourlyRevenue() {
+        return this.orderRepository.findHourlyRevenue();
+    }
+
+    public List<Object[]> fetchTopProductsByRevenue(int limit) {
+        return this.orderDetailRepository.findTopProductsByRevenue(limit);
+    }
+
 }

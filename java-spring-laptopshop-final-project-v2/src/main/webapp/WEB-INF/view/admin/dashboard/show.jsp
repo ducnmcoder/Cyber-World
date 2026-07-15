@@ -27,39 +27,69 @@
                                 <li class="breadcrumb-item active">Statistics</li>
                             </ol>
                             <div class="row">
-                                <div class="col-xl-4 col-md-6">
-                                    <div class="card bg-primary text-white mb-4">
-                                        <div class="card-body">Quantity User (${countUsers})</div>
-                                        <div class="card-footer d-flex align-items-center justify-content-between">
-                                            <a class="small text-white stretched-link" href="/admin/user">View
-                                                Details</a>
-                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                <div class="col-12">
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <i class="fas fa-chart-bar me-1"></i>
+                                            Revenue by Month
                                         </div>
+                                        <div class="card-body" style="min-height: 320px;"><canvas id="monthlyRevenueChart" style="width: 100%; height: 100%;"></canvas></div>
                                     </div>
                                 </div>
-                                <div class="col-xl-4 col-md-6">
-                                    <div class="card bg-danger text-white mb-4">
-                                        <div class="card-body">Quantity Product (${countProducts})</div>
-                                        <div class="card-footer d-flex align-items-center justify-content-between">
-                                            <a class="small text-white stretched-link" href="/admin/product">View
-                                                Details</a>
-                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <i class="fas fa-chart-bar me-1"></i>
+                                            Revenue by Day
                                         </div>
+                                        <div class="card-body" style="min-height: 320px;"><canvas id="dailyRevenueChart" style="width: 100%; height: 100%;"></canvas></div>
                                     </div>
                                 </div>
-                                <div class="col-xl-4 col-md-6">
-                                    <div class="card bg-success text-white mb-4">
-                                        <div class="card-body">Quantity Order (${countOrders})</div>
-                                        <div class="card-footer d-flex align-items-center justify-content-between">
-                                            <a class="small text-white stretched-link" href="/admin/order">View
-                                                Details</a>
-                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <i class="fas fa-chart-bar me-1"></i>
+                                            Revenue by Hour
                                         </div>
+                                        <div class="card-body" style="min-height: 320px;"><canvas id="hourlyRevenueChart" style="width: 100%; height: 100%;"></canvas></div>
                                     </div>
                                 </div>
-
                             </div>
 
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-table me-1"></i>
+                                    Top Products by Revenue
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Product ID</th>
+                                                    <th>Product Name</th>
+                                                    <th>Quantity Sold</th>
+                                                    <th>Revenue</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach items="${topProducts}" var="product" varStatus="loop">
+                                                    <tr>
+                                                        <td>${product[0]}</td>
+                                                        <td>${product[1]}</td>
+                                                        <td>${product[2]}</td>
+                                                        <td>${product[3]}</td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </main>
                     <jsp:include page="../layout/footer.jsp" />
@@ -70,8 +100,111 @@
             <script src="js/scripts.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
                 crossorigin="anonymous"></script>
-            <script src="js/chart-area-demo.js"></script>
-            <script src="js/chart-bar-demo.js"></script>
+            <script>
+                const monthlyRevenueData = [
+                    <c:forEach items="${monthlyRevenue}" var="entry" varStatus="status">
+                        ${entry[1]}<c:if test="${!status.last}">,</c:if>
+                    </c:forEach>
+                ];
+                const monthlyRevenueLabels = [
+                    <c:forEach items="${monthlyRevenue}" var="entry" varStatus="status">
+                        "${entry[0]}"<c:if test="${!status.last}">,</c:if>
+                    </c:forEach>
+                ];
+
+                const dailyRevenueData = [
+                    <c:forEach items="${dailyRevenue}" var="entry" varStatus="status">
+                        ${entry[1]}<c:if test="${!status.last}">,</c:if>
+                    </c:forEach>
+                ];
+                const dailyRevenueLabels = [
+                    <c:forEach items="${dailyRevenue}" var="entry" varStatus="status">
+                        "${entry[0]}"<c:if test="${!status.last}">,</c:if>
+                    </c:forEach>
+                ];
+
+                const hourlyRevenueData = [
+                    <c:forEach items="${hourlyRevenue}" var="entry" varStatus="status">
+                        ${entry[1]}<c:if test="${!status.last}">,</c:if>
+                    </c:forEach>
+                ];
+                const hourlyRevenueLabels = [
+                    <c:forEach items="${hourlyRevenue}" var="entry" varStatus="status">
+                        "${entry[0]}"<c:if test="${!status.last}">,</c:if>
+                    </c:forEach>
+                ];
+
+                function createRevenueChart(elementId, labels, data, label) {
+                    const ctx = document.getElementById(elementId).getContext('2d');
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: label,
+                                data: data,
+                                backgroundColor: 'rgba(54, 162, 235, 0.75)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1,
+                                barPercentage: 0.75,
+                                categoryPercentage: 0.9,
+                                maxBarThickness: 40
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                xAxes: [{
+                                    barPercentage: 0.75,
+                                    categoryPercentage: 0.9,
+                                    gridLines: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        autoSkip: false,
+                                        maxRotation: 0,
+                                        minRotation: 0
+                                    }
+                                }],
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        callback: function(value) {
+                                            return '$' + value.toLocaleString();
+                                        }
+                                    },
+                                    gridLines: {
+                                        color: 'rgba(200, 200, 200, 0.2)'
+                                    }
+                                }]
+                            },
+                            layout: {
+                                padding: {
+                                    top: 10,
+                                    right: 10,
+                                    left: 10,
+                                    bottom: 10
+                                }
+                            },
+                            legend: {
+                                display: false
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function(tooltipItem, data) {
+                                        return '$' + tooltipItem.yLabel.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                createRevenueChart('monthlyRevenueChart', monthlyRevenueLabels, monthlyRevenueData, 'Monthly Revenue');
+                createRevenueChart('dailyRevenueChart', dailyRevenueLabels, dailyRevenueData, 'Daily Revenue');
+                createRevenueChart('hourlyRevenueChart', hourlyRevenueLabels, hourlyRevenueData, 'Hourly Revenue');
+            </script>
             <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
                 crossorigin="anonymous"></script>
             <script src="js/datatables-simple-demo.js"></script>
