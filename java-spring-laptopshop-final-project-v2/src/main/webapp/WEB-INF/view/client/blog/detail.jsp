@@ -66,7 +66,9 @@
                                     <fmt:formatDate value="${parsedDate}" pattern="MMMM dd, yyyy" />
                                 </div>
                                 <img src="/images/blog/${blog.image}" class="img-fluid rounded mb-4 w-100"
-                                    alt="${blog.title}" style="max-height: 450px; object-fit: cover;">
+                                    alt="${blog.title}" 
+                                    onerror="this.onerror=null;this.src='/images/logo.png';"
+                                    style="max-height: 450px; object-fit: cover;">
                                 <div class="blog-content" style="font-size: 16px; line-height: 1.8;">
                                     <p>${blog.content}</p>
                                 </div>
