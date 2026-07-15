@@ -75,7 +75,7 @@
                                     <c:if test="${ empty orders}">
                                         <tr>
                                             <td colspan="6">
-                                                Không có đơn hàng nào được tạo
+                                                No orders have been created.
                                             </td>
                                         </tr>
                                     </c:if>

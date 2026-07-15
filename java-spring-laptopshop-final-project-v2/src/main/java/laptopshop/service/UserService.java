@@ -13,6 +13,8 @@ import laptopshop.repository.OrderRepository;
 import laptopshop.repository.ProductRepository;
 import laptopshop.repository.RoleRepository;
 import laptopshop.repository.UserRepository;
+import laptopshop.security.CustomOAuth2User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Service
 public class UserService {
@@ -83,5 +85,27 @@ public class UserService {
 
     public long countOrders() {
         return this.orderRepository.count();
+    }
+
+    public void processOAuthPostLogin(CustomOAuth2User oauthUser) {
+        String email = oauthUser.getEmail();
+        if (email == null) {
+             return;
+        }
+        User existUser = this.userRepository.findByEmail(email);
+
+        if (existUser == null) {
+            User newUser = new User();
+            newUser.setEmail(email);
+            newUser.setFullName(oauthUser.getName());
+            newUser.setProvider(oauthUser.getClientName().toUpperCase());
+            
+            Role roleUser = this.roleRepository.findByName("USER");
+            newUser.setRole(roleUser);
+            
+            newUser.setPassword(new BCryptPasswordEncoder().encode(java.util.UUID.randomUUID().toString()));
+            
+            this.userRepository.save(newUser);
+        }
     }
 }

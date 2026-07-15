@@ -1,6 +1,7 @@
 package laptopshop.controller.account;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.servlet.http.HttpServletRequest;
 
 import laptopshop.domain.User;
+import laptopshop.security.CustomOAuth2User;
 import laptopshop.service.UploadService;
 import laptopshop.service.UserService;
 
@@ -27,9 +29,26 @@ public class AccountController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Extract email from the current authentication principal.
+     * For OAuth2 login (Google), getName() returns the user's name, not email.
+     * This helper checks the principal type and extracts email correctly.
+     */
+    private String getEmailFromPrincipal(HttpServletRequest request) {
+        java.security.Principal principal = request.getUserPrincipal();
+        if (principal instanceof OAuth2AuthenticationToken) {
+            OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) principal;
+            if (oauthToken.getPrincipal() instanceof CustomOAuth2User) {
+                return ((CustomOAuth2User) oauthToken.getPrincipal()).getEmail();
+            }
+        }
+        // Form login: getName() returns the email (username)
+        return principal.getName();
+    }
+
     @GetMapping("/account/manage")
     public String getManageAccountPage(HttpServletRequest request, Model model) {
-        String email = request.getUserPrincipal().getName();
+        String email = getEmailFromPrincipal(request);
         User currentUser = this.userService.getUserByEmail(email);
         
         // Use a DTO-like approach to safely bind form inputs
@@ -57,7 +76,7 @@ public class AccountController {
     public String updatePersonalInfo(HttpServletRequest request, 
                                      @ModelAttribute("currentUser") User formUser,
                                      @RequestParam("avatarFile") MultipartFile file) {
-        String email = request.getUserPrincipal().getName();
+        String email = getEmailFromPrincipal(request);
         User currentUser = this.userService.getUserByEmail(email);
         
         boolean emailChanged = false;
@@ -104,7 +123,7 @@ public class AccountController {
             return "redirect:/account/manage?error=password_mismatch";
         }
 
-        String email = request.getUserPrincipal().getName();
+        String email = getEmailFromPrincipal(request);
         User currentUser = this.userService.getUserByEmail(email);
 
         String encodedPassword = this.passwordEncoder.encode(newPassword);
@@ -115,3 +134,4 @@ public class AccountController {
         return "redirect:/account/manage?success=password";
     }
 }
+

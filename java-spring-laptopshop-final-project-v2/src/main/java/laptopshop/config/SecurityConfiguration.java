@@ -16,6 +16,7 @@ import org.springframework.session.security.web.authentication.SpringSessionReme
 import jakarta.servlet.DispatcherType;
 import laptopshop.service.CustomUserDetailsService;
 import laptopshop.service.UserService;
+import laptopshop.security.CustomOAuth2UserService;
 
 @Configuration
 @EnableMethodSecurity(securedEnabled = true)
@@ -57,7 +58,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http, CustomOAuth2UserService customOAuth2UserService) throws Exception {
         // v6. lamda
         http
                 .authorizeHttpRequests(authorize -> authorize
@@ -90,6 +91,11 @@ public class SecurityConfiguration {
                         .failureUrl("/login?error")
                         .successHandler(customSuccessHandler())
                         .permitAll())
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login")
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
+                        .successHandler(customSuccessHandler())
+                )
                 .exceptionHandling(ex -> ex.accessDeniedPage("/access-deny"));
 
         return http.build();
