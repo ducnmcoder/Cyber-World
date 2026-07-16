@@ -8,28 +8,11 @@
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Home - Cyber World</title>
 
-                <!-- Google Web Fonts -->
-                <link rel="preconnect" href="https://fonts.googleapis.com">
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-                <link
-                    href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
-                    rel="stylesheet">
-
                 <!-- Icon Font Stylesheet -->
                 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
-                <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
-                    rel="stylesheet">
 
-                <!-- Libraries Stylesheet -->
-                <link href="/client/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-                <link href="/client/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-
-                <!-- Customized Bootstrap Stylesheet -->
-                <link href="/client/css/bootstrap.min.css" rel="stylesheet">
-
-                <!-- Template Stylesheet -->
-                <link href="/client/css/style.css" rel="stylesheet">
+                <!-- CyberWorld Theme -->
+                <link href="/client/css/style.css?v=2" rel="stylesheet">
 
                 <meta name="_csrf" content="${_csrf.token}" />
                 <!-- default header name is X-CSRF-TOKEN -->
@@ -57,81 +40,108 @@
 
 
 
-                <!-- Fruits Shop Start-->
-                <div class="container-fluid fruite py-5">
-                    <div class="container py-5">
-                        <div class="tab-class text-center">
-                            <div class="row g-4">
-                                <div class="col-lg-4 text-start">
-                                    <h1>Featured Products</h1>
-                                </div>
-                                <div class="col-lg-8 text-end">
-                                    <ul class="nav nav-pills d-inline-flex text-center mb-5">
-                                        <li class="nav-item">
-                                            <a class="d-flex m-2 py-2 bg-light rounded-pill active" href="/products">
-                                                <span class="text-dark" style="width: 130px;">All Products</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                <!-- Products Section Start -->
+                <section class="section-padding">
+                    <div class="container">
+                        
+                        <!-- Categories Section -->
+                        <div style="margin-bottom: var(--spacing-2xl);">
+                            <p class="text-accent" style="font-weight: 600; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 0.5rem;">Shop by category</p>
+                            <div class="d-flex justify-between align-center flex-wrap gap-md" style="margin-bottom: var(--spacing-xl);">
+                                <h2 class="text-primary" style="font-size: 2.5rem; font-weight: 700; m-0">Everything, precisely organised.</h2>
+                                <a href="/products" class="text-secondary" style="font-size: 0.875rem; text-decoration: underline;">View all &rarr;</a>
                             </div>
-                            <div class="tab-content">
-                                <div id="tab-1" class="tab-pane fade show p-0 active">
-                                    <div class="row g-4">
-                                        <div class="col-lg-12">
-                                            <div class="row g-4">
-                                                <c:forEach var="product" items="${products}">
-                                                    <div class="col-md-6 col-lg-4 col-xl-3">
-                                                        <div class="rounded position-relative fruite-item">
-                                                            <div class="fruite-img">
-                                                                <img src="/images/product/${product.image}"
-                                                                    class="img-fluid w-100 rounded-top" alt="">
-                                                            </div>
-                                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                                                style="top: 10px; left: 10px;">Laptop</div>
-                                                            <div
-                                                                class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                                <h4 style="font-size: 15px;">
-                                                                    <a href="/product/${product.id}">
-                                                                        ${product.name}
-                                                                    </a>
-
-                                                                </h4>
-                                                                <p style="font-size: 13px;">${product.shortDesc}</p>
-                                                                <div
-                                                                    class="d-flex  flex-lg-wrap justify-content-center flex-column">
-                                                                    <p style="font-size: 15px; text-align: center; width: 100%;"
-                                                                        class="text-dark  fw-bold mb-3">
-                                                                        <fmt:formatNumber type="number"
-                                                                            value="${product.price}" /> đ
-                                                                    </p>
-                                                                    <!-- <form action="/add-product-to-cart/${product.id}"
-                                                                        method="post">
-                                                                        <input type="hidden"
-                                                                            name="${_csrf.parameterName}"
-                                                                            value="${_csrf.token}" /> -->
-
-                                                                    <button data-product-id="${product.id}"
-                                                                        class="btnAddToCartHomepage mx-auto btn border border-secondary rounded-pill px-3 text-primary">
-                                                                        <i
-                                                                            class="fa fa-shopping-bag me-2 text-primary"></i>
-                                                                        Add to cart
-                                                                    </button>
-                                                                    <!-- </form> -->
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </c:forEach>
-                                            </div>
-                                        </div>
+                            
+                            <!-- Categories Grid -->
+                            <div class="grid grid-cols-4 gap-md">
+                                <a href="/products?category=laptops" class="card d-flex justify-between align-center" style="padding: 1.5rem; background: rgba(255,255,255,0.02);">
+                                    <div>
+                                        <h4 class="text-primary" style="font-size: 1rem; margin-bottom: 0.25rem;">Laptops</h4>
+                                        <p class="text-secondary" style="font-size: 0.75rem;">Ultrabooks, gaming rigs, creator machines.</p>
                                     </div>
-                                </div>
+                                    <i class="fas fa-arrow-right text-secondary" style="opacity: 0.5;"></i>
+                                </a>
+                                <a href="/products?category=phones" class="card d-flex justify-between align-center" style="padding: 1.5rem; background: rgba(255,255,255,0.02);">
+                                    <div>
+                                        <h4 class="text-primary" style="font-size: 1rem; margin-bottom: 0.25rem;">Phones</h4>
+                                        <p class="text-secondary" style="font-size: 0.75rem;">Flagship smartphones and everyday devices.</p>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-secondary" style="opacity: 0.5;"></i>
+                                </a>
+                                <a href="/products?category=components" class="card d-flex justify-between align-center" style="padding: 1.5rem; background: rgba(255,255,255,0.02);">
+                                    <div>
+                                        <h4 class="text-primary" style="font-size: 1rem; margin-bottom: 0.25rem;">PC Components</h4>
+                                        <p class="text-secondary" style="font-size: 0.75rem;">CPUs, GPUs, memory and storage.</p>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-secondary" style="opacity: 0.5;"></i>
+                                </a>
+                                <a href="/products?category=gaming" class="card d-flex justify-between align-center" style="padding: 1.5rem; background: rgba(255,255,255,0.02);">
+                                    <div>
+                                        <h4 class="text-primary" style="font-size: 1rem; margin-bottom: 0.25rem;">Gaming</h4>
+                                        <p class="text-secondary" style="font-size: 0.75rem;">Consoles, controllers and gaming gear.</p>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-secondary" style="opacity: 0.5;"></i>
+                                </a>
                             </div>
                         </div>
+
+                        <!-- Featured Products Grid -->
+                        <div>
+                            <p class="text-accent" style="font-weight: 600; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 0.5rem;">New Drops</p>
+                            <h2 class="text-primary" style="font-size: 2.5rem; font-weight: 700; margin-bottom: var(--spacing-xl);">Right now at CyberWorld.</h2>
+                            
+                            <div class="grid grid-cols-4 gap-lg">
+                                <c:forEach var="product" items="${products}">
+                                    <div class="card d-flex flex-col" style="position: relative; padding: 1.25rem;">
+                                        <!-- Sale Badge & Wishlist -->
+                                        <div class="d-flex justify-between align-center" style="margin-bottom: 1rem; z-index: 2;">
+                                            <span style="background: var(--accent-blue); color: white; padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.7rem; font-weight: 700; box-shadow: var(--glow-blue);">SALE</span>
+                                            <i class="far fa-heart text-secondary" style="cursor: pointer; transition: color 0.2s;"></i>
+                                        </div>
+                                        
+                                        <!-- Product Image (Centered) -->
+                                        <a href="/product/${product.id}" style="display: block; text-align: center; margin-bottom: 1.5rem; height: 180px; display: flex; align-items: center; justify-content: center; position: relative;">
+                                            <!-- Subtle glow behind image -->
+                                            <div style="position: absolute; width: 60%; height: 60%; background: var(--accent-blue); opacity: 0.1; filter: blur(30px); border-radius: 50%;"></div>
+                                            <img src="/images/product/${product.image}" alt="${product.name}" style="max-height: 100%; max-width: 100%; object-fit: contain; position: relative; z-index: 1;" onerror="this.src='https://via.placeholder.com/200?text=Product+Image'">
+                                        </a>
+
+                                        <!-- Product Info -->
+                                        <div class="d-flex flex-col gap-sm" style="flex: 1;">
+                                            <span class="text-secondary" style="font-size: 0.7rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">${product.factory}</span>
+                                            <a href="/product/${product.id}">
+                                                <h4 class="text-primary" style="font-size: 1rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0;">${product.name}</h4>
+                                            </a>
+                                            <p class="text-secondary" style="font-size: 0.75rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0;">${product.shortDesc}</p>
+                                            
+                                            <!-- Rating placeholder -->
+                                            <div class="d-flex align-center gap-xs" style="margin-bottom: 0.5rem;">
+                                                <i class="fas fa-star" style="color: #FBBF24; font-size: 0.75rem;"></i>
+                                                <span class="text-primary" style="font-size: 0.8rem; font-weight: 600;">4.8</span>
+                                                <span class="text-secondary" style="font-size: 0.75rem;">(124 reviews)</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Price and Action -->
+                                        <div class="d-flex justify-between align-center" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.05);">
+                                            <div class="d-flex align-center gap-sm">
+                                                <h4 class="text-primary" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0;">
+                                                    $<fmt:formatNumber type="number" value="${product.price}" />
+                                                </h4>
+                                                <span class="text-secondary" style="text-decoration: line-through; font-size: 0.8rem;">$<fmt:formatNumber type="number" value="${product.price + 100}" /></span>
+                                            </div>
+                                            <button data-product-id="${product.id}" class="btnAddToCartHomepage" style="background: rgba(255,255,255,0.05); color: var(--text-primary); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='var(--accent-blue)'; this.style.color='white';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.color='var(--text-primary)';">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+
                     </div>
-                </div>
-                <!-- Fruits Shop End-->
+                </section>
+                <!-- Products Section End-->
 
                 <jsp:include page="../layout/feature.jsp" />
 

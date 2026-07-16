@@ -42,7 +42,7 @@ public class UserController {
         System.out.println(arrUsers);
 
         model.addAttribute("eric", "test");
-        model.addAttribute("hoidanit", "from controller with model");
+        model.addAttribute("cyberworld", "from controller with model");
         return "hello";
     }
 
@@ -85,7 +85,7 @@ public class UserController {
     @RequestMapping("/admin/user/update/{id}") // GET
     public String getUpdateUserPage(Model model, @PathVariable long id) {
         User currentUser = this.userService.getUserById(id);
-        
+
         // Create a detached DTO-like User to avoid Hibernate flush errors
         // when Spring Form auto-grows the null 'role' property.
         User dto = new User();
@@ -99,17 +99,17 @@ public class UserController {
             r.setName(currentUser.getRole().getName());
             dto.setRole(r);
         }
-        
+
         model.addAttribute("newUser", dto);
         return "admin/user/update";
     }
 
     @PostMapping("/admin/user/update")
-    public String postUpdateUser(Model model, @ModelAttribute("newUser") User hoidanit) {
-        User currentUser = this.userService.getUserById(hoidanit.getId());
+    public String postUpdateUser(Model model, @ModelAttribute("newUser") User cyberworld) {
+        User currentUser = this.userService.getUserById(cyberworld.getId());
         if (currentUser != null) {
             // Only update the role, do not allow changing personal info
-            currentUser.setRole(this.userService.getRoleByName(hoidanit.getRole().getName()));
+            currentUser.setRole(this.userService.getRoleByName(cyberworld.getRole().getName()));
 
             // bug here
             this.userService.handleSaveUser(currentUser);

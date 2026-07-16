@@ -1,12 +1,12 @@
-package vn.hoidanit.laptopshop.controller.staff;
+package vn.cyberworld.laptopshop.controller.staff;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import vn.hoidanit.laptopshop.service.BlogService;
-import vn.hoidanit.laptopshop.service.ContactService;
-import vn.hoidanit.laptopshop.service.UserService;
+import vn.cyberworld.laptopshop.service.BlogService;
+import vn.cyberworld.laptopshop.service.ContactService;
+import vn.cyberworld.laptopshop.service.UserService;
 
 @Controller
 public class StaffDashboardController {

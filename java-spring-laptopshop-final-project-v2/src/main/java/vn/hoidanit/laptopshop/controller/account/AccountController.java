@@ -1,4 +1,4 @@
-package vn.hoidanit.laptopshop.controller.account;
+package vn.cyberworld.laptopshop.controller.account;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import jakarta.servlet.http.HttpServletRequest;
 
-import vn.hoidanit.laptopshop.domain.User;
-import vn.hoidanit.laptopshop.service.UploadService;
-import vn.hoidanit.laptopshop.service.UserService;
+import vn.cyberworld.laptopshop.domain.User;
+import vn.cyberworld.laptopshop.service.UploadService;
+import vn.cyberworld.laptopshop.service.UserService;
 
 @Controller
 public class AccountController {
@@ -31,7 +31,7 @@ public class AccountController {
     public String getManageAccountPage(HttpServletRequest request, Model model) {
         String email = request.getUserPrincipal().getName();
         User currentUser = this.userService.getUserByEmail(email);
-        
+
         // Use a DTO-like approach to safely bind form inputs
         User dto = new User();
         dto.setId(currentUser.getId());
@@ -44,9 +44,11 @@ public class AccountController {
         model.addAttribute("currentUser", dto);
 
         String roleName = currentUser.getRole().getName();
-        if (roleName != null && ("ROLE_OWNER".equals(roleName) || "OWNER".equals(roleName) || roleName.contains("OWNER"))) {
+        if (roleName != null
+                && ("ROLE_OWNER".equals(roleName) || "OWNER".equals(roleName) || roleName.contains("OWNER"))) {
             return "redirect:/admin";
-        } else if (roleName != null && ("ROLE_ADMIN".equals(roleName) || "ADMIN".equals(roleName) || roleName.contains("ADMIN"))) {
+        } else if (roleName != null
+                && ("ROLE_ADMIN".equals(roleName) || "ADMIN".equals(roleName) || roleName.contains("ADMIN"))) {
             return "admin/account/manage";
         } else if ("STAFF".equals(roleName) || (roleName != null && roleName.contains("STAFF"))) {
             return "staff/account/manage";
@@ -56,12 +58,12 @@ public class AccountController {
     }
 
     @PostMapping("/account/manage/info")
-    public String updatePersonalInfo(HttpServletRequest request, 
-                                     @ModelAttribute("currentUser") User formUser,
-                                     @RequestParam("avatarFile") MultipartFile file) {
+    public String updatePersonalInfo(HttpServletRequest request,
+            @ModelAttribute("currentUser") User formUser,
+            @RequestParam("avatarFile") MultipartFile file) {
         String email = request.getUserPrincipal().getName();
         User currentUser = this.userService.getUserByEmail(email);
-        
+
         boolean emailChanged = false;
         if (formUser.getEmail() != null && !formUser.getEmail().equals(currentUser.getEmail())) {
             if (this.userService.checkEmailExist(formUser.getEmail())) {
@@ -81,7 +83,7 @@ public class AccountController {
         }
 
         this.userService.handleSaveUser(currentUser);
-        
+
         if (emailChanged) {
             try {
                 request.logout();
@@ -90,8 +92,8 @@ public class AccountController {
             }
             return "redirect:/login";
         }
-        
-        // Refresh session avatar and name 
+
+        // Refresh session avatar and name
         request.getSession().setAttribute("fullName", currentUser.getFullName());
         request.getSession().setAttribute("avatar", currentUser.getAvatar());
 
@@ -100,8 +102,8 @@ public class AccountController {
 
     @PostMapping("/account/manage/password")
     public String updatePassword(HttpServletRequest request,
-                                 @RequestParam("newPassword") String newPassword,
-                                 @RequestParam("confirmPassword") String confirmPassword) {
+            @RequestParam("newPassword") String newPassword,
+            @RequestParam("confirmPassword") String confirmPassword) {
         if (!newPassword.equals(confirmPassword)) {
             return "redirect:/account/manage?error=password_mismatch";
         }

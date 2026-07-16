@@ -1,10 +1,10 @@
-package vn.hoidanit.laptopshop.controller.admin;
+package vn.cyberworld.laptopshop.controller.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import vn.hoidanit.laptopshop.service.UserService;
+import vn.cyberworld.laptopshop.service.UserService;
 import laptopshop.service.OrderService;
 
 @Controller

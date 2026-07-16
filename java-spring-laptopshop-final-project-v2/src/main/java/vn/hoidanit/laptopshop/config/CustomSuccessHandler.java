@@ -1,4 +1,4 @@
-package vn.hoidanit.laptopshop.config;
+package vn.cyberworld.laptopshop.config;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -17,8 +17,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import vn.hoidanit.laptopshop.domain.User;
-import vn.hoidanit.laptopshop.service.UserService;
+import vn.cyberworld.laptopshop.domain.User;
+import vn.cyberworld.laptopshop.service.UserService;
 
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
