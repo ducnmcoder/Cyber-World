@@ -26,7 +26,7 @@
                             </ol>
                             <div class="row">
                                 <div class="col-xl-4 col-md-6">
-                                    <div class="card bg-success text-white mb-4">
+                                    <div class="card text-white mb-4" style="background-color: #cd1818; border: none;">
                                         <div class="card-body">Total Orders (${countOrders})</div>
                                         <div class="card-footer d-flex align-items-center justify-content-between">
                                             <a class="small text-white stretched-link" href="/staff/order">View
@@ -36,7 +36,7 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-4 col-md-6">
-                                    <div class="card bg-primary text-white mb-4">
+                                    <div class="card text-white mb-4" style="background-color: #cd1818; border: none;">
                                         <div class="card-body">Total Blogs (${countBlogs})</div>
                                         <div class="card-footer d-flex align-items-center justify-content-between">
                                             <a class="small text-white stretched-link" href="/staff/blog">View
@@ -46,7 +46,7 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-4 col-md-6">
-                                    <div class="card bg-warning text-white mb-4">
+                                    <div class="card text-white mb-4" style="background-color: #cd1818; border: none;">
                                         <div class="card-body">Total Contacts (${countContacts})</div>
                                         <div class="card-footer d-flex align-items-center justify-content-between">
                                             <a class="small text-white stretched-link" href="/staff/contact">View

@@ -20,7 +20,36 @@ public class WebMvcConfig implements WebMvcConfigurer {
         bean.setViewClass(JstlView.class);
         bean.setPrefix("/WEB-INF/view/");
         bean.setSuffix(".jsp");
+        bean.setOrder(2); // Lower priority than Thymeleaf
         return bean;
+    }
+
+    @Bean
+    public org.thymeleaf.spring6.SpringTemplateEngine templateEngine(org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver templateResolver) {
+        org.thymeleaf.spring6.SpringTemplateEngine templateEngine = new org.thymeleaf.spring6.SpringTemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver);
+        templateEngine.setEnableSpringELCompiler(true);
+        return templateEngine;
+    }
+
+    @Bean
+    public org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver templateResolver() {
+        org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver templateResolver = new org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver();
+        templateResolver.setPrefix("classpath:/templates/");
+        templateResolver.setSuffix(".html");
+        templateResolver.setTemplateMode(org.thymeleaf.templatemode.TemplateMode.HTML);
+        templateResolver.setCacheable(false);
+        return templateResolver;
+    }
+
+    @Bean
+    public ViewResolver thymeleafViewResolver(org.thymeleaf.spring6.SpringTemplateEngine templateEngine) {
+        org.thymeleaf.spring6.view.ThymeleafViewResolver viewResolver = new org.thymeleaf.spring6.view.ThymeleafViewResolver();
+        viewResolver.setTemplateEngine(templateEngine);
+        viewResolver.setCharacterEncoding("UTF-8");
+        viewResolver.setOrder(1); // Higher priority
+        viewResolver.setViewNames(new String[]{"thymeleaf/*"}); // Only handle views prefixed with thymeleaf/
+        return viewResolver;
     }
 
     @Override
@@ -30,11 +59,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/css/**").addResourceLocations("/resources/css/");
-        registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/");
-        registry.addResourceHandler("/images/**").addResourceLocations("/resources/images/");
-        registry.addResourceHandler("/client/**").addResourceLocations("/resources/client/");
-
+        registry.addResourceHandler("/css/**").addResourceLocations("/resources/css/", "classpath:/static/css/");
+        registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/", "classpath:/static/js/");
+        registry.addResourceHandler("/images/**").addResourceLocations("/resources/images/", "classpath:/static/images/");
+        registry.addResourceHandler("/client/**").addResourceLocations("/resources/client/", "classpath:/static/client/");
     }
 
 }

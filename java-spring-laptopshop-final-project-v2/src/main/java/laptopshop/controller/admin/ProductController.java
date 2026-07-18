@@ -72,15 +72,20 @@ public class ProductController {
     public String handleCreateProduct(
             @ModelAttribute("newProduct") @Valid Product pr,
             BindingResult newProductBindingResult,
-            @RequestParam("hoidanitFile") MultipartFile file) {
+            @RequestParam("imageFile") MultipartFile file,
+            @RequestParam(value = "imageUrl", required = false) String imageUrl) {
         // validate
         if (newProductBindingResult.hasErrors()) {
             return "admin/product/create";
         }
 
         // upload image
-        String image = this.uploadService.handleSaveUploadFile(file, "product");
-        pr.setImage(image);
+        if (imageUrl != null && !imageUrl.trim().isEmpty()) {
+            pr.setImage(imageUrl.trim());
+        } else {
+            String image = this.uploadService.handleSaveUploadFile(file, "product");
+            pr.setImage(image);
+        }
 
         this.productService.createProduct(pr);
 
@@ -97,7 +102,8 @@ public class ProductController {
     @PostMapping("/admin/product/update")
     public String handleUpdateProduct(@ModelAttribute("newProduct") @Valid Product pr,
             BindingResult newProductBindingResult,
-            @RequestParam("hoidanitFile") MultipartFile file) {
+            @RequestParam("imageFile") MultipartFile file,
+            @RequestParam(value = "imageUrl", required = false) String imageUrl) {
 
         // validate
         if (newProductBindingResult.hasErrors()) {
@@ -107,7 +113,9 @@ public class ProductController {
         Product currentProduct = this.productService.fetchProductById(pr.getId()).get();
         if (currentProduct != null) {
             // update new image
-            if (!file.isEmpty()) {
+            if (imageUrl != null && !imageUrl.trim().isEmpty()) {
+                currentProduct.setImage(imageUrl.trim());
+            } else if (!file.isEmpty()) {
                 String img = this.uploadService.handleSaveUploadFile(file, "product");
                 currentProduct.setImage(img);
             }
@@ -119,6 +127,13 @@ public class ProductController {
             currentProduct.setShortDesc(pr.getShortDesc());
             currentProduct.setFactory(pr.getFactory());
             currentProduct.setTarget(pr.getTarget());
+            
+            // New spec fields
+            currentProduct.setCpu(pr.getCpu());
+            currentProduct.setRam(pr.getRam());
+            currentProduct.setScreenSize(pr.getScreenSize());
+            currentProduct.setStorage(pr.getStorage());
+            currentProduct.setColor(pr.getColor());
 
             this.productService.createProduct(currentProduct);
         }

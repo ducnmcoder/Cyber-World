@@ -16,7 +16,7 @@
                     rel="stylesheet">
 
                 <!-- Icon Font Stylesheet -->
-                <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
                     rel="stylesheet">
 
@@ -45,15 +45,40 @@
                 <jsp:include page="../layout/header.jsp" />
 
 
-                <div class="container" style="margin-top: 100px;">
-                    <div class="row ">
-                        <div class="col-12 mt-5">
-                            <div class="alert alert-success" role="alert">
-                                Thank you for your order, your order has been confirmed successfully.
+                <div class="container" style="margin-top: 100px; min-height: 50vh; display: flex; align-items: center; justify-content: center;">
+                    <div class="row w-100">
+                        <div class="col-md-8 offset-md-2 text-center mt-5">
+                            <div style="background: white; border-radius: 15px; padding: 50px 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); animation: fadeInUp 0.6s ease-out;">
+                                <div style="width: 80px; height: 80px; background: #cd1818; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; margin: 0 auto 25px;">
+                                    <i class="fa-solid fa-check"></i>
+                                </div>
+                                <h2 style="font-weight: 800; color: #333; margin-bottom: 15px;">Thanh toán thành công!</h2>
+                                <p style="color: #666; font-size: 16px; margin-bottom: 30px; line-height: 1.6;">
+                                    Cảm ơn bạn đã tin tưởng và mua sắm tại <strong>Cyber World</strong>.<br>
+                                    Đơn hàng của bạn đã được xác nhận và đang trong quá trình xử lý. Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.
+                                </p>
+                                <div class="d-flex justify-content-center gap-3">
+                                    <a href="/" class="btn" style="background: #cd1818; color: white; padding: 12px 30px; font-weight: 600; border-radius: 30px; text-transform: uppercase; font-size: 14px; letter-spacing: 1px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(205, 24, 24, 0.3);">
+                                        <i class="fa-solid fa-house me-2"></i> Về trang chủ
+                                    </a>
+                                    <a href="/order-history" class="btn" style="background: white; color: #333; border: 2px solid #eee; padding: 10px 30px; font-weight: 600; border-radius: 30px; text-transform: uppercase; font-size: 14px; letter-spacing: 1px; transition: all 0.3s ease;">
+                                        <i class="fa-solid fa-clock-rotate-left me-2"></i> Lịch sử đơn
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <style>
+                    @keyframes fadeInUp {
+                        from { opacity: 0; transform: translateY(30px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
+                    .btn:hover {
+                        transform: translateY(-2px);
+                    }
+                </style>
 
 
                 <jsp:include page="../layout/feature.jsp" />

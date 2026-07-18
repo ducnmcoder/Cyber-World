@@ -59,6 +59,10 @@ public class UserService {
         return this.roleRepository.findByName(name);
     }
 
+    public Role handleSaveRole(Role role) {
+        return this.roleRepository.save(role);
+    }
+
     public User registerDTOtoUser(RegisterDTO registerDTO) {
         User user = new User();
         user.setFullName(registerDTO.getFirstName() + " " + registerDTO.getLastName());

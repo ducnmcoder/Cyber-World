@@ -50,6 +50,12 @@ public class Product implements Serializable {
     private String factory;
     private String target;
 
+    private String cpu;
+    private String ram;
+    private String screenSize;
+    private String storage;
+    private String color;
+
     public long getId() {
         return id;
     }
@@ -128,6 +134,46 @@ public class Product implements Serializable {
 
     public void setTarget(String target) {
         this.target = target;
+    }
+
+    public String getCpu() {
+        return cpu;
+    }
+
+    public void setCpu(String cpu) {
+        this.cpu = cpu;
+    }
+
+    public String getRam() {
+        return ram;
+    }
+
+    public void setRam(String ram) {
+        this.ram = ram;
+    }
+
+    public String getScreenSize() {
+        return screenSize;
+    }
+
+    public void setScreenSize(String screenSize) {
+        this.screenSize = screenSize;
+    }
+
+    public String getStorage() {
+        return storage;
+    }
+
+    public void setStorage(String storage) {
+        this.storage = storage;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     @Override

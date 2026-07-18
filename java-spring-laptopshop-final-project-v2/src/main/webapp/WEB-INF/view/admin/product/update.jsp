@@ -31,6 +31,14 @@
                             $("#avatarPreview").attr("src", imgURL);
                             $("#avatarPreview").css({ "display": "block" });
                         });
+
+                        $("#imageUrl").on("input", function() {
+                            const url = $(this).val();
+                            if (url) {
+                                $("#avatarPreview").attr("src", url);
+                                $("#avatarPreview").css({ "display": "block" });
+                            }
+                        });
                     });
                 </script>
             </head>
@@ -137,9 +145,33 @@
                                                     </form:select>
                                                 </div>
                                                 <div class="mb-3 col-12 col-md-6">
-                                                    <label for="avatarFile" class="form-label">Image:</label>
+                                                    <label class="form-label">CPU:</label>
+                                                    <form:input type="text" class="form-control" path="cpu" />
+                                                </div>
+                                                <div class="mb-3 col-12 col-md-6">
+                                                    <label class="form-label">RAM:</label>
+                                                    <form:input type="text" class="form-control" path="ram" />
+                                                </div>
+                                                <div class="mb-3 col-12 col-md-6">
+                                                    <label class="form-label">Screen Size:</label>
+                                                    <form:input type="text" class="form-control" path="screenSize" />
+                                                </div>
+                                                <div class="mb-3 col-12 col-md-6">
+                                                    <label class="form-label">Storage:</label>
+                                                    <form:input type="text" class="form-control" path="storage" />
+                                                </div>
+                                                <div class="mb-3 col-12 col-md-6">
+                                                    <label class="form-label">Color:</label>
+                                                    <form:input type="text" class="form-control" path="color" />
+                                                </div>
+                                                <div class="mb-3 col-12 col-md-6">
+                                                    <label for="avatarFile" class="form-label">Image File:</label>
                                                     <input class="form-control" type="file" id="avatarFile"
-                                                        accept=".png, .jpg, .jpeg" name="hoidanitFile" />
+                                                        accept=".png, .jpg, .jpeg" name="imageFile" />
+                                                </div>
+                                                <div class="mb-3 col-12 col-md-6">
+                                                    <label class="form-label">Or Image URL:</label>
+                                                    <input type="text" class="form-control" name="imageUrl" id="imageUrl" placeholder="http://example.com/image.jpg" />
                                                 </div>
                                                 <div class="col-12 mb-3">
                                                     <img style="max-height: 250px; display: none;" alt="avatar preview"

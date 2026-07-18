@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${product.name} + ' - Cyber World'">Product Details - Cyber World</title>
+    
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/client/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/client/css/style.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f6f8;
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .detail-page-wrapper {
+            max-width: 1200px;
+            margin: 100px auto 40px auto;
+            padding: 0 15px;
+        }
+
+        .breadcrumb-cyber {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb-cyber a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .breadcrumb-cyber a:hover {
+            text-decoration: underline;
+        }
+
+        .product-detail-container {
+            display: grid;
+            grid-template-columns: 7fr 5fr;
+            gap: 20px;
+        }
+
+        /* Left Side (Images & Specs) */
+        .product-left {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .main-img-box {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fff;
+        }
+
+        .main-img-box img {
+            max-width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+        }
+
+        .thumbnail-list {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .thumb-item {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .thumb-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumb-item:hover, .thumb-item.active {
+            border-color: #007bff;
+        }
+
+        .promo-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .promo-tag {
+            background: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #eee;
+        }
+
+        .specs-highlight {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        .spec-item i {
+            color: #007bff;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .spec-title {
+            font-size: 11px;
+            color: #777;
+            text-transform: uppercase;
+        }
+
+        .spec-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .btn-view-all-specs {
+            display: block;
+            text-align: center;
+            padding: 10px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .btn-view-all-specs:hover {
+            background: #f1f1f1;
+        }
+
+        /* Right Side (Info, Price, Buy) */
+        .product-right {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .product-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .product-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .price-box {
+            margin-bottom: 20px;
+        }
+
+        .price-main {
+            font-size: 28px;
+            font-weight: 800;
+            color: #cd1818;
+            margin-bottom: 5px;
+        }
+
+        .price-old {
+            font-size: 15px;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .trade-in-box {
+            background: #fff8f8;
+            border: 1px solid #ffcccc;
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .trade-in-box b {
+            color: #cd1818;
+        }
+
+        .color-options {
+            margin-bottom: 20px;
+        }
+
+        .color-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .color-btn {
+            display: inline-block;
+            padding: 8px 15px;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            background: white;
+            color: #333;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .promo-box {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .promo-box-header {
+            background: #f1f8ff;
+            padding: 10px 15px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #00539b;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .promo-box-body {
+            padding: 15px;
+            font-size: 13px;
+            color: #444;
+        }
+
+        .promo-box-body ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .promo-box-body li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .promo-box-body li i {
+            color: #28a745;
+            margin-top: 3px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-buy {
+            flex: 1;
+            background: #cd1818;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
+        }
+
+        .btn-buy:hover {
+            background: #a51313;
+        }
+
+        .btn-add-cart {
+            width: 55px;
+            height: 55px;
+            background: white;
+            border: 2px solid #cd1818;
+            color: #cd1818;
+            border-radius: 8px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.2s;
+        }
+
+        .btn-add-cart:hover {
+            background: #fff8f8;
+        }
+
+        /* Responsive */
+        @media (max-width: 991px) {
+            .product-detail-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <div th:replace="~{client/layout/header :: header}"></div>
+
+    <main class="detail-page-wrapper">
+        
+        <div class="breadcrumb-cyber">
+            <a href="/">Home</a> / <a href="/products">Laptop</a> / 
+            <span th:text="${product.factory}">Brand</span>
+        </div>
+
+        <div class="product-detail-container">
+            
+            <!-- Left Side (Images & Specs) -->
+            <div class="product-left">
+                
+                <div class="main-img-box">
+                    <img th:src="@{'/images/product/' + ${product.image}}" alt="Product Image">
+                </div>
+                
+                <div class="thumbnail-list">
+                    <div class="thumb-item"><img th:src="@{'/images/product/' + ${product.image}}"></div>
+                    <div class="thumb-item" style="background:#eee;"></div>
+                    <div class="thumb-item" style="background:#eee;"></div>
+                    <div class="thumb-item" style="background:#eee;"></div>
+                </div>
+
+                <div class="promo-tags">
+                    <div class="promo-tag">
+                        <i class="fa-solid fa-briefcase" style="color: #007bff;"></i> Exclusive discount for businesses
+                    </div>
+                    <div class="promo-tag">
+                        <i class="fa-solid fa-shield-halved" style="color: #28a745;"></i> Genuine Product - 12 Months Warranty
+                    </div>
+                </div>
+
+                <div class="specs-highlight">
+                    <h3 style="font-size: 18px; margin-bottom: 15px;">Technical Specifications</h3>
+                    <div class="specs-grid">
+                        <div class="spec-item">
+                            <i class="fa-solid fa-microchip"></i>
+                            <div>
+                                <div class="spec-title">CPU</div>
+                                <div class="spec-value" th:text="${product.cpu != null ? product.cpu : 'Core Ultra / Ryzen'}">Core Ultra / Ryzen</div>
+                            </div>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fa-solid fa-memory"></i>
+                            <div>
+                                <div class="spec-title">RAM</div>
+                                <div class="spec-value" th:text="${product.ram != null ? product.ram : '16 GB'}">16 GB</div>
+                            </div>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fa-solid fa-laptop"></i>
+                            <div>
+                                <div class="spec-title">Screen Size</div>
+                                <div class="spec-value" th:text="${product.screenSize != null ? product.screenSize : '14 inch IPS'}">14 inch IPS</div>
+                            </div>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fa-solid fa-hard-drive"></i>
+                            <div>
+                                <div class="spec-title">Storage</div>
+                                <div class="spec-value" th:text="${product.storage != null ? product.storage : '512GB SSD NVMe'}">512GB SSD NVMe</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="btn-view-all-specs">View all specifications</a>
+                </div>
+
+            </div>
+
+            <!-- Right Side (Info, Price, Buy) -->
+            <div class="product-right">
+                
+                <h1 class="product-title" th:text="${product.name}">Product Name Here</h1>
+                
+                <div class="product-meta">
+                    <span>No. <span th:text="${product.id}"></span></span>
+                    <span><i class="fa-solid fa-star" style="color: #ffc107;"></i> 5 (21 reviews)</span>
+                </div>
+
+                <div class="price-box">
+                    <div class="price-main" th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 0, 'POINT')} + ' đ'">22,490,000 đ</div>
+                    <div class="price-old" th:if="${product.price > 10000000}" th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'COMMA', 0, 'POINT')} + ' đ'">24,990,000 đ</div>
+                </div>
+
+                <div class="trade-in-box">
+                    <span>Trade-in - Discount up to <b>2,000,000đ</b></span>
+                    <a href="#" style="color: #007bff; text-decoration: none;">Estimate Now ›</a>
+                </div>
+
+                <div class="color-options">
+                    <div class="color-title">Color</div>
+                    <div class="color-btn" th:text="${product.color != null ? product.color : 'Gray'}">
+                        Gray
+                    </div>
+                </div>
+
+                <div class="promo-box">
+                    <div class="promo-box-header">
+                        <span>Promotional Offers:</span>
+                    </div>
+                    <div class="promo-box-body">
+                        <ul>
+                            <li><i class="fa-regular fa-circle-check"></i> Instant discount 2,500,000đ valid until end of month</li>
+                            <li><i class="fa-regular fa-circle-check"></i> 0% Installment</li>
+                            <li><i class="fa-regular fa-circle-check"></i> Free comprehensive warranty combo: 1 Year + Voucher</li>
+                        </ul>
+                        <a href="#" style="display: block; font-size: 13px; color: #007bff; text-decoration: none; margin-top: 10px;">View 8 more offers ˅</a>
+                    </div>
+                </div>
+                
+                <div class="promo-box">
+                    <div class="promo-box-header">
+                        <span>Verification - Extra Discount</span>
+                    </div>
+                    <div class="promo-box-body">
+                        <select style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ddd; font-size: 13px;">
+                            <option>Students & Teachers • Discount 5% (up to 1,049,500đ)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="promo-box">
+                    <div class="promo-box-header">
+                        <span>Shipping Information</span>
+                    </div>
+                    <div class="promo-box-body">
+                        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                            <button style="flex:1; padding: 10px; border: 1px solid #cd1818; color: #cd1818; background: #fffafa; border-radius: 5px; cursor: pointer;">
+                                <i class="fa-solid fa-truck"></i> Home Delivery
+                            </button>
+                            <button style="flex:1; padding: 10px; border: 1px solid #ddd; background: white; border-radius: 5px; cursor: pointer;">
+                                <i class="fa-solid fa-store"></i> Store Pickup
+                            </button>
+                        </div>
+                        <a href="#" style="color: #007bff; text-decoration: none; font-size: 13px;"><i class="fa-solid fa-location-dot"></i> Enter address to check availability</a>
+                    </div>
+                </div>
+
+                <!-- Add to cart form -->
+                <form th:action="@{/add-product-from-view-detail}" method="post" style="position: sticky; bottom: 20px; z-index: 10; background: white; padding-top: 10px; border-top: 1px solid #eee;">
+                    <input type="hidden" name="id" th:value="${product.id}" />
+                    <input type="hidden" name="quantity" value="1" />
+                    
+                    <div class="action-buttons">
+                        <button type="submit" class="btn-buy">Buy Now</button>
+                        <button type="submit" class="btn-add-cart" title="Add to cart">
+                            <i class="fa-solid fa-cart-plus"></i>
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+        
+        <!-- Detailed Description -->
+        <div style="background: white; padding: 20px; border-radius: 10px; margin-top: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+            <h3 style="margin-bottom: 15px;">Product Description</h3>
+            <p th:text="${product.shortDesc}" style="font-weight: bold; margin-bottom: 10px;"></p>
+            <div th:utext="${product.detailDesc}"></div>
+        </div>
+
+    </main>
+
+    <div th:replace="~{client/layout/footer :: footer}"></div>
+
+    <!-- Cart Notification Toast -->
+    <div th:if="${cartMessage != null}" id="cartToast" style="position: fixed; top: 80px; right: 20px; background-color: #28a745; color: white; padding: 15px 25px; border-radius: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100000; display: flex; align-items: center; gap: 10px; animation: slideIn 0.5s, fadeOut 0.5s 2.5s forwards;">
+        <i class="fa-solid fa-check-circle" style="font-size: 20px;"></i>
+        <span th:text="${cartMessage}">Thêm thành công</span>
+    </div>
+
+    <style>
+        @keyframes slideIn {
+            from { right: -300px; opacity: 0; }
+            to { right: 20px; opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; display: none; }
+        }
+    </style>
+    <script>
+        setTimeout(() => {
+            const toast = document.getElementById('cartToast');
+            if (toast) {
+                toast.style.display = 'none';
+            }
+        }, 3000);
+    </script>
+
+    <div th:replace="~{client/layout/footer :: footer}"></div>
+</body>
+</html>

@@ -143,8 +143,8 @@
                             datasets: [{
                                 label: label,
                                 data: data,
-                                backgroundColor: 'rgba(54, 162, 235, 0.75)',
-                                borderColor: 'rgba(54, 162, 235, 1)',
+                                backgroundColor: 'rgba(205, 24, 24, 0.75)',
+                                borderColor: 'rgba(205, 24, 24, 1)',
                                 borderWidth: 1,
                                 barPercentage: 0.75,
                                 categoryPercentage: 0.9,

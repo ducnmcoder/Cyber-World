@@ -21,7 +21,7 @@
                         rel="stylesheet">
 
                     <!-- Icon Font Stylesheet -->
-                    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
                     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
                         rel="stylesheet">
 
@@ -35,6 +35,29 @@
 
                     <!-- Template Stylesheet -->
                     <link href="/client/css/style.css" rel="stylesheet">
+
+                    <!-- Premium Cart Styles -->
+                    <style>
+                        body { background-color: #f8f9fa; font-family: 'Inter', sans-serif; }
+                        .cyber-cart-container { background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 30px; }
+                        .cyber-cart-table thead { background: #cd1818; color: #fff; }
+                        .cyber-cart-table th { font-weight: 600; padding: 15px; border: none; text-transform: uppercase; font-size: 14px; }
+                        .cyber-cart-table td { vertical-align: middle; padding: 20px 15px; border-bottom: 1px solid #eee; }
+                        .cyber-product-name { color: #333; font-weight: 600; font-size: 16px; text-decoration: none; transition: 0.2s; }
+                        .cyber-product-name:hover { color: #cd1818; }
+                        .cyber-qty-btn { background: #f1f1f1; color: #333; border: none; width: 35px; height: 35px; border-radius: 5px; font-weight: bold; transition: 0.2s; }
+                        .cyber-qty-btn:hover { background: #e2e2e2; }
+                        .cyber-qty-input { width: 50px; text-align: center; border: 1px solid #ddd; border-radius: 5px; font-weight: 600; }
+                        .cyber-delete-btn { background: #ff4d4f; color: #fff; border: none; width: 35px; height: 35px; border-radius: 5px; transition: 0.2s; }
+                        .cyber-delete-btn:hover { background: #ff2528; }
+                        .cyber-summary-box { background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 30px; }
+                        .cyber-summary-title { font-size: 22px; font-weight: 700; color: #111; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
+                        .cyber-summary-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 16px; color: #555; }
+                        .cyber-summary-total { display: flex; justify-content: space-between; margin-top: 20px; padding-top: 20px; border-top: 2px solid #eee; font-size: 20px; font-weight: 700; color: #cd1818; }
+                        .cyber-checkout-btn { background: #cd1818; color: #fff; border: none; padding: 15px 30px; font-size: 18px; font-weight: 600; border-radius: 8px; width: 100%; margin-top: 25px; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+                        .cyber-checkout-btn:hover { background: #a81010; color: #fff; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(205, 24, 24, 0.3); }
+                        .breadcrumb-item a { color: #cd1818; text-decoration: none; font-weight: 600; }
+                    </style>
                 </head>
 
                 <body>
@@ -59,82 +82,80 @@
                                     </ol>
                                 </nav>
                             </div>
-                            <div class="table-responsive">
-                                <table class="table">
+                            <div class="cyber-cart-container table-responsive">
+                                <table class="table cyber-cart-table mb-0">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Product</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Price</th>
-                                            <th scope="col">Quantity</th>
-                                            <th scope="col">Total</th>
-                                            <th scope="col">Action</th>
+                                            <th scope="col">Sản phẩm</th>
+                                            <th scope="col">Tên sản phẩm</th>
+                                            <th scope="col">Đơn giá</th>
+                                            <th scope="col">Số lượng</th>
+                                            <th scope="col">Thành tiền</th>
+                                            <th scope="col">Xóa</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <c:if test="${ empty cartDetails}">
                                             <tr>
-                                                <td colspan="6">
-                                                    No products in cart
+                                                <td colspan="6" class="text-center py-5">
+                                                    <div style="font-size: 50px; color: #ddd; margin-bottom: 15px;"><i class="fa-solid fa-cart-shopping"></i></div>
+                                                    <h5 style="color: #666;">Giỏ hàng của bạn đang trống</h5>
+                                                    <a href="/" class="btn" style="background: #cd1818; color: white; margin-top: 15px; padding: 10px 25px; border-radius: 5px;">Tiếp tục mua sắm</a>
                                                 </td>
                                             </tr>
                                         </c:if>
                                         <c:forEach var="cartDetail" items="${cartDetails}" varStatus="status">
 
                                             <tr>
-                                                <th scope="row">
+                                                <td scope="row">
                                                     <div class="d-flex align-items-center">
                                                         <img src="/images/product/${cartDetail.product.image}"
-                                                            class="img-fluid me-5 rounded-circle"
-                                                            style="width: 80px; height: 80px;" alt="">
+                                                            class="img-fluid rounded"
+                                                            style="width: 80px; height: 80px; object-fit: cover; border: 1px solid #eee;" alt="">
                                                     </div>
-                                                </th>
-                                                <td>
-                                                    <p class="mb-0 mt-4">
-                                                        <a href="/product/${cartDetail.product.id}" target="_blank">
-                                                            ${cartDetail.product.name}
-                                                        </a>
-                                                    </p>
                                                 </td>
                                                 <td>
-                                                    <p class="mb-0 mt-4">
+                                                    <a href="/product/${cartDetail.product.id}" target="_blank" class="cyber-product-name">
+                                                        ${cartDetail.product.name}
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <div style="font-weight: 600; color: #555;">
                                                         <fmt:formatNumber type="number" value="${cartDetail.price}" /> đ
-                                                    </p>
+                                                    </div>
                                                 </td>
                                                 <td>
-                                                    <div class="input-group quantity mt-4" style="width: 100px;">
+                                                    <div class="input-group quantity" style="width: 120px;">
                                                         <div class="input-group-btn">
-                                                            <button
-                                                                class="btn btn-sm btn-minus rounded-circle bg-light border">
+                                                            <button class="btn-minus cyber-qty-btn">
                                                                 <i class="fa fa-minus"></i>
                                                             </button>
                                                         </div>
                                                         <input type="text"
-                                                            class="form-control form-control-sm text-center border-0"
+                                                            class="form-control cyber-qty-input"
                                                             value="${cartDetail.quantity}"
                                                             data-cart-detail-id="${cartDetail.id}"
                                                             data-cart-detail-price="${cartDetail.price}"
                                                             data-cart-detail-index="${status.index}">
                                                         <div class="input-group-btn">
-                                                            <button
-                                                                class="btn btn-sm btn-plus rounded-circle bg-light border">
+                                                            <button class="btn-plus cyber-qty-btn">
                                                                 <i class="fa fa-plus"></i>
                                                             </button>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <p class="mb-0 mt-4" data-cart-detail-id="${cartDetail.id}">
+                                                    <div style="font-weight: 700; color: #cd1818;" data-cart-detail-id="${cartDetail.id}">
                                                         <fmt:formatNumber type="number"
                                                             value="${cartDetail.price * cartDetail.quantity}" /> đ
-                                                    </p>
+                                                    </div>
                                                 </td>
                                                 <td>
-                                                    <form method="post" action="/delete-cart-product/${cartDetail.id}">
+                                                    <form method="post" action="/delete-cart-product/${cartDetail.id}" style="margin: 0;">
                                                         <input type="hidden" name="${_csrf.parameterName}"
                                                             value="${_csrf.token}" />
-                                                        <button class="btn btn-md rounded-circle bg-light border mt-4">
-                                                            <i class="fa fa-times text-danger"></i>
+                                                        <button class="cyber-delete-btn" title="Xóa">
+                                                            <i class="fa fa-trash"></i>
                                                         </button>
                                                     </form>
                                                 </td>
@@ -145,32 +166,28 @@
                                 </table>
                             </div>
                             <c:if test="${not empty cartDetails}">
-                                <div class="mt-5 row g-4 justify-content-start">
-                                    <div class="col-12 col-md-8">
-                                        <div class="bg-light rounded">
-                                            <div class="p-4">
-                                                <h1 class="display-6 mb-4">Order <span class="fw-normal">Summary</span>
-                                                </h1>
-                                                <div class="d-flex justify-content-between mb-4">
-                                                    <h5 class="mb-0 me-4">Subtotal:</h5>
-                                                    <p class="mb-0" data-cart-total-price="${totalPrice}">
-                                                        <fmt:formatNumber type="number" value="${totalPrice}" /> đ
-                                                    </p>
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <h5 class="mb-0 me-4">Shipping Fee</h5>
-                                                    <div class="">
-                                                        <p class="mb-0">0 đ</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                                                <h5 class="mb-0 ps-4 me-4">Total</h5>
-                                                <p class="mb-0 pe-4" data-cart-total-price="${totalPrice}">
+                                <div class="mt-4 row justify-content-end">
+                                    <div class="col-12 col-md-6 col-lg-5">
+                                        <div class="cyber-summary-box">
+                                            <div class="cyber-summary-title">Thông tin thanh toán</div>
+                                            <div class="cyber-summary-row">
+                                                <span>Tạm tính:</span>
+                                                <span data-cart-total-price="${totalPrice}">
                                                     <fmt:formatNumber type="number" value="${totalPrice}" /> đ
-                                                </p>
+                                                </span>
                                             </div>
+                                            <div class="cyber-summary-row">
+                                                <span>Phí giao hàng:</span>
+                                                <span>0 đ</span>
+                                            </div>
+                                            
+                                            <div class="cyber-summary-total">
+                                                <span>Tổng cộng:</span>
+                                                <span data-cart-total-price="${totalPrice}">
+                                                    <fmt:formatNumber type="number" value="${totalPrice}" /> đ
+                                                </span>
+                                            </div>
+
                                             <form:form action="/confirm-checkout" method="post" modelAttribute="cart">
                                                 <input type="hidden" name="${_csrf.parameterName}"
                                                     value="${_csrf.token}" />
@@ -179,22 +196,20 @@
                                                         varStatus="status">
                                                         <div class="mb-3">
                                                             <div class="form-group">
-                                                                <label>Id:</label>
-                                                                <form:input class="form-control" type="text"
+                                                                <form:input class="form-control" type="hidden"
                                                                     value="${cartDetail.id}"
                                                                     path="cartDetails[${status.index}].id" />
                                                             </div>
                                                             <div class="form-group">
-                                                                <label>Quantity:</label>
-                                                                <form:input class="form-control" type="text"
+                                                                <form:input class="form-control" type="hidden"
                                                                     value="${cartDetail.quantity}"
                                                                     path="cartDetails[${status.index}].quantity" />
                                                             </div>
                                                         </div>
                                                     </c:forEach>
                                                 </div>
-                                                <button
-                                                    class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4">Checkout
+                                                <button class="cyber-checkout-btn">
+                                                    Tiến hành thanh toán <i class="fa-solid fa-arrow-right ms-2"></i>
                                                 </button>
                                             </form:form>
                                         </div>

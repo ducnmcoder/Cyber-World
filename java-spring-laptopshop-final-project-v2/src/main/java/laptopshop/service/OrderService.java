@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import laptopshop.domain.Order;
 import laptopshop.domain.OrderDetail;
@@ -33,6 +34,7 @@ public class OrderService {
         return this.orderRepository.findById(id);
     }
 
+    @Transactional
     public void deleteOrderById(long id) {
         // delete order detail
         Optional<Order> orderOptional = this.fetchOrderById(id);
@@ -47,6 +49,7 @@ public class OrderService {
         this.orderRepository.deleteById(id);
     }
 
+    @Transactional
     public void updateOrder(Order order) {
         Optional<Order> orderOptional = this.fetchOrderById(order.getId());
         if (orderOptional.isPresent()) {

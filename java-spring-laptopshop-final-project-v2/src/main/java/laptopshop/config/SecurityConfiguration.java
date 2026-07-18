@@ -68,11 +68,18 @@ public class SecurityConfiguration {
 
                         .requestMatchers("/", "/login", "/product/**", "/register", "/products/**",
                                 "/client/**", "/css/**", "/js/**", "/images/**",
-                                "/about", "/contact", "/blogs", "/blog/**")
+                                "/about", "/contact", "/blogs", "/blog/**", "/error",
+                                "/add-product-to-cart/**", "/add-product-from-view-detail",
+                                "/cart", "/checkout", "/place-order", "/delete-cart-product/**",
+                                "/confirm-checkout", "/thanks")
                         .permitAll()
 
-                        .requestMatchers("/admin/user/**").hasRole("ADMIN")
+                        .requestMatchers("/admin").hasRole("OWNER")
+                        .requestMatchers("/admin/blog", "/admin/blog/**", "/admin/contact", "/admin/contact/**").hasAnyRole("STAFF", "OWNER")
+                        .requestMatchers("/admin/user/**").hasAnyRole("ADMIN", "OWNER")
+                        .requestMatchers("/admin/product", "/admin/product/**", "/admin/order", "/admin/order/**").hasRole("OWNER")
                         .requestMatchers("/admin/**").hasRole("OWNER")
+                        .requestMatchers("/owner/**").hasRole("OWNER")
                         .requestMatchers("/staff/**").hasRole("STAFF")
 
                         .anyRequest().authenticated())
