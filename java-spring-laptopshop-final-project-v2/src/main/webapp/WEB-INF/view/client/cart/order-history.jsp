@@ -63,11 +63,11 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Sản phẩm</th>
-                                        <th scope="col">Tên</th>
-                                        <th scope="col">Price cả</th>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Unit Price</th>
                                         <th scope="col">Quantity</th>
-                                        <th scope="col">Thành tiền</th>
+                                        <th scope="col">Total Price</th>
                                         <th scope="col">Status</th>
                                     </tr>
                                 </thead>

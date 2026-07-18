@@ -88,18 +88,18 @@
                                 <table class="table cyber-cart-table mb-0">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Sản phẩm</th>
-                                            <th scope="col">Tên sản phẩm</th>
-                                            <th scope="col">Đơn giá</th>
-                                            <th scope="col">Số lượng</th>
-                                            <th scope="col">Thành tiền</th>
+                                            <th scope="col">Product</th>
+                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Unit Price</th>
+                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Total Price</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <c:if test="${ empty cartDetails}">
                                             <tr>
                                                 <td colspan="5" class="text-center py-5">
-                                                    Giỏ hàng của bạn đang trống
+                                                    Your cart is empty
                                                 </td>
                                             </tr>
                                         </c:if>
@@ -146,44 +146,44 @@
                                     <div class="mt-4 row g-4">
                                         <div class="col-12 col-md-7">
                                             <div class="cyber-checkout-box">
-                                                <div class="cyber-box-title">Thông tin giao hàng</div>
+                                                <div class="cyber-box-title">Delivery Information</div>
                                                 <div class="row">
                                                     <div class="col-12 form-group mb-4">
-                                                        <label class="cyber-form-label">Họ và Tên</label>
-                                                        <input class="cyber-form-control" name="receiverName" placeholder="Nhập họ và tên người nhận" required />
+                                                        <label class="cyber-form-label">Full Name</label>
+                                                        <input class="cyber-form-control" name="receiverName" placeholder="Enter receiver's full name" required oninvalid="this.setCustomValidity('Please fill out this field.')" oninput="this.setCustomValidity('')" />
                                                     </div>
                                                     <div class="col-12 form-group mb-4">
-                                                        <label class="cyber-form-label">Số điện thoại</label>
-                                                        <input class="cyber-form-control" name="receiverPhone" placeholder="Nhập số điện thoại liên hệ" required />
+                                                        <label class="cyber-form-label">Phone Number</label>
+                                                        <input class="cyber-form-control" name="receiverPhone" placeholder="Enter contact phone number" required oninvalid="this.setCustomValidity('Please fill out this field.')" oninput="this.setCustomValidity('')" />
                                                     </div>
                                                     <div class="col-12 form-group mb-4">
-                                                        <label class="cyber-form-label">Địa chỉ nhận hàng</label>
-                                                        <input class="cyber-form-control" name="receiverAddress" placeholder="Nhập địa chỉ chi tiết" required />
+                                                        <label class="cyber-form-label">Delivery Address</label>
+                                                        <input class="cyber-form-control" name="receiverAddress" placeholder="Enter detailed address" required oninvalid="this.setCustomValidity('Please fill out this field.')" oninput="this.setCustomValidity('')" />
                                                     </div>
                                                     <div class="mt-2">
-                                                        <a href="/cart" style="color: #cd1818; text-decoration: none; font-weight: 600;"><i class="fa-solid fa-arrow-left me-2"></i> Quay lại giỏ hàng</a>
+                                                        <a href="/cart" style="color: #cd1818; text-decoration: none; font-weight: 600;"><i class="fa-solid fa-arrow-left me-2"></i> Back to cart</a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-5">
                                             <div class="cyber-checkout-box">
-                                                <div class="cyber-box-title">Thông tin thanh toán</div>
+                                                <div class="cyber-box-title">Payment Information</div>
 
                                                 <div class="cyber-summary-row mt-4">
-                                                    <span>Phí giao hàng:</span>
+                                                    <span>Shipping fee:</span>
                                                     <span>0 đ</span>
                                                 </div>
                                                 
                                                 <div class="cyber-summary-total">
-                                                    <span>Tổng cộng:</span>
+                                                    <span>Total:</span>
                                                     <span>
                                                         <fmt:formatNumber type="number" value="${totalPrice}" /> đ
                                                     </span>
                                                 </div>
 
                                                 <button type="submit" class="cyber-checkout-btn">
-                                                    Xác nhận đặt hàng <i class="fa-solid fa-check ms-2"></i>
+                                                    Confirm Order <i class="fa-solid fa-check ms-2"></i>
                                                 </button>
                                             </div>
                                         </div>

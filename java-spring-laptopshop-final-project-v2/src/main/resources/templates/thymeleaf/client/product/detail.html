@@ -358,7 +358,7 @@
 <body>
 
     <!-- Navigation -->
-    <div th:replace="~{client/layout/header :: header}"></div>
+    <div th:replace="~{thymeleaf/client/layout/header :: header}"></div>
 
     <main class="detail-page-wrapper">
         
@@ -521,10 +521,8 @@
             <p th:text="${product.shortDesc}" style="font-weight: bold; margin-bottom: 10px;"></p>
             <div th:utext="${product.detailDesc}"></div>
         </div>
-
     </main>
-
-    <div th:replace="~{client/layout/footer :: footer}"></div>
+    <div th:replace="~{thymeleaf/client/layout/footer :: footer}"></div>
 
     <!-- Cart Notification Toast -->
     <div th:if="${cartMessage != null}" id="cartToast" style="position: fixed; top: 80px; right: 20px; background-color: #28a745; color: white; padding: 15px 25px; border-radius: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100000; display: flex; align-items: center; gap: 10px; animation: slideIn 0.5s, fadeOut 0.5s 2.5s forwards;">
@@ -551,6 +549,6 @@
         }, 3000);
     </script>
 
-    <div th:replace="~{client/layout/footer :: footer}"></div>
+    <div th:replace="~{thymeleaf/client/layout/footer :: footer}"></div>
 </body>
 </html>

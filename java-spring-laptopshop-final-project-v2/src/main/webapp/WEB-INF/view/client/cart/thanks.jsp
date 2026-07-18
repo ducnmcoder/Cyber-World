@@ -52,17 +52,17 @@
                                 <div style="width: 80px; height: 80px; background: #cd1818; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; margin: 0 auto 25px;">
                                     <i class="fa-solid fa-check"></i>
                                 </div>
-                                <h2 style="font-weight: 800; color: #333; margin-bottom: 15px;">Thanh toán thành công!</h2>
+                                <h2 style="font-weight: 800; color: #333; margin-bottom: 15px;">Payment Successful!</h2>
                                 <p style="color: #666; font-size: 16px; margin-bottom: 30px; line-height: 1.6;">
-                                    Cảm ơn bạn đã tin tưởng và mua sắm tại <strong>Cyber World</strong>.<br>
-                                    Đơn hàng của bạn đã được xác nhận và đang trong quá trình xử lý. Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.
+                                    Thank you for trusting and shopping at <strong>Cyber World</strong>.<br>
+                                    Your order has been confirmed and is being processed. We will contact you shortly.
                                 </p>
                                 <div class="d-flex justify-content-center gap-3">
                                     <a href="/" class="btn" style="background: #cd1818; color: white; padding: 12px 30px; font-weight: 600; border-radius: 30px; text-transform: uppercase; font-size: 14px; letter-spacing: 1px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(205, 24, 24, 0.3);">
-                                        <i class="fa-solid fa-house me-2"></i> Về trang chủ
+                                        <i class="fa-solid fa-house me-2"></i> Back to Home
                                     </a>
                                     <a href="/order-history" class="btn" style="background: white; color: #333; border: 2px solid #eee; padding: 10px 30px; font-weight: 600; border-radius: 30px; text-transform: uppercase; font-size: 14px; letter-spacing: 1px; transition: all 0.3s ease;">
-                                        <i class="fa-solid fa-clock-rotate-left me-2"></i> Lịch sử đơn
+                                        <i class="fa-solid fa-clock-rotate-left me-2"></i> Order History
                                     </a>
                                 </div>
                             </div>

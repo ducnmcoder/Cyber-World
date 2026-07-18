@@ -86,12 +86,12 @@
                                 <table class="table cyber-cart-table mb-0">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Sản phẩm</th>
-                                            <th scope="col">Tên sản phẩm</th>
-                                            <th scope="col">Đơn giá</th>
-                                            <th scope="col">Số lượng</th>
-                                            <th scope="col">Thành tiền</th>
-                                            <th scope="col">Xóa</th>
+                                            <th scope="col">Product</th>
+                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Unit Price</th>
+                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Total Price</th>
+                                            <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -99,8 +99,8 @@
                                             <tr>
                                                 <td colspan="6" class="text-center py-5">
                                                     <div style="font-size: 50px; color: #ddd; margin-bottom: 15px;"><i class="fa-solid fa-cart-shopping"></i></div>
-                                                    <h5 style="color: #666;">Giỏ hàng của bạn đang trống</h5>
-                                                    <a href="/" class="btn" style="background: #cd1818; color: white; margin-top: 15px; padding: 10px 25px; border-radius: 5px;">Tiếp tục mua sắm</a>
+                                                    <h5 style="color: #666;">Your cart is empty</h5>
+                                                    <a href="/" class="btn" style="background: #cd1818; color: white; margin-top: 15px; padding: 10px 25px; border-radius: 5px;">Continue Shopping</a>
                                                 </td>
                                             </tr>
                                         </c:if>
@@ -154,7 +154,7 @@
                                                     <form method="post" action="/delete-cart-product/${cartDetail.id}" style="margin: 0;">
                                                         <input type="hidden" name="${_csrf.parameterName}"
                                                             value="${_csrf.token}" />
-                                                        <button class="cyber-delete-btn" title="Xóa">
+                                                        <button class="cyber-delete-btn" title="Delete">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
                                                     </form>
@@ -169,20 +169,20 @@
                                 <div class="mt-4 row justify-content-end">
                                     <div class="col-12 col-md-6 col-lg-5">
                                         <div class="cyber-summary-box">
-                                            <div class="cyber-summary-title">Thông tin thanh toán</div>
+                                            <div class="cyber-summary-title">Payment Information</div>
                                             <div class="cyber-summary-row">
-                                                <span>Tạm tính:</span>
+                                                <span>Subtotal:</span>
                                                 <span data-cart-total-price="${totalPrice}">
                                                     <fmt:formatNumber type="number" value="${totalPrice}" /> đ
                                                 </span>
                                             </div>
                                             <div class="cyber-summary-row">
-                                                <span>Phí giao hàng:</span>
+                                                <span>Shipping fee:</span>
                                                 <span>0 đ</span>
                                             </div>
                                             
                                             <div class="cyber-summary-total">
-                                                <span>Tổng cộng:</span>
+                                                <span>Total:</span>
                                                 <span data-cart-total-price="${totalPrice}">
                                                     <fmt:formatNumber type="number" value="${totalPrice}" /> đ
                                                 </span>
@@ -209,7 +209,7 @@
                                                     </c:forEach>
                                                 </div>
                                                 <button class="cyber-checkout-btn">
-                                                    Tiến hành thanh toán <i class="fa-solid fa-arrow-right ms-2"></i>
+                                                    Proceed to Checkout <i class="fa-solid fa-arrow-right ms-2"></i>
                                                 </button>
                                             </form:form>
                                         </div>

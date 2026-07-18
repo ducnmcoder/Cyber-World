@@ -50,7 +50,7 @@ public class ItemController {
         String email = (String) session.getAttribute("email");
 
         this.productService.handleAddProductToCart(email, productId, session, 1);
-        redirectAttributes.addFlashAttribute("cartMessage", "Thêm sản phẩm vào giỏ hàng thành công!");
+        redirectAttributes.addFlashAttribute("cartMessage", "Item successfully added to your cart!");
         return "redirect:/";
     }
 
@@ -190,7 +190,7 @@ public class ItemController {
 
         String email = (String) session.getAttribute("email");
         this.productService.handleAddProductToCart(email, id, session, quantity);
-        redirectAttributes.addFlashAttribute("cartMessage", "Thêm sản phẩm vào giỏ hàng thành công!");
+        redirectAttributes.addFlashAttribute("cartMessage", "Item successfully added to your cart!");
         return "redirect:/product/" + id;
     }
 
