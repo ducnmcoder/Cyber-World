@@ -64,7 +64,9 @@ public class ProductController {
 
     @GetMapping("/admin/product/create")
     public String getCreateProductPage(Model model) {
-        model.addAttribute("newProduct", new Product());
+        Product newProduct = new Product();
+        newProduct.setSpecification(new laptopshop.domain.ProductSpecification());
+        model.addAttribute("newProduct", newProduct);
         return "admin/product/create";
     }
 
@@ -95,7 +97,11 @@ public class ProductController {
     @GetMapping("/admin/product/update/{id}")
     public String getUpdateProductPage(Model model, @PathVariable long id) {
         Optional<Product> currentProduct = this.productService.fetchProductById(id);
-        model.addAttribute("newProduct", currentProduct.get());
+        Product product = currentProduct.get();
+        if (product.getSpecification() == null) {
+            product.setSpecification(new laptopshop.domain.ProductSpecification());
+        }
+        model.addAttribute("newProduct", product);
         return "admin/product/update";
     }
 

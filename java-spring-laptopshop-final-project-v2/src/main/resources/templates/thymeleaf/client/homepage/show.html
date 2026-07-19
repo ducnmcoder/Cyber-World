@@ -834,12 +834,12 @@
                         <div class="filter-body">
                             <div style="font-size: 13px; font-weight: 600; margin-bottom: 10px; color: #555;">CPU Technology</div>
                         <div class="filter-radio-list">
-                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="all" checked> All</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Apple M5 series"> Apple M5 series</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Apple M4 series"> Apple M4 series</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Intel Core Ultra X"> Intel Core Ultra X</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Intel Core Ultra 9"> Intel Core Ultra 9</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Intel Core Ultra 7"> Intel Core Ultra 7</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="all" th:checked="${param.cpu == null or #arrays.contains(param.cpu, 'all')}"> All</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Apple M5 series" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Apple M5 series')}"> Apple M5 series</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Apple M4 series" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Apple M4 series')}"> Apple M4 series</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Intel Core Ultra X" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Intel Core Ultra X')}"> Intel Core Ultra X</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Intel Core Ultra 9" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Intel Core Ultra 9')}"> Intel Core Ultra 9</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Intel Core Ultra 7" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Intel Core Ultra 7')}"> Intel Core Ultra 7</label>
                         </div>
                         <a href="#" style="display: block; text-align: center; color: #007bff; font-size: 13px; margin-top: 10px; text-decoration: none;" onclick="document.getElementById('cpuMoreList').style.display='block'; this.style.display='none'; return false;">Show more <i class="fa-solid fa-chevron-down"></i></a>
                         <div class="filter-radio-list" id="cpuMoreList" style="display: none;">
@@ -856,13 +856,13 @@
                         </div>
                         <div class="filter-body" style="padding-top: 10px;">
                             <div class="filter-radio-list">
-                                <label class="filter-radio-item"><input type="radio" name="ram" value="all" checked> All</label>
-                                <label class="filter-radio-item"><input type="radio" name="ram" value="8GB"> 8GB</label>
-                                <label class="filter-radio-item"><input type="radio" name="ram" value="16GB"> 16GB</label>
-                                <label class="filter-radio-item"><input type="radio" name="ram" value="32GB"> 32GB</label>
-                                <label class="filter-radio-item"><input type="radio" name="ram" value="64GB"> 64GB</label>
-                                <label class="filter-radio-item"><input type="radio" name="ram" value="128GB"> 128GB</label>
-                                <label class="filter-radio-item"><input type="radio" name="ram" value="512GB"> 512GB</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="ram" value="all" th:checked="${param.ram == null or #arrays.contains(param.ram, 'all')}"> All</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="ram" value="8GB" th:checked="${param.ram != null and #arrays.contains(param.ram, '8GB')}"> 8GB</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="ram" value="16GB" th:checked="${param.ram != null and #arrays.contains(param.ram, '16GB')}"> 16GB</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="ram" value="32GB" th:checked="${param.ram != null and #arrays.contains(param.ram, '32GB')}"> 32GB</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="ram" value="64GB" th:checked="${param.ram != null and #arrays.contains(param.ram, '64GB')}"> 64GB</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="ram" value="128GB" th:checked="${param.ram != null and #arrays.contains(param.ram, '128GB')}"> 128GB</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="ram" value="512GB" th:checked="${param.ram != null and #arrays.contains(param.ram, '512GB')}"> 512GB</label>
                             </div>
                         </div>
                     </div>
@@ -875,11 +875,11 @@
                         </div>
                         <div class="filter-body">
                             <div class="filter-radio-list">
-                            <label class="filter-radio-item"><input type="checkbox" name="gpu" value="all" checked> All</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="gpu" value="NVIDIA GeForce MX Series"> NVIDIA GeForce MX Series</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="gpu" value="NVIDIA GeForce RTX 30 Series"> NVIDIA GeForce RTX 30 Series</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="gpu" value="NVIDIA GeForce RTX 40 Series"> NVIDIA GeForce RTX 40 Series</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="gpu" value="NVIDIA GeForce RTX 50 Series"> NVIDIA GeForce RTX 50 Series</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="gpu" value="all" th:checked="${param.gpu == null or #arrays.contains(param.gpu, 'all')}"> All</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="gpu" value="NVIDIA GeForce MX Series" th:checked="${param.gpu != null and #arrays.contains(param.gpu, 'NVIDIA GeForce MX Series')}"> NVIDIA GeForce MX Series</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="gpu" value="NVIDIA GeForce RTX 30 Series" th:checked="${param.gpu != null and #arrays.contains(param.gpu, 'NVIDIA GeForce RTX 30 Series')}"> NVIDIA GeForce RTX 30 Series</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="gpu" value="NVIDIA GeForce RTX 40 Series" th:checked="${param.gpu != null and #arrays.contains(param.gpu, 'NVIDIA GeForce RTX 40 Series')}"> NVIDIA GeForce RTX 40 Series</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="gpu" value="NVIDIA GeForce RTX 50 Series" th:checked="${param.gpu != null and #arrays.contains(param.gpu, 'NVIDIA GeForce RTX 50 Series')}"> NVIDIA GeForce RTX 50 Series</label>
                         </div>
                         </div>
                     </div>
@@ -892,12 +892,12 @@
                         </div>
                         <div class="filter-body" style="padding-top: 10px;">
                             <div class="filter-radio-list">
-                                <label class="filter-radio-item"><input type="radio" name="storage" value="all" checked> All</label>
-                                <label class="filter-radio-item"><input type="radio" name="storage" value="128 GB"> 128 GB</label>
-                                <label class="filter-radio-item"><input type="radio" name="storage" value="256 GB"> 256 GB</label>
-                                <label class="filter-radio-item"><input type="radio" name="storage" value="512 GB"> 512 GB</label>
-                                <label class="filter-radio-item"><input type="radio" name="storage" value="1 TB"> 1 TB</label>
-                                <label class="filter-radio-item"><input type="radio" name="storage" value="2TB"> 2 TB</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="storage" value="all" th:checked="${param.storage == null or #arrays.contains(param.storage, 'all')}"> All</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="storage" value="128 GB" th:checked="${param.storage != null and #arrays.contains(param.storage, '128 GB')}"> 128 GB</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="storage" value="256 GB" th:checked="${param.storage != null and #arrays.contains(param.storage, '256 GB')}"> 256 GB</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="storage" value="512 GB" th:checked="${param.storage != null and #arrays.contains(param.storage, '512 GB')}"> 512 GB</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="storage" value="1 TB" th:checked="${param.storage != null and #arrays.contains(param.storage, '1 TB')}"> 1 TB</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="storage" value="2 TB" th:checked="${param.storage != null and #arrays.contains(param.storage, '2 TB')}"> 2 TB</label>
                             </div>
                         </div>
                     </div>
@@ -910,10 +910,10 @@
                         </div>
                         <div class="filter-body">
                             <div class="filter-radio-list">
-                            <label class="filter-radio-item"><input type="checkbox" name="screen" value="all" checked> All</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="screen" value="Under 14 inch"> Under 14 inch</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="screen" value="14 - 15 inch"> 14 - 15 inch</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="screen" value="15 - 17 inch"> 15 - 17 inch</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="screen" value="all" th:checked="${param.screen == null or #arrays.contains(param.screen, 'all')}"> All</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="screen" value="Under 14 inch" th:checked="${param.screen != null and #arrays.contains(param.screen, 'Under 14 inch')}"> Under 14 inch</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="screen" value="14 - 15 inch" th:checked="${param.screen != null and #arrays.contains(param.screen, '14 - 15 inch')}"> 14 - 15 inch</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="screen" value="15 - 17 inch" th:checked="${param.screen != null and #arrays.contains(param.screen, '15 - 17 inch')}"> 15 - 17 inch</label>
                         </div>
                         </div>
                     </div>
@@ -926,10 +926,10 @@
                         </div>
                         <div class="filter-body">
                             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                            <label style="border: 1px solid #ddd; padding: 5px 10px; border-radius: 4px; font-size: 13px; cursor: pointer; color: #555; display: flex; align-items: center; gap: 5px;"><input type="checkbox" name="hz" value="<= 120 Hz"> &le; 120 Hz</label>
-                            <label style="border: 1px solid #ddd; padding: 5px 10px; border-radius: 4px; font-size: 13px; cursor: pointer; color: #555; display: flex; align-items: center; gap: 5px;"><input type="checkbox" name="hz" value="144 Hz"> 144 Hz</label>
-                            <label style="border: 1px solid #ddd; padding: 5px 10px; border-radius: 4px; font-size: 13px; cursor: pointer; color: #555; display: flex; align-items: center; gap: 5px;"><input type="checkbox" name="hz" value="165 Hz"> 165 Hz</label>
-                            <label style="border: 1px solid #ddd; padding: 5px 10px; border-radius: 4px; font-size: 13px; cursor: pointer; color: #555; display: flex; align-items: center; gap: 5px;"><input type="checkbox" name="hz" value="240 Hz"> 240 Hz</label>
+                            <label style="border: 1px solid #ddd; padding: 5px 10px; border-radius: 4px; font-size: 13px; cursor: pointer; color: #555; display: flex; align-items: center; gap: 5px;"><input type="checkbox" name="hz" value="<= 120 Hz" th:checked="${param.hz != null and #arrays.contains(param.hz, '<= 120 Hz')}"> &le; 120 Hz</label>
+                            <label style="border: 1px solid #ddd; padding: 5px 10px; border-radius: 4px; font-size: 13px; cursor: pointer; color: #555; display: flex; align-items: center; gap: 5px;"><input type="checkbox" name="hz" value="144 Hz" th:checked="${param.hz != null and #arrays.contains(param.hz, '144 Hz')}"> 144 Hz</label>
+                            <label style="border: 1px solid #ddd; padding: 5px 10px; border-radius: 4px; font-size: 13px; cursor: pointer; color: #555; display: flex; align-items: center; gap: 5px;"><input type="checkbox" name="hz" value="165 Hz" th:checked="${param.hz != null and #arrays.contains(param.hz, '165 Hz')}"> 165 Hz</label>
+                            <label style="border: 1px solid #ddd; padding: 5px 10px; border-radius: 4px; font-size: 13px; cursor: pointer; color: #555; display: flex; align-items: center; gap: 5px;"><input type="checkbox" name="hz" value="240 Hz" th:checked="${param.hz != null and #arrays.contains(param.hz, '240 Hz')}"> 240 Hz</label>
                         </div>
                         </div>
                     </div>
@@ -942,9 +942,9 @@
                         </div>
                         <div class="filter-body">
                             <div class="filter-radio-list">
-                            <label class="filter-radio-item"><input type="checkbox" name="security" value="all" checked> All</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="security" value="Fingerprint"> Fingerprint</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="security" value="Face ID"> Face ID</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="security" value="all" th:checked="${param.security == null or #arrays.contains(param.security, 'all')}"> All</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="security" value="Fingerprint" th:checked="${param.security != null and #arrays.contains(param.security, 'Fingerprint')}"> Fingerprint</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="security" value="Face ID" th:checked="${param.security != null and #arrays.contains(param.security, 'Face ID')}"> Face ID</label>
                         </div>
                         </div>
                     </div>
@@ -1023,7 +1023,7 @@
 
                 <div class="products-grid">
                     <!-- Product Card Loop -->
-                    <div class="product-card" th:each="product : ${products}">
+                    <div class="product-card" th:each="product : ${products}" th:onclick="|window.location.href='/product/' + ${product.id}|" style="cursor: pointer;">
                         
                         <!-- Badges -->
                         <div class="badge-top-left" th:if="${product.id % 2 != 0}"><i class="fa-solid fa-wand-magic-sparkles"></i> AI</div>
@@ -1069,13 +1069,13 @@
                             Save 100.000đ for orders over 6M when paying via Postpaid Wallet...
                         </div>
                         
-                        <div class="card-actions">
+                        <div class="card-actions" onclick="event.stopPropagation();">
                             <form th:action="@{/add-product-to-cart/{id}(id=${product.id})}" method="post" style="width: 100%; margin: 0;">
                                 <input type="hidden" name="id" th:value="${product.id}" />
                                 <button type="submit" class="btn-add-cart">Add to Cart</button>
                             </form>
                         </div>
-                        <a href="#" class="compare-link"><i class="fa-regular fa-circle-plus"></i> Add to Compare</a>
+                        <a href="#" class="compare-link" onclick="event.stopPropagation();"><i class="fa-regular fa-circle-plus"></i> Add to Compare</a>
                         
                     </div>
                 </div>

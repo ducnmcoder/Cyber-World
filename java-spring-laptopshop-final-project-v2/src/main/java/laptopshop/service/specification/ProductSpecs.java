@@ -6,6 +6,8 @@ import org.springframework.data.jpa.domain.Specification;
 
 import laptopshop.domain.Product;
 import laptopshop.domain.Product_;
+import jakarta.persistence.criteria.Predicate;
+import java.util.ArrayList;
 
 public class ProductSpecs {
     public static Specification<Product> nameLike(String name) {
@@ -33,8 +35,14 @@ public class ProductSpecs {
     }
 
     // case4
-    public static Specification<Product> matchListTarget(List<String> target) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.in(root.get(Product_.TARGET)).value(target);
+    public static Specification<Product> matchListTarget(List<String> targets) {
+        return (root, query, criteriaBuilder) -> {
+            List<jakarta.persistence.criteria.Predicate> predicates = new java.util.ArrayList<>();
+            for (String target : targets) {
+                predicates.add(criteriaBuilder.like(root.get(Product_.TARGET), "%" + target + "%"));
+            }
+            return criteriaBuilder.or(predicates.toArray(new jakarta.persistence.criteria.Predicate[0]));
+        };
     }
 
     // case5

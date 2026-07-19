@@ -8,6 +8,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.JoinColumn;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -55,6 +58,10 @@ public class Product implements Serializable {
     private String screenSize;
     private String storage;
     private String color;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "specification_id", referencedColumnName = "id")
+    private ProductSpecification specification;
 
     public long getId() {
         return id;
@@ -174,6 +181,14 @@ public class Product implements Serializable {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public ProductSpecification getSpecification() {
+        return specification;
+    }
+
+    public void setSpecification(ProductSpecification specification) {
+        this.specification = specification;
     }
 
     @Override

@@ -10,9 +10,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
 @Configuration
 @EnableWebMvc
-public class WebMvcConfig implements WebMvcConfigurer {
+public class WebMvcConfig implements WebMvcConfigurer, ApplicationContextAware {
+
+    private ApplicationContext applicationContext;
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
     @Bean
     public ViewResolver viewResolver() {
@@ -35,6 +45,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver templateResolver() {
         org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver templateResolver = new org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver();
+        templateResolver.setApplicationContext(this.applicationContext);
         templateResolver.setPrefix("classpath:/templates/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode(org.thymeleaf.templatemode.TemplateMode.HTML);
@@ -55,6 +66,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         registry.viewResolver(viewResolver());
+        
+        // Ensure ThymeleafViewResolver is registered from the bean
+        registry.viewResolver(applicationContext.getBean("thymeleafViewResolver", org.thymeleaf.spring6.view.ThymeleafViewResolver.class));
     }
 
     @Override

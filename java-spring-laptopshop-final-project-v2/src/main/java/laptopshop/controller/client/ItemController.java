@@ -36,7 +36,10 @@ public class ItemController {
 
     @GetMapping("/product/{id}")
     public String getProductPage(Model model, @PathVariable long id) {
-        Product pr = this.productService.fetchProductById(id).get();
+        Product pr = this.productService.fetchProductById(id).orElse(null);
+        if (pr == null) {
+            return "redirect:/products";
+        }
         model.addAttribute("product", pr);
         model.addAttribute("id", id);
         return "thymeleaf/client/product/detail";
@@ -212,16 +215,16 @@ public class ItemController {
         }
 
         // check sort price
-        Pageable pageable = PageRequest.of(page - 1, 6);
+        Pageable pageable = PageRequest.of(page - 1, 8);
 
         if (productCriteriaDTO.getSort() != null && productCriteriaDTO.getSort().isPresent()) {
             String sort = productCriteriaDTO.getSort().get();
             if (sort.equals("gia-tang-dan")) {
-                pageable = PageRequest.of(page - 1, 6, Sort.by("price").ascending());
+                pageable = PageRequest.of(page - 1, 8, Sort.by("price").ascending());
             } else if (sort.equals("gia-giam-dan")) {
-                pageable = PageRequest.of(page - 1, 6, Sort.by("price").descending());
+                pageable = PageRequest.of(page - 1, 8, Sort.by("price").descending());
             } else if (sort.equals("featured")) {
-                pageable = PageRequest.of(page - 1, 6, Sort.by("sold").descending());
+                pageable = PageRequest.of(page - 1, 8, Sort.by("sold").descending());
             }
         }
 
@@ -240,6 +243,8 @@ public class ItemController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", prs.getTotalPages());
         model.addAttribute("queryString", qs);
+        
+
         return "thymeleaf/client/homepage/show";
     }
 

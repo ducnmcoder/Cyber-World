@@ -424,7 +424,7 @@
                             </div>
                         </div>
                     </div>
-                    <a href="#" class="btn-view-all-specs">View all specifications</a>
+                    <a href="#" class="btn-view-all-specs" data-bs-toggle="modal" data-bs-target="#specsModal">Xem t?t c? thông s?</a>
                 </div>
 
             </div>
@@ -440,13 +440,13 @@
                 </div>
 
                 <div class="price-box">
-                    <div class="price-main" th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 0, 'POINT')} + ' đ'">22,490,000 đ</div>
-                    <div class="price-old" th:if="${product.price > 10000000}" th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'COMMA', 0, 'POINT')} + ' đ'">24,990,000 đ</div>
+                    <div class="price-main" th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 0, 'POINT')} + ' Ä‘'">22,490,000 Ä‘</div>
+                    <div class="price-old" th:if="${product.price > 10000000}" th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'COMMA', 0, 'POINT')} + ' Ä‘'">24,990,000 Ä‘</div>
                 </div>
 
                 <div class="trade-in-box">
-                    <span>Trade-in - Discount up to <b>2,000,000đ</b></span>
-                    <a href="#" style="color: #007bff; text-decoration: none;">Estimate Now ›</a>
+                    <span>Trade-in - Discount up to <b>2,000,000Ä‘</b></span>
+                    <a href="#" style="color: #007bff; text-decoration: none;">Estimate Now â€º</a>
                 </div>
 
                 <div class="color-options">
@@ -462,11 +462,11 @@
                     </div>
                     <div class="promo-box-body">
                         <ul>
-                            <li><i class="fa-regular fa-circle-check"></i> Instant discount 2,500,000đ valid until end of month</li>
+                            <li><i class="fa-regular fa-circle-check"></i> Instant discount 2,500,000Ä‘ valid until end of month</li>
                             <li><i class="fa-regular fa-circle-check"></i> 0% Installment</li>
                             <li><i class="fa-regular fa-circle-check"></i> Free comprehensive warranty combo: 1 Year + Voucher</li>
                         </ul>
-                        <a href="#" style="display: block; font-size: 13px; color: #007bff; text-decoration: none; margin-top: 10px;">View 8 more offers ˅</a>
+                        <a href="#" style="display: block; font-size: 13px; color: #007bff; text-decoration: none; margin-top: 10px;">View 8 more offers Ë…</a>
                     </div>
                 </div>
                 
@@ -476,7 +476,7 @@
                     </div>
                     <div class="promo-box-body">
                         <select style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ddd; font-size: 13px;">
-                            <option>Students & Teachers • Discount 5% (up to 1,049,500đ)</option>
+                            <option>Students & Teachers â€¢ Discount 5% (up to 1,049,500Ä‘)</option>
                         </select>
                     </div>
                 </div>
@@ -527,7 +527,7 @@
     <!-- Cart Notification Toast -->
     <div th:if="${cartMessage != null}" id="cartToast" style="position: fixed; top: 80px; right: 20px; background-color: #28a745; color: white; padding: 15px 25px; border-radius: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100000; display: flex; align-items: center; gap: 10px; animation: slideIn 0.5s, fadeOut 0.5s 2.5s forwards;">
         <i class="fa-solid fa-check-circle" style="font-size: 20px;"></i>
-        <span th:text="${cartMessage}">Thêm thành công</span>
+        <span th:text="${cartMessage}">ThÃªm thÃ nh cÃ´ng</span>
     </div>
 
     <style>
@@ -550,5 +550,104 @@
     </script>
 
     <div th:replace="~{thymeleaf/client/layout/footer :: footer}"></div>
+
+<div class="modal fade" id="specsModal" tabindex="-1" aria-labelledby="specsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="specsModalLabel" style="font-weight: bold;">Thông số kỹ thuật</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="padding: 20px;">
+        <div class="d-flex align-items-center mb-4 pb-3" style="border-bottom: 1px solid #eee;">
+            <img th:src="@{'/images/product/' + ${product.image}}" alt="Product" style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px; border-radius: 5px; border: 1px solid #ddd;">
+            <h6 style="margin: 0; font-size: 15px; font-weight: 600;" th:text="${product.name}"></h6>
+        </div>
+        <style>
+            .specs-table th { font-weight: normal; color: #555; width: 40%; font-size: 14px; }
+            .specs-table td { font-weight: 500; color: #333; font-size: 14px; }
+            .specs-table .table-group-header { font-weight: bold; color: #000; background-color: #f8f9fa; font-size: 16px; padding-top: 20px; padding-bottom: 10px; border-bottom: 2px solid #ddd; }
+        </style>
+        <table class="table table-borderless specs-table mb-0">
+            <tbody>
+                <tr><td colspan="2" class="table-group-header">Bộ xử lý</td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Hãng CPU</th><td th:text="${product.specification?.cpuCompany}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Công nghệ CPU</th><td th:text="${product.specification?.cpuTechnology}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Loại CPU</th><td th:text="${product.specification?.cpuType}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Tốc độ CPU tối thiểu</th><td th:text="${product.specification?.cpuSpeed}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Tốc độ tối đa</th><td th:text="${product.specification?.cpuMaxSpeed}"></td></tr>
+                
+                <tr><td colspan="2" class="table-group-header">Đồ họa</td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Hãng (Card onboard)</th><td th:text="${product.specification?.gpuCompany}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Model (Card onboard)</th><td th:text="${product.specification?.gpuModel}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Tên đầy đủ (Card onboard)</th><td th:text="${product.specification?.gpuFullName}"></td></tr>
+
+                <tr><td colspan="2" class="table-group-header">RAM</td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Dung lượng RAM</th><td th:text="${product.specification?.ramCapacity}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Loại RAM</th><td th:text="${product.specification?.ramType}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Số khe cắm rời</th><td th:text="${product.specification?.ramSlots}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Số khe RAM còn lại</th><td th:text="${product.specification?.ramRemainingSlots}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Hỗ trợ RAM tối đa</th><td th:text="${product.specification?.ramMaxSupport}"></td></tr>
+
+                <tr><td colspan="2" class="table-group-header">Lưu trữ</td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Kiểu ổ cứng</th><td th:text="${product.specification?.storageType}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Tổng số khe cắm SSD/HDD</th><td th:text="${product.specification?.storageTotalSlots}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Số khe SSD/HDD còn lại</th><td th:text="${product.specification?.storageRemainingSlots}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Dung lượng nâng cấp tối đa</th><td th:text="${product.specification?.storageMaxUpgrade}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Loại SSD</th><td th:text="${product.specification?.storageSsdType}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Dung lượng SSD</th><td th:text="${product.specification?.storageCapacity}"></td></tr>
+
+                <tr><td colspan="2" class="table-group-header">Màn hình</td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Kích thước màn hình</th><td th:text="${product.specification?.screenTechnology}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Công nghệ màn hình</th><td th:text="${product.specification?.screenTechnology}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Độ phân giải</th><td th:text="${product.specification?.screenResolution}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Tần số quét</th><td th:text="${product.specification?.screenRefreshRate}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Tấm nền</th><td th:text="${product.specification?.screenPanel}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Độ sáng</th><td th:text="${product.specification?.screenBrightness}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Độ phủ màu</th><td th:text="${product.specification?.screenColorCoverage}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Tỷ lệ màn hình</th><td th:text="${product.specification?.screenRatio}"></td></tr>
+
+                <tr><td colspan="2" class="table-group-header">Giao tiếp và kết nối</td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Cổng giao tiếp</th><td th:text="${product.specification?.ports}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Wifi</th><td th:text="${product.specification?.wifi}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Bluetooth</th><td th:text="${product.specification?.bluetooth}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Webcam</th><td th:text="${product.specification?.webcam}"></td></tr>
+
+                <tr><td colspan="2" class="table-group-header">Hệ điều hành</td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>OS</th><td th:text="${product.specification?.osName}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Version</th><td th:text="${product.specification?.osVersion}"></td></tr>
+
+                <tr><td colspan="2" class="table-group-header">Bảo mật</td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Bảo mật</th><td th:text="${product.specification?.security}"></td></tr>
+
+                <tr><td colspan="2" class="table-group-header">Bàn phím & Touchpad</td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Kiểu bàn phím</th><td th:text="${product.specification?.keyboardType}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Bàn phím số</th><td th:text="${product.specification?.numpad}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Đèn bàn phím</th><td th:text="${product.specification?.keyboardLight}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>TouchPad</th><td th:text="${product.specification?.touchpad}"></td></tr>
+
+                <tr><td colspan="2" class="table-group-header">Thông tin pin & sạc</td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Dung lượng pin</th><td th:text="${product.specification?.batteryCapacity}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Power Supply</th><td th:text="${product.specification?.powerSupply}"></td></tr>
+
+                <tr><td colspan="2" class="table-group-header">Phụ kiện trong hộp</td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Phụ kiện trong hộp</th><td th:text="${product.specification?.accessories}"></td></tr>
+
+                <tr><td colspan="2" class="table-group-header">Thiết kế & Trọng lượng</td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Kích thước</th><td th:text="${product.specification?.dimensions}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Trọng lượng sản phẩm</th><td th:text="${product.specification?.weight}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Chất liệu</th><td th:text="${product.specification?.material}"></td></tr>
+
+                <tr><td colspan="2" class="table-group-header">Thông tin hàng hóa</td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>P/N</th><td th:text="${product.specification?.partNumber}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Xuất xứ</th><td th:text="${product.specification?.origin}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Thời điểm ra mắt</th><td th:text="${product.specification?.releaseYear}"></td></tr>
+                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Thời gian bảo hành</th><td th:text="${product.specification?.warranty}"></td></tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
