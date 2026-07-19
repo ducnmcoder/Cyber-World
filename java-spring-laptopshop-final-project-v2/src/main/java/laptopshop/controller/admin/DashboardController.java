@@ -20,10 +20,6 @@ public class DashboardController {
 
     @GetMapping(value = {"/admin", "/owner"})
     public String getDashboard(Model model) {
-        model.addAttribute("monthlyRevenue", this.orderService.fetchMonthlyRevenue());
-        model.addAttribute("dailyRevenue", this.orderService.fetchDailyRevenue());
-        model.addAttribute("hourlyRevenue", this.orderService.fetchHourlyRevenue());
-        model.addAttribute("topProducts", this.orderService.fetchTopProductsByRevenue(10));
         return "admin/dashboard/show";
     }
 
