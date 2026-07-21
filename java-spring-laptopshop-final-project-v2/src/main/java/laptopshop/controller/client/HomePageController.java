@@ -24,6 +24,8 @@ import laptopshop.domain.dto.RegisterDTO;
 import laptopshop.service.OrderService;
 import laptopshop.service.ProductService;
 import laptopshop.service.UserService;
+import laptopshop.service.BlogService;
+import laptopshop.domain.Blog;
 
 @Controller
 public class HomePageController {
@@ -32,16 +34,19 @@ public class HomePageController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final OrderService orderService;
+    private final BlogService blogService;
 
     public HomePageController(
             ProductService productService,
             UserService userService,
             PasswordEncoder passwordEncoder,
-            OrderService orderService) {
+            OrderService orderService,
+            BlogService blogService) {
         this.productService = productService;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.orderService = orderService;
+        this.blogService = blogService;
     }
 
     @GetMapping("/")
@@ -65,7 +70,24 @@ public class HomePageController {
         model.addAttribute("totalPages", prs.getTotalPages());
         model.addAttribute("currentPage", page);
 
+        List<Blog> blogs = this.blogService.fetchAllBlogs(PageRequest.of(0, 5)).getContent();
+        model.addAttribute("blogs", blogs);
+
         return "thymeleaf/client/homepage/show";
+    }
+
+    @GetMapping("/blog")
+    public String getBlogPage(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
+        if (page < 1) page = 1;
+
+        Pageable pageable = PageRequest.of(page - 1, 6);
+        Page<Blog> blogPage = this.blogService.fetchAllBlogs(pageable);
+        
+        model.addAttribute("blogs", blogPage.getContent());
+        model.addAttribute("totalPages", blogPage.getTotalPages());
+        model.addAttribute("currentPage", page);
+
+        return "thymeleaf/client/blog/show";
     }
 
     @GetMapping("/register")
