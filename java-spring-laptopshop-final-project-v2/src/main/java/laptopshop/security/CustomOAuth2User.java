@@ -31,6 +31,13 @@ public class CustomOAuth2User implements OAuth2User, Serializable {
         this.name = oauth2User.getAttribute("name");
         this.email = oauth2User.getAttribute("email");
         this.clientName = clientName;
+
+        if (this.email == null && "Facebook".equalsIgnoreCase(this.clientName)) {
+            String id = oauth2User.getAttribute("id");
+            if (id != null) {
+                this.email = "facebook_" + id + "@facebook.local";
+            }
+        }
     }
 
     @Override
