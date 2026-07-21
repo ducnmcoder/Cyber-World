@@ -109,7 +109,7 @@
                                             <tr>
                                                 <td scope="row">
                                                     <div class="d-flex align-items-center">
-                                                        <img src="/images/product/${cartDetail.product.image}"
+                                                        <img src="${cartDetail.product.firstImage}"
                                                             class="img-fluid rounded"
                                                             style="width: 80px; height: 80px; object-fit: cover; border: 1px solid #eee;" alt="">
                                                     </div>

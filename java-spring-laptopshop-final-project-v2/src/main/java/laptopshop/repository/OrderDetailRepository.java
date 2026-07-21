@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import laptopshop.domain.OrderDetail;
+import laptopshop.domain.Product;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
             + "ORDER BY revenue DESC "
             + "LIMIT ?1", nativeQuery = true)
     List<Object[]> findTopProductsByRevenue(int limit);
+
+    List<OrderDetail> findByProduct(Product product);
 }

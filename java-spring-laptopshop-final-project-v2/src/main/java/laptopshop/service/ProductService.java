@@ -85,7 +85,7 @@ public class ProductService {
 
         if (productCriteriaDTO.getMinPrice() != null && productCriteriaDTO.getMinPrice().isPresent() &&
             productCriteriaDTO.getMaxPrice() != null && productCriteriaDTO.getMaxPrice().isPresent()) {
-            Specification<Product> currentSpecs = ProductSpecs.matchPrice(productCriteriaDTO.getMinPrice().get(), productCriteriaDTO.getMaxPrice().get());
+            Specification<Product> currentSpecs = ProductSpecs.matchPrice(productCriteriaDTO.getMinPrice().get() * 1000000, productCriteriaDTO.getMaxPrice().get() * 1000000);
             combinedSpec = combinedSpec.and(currentSpecs);
         }
         
@@ -126,6 +126,11 @@ public class ProductService {
 
         if (productCriteriaDTO.getName() != null && productCriteriaDTO.getName().isPresent()) {
             Specification<Product> currentSpecs = ProductSpecs.nameLike(productCriteriaDTO.getName().get());
+            combinedSpec = combinedSpec.and(currentSpecs);
+        }
+
+        if (productCriteriaDTO.getColor() != null && productCriteriaDTO.getColor().isPresent()) {
+            Specification<Product> currentSpecs = ProductSpecs.matchListColor(productCriteriaDTO.getColor().get());
             combinedSpec = combinedSpec.and(currentSpecs);
         }
 
@@ -188,7 +193,31 @@ public class ProductService {
     }
 
     public void deleteProduct(long id) {
-        this.productRepository.deleteById(id);
+        Optional<Product> pOptional = this.productRepository.findById(id);
+        if (pOptional.isPresent()) {
+            Product product = pOptional.get();
+
+            // Delete associated CartDetails
+            java.util.List<laptopshop.domain.CartDetail> cartDetails = this.cartDetailRepository.findByProduct(product);
+            for (laptopshop.domain.CartDetail cd : cartDetails) {
+                laptopshop.domain.Cart cart = cd.getCart();
+                this.cartDetailRepository.deleteById(cd.getId());
+                if (cart.getSum() > 1) {
+                    cart.setSum(cart.getSum() - 1);
+                    this.cartRepository.save(cart);
+                } else {
+                    this.cartRepository.deleteById(cart.getId());
+                }
+            }
+
+            // Delete associated OrderDetails
+            java.util.List<laptopshop.domain.OrderDetail> orderDetails = this.orderDetailRepository.findByProduct(product);
+            for (laptopshop.domain.OrderDetail od : orderDetails) {
+                this.orderDetailRepository.deleteById(od.getId());
+            }
+
+            this.productRepository.deleteById(id);
+        }
     }
 
 

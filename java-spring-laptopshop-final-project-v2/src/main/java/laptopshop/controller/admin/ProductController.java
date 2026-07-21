@@ -70,23 +70,52 @@ public class ProductController {
         return "admin/product/create";
     }
 
+    private void syncProductSpecs(Product pr) {
+        if (pr.getSpecification() != null) {
+            pr.setCpu(pr.getSpecification().getCpuType());
+            pr.setRam(pr.getSpecification().getRamCapacity());
+            pr.setScreenSize(pr.getSpecification().getScreenTechnology());
+            pr.setStorage(pr.getSpecification().getStorageCapacity());
+        }
+    }
+
     @PostMapping("/admin/product/create")
     public String handleCreateProduct(
             @ModelAttribute("newProduct") @Valid Product pr,
             BindingResult newProductBindingResult,
-            @RequestParam("imageFile") MultipartFile file,
+            @RequestParam(value = "imageFiles", required = false) MultipartFile[] files,
             @RequestParam(value = "imageUrl", required = false) String imageUrl) {
         // validate
         if (newProductBindingResult.hasErrors()) {
             return "admin/product/create";
         }
 
-        // upload image
+        syncProductSpecs(pr);
+
+        // handle multiple images
+        java.util.List<String> savedImages = new java.util.ArrayList<>();
+        if (files != null) {
+            for (MultipartFile file : files) {
+                if (file != null && !file.isEmpty()) {
+                    String imgName = this.uploadService.handleSaveUploadFile(file, "product");
+                    savedImages.add(imgName);
+                }
+            }
+        }
         if (imageUrl != null && !imageUrl.trim().isEmpty()) {
-            pr.setImage(imageUrl.trim());
+            String[] urls = imageUrl.split("[,\\n\\r]+");
+            for (String url : urls) {
+                String trimmedUrl = url.trim();
+                if (!trimmedUrl.isEmpty()) {
+                    savedImages.add(trimmedUrl);
+                }
+            }
+        }
+
+        if (!savedImages.isEmpty()) {
+            pr.setImage(String.join(",", savedImages));
         } else {
-            String image = this.uploadService.handleSaveUploadFile(file, "product");
-            pr.setImage(image);
+            pr.setImage("default.png");
         }
 
         this.productService.createProduct(pr);
@@ -108,7 +137,7 @@ public class ProductController {
     @PostMapping("/admin/product/update")
     public String handleUpdateProduct(@ModelAttribute("newProduct") @Valid Product pr,
             BindingResult newProductBindingResult,
-            @RequestParam("imageFile") MultipartFile file,
+            @RequestParam(value = "imageFiles", required = false) MultipartFile[] files,
             @RequestParam(value = "imageUrl", required = false) String imageUrl) {
 
         // validate
@@ -118,28 +147,54 @@ public class ProductController {
 
         Product currentProduct = this.productService.fetchProductById(pr.getId()).get();
         if (currentProduct != null) {
-            // update new image
+            // handle multiple images
+            java.util.List<String> savedImages = new java.util.ArrayList<>();
+            if (files != null) {
+                for (MultipartFile file : files) {
+                    if (file != null && !file.isEmpty()) {
+                        String imgName = this.uploadService.handleSaveUploadFile(file, "product");
+                        savedImages.add(imgName);
+                    }
+                }
+            }
             if (imageUrl != null && !imageUrl.trim().isEmpty()) {
-                currentProduct.setImage(imageUrl.trim());
-            } else if (!file.isEmpty()) {
-                String img = this.uploadService.handleSaveUploadFile(file, "product");
-                currentProduct.setImage(img);
+                String[] urls = imageUrl.split("[,\\n\\r]+");
+                for (String url : urls) {
+                    String trimmedUrl = url.trim();
+                    if (!trimmedUrl.isEmpty()) {
+                        savedImages.add(trimmedUrl);
+                    }
+                }
+            }
+
+            if (!savedImages.isEmpty()) {
+                currentProduct.setImage(String.join(",", savedImages));
             }
 
             currentProduct.setName(pr.getName());
             currentProduct.setPrice(pr.getPrice());
+            currentProduct.setOriginalPrice(pr.getOriginalPrice());
+            currentProduct.setPromoEndDate(pr.getPromoEndDate());
             currentProduct.setQuantity(pr.getQuantity());
             currentProduct.setDetailDesc(pr.getDetailDesc());
             currentProduct.setShortDesc(pr.getShortDesc());
             currentProduct.setFactory(pr.getFactory());
             currentProduct.setTarget(pr.getTarget());
-            
-            // New spec fields
-            currentProduct.setCpu(pr.getCpu());
-            currentProduct.setRam(pr.getRam());
-            currentProduct.setScreenSize(pr.getScreenSize());
-            currentProduct.setStorage(pr.getStorage());
             currentProduct.setColor(pr.getColor());
+            
+            // Update specification
+            if (pr.getSpecification() != null) {
+                laptopshop.domain.ProductSpecification newSpec = pr.getSpecification();
+                if (currentProduct.getSpecification() == null) {
+                    currentProduct.setSpecification(newSpec);
+                } else {
+                    newSpec.setId(currentProduct.getSpecification().getId());
+                    currentProduct.setSpecification(newSpec);
+                }
+            }
+
+            // Sync base fields from specs
+            syncProductSpecs(currentProduct);
 
             this.productService.createProduct(currentProduct);
         }

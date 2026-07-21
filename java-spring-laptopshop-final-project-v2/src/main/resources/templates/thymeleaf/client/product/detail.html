@@ -29,377 +29,628 @@
             padding: 0;
         }
 
+        /* Detail page layout to match mockup */
         .detail-page-wrapper {
             max-width: 1200px;
-            margin: 100px auto 40px auto;
+            margin: 0 auto 100px auto;
             padding: 0 15px;
+            background: #fff;
         }
 
-        .breadcrumb-cyber {
-            font-size: 14px;
-            color: #555;
+        .product-nav-tabs {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 15px 0 0 0;
             margin-bottom: 20px;
         }
 
-        .breadcrumb-cyber a {
-            color: #007bff;
+        .product-nav-tabs a {
+            color: #555;
             text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid transparent;
         }
 
-        .breadcrumb-cyber a:hover {
-            text-decoration: underline;
+        .product-nav-tabs a.active {
+            color: #cd1818;
+            border-bottom-color: #cd1818;
         }
 
         .product-detail-container {
             display: grid;
             grid-template-columns: 7fr 5fr;
-            gap: 20px;
+            gap: 30px;
         }
 
-        /* Left Side (Images & Specs) */
         .product-left {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            background: #fff;
         }
 
         .main-img-box {
-            width: 100%;
-            border-radius: 8px;
-            overflow: hidden;
+            position: relative;
             margin-bottom: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #fff;
+            text-align: center;
         }
 
         .main-img-box img {
             max-width: 100%;
-            max-height: 400px;
-            object-fit: contain;
+            height: auto;
         }
 
         .thumbnail-list {
             display: flex;
+            justify-content: center;
             gap: 10px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .thumb-item {
-            width: 80px;
-            height: 80px;
-            border-radius: 8px;
-            border: 2px solid transparent;
-            overflow: hidden;
+            width: 60px;
+            height: 60px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px;
             cursor: pointer;
-            transition: 0.2s;
+            text-align: center;
+        }
+
+        .thumb-item.active {
+            border-color: #007bff;
         }
 
         .thumb-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .thumb-item:hover, .thumb-item.active {
-            border-color: #007bff;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
 
         .promo-tags {
             display: flex;
-            flex-wrap: wrap;
             gap: 10px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .promo-tag {
-            background: #f8f9fa;
-            padding: 8px 12px;
-            border-radius: 8px;
+            background: #fffafa;
+            border: 1px solid #ffebeb;
+            color: #cd1818;
+            padding: 8px 15px;
+            border-radius: 20px;
             font-size: 13px;
             font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid #eee;
+        }
+        .promo-tag.black {
+            background: #f8f9fa;
+            border-color: #eee;
+            color: #333;
         }
 
         .specs-highlight {
-            background: #f8f9fa;
+            border: 1px solid #eee;
+            border-radius: 10px;
             padding: 20px;
-            border-radius: 8px;
+        }
+
+        .specs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .specs-header h3 {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .btn-view-all-specs {
+            border: 1px solid #ddd;
+            background: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #333;
+            text-decoration: none;
         }
 
         .specs-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
-            margin-bottom: 15px;
         }
 
         .spec-item {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 10px;
-            background: white;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #eee;
         }
 
         .spec-item i {
-            color: #007bff;
-            font-size: 18px;
-            width: 20px;
+            color: #666;
+            font-size: 20px;
+            width: 24px;
             text-align: center;
+            margin-top: 5px;
         }
 
-        .spec-title {
-            font-size: 11px;
+        .spec-item .spec-title {
+            font-size: 12px;
             color: #777;
-            text-transform: uppercase;
         }
 
-        .spec-value {
-            font-size: 13px;
+        .spec-item .spec-value {
+            font-size: 14px;
             font-weight: 600;
             color: #333;
-        }
-
-        .btn-view-all-specs {
-            display: block;
-            text-align: center;
-            padding: 10px;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            text-decoration: none;
-            color: #007bff;
-            font-weight: 600;
-            font-size: 14px;
-            transition: 0.2s;
-        }
-
-        .btn-view-all-specs:hover {
-            background: #f1f1f1;
-        }
-
-        /* Right Side (Info, Price, Buy) */
-        .product-right {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
         .product-title {
-            font-size: 24px;
-            font-weight: 800;
+            font-size: 20px;
+            font-weight: bold;
             color: #333;
+            line-height: 1.4;
             margin-bottom: 10px;
         }
 
         .product-meta {
             display: flex;
-            gap: 15px;
+            justify-content: space-between;
             font-size: 13px;
             color: #666;
-            margin-bottom: 20px;
-            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
         }
 
         .price-box {
-            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .price-info {
+            display: flex;
+            flex-direction: column;
         }
 
         .price-main {
             font-size: 28px;
-            font-weight: 800;
+            font-weight: bold;
             color: #cd1818;
-            margin-bottom: 5px;
+        }
+
+        .price-old-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .price-old {
-            font-size: 15px;
+            font-size: 14px;
             color: #999;
             text-decoration: line-through;
         }
 
-        .trade-in-box {
-            background: #fff8f8;
-            border: 1px solid #ffcccc;
-            padding: 12px;
+        .discount-percent {
+            color: #cd1818;
+            font-size: 14px;
+        }
+
+        .flash-sale-box {
+            background: linear-gradient(90deg, #b30000 0%, #ff3333 100%);
+            color: white;
+            padding: 10px 15px;
             border-radius: 8px;
+            text-align: center;
+            min-width: 180px;
+        }
+
+        .trade-in-box {
+            font-size: 13px;
+            color: #333;
+            margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-
-        .trade-in-box b {
-            color: #cd1818;
         }
 
         .color-options {
             margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
         .color-title {
             font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 10px;
+            color: #555;
         }
 
         .color-btn {
-            display: inline-block;
-            padding: 8px 15px;
-            border: 2px solid #007bff;
+            border: 1px solid #cd1818;
             border-radius: 5px;
-            background: white;
-            color: #333;
+            padding: 5px 15px;
             font-size: 13px;
             font-weight: 600;
-            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #333;
+            position: relative;
+        }
+
+        .color-btn::after {
+            content: '✓';
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #cd1818;
+            color: white;
+            width: 16px;
+            height: 16px;
+            font-size: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
         }
 
         .promo-box {
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            border: 1px solid #f1f1f1;
+            border-radius: 10px;
             overflow: hidden;
             margin-bottom: 20px;
         }
 
         .promo-box-header {
-            background: #f1f8ff;
-            padding: 10px 15px;
-            font-weight: 600;
-            font-size: 14px;
-            color: #00539b;
-            border-bottom: 1px solid #ddd;
+            background: #f8f9fa;
+            padding: 15px;
+            font-weight: bold;
+            font-size: 15px;
+            border-bottom: 1px solid #eee;
         }
 
         .promo-box-body {
             padding: 15px;
             font-size: 13px;
-            color: #444;
         }
 
-        .promo-box-body ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .promo-box-body li {
-            margin-bottom: 8px;
+        .promo-item {
             display: flex;
             align-items: flex-start;
-            gap: 8px;
+            gap: 10px;
+            margin-bottom: 10px;
         }
 
-        .promo-box-body li i {
-            color: #28a745;
+        .promo-item i {
+            color: #cd1818;
             margin-top: 3px;
         }
 
-        .action-buttons {
+        /* Sticky Bottom Bar */
+        .sticky-bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            padding: 10px 0;
+            z-index: 1000;
+            border-top: 1px solid #ddd;
+        }
+
+        .sticky-content {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .sticky-left {
+            display: flex;
+            align-items: center;
             gap: 15px;
         }
 
-        .btn-buy {
-            flex: 1;
+        .sticky-left img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .sticky-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sticky-name {
+            font-size: 13px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .sticky-price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #cd1818;
+        }
+
+        .sticky-right {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-buy-now {
             background: #cd1818;
             color: white;
             border: none;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 10px 40px;
+            border-radius: 5px;
             font-weight: bold;
+            font-size: 15px;
             cursor: pointer;
-            transition: 0.2s;
-            text-transform: uppercase;
         }
 
-        .btn-buy:hover {
-            background: #a51313;
+        .btn-installment {
+            background: #222;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 15px;
+            text-align: center;
+            line-height: 1.2;
+            cursor: pointer;
         }
 
-        .btn-add-cart {
-            width: 55px;
-            height: 55px;
+        .btn-installment span {
+            display: block;
+            font-size: 11px;
+            font-weight: normal;
+        }
+        .btn-cart-sticky {
+            border: 1px solid #cd1818;
             background: white;
-            border: 2px solid #cd1818;
             color: #cd1818;
-            border-radius: 8px;
-            font-size: 20px;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 18px;
             cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: 0.2s;
         }
 
-        .btn-add-cart:hover {
-            background: #fff8f8;
-        }
-
-        /* Responsive */
         @media (max-width: 991px) {
             .product-detail-container {
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Header CSS */
+        .cyber-header {
+            background: #cd1818;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .cyber-header .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cyber-logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cyber-search {
+            flex-grow: 1;
+            margin: 0 40px;
+            position: relative;
+            max-width: 550px;
+            display: flex;
+            background: white;
+            border-radius: 30px;
+            align-items: center;
+            padding: 4px;
+        }
+
+        .cyber-search input {
+            flex-grow: 1;
+            padding: 8px 15px;
+            border-radius: 30px;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .cyber-search button {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #ffebeb;
+            color: #cd1818;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s;
+            margin-right: 2px;
+            flex-shrink: 0;
+        }
+
+        .cyber-search button:hover {
+            background: #f8d0d0;
+        }
+
+        .cyber-header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .cyber-action-btn {
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            gap: 5px;
+            background: #000000;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background 0.2s;
+        }
+
+        .cyber-action-btn:hover {
+            background: #333333;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Navigation -->
-    <div th:replace="~{thymeleaf/client/layout/header :: header}"></div>
+    <!-- Header -->
+    <header class="cyber-header">
+        <div class="container">
+            <a th:href="${session.user != null and session.user?.role?.name == 'ADMIN' ? '#' : '/'}" class="cyber-logo">
+                <img th:src="@{/images/logo.png}" alt="Cyber World Logo" style="height: 40px; margin-right: 10px;">
+                Cyber World
+            </a>
+            
+            <form class="cyber-search" action="/products" method="get">
+                <input type="text" name="name" placeholder="Search laptops, accessories...">
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+
+            <div class="cyber-header-actions">
+                <!-- Order history for USER only -->
+                <a th:if="${session.user != null and session.user?.role?.name == 'USER'}" href="/order-history" class="cyber-action-btn" title="Order History">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                </a>
+                
+                <!-- Cart for USER and Guest -->
+                <a th:if="${session.user == null or session.user?.role?.name == 'USER'}" href="/cart" class="cyber-action-btn" title="Cart">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="badge bg-warning text-dark rounded-pill" th:text="${session.sum != null ? session.sum : 0}" style="margin-left: 5px;">0</span>
+                </a>
+
+                <!-- Dashboard for STAFF -->
+                <a th:if="${session.user != null and session.user?.role?.name == 'STAFF'}" href="/staff" class="cyber-action-btn" title="Dashboard">
+                    <i class="fa-solid fa-table-columns"></i>
+                </a>
+
+                <!-- Dashboard for OWNER -->
+                <a th:if="${session.user != null and session.user?.role?.name == 'OWNER'}" href="/owner" class="cyber-action-btn" title="Dashboard">
+                    <i class="fa-solid fa-table-columns"></i>
+                </a>
+
+                <!-- Role / Logout Button for ADMIN, OWNER, STAFF -->
+                <form th:if="${session.user != null and session.user?.role?.name != 'USER'}" method="post" th:action="@{/logout}" style="margin: 0;">
+                     <button type="submit" class="cyber-action-btn" title="Logout" style="border: none; cursor: pointer; font-family: inherit;">
+                        <i class="fa-solid fa-user-shield"></i>
+                        <span th:text="${session.user.role.name}" style="margin: 0 5px;">Role</span>
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                    </button>
+                </form>
+
+                <!-- Account / Logout Button for USER and Guest -->
+                <a th:if="${session.user == null}" href="/login" class="cyber-action-btn" title="Account">
+                    <i class="fa-solid fa-user"></i>
+                </a>
+                <form th:if="${session.user != null and session.user?.role?.name == 'USER'}" method="post" th:action="@{/logout}" style="margin: 0;">
+                     <button type="submit" class="cyber-action-btn" title="Logout" style="border: none; cursor: pointer; font-family: inherit;">
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </header>
+    <div class="product-nav-tabs">
+        <a href="javascript:history.back()" style="border:none; color: #555; font-size: 18px; margin-right: 10px;"><i class="fa-solid fa-arrow-left"></i></a>
+        <a href="#" class="active"><i class="fa-solid fa-star" style="color: #cd1818; margin-right: 5px;"></i> Product Information</a>
+        <a href="#">Description - News</a>
+        <a href="#">Reviews - Comments</a>
+        <a href="#">You may also like</a>
+        <a href="#">FAQ</a>
+    </div>
 
     <main class="detail-page-wrapper">
-        
-        <div class="breadcrumb-cyber">
-            <a href="/">Home</a> / <a href="/products">Laptop</a> / 
-            <span th:text="${product.factory}">Brand</span>
-        </div>
-
         <div class="product-detail-container">
             
-            <!-- Left Side (Images & Specs) -->
+            <!-- Left Side -->
             <div class="product-left">
-                
                 <div class="main-img-box">
-                    <img th:src="@{'/images/product/' + ${product.image}}" alt="Product Image">
+                    <img th:src="@{${product.firstImage}}" alt="Product Image" id="mainDetailImage">
                 </div>
                 
                 <div class="thumbnail-list">
-                    <div class="thumb-item"><img th:src="@{'/images/product/' + ${product.image}}"></div>
-                    <div class="thumb-item" style="background:#eee;"></div>
-                    <div class="thumb-item" style="background:#eee;"></div>
-                    <div class="thumb-item" style="background:#eee;"></div>
+                    <div th:each="img, iter : ${product.images}" 
+                         th:classappend="${iter.index == 0} ? 'active' : ''" 
+                         class="thumb-item">
+                        <img th:src="@{${img}}" alt="Thumbnail" style="cursor: pointer;">
+                    </div>
                 </div>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        const mainImg = document.getElementById("mainDetailImage");
+                        const thumbs = document.querySelectorAll(".thumb-item img");
+                        thumbs.forEach(thumb => {
+                            thumb.addEventListener("click", function() {
+                                document.querySelectorAll(".thumb-item").forEach(item => item.classList.remove("active"));
+                                this.parentElement.classList.add("active");
+                                mainImg.src = this.src;
+                            });
+                        });
+                    });
+                </script>
 
                 <div class="promo-tags">
                     <div class="promo-tag">
-                        <i class="fa-solid fa-briefcase" style="color: #007bff;"></i> Exclusive discount for businesses
+                        <i class="fa-solid fa-gift"></i> Exclusive discount for businesses
                     </div>
-                    <div class="promo-tag">
-                        <i class="fa-solid fa-shield-halved" style="color: #28a745;"></i> Genuine Product - 12 Months Warranty
+                    <div class="promo-tag black">
+                        <i class="fa-solid fa-shield-halved"></i> Genuine product - 12 months warranty
                     </div>
                 </div>
 
                 <div class="specs-highlight">
-                    <h3 style="font-size: 18px; margin-bottom: 15px;">Technical Specifications</h3>
+                    <div class="specs-header">
+                        <h3>Key Specifications</h3>
+                        <a href="#" class="btn-view-all-specs" data-bs-toggle="modal" data-bs-target="#specsModal">View all</a>
+                    </div>
                     <div class="specs-grid">
                         <div class="spec-item">
                             <i class="fa-solid fa-microchip"></i>
                             <div>
                                 <div class="spec-title">CPU</div>
-                                <div class="spec-value" th:text="${product.cpu != null ? product.cpu : 'Core Ultra / Ryzen'}">Core Ultra / Ryzen</div>
+                                <div class="spec-value" th:text="${product.cpu != null ? product.cpu : 'Core Ultra 5'}">Core Ultra 5</div>
                             </div>
                         </div>
                         <div class="spec-item">
@@ -410,244 +661,455 @@
                             </div>
                         </div>
                         <div class="spec-item">
-                            <i class="fa-solid fa-laptop"></i>
+                            <i class="fa-solid fa-desktop"></i>
                             <div>
                                 <div class="spec-title">Screen Size</div>
-                                <div class="spec-value" th:text="${product.screenSize != null ? product.screenSize : '14 inch IPS'}">14 inch IPS</div>
+                                <div class="spec-value" th:text="${product.screenSize != null ? product.screenSize : '14 inch'}">14 inch</div>
                             </div>
                         </div>
                         <div class="spec-item">
-                            <i class="fa-solid fa-hard-drive"></i>
+                            <i class="fa-solid fa-layer-group"></i>
                             <div>
-                                <div class="spec-title">Storage</div>
-                                <div class="spec-value" th:text="${product.storage != null ? product.storage : '512GB SSD NVMe'}">512GB SSD NVMe</div>
+                                <div class="spec-title">Panel Type</div>
+                                <div class="spec-value">IPS</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#" class="btn-view-all-specs" data-bs-toggle="modal" data-bs-target="#specsModal">Xem t?t c? thông s?</a>
                 </div>
-
             </div>
 
-            <!-- Right Side (Info, Price, Buy) -->
+            <!-- Right Side -->
             <div class="product-right">
                 
-                <h1 class="product-title" th:text="${product.name}">Product Name Here</h1>
+                <h1 class="product-title" th:text="${product.name}">Laptop Acer Aspire Lite 14 AI AL14-53P-5387 Ultra5 115U/16GB/512GB/14" FHD+/Win 11</h1>
                 
-                <div class="product-meta">
-                    <span>No. <span th:text="${product.id}"></span></span>
-                    <span><i class="fa-solid fa-star" style="color: #ffc107;"></i> 5 (21 reviews)</span>
+                <div class="product-meta" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <span>No.<span th:text="${product.id}">00928035</span></span>
+                    </div>
+                    <div style="display: flex; gap: 15px; align-items: center;">
+                        <span style="color: #f39c12; font-weight: bold;"><i class="fa-solid fa-star"></i> 5 <span style="color: #666; font-weight: normal;">(24 reviews)</span></span>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 15px; margin-bottom: 15px; font-size: 13px; color: #007bff;">
+                    <a href="#" style="text-decoration: none; color: inherit;"><i class="fa-solid fa-list"></i> Specs</a> | 
+                    <a href="#" style="text-decoration: none; color: inherit;"><i class="fa-solid fa-plus-circle"></i> Compare</a>
                 </div>
 
-                <div class="price-box">
-                    <div class="price-main" th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 0, 'POINT')} + ' Ä‘'">22,490,000 Ä‘</div>
-                    <div class="price-old" th:if="${product.price > 10000000}" th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'COMMA', 0, 'POINT')} + ' Ä‘'">24,990,000 Ä‘</div>
+                <div class="price-box" style="display: flex; justify-content: space-between; align-items: stretch; background: white; border: 1px solid #f1f1f1; border-radius: 10px; overflow: hidden; margin-bottom: 15px;">
+                    <div class="price-info" style="padding: 15px;">
+                        <div class="price-main" th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + 'đ'">22.490.000đ</div>
+                        <div class="price-old-wrapper" th:if="${product.price > 10000000}" style="margin-top: 5px;">
+                            <div class="price-old" th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + 'đ'">24.990.000đ</div>
+                            <div class="discount-percent">10%</div>
+                        </div>
+                    </div>
+                    <div class="flash-sale-box" style="background: linear-gradient(to right, #d32f2f, #b71c1c); color: white; padding: 15px; border-radius: 0 10px 10px 0; display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 180px;">
+                        <div style="font-size: 16px; font-weight: bold; margin-bottom: 5px; color: #ffeb3b;"><i class="fa-solid fa-clock"></i> SHOCK PRICE</div>
+                        <div style="font-size: 12px; display: flex; align-items: center; gap: 5px;">Ends in: <span style="background: #000; color: white; padding: 3px 6px; border-radius: 4px; font-weight: bold; letter-spacing: 1px;">03 : 11 : 48</span></div>
+                    </div>
                 </div>
 
                 <div class="trade-in-box">
-                    <span>Trade-in - Discount up to <b>2,000,000Ä‘</b></span>
-                    <a href="#" style="color: #007bff; text-decoration: none;">Estimate Now â€º</a>
+                    <span>Trade-in - Extra discount up to <b>2.000.000đ</b></span>
+                    <a href="#" style="color: #007bff; text-decoration: none;">Get quote now ❯</a>
                 </div>
 
-                <div class="color-options">
-                    <div class="color-title">Color</div>
-                    <div class="color-btn" th:text="${product.color != null ? product.color : 'Gray'}">
-                        Gray
+                <div class="color-options" style="margin-bottom: 15px;">
+                    <div class="color-title" style="margin-bottom: 10px; font-size: 14px; color: #555;">Color</div>
+                    <div class="color-btn" style="position: relative; border-color: #cd1818;">
+                        <img th:src="@{${product.firstImage}}" style="width: 25px; height: 25px; object-fit: contain; margin-right: 5px;"> 
+                        <span th:text="${product.color != null ? product.color : 'Grey'}">Grey</span>
+                        <div style="position: absolute; top: 0; right: 0; background: #cd1818; color: white; font-size: 8px; padding: 1px 3px; border-radius: 0 4px 0 4px;"><i class="fa-solid fa-check"></i></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px; border: 1px dashed #cd1818; border-radius: 5px; padding: 10px; display: flex; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <img src="/images/avatar/default-avatar.png" style="width: 40px; height: 40px; border-radius: 50%;">
+                        <div style="font-size: 14px; font-weight: bold; color: #cd1818;">Redeem points <br><span style="background: #cd1818; color: #fff; font-size: 11px; padding: 2px 5px; border-radius: 10px;">CHECK NOW 🔍</span></div>
+                    </div>
+                    <div style="text-align: right; color: #cd1818; font-weight: bold; font-size: 18px;">
+                        <div style="font-size: 11px; font-weight: normal; color: #555;">Extra discount up to 10%</div>
+                        2.499.000đ
                     </div>
                 </div>
 
                 <div class="promo-box">
                     <div class="promo-box-header">
-                        <span>Promotional Offers:</span>
+                        Main Promotions
                     </div>
                     <div class="promo-box-body">
-                        <ul>
-                            <li><i class="fa-regular fa-circle-check"></i> Instant discount 2,500,000Ä‘ valid until end of month</li>
-                            <li><i class="fa-regular fa-circle-check"></i> 0% Installment</li>
-                            <li><i class="fa-regular fa-circle-check"></i> Free comprehensive warranty combo: 1 Year + Voucher</li>
-                        </ul>
-                        <a href="#" style="display: block; font-size: 13px; color: #007bff; text-decoration: none; margin-top: 10px;">View 8 more offers Ë…</a>
-                    </div>
-                </div>
-                
-                <div class="promo-box">
-                    <div class="promo-box-header">
-                        <span>Verification - Extra Discount</span>
-                    </div>
-                    <div class="promo-box-body">
-                        <select style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ddd; font-size: 13px;">
-                            <option>Students & Teachers â€¢ Discount 5% (up to 1,049,500Ä‘)</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="promo-box">
-                    <div class="promo-box-header">
-                        <span>Shipping Information</span>
-                    </div>
-                    <div class="promo-box-body">
-                        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                            <button style="flex:1; padding: 10px; border: 1px solid #cd1818; color: #cd1818; background: #fffafa; border-radius: 5px; cursor: pointer;">
-                                <i class="fa-solid fa-truck"></i> Home Delivery
-                            </button>
-                            <button style="flex:1; padding: 10px; border: 1px solid #ddd; background: white; border-radius: 5px; cursor: pointer;">
-                                <i class="fa-solid fa-store"></i> Store Pickup
-                            </button>
+                        <div style="background: #fff9eb; border: 1px solid #ffe6b3; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <span style="background: #cd1818; color: #fff; padding: 2px 8px; border-radius: 15px; font-size: 11px; font-weight: bold;"><i class="fa-solid fa-clock"></i> Shocking price</span>
+                                <span style="font-size: 11px; color: #888;">🔥 Sold 0/10 slots</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-size: 20px; font-weight: bold; color: #cd1818;" th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + 'đ ⚡'">22.490.000đ ⚡</div>
+                                    <div style="font-size: 12px; color: #999; text-decoration: line-through;" th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + 'đ'">24.990.000đ</div>
+                                </div>
+                                <div style="font-size: 13px; color: #555;"><i class="fa-regular fa-clock"></i> 03:37:04</div>
+                            </div>
                         </div>
-                        <a href="#" style="color: #007bff; text-decoration: none; font-size: 13px;"><i class="fa-solid fa-location-dot"></i> Enter address to check availability</a>
+                        
+                        <div style="font-weight: bold; margin-bottom: 10px;">Available offers:</div>
+                        <div class="promo-item">
+                            <i class="fa-solid fa-check"></i>
+                            <span>Instant 2,500,000đ off valid until 20/07</span>
+                        </div>
+                        <div class="promo-item">
+                            <i class="fa-solid fa-check"></i>
+                            <span>0% Installment</span>
+                        </div>
+                        <div class="promo-item">
+                            <i class="fa-solid fa-check"></i>
+                            <span>Free comprehensive warranty combo: 1 year warranty + 400,000đ voucher for 1-to-1 exchange warranty</span>
+                        </div>
+                        <a href="#" style="color: #007bff; text-decoration: none; display: block; margin-top: 10px;">View 10 more offers ˅</a>
                     </div>
                 </div>
 
-                <!-- Add to cart form -->
-                <form th:action="@{/add-product-from-view-detail}" method="post" style="position: sticky; bottom: 20px; z-index: 10; background: white; padding-top: 10px; border-top: 1px solid #eee;">
-                    <input type="hidden" name="id" th:value="${product.id}" />
-                    <input type="hidden" name="quantity" value="1" />
-                    
-                    <div class="action-buttons">
-                        <button type="submit" class="btn-buy">Buy Now</button>
-                        <button type="submit" class="btn-add-cart" title="Add to cart">
-                            <i class="fa-solid fa-cart-plus"></i>
-                        </button>
+                <div class="promo-box">
+                    <div class="promo-box-header" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                        <span>Verify - get extra discount</span>
+                        <a href="#" style="color: #007bff; text-decoration: none; font-size: 13px; font-weight: normal;">View all</a>
                     </div>
-                </form>
+                </div>
 
             </div>
-
         </div>
         
-        <!-- Detailed Description -->
-        <div style="background: white; padding: 20px; border-radius: 10px; margin-top: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-            <h3 style="margin-bottom: 15px;">Product Description</h3>
-            <p th:text="${product.shortDesc}" style="font-weight: bold; margin-bottom: 10px;"></p>
-            <div th:utext="${product.detailDesc}"></div>
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-top: 20px;">
+            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <h3 style="margin-bottom: 15px; font-size: 20px; font-weight: bold;">Product Description</h3>
+                <p th:text="${product.shortDesc}" style="font-weight: bold; margin-bottom: 15px;"></p>
+                <div th:utext="${product.detailDesc}"></div>
+            </div>
+            
+            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="margin: 0; font-size: 18px; font-weight: bold;">News</h3>
+                </div>
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <button style="border: 1px solid #cd1818; color: #cd1818; background: white; padding: 5px 10px; border-radius: 15px; font-size: 13px; font-weight: 600;">Videos</button>
+                    <button style="border: 1px solid #ddd; color: #555; background: white; padding: 5px 10px; border-radius: 15px; font-size: 13px;">Related articles</button>
+                </div>
+                <div style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px;">
+                    <div style="min-width: 160px; height: 280px; background: #333; border-radius: 10px; position: relative; overflow: hidden;">
+                        <img src="/images/avatar/default-avatar.png" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6;">
+                        <i class="fa-solid fa-play" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255,255,255,0.8); font-size: 30px;"></i>
+                        <div style="position: absolute; top: 10px; left: 10px; color: white; font-weight: bold; font-size: 18px; line-height: 1.1; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">FREE<br>GAME</div>
+                        <div style="position: absolute; bottom: 10px; left: 10px; right: 10px; color: white; font-size: 12px; font-weight: bold;">How to download free games on laptop</div>
+                    </div>
+                    <div style="min-width: 160px; height: 280px; background: #222; border-radius: 10px; position: relative; overflow: hidden;">
+                        <img src="/images/avatar/default-avatar.png" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.5;">
+                        <i class="fa-solid fa-play" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255,255,255,0.8); font-size: 30px;"></i>
+                        <div style="position: absolute; top: 40px; right: 10px; color: white; font-size: 10px; text-align: right;">
+                            <div>1:39 AM</div>
+                            <div>Game capturing</div>
+                        </div>
+                        <div style="position: absolute; bottom: 10px; left: 10px; right: 10px; color: white; font-size: 12px; font-weight: bold;">How to record laptop screen</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: white; padding: 25px; border-radius: 10px; margin-top: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 40px;">
+            <h3 style="margin-bottom: 25px; font-size: 22px; font-weight: bold;">Reviews and Comments</h3>
+            <div style="display: flex; gap: 40px; margin-bottom: 30px; align-items: center;">
+                <div style="text-align: center; min-width: 180px;">
+                    <div style="font-size: 56px; font-weight: bold; line-height: 1;">5</div>
+                    <div style="color: #666; font-size: 14px; margin-bottom: 5px;">24 reviews</div>
+                    <div style="color: #f39c12; font-size: 16px; margin-bottom: 15px; letter-spacing: 2px;">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <button style="background: #cd1818; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 14px; width: 100%;">Review Product</button>
+                </div>
+                <div style="flex-grow: 1; max-width: 500px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <span style="font-size: 13px; color: #555; width: 20px;">5 <i class="fa-solid fa-star" style="color: #f39c12; font-size: 10px;"></i></span>
+                        <div style="flex-grow: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden;">
+                            <div style="height: 100%; background: #cd1818; width: 100%;"></div>
+                        </div>
+                        <span style="font-size: 13px; color: #555; width: 20px; text-align: right;">24</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <span style="font-size: 13px; color: #555; width: 20px;">4 <i class="fa-solid fa-star" style="color: #f39c12; font-size: 10px;"></i></span>
+                        <div style="flex-grow: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden;"></div>
+                        <span style="font-size: 13px; color: #555; width: 20px; text-align: right;">0</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <span style="font-size: 13px; color: #555; width: 20px;">3 <i class="fa-solid fa-star" style="color: #f39c12; font-size: 10px;"></i></span>
+                        <div style="flex-grow: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden;"></div>
+                        <span style="font-size: 13px; color: #555; width: 20px; text-align: right;">0</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <span style="font-size: 13px; color: #555; width: 20px;">2 <i class="fa-solid fa-star" style="color: #f39c12; font-size: 10px;"></i></span>
+                        <div style="flex-grow: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden;"></div>
+                        <span style="font-size: 13px; color: #555; width: 20px; text-align: right;">0</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 13px; color: #555; width: 20px;">1 <i class="fa-solid fa-star" style="color: #f39c12; font-size: 10px;"></i></span>
+                        <div style="flex-grow: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden;"></div>
+                        <span style="font-size: 13px; color: #555; width: 20px; text-align: right;">0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="position: relative;">
+                <textarea placeholder="Enter your comment..." style="width: 100%; height: 110px; border: 1px solid #ddd; border-radius: 10px; padding: 15px; resize: none; font-family: inherit; font-size: 14px; outline: none; background: #fafafa;"></textarea>
+                <div style="position: absolute; bottom: 15px; right: 15px; display: flex; align-items: center; gap: 15px;">
+                    <span style="color: #aaa; font-size: 12px;">0/3000</span>
+                    <button style="background: #111; color: white; border: none; padding: 8px 20px; border-radius: 20px; font-weight: bold; font-size: 14px; cursor: pointer;">Submit Comment</button>
+                </div>
+                <div style="position: absolute; bottom: 15px; left: 15px;">
+                    <a href="#" style="color: #007bff; font-size: 14px; text-decoration: none;"><i class="fa-solid fa-image"></i> Add up to 5 images and 1 video</a>
+                </div>
+            </div>
         </div>
     </main>
-    <div th:replace="~{thymeleaf/client/layout/footer :: footer}"></div>
-
-    <!-- Cart Notification Toast -->
-    <div th:if="${cartMessage != null}" id="cartToast" style="position: fixed; top: 80px; right: 20px; background-color: #28a745; color: white; padding: 15px 25px; border-radius: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100000; display: flex; align-items: center; gap: 10px; animation: slideIn 0.5s, fadeOut 0.5s 2.5s forwards;">
-        <i class="fa-solid fa-check-circle" style="font-size: 20px;"></i>
-        <span th:text="${cartMessage}">ThÃªm thÃ nh cÃ´ng</span>
-    </div>
-
-    <style>
-        @keyframes slideIn {
-            from { right: -300px; opacity: 0; }
-            to { right: 20px; opacity: 1; }
-        }
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; display: none; }
-        }
-    </style>
-    <script>
-        setTimeout(() => {
-            const toast = document.getElementById('cartToast');
-            if (toast) {
-                toast.style.display = 'none';
-            }
-        }, 3000);
-    </script>
-
-    <div th:replace="~{thymeleaf/client/layout/footer :: footer}"></div>
 
 <div class="modal fade" id="specsModal" tabindex="-1" aria-labelledby="specsModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="specsModalLabel" style="font-weight: bold;">Thông số kỹ thuật</h5>
+    <div class="modal-content cyber-modal-content">
+      <div class="modal-header cyber-modal-header">
+        <h5 class="modal-title cyber-modal-title" id="specsModalLabel">Detailed Specifications</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body" style="padding: 20px;">
-        <div class="d-flex align-items-center mb-4 pb-3" style="border-bottom: 1px solid #eee;">
-            <img th:src="@{'/images/product/' + ${product.image}}" alt="Product" style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px; border-radius: 5px; border: 1px solid #ddd;">
-            <h6 style="margin: 0; font-size: 15px; font-weight: 600;" th:text="${product.name}"></h6>
-        </div>
+      <div class="modal-body cyber-modal-body">
+        
         <style>
-            .specs-table th { font-weight: normal; color: #555; width: 40%; font-size: 14px; }
-            .specs-table td { font-weight: 500; color: #333; font-size: 14px; }
-            .specs-table .table-group-header { font-weight: bold; color: #000; background-color: #f8f9fa; font-size: 16px; padding-top: 20px; padding-bottom: 10px; border-bottom: 2px solid #ddd; }
+            .cyber-modal-content {
+                border: none;
+                border-radius: 16px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+                overflow: hidden;
+            }
+            .cyber-modal-header {
+                background: #fff;
+                border-bottom: 1px solid #eaeaea;
+                padding: 20px 25px;
+            }
+            .cyber-modal-title {
+                font-size: 20px;
+                font-weight: 800;
+                color: #111;
+                margin: 0;
+                font-family: 'Raleway', sans-serif;
+            }
+            .cyber-modal-body {
+                padding: 0;
+                background: #f9fbfd;
+            }
+            .product-brief {
+                display: flex;
+                align-items: center;
+                padding: 20px 25px;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-bottom: 1px solid #eaeaea;
+                position: sticky;
+                top: 0;
+                z-index: 10;
+            }
+            .product-brief img {
+                width: 60px;
+                height: 60px;
+                object-fit: contain;
+                margin-right: 15px;
+                background: #fff;
+                border-radius: 8px;
+                padding: 5px;
+                border: 1px solid #eee;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            }
+            .product-brief h6 {
+                margin: 0;
+                font-size: 16px;
+                font-weight: 700;
+                color: #333;
+                line-height: 1.4;
+            }
+            .specs-premium-container {
+                padding: 25px;
+            }
+            .specs-group {
+                background: #fff;
+                border-radius: 12px;
+                border: 1px solid #eaeaea;
+                margin-bottom: 25px;
+                overflow: hidden;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+            .specs-group:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            }
+            .specs-group-header {
+                display: flex;
+                align-items: center;
+                background: #fafafa;
+                padding: 15px 20px;
+                border-bottom: 1px solid #eaeaea;
+                font-weight: 700;
+                color: #cd1818;
+                font-size: 16px;
+                font-family: 'Raleway', sans-serif;
+            }
+            .specs-group-header i {
+                margin-right: 12px;
+                font-size: 18px;
+                width: 24px;
+                text-align: center;
+            }
+            .specs-item {
+                display: flex;
+                padding: 15px 20px;
+                border-bottom: 1px solid #f5f5f5;
+                transition: background 0.2s;
+            }
+            .specs-item:last-child {
+                border-bottom: none;
+            }
+            .specs-item:hover {
+                background: #fdfdfd;
+            }
+            .specs-label {
+                width: 40%;
+                color: #666;
+                font-size: 14px;
+                font-weight: 600;
+            }
+            .specs-value {
+                width: 60%;
+                color: #222;
+                font-size: 14px;
+                font-weight: 700;
+            }
+            .empty-spec {
+                color: #aaa;
+                font-weight: 500;
+                font-style: italic;
+            }
         </style>
-        <table class="table table-borderless specs-table mb-0">
-            <tbody>
-                <tr><td colspan="2" class="table-group-header">Bộ xử lý</td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Hãng CPU</th><td th:text="${product.specification?.cpuCompany}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Công nghệ CPU</th><td th:text="${product.specification?.cpuTechnology}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Loại CPU</th><td th:text="${product.specification?.cpuType}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Tốc độ CPU tối thiểu</th><td th:text="${product.specification?.cpuSpeed}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Tốc độ tối đa</th><td th:text="${product.specification?.cpuMaxSpeed}"></td></tr>
-                
-                <tr><td colspan="2" class="table-group-header">Đồ họa</td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Hãng (Card onboard)</th><td th:text="${product.specification?.gpuCompany}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Model (Card onboard)</th><td th:text="${product.specification?.gpuModel}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Tên đầy đủ (Card onboard)</th><td th:text="${product.specification?.gpuFullName}"></td></tr>
 
-                <tr><td colspan="2" class="table-group-header">RAM</td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Dung lượng RAM</th><td th:text="${product.specification?.ramCapacity}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Loại RAM</th><td th:text="${product.specification?.ramType}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Số khe cắm rời</th><td th:text="${product.specification?.ramSlots}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Số khe RAM còn lại</th><td th:text="${product.specification?.ramRemainingSlots}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Hỗ trợ RAM tối đa</th><td th:text="${product.specification?.ramMaxSupport}"></td></tr>
+        <div class="product-brief">
+            <img th:src="${product.firstImage}" alt="Product">
+            <h6 th:text="${product.name}"></h6>
+        </div>
 
-                <tr><td colspan="2" class="table-group-header">Lưu trữ</td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Kiểu ổ cứng</th><td th:text="${product.specification?.storageType}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Tổng số khe cắm SSD/HDD</th><td th:text="${product.specification?.storageTotalSlots}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Số khe SSD/HDD còn lại</th><td th:text="${product.specification?.storageRemainingSlots}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Dung lượng nâng cấp tối đa</th><td th:text="${product.specification?.storageMaxUpgrade}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Loại SSD</th><td th:text="${product.specification?.storageSsdType}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Dung lượng SSD</th><td th:text="${product.specification?.storageCapacity}"></td></tr>
+        <div class="specs-premium-container">
+            
+            <div class="specs-group">
+                <div class="specs-group-header"><i class="fa-solid fa-microchip"></i> Processor & Graphics</div>
+                <div class="specs-item"><div class="specs-label">Graphics Card</div><div class="specs-value" th:text="${product.specification?.gpuFullName ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label">CPU Type</div><div class="specs-value" th:text="${product.specification?.cpuType ?: '-'}"></div></div>
+            </div>
 
-                <tr><td colspan="2" class="table-group-header">Màn hình</td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Kích thước màn hình</th><td th:text="${product.specification?.screenTechnology}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Công nghệ màn hình</th><td th:text="${product.specification?.screenTechnology}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Độ phân giải</th><td th:text="${product.specification?.screenResolution}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Tần số quét</th><td th:text="${product.specification?.screenRefreshRate}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Tấm nền</th><td th:text="${product.specification?.screenPanel}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Độ sáng</th><td th:text="${product.specification?.screenBrightness}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Độ phủ màu</th><td th:text="${product.specification?.screenColorCoverage}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Tỷ lệ màn hình</th><td th:text="${product.specification?.screenRatio}"></td></tr>
+            <div class="specs-group">
+                <div class="specs-group-header"><i class="fa-solid fa-memory"></i> Memory & Storage</div>
+                <div class="specs-item"><div class="specs-label">RAM Capacity</div><div class="specs-value" th:text="${product.specification?.ramCapacity ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label">RAM Type</div><div class="specs-value" th:text="${product.specification?.ramType ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label">RAM Slots</div><div class="specs-value" th:text="${product.specification?.ramSlots ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label">Storage</div><div class="specs-value" th:text="${product.specification?.storageCapacity ?: '-'}"></div></div>
+            </div>
 
-                <tr><td colspan="2" class="table-group-header">Giao tiếp và kết nối</td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Cổng giao tiếp</th><td th:text="${product.specification?.ports}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Wifi</th><td th:text="${product.specification?.wifi}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Bluetooth</th><td th:text="${product.specification?.bluetooth}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Webcam</th><td th:text="${product.specification?.webcam}"></td></tr>
+            <div class="specs-group">
+                <div class="specs-group-header"><i class="fa-solid fa-desktop"></i> Display</div>
+                <div class="specs-item"><div class="specs-label">Refresh Rate</div><div class="specs-value" th:text="${product.specification?.screenRefreshRate ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label">Panel Material</div><div class="specs-value" th:text="${product.specification?.screenPanel ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label" style="color: #007bff; font-weight: bold;">Screen Size</div><div class="specs-value" th:text="${product.specification?.screenTechnology ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label">Screen Technology</div><div class="specs-value" th:text="${(product.specification?.screenBrightness != null and product.specification.screenBrightness != '' ? 'Brightness ' + product.specification.screenBrightness : '') + (product.specification?.screenColorCoverage != null and product.specification.screenColorCoverage != '' ? ', Color Coverage ' + product.specification.screenColorCoverage : '') + (product.specification?.screenRatio != null and product.specification.screenRatio != '' ? ', Ratio ' + product.specification.screenRatio : '') ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label" style="color: #007bff; font-weight: bold;">Resolution</div><div class="specs-value" th:text="${product.specification?.screenResolution ?: '-'}"></div></div>
+            </div>
 
-                <tr><td colspan="2" class="table-group-header">Hệ điều hành</td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>OS</th><td th:text="${product.specification?.osName}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Version</th><td th:text="${product.specification?.osVersion}"></td></tr>
+            <div class="specs-group">
+                <div class="specs-group-header"><i class="fa-solid fa-volume-high"></i> Audio</div>
+                <div class="specs-item"><div class="specs-label">Audio Technology</div><div class="specs-value" th:text="${product.specification?.audioTechnology ?: '-'}"></div></div>
+            </div>
 
-                <tr><td colspan="2" class="table-group-header">Bảo mật</td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Bảo mật</th><td th:text="${product.specification?.security}"></td></tr>
+            <div class="specs-group">
+                <div class="specs-group-header"><i class="fa-solid fa-network-wired"></i> Connectivity</div>
+                <div class="specs-item"><div class="specs-label">Card Reader</div><div class="specs-value" th:text="${product.specification?.cardReader ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label" style="color: #007bff; font-weight: bold;">Wi-Fi</div><div class="specs-value" th:text="${product.specification?.wifi ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label" style="color: #007bff; font-weight: bold;">Bluetooth</div><div class="specs-value" th:text="${product.specification?.bluetooth ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label">Ports</div><div class="specs-value" th:text="${product.specification?.ports ?: '-'}"></div></div>
+            </div>
 
-                <tr><td colspan="2" class="table-group-header">Bàn phím & Touchpad</td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Kiểu bàn phím</th><td th:text="${product.specification?.keyboardType}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Bàn phím số</th><td th:text="${product.specification?.numpad}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Đèn bàn phím</th><td th:text="${product.specification?.keyboardLight}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>TouchPad</th><td th:text="${product.specification?.touchpad}"></td></tr>
+            <div class="specs-group">
+                <div class="specs-group-header"><i class="fa-solid fa-weight-hanging"></i> Dimensions & Weight</div>
+                <div class="specs-item"><div class="specs-label">Material</div><div class="specs-value" th:text="${product.specification?.material ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label">Top Cover Material</div><div class="specs-value" th:text="${product.specification?.materialTop ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label">Bottom Cover Material</div><div class="specs-value" th:text="${product.specification?.materialBottom ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label">Dimensions</div><div class="specs-value" th:text="${product.specification?.dimensions ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label">Weight</div><div class="specs-value" th:text="${product.specification?.weight ?: '-'}"></div></div>
+            </div>
 
-                <tr><td colspan="2" class="table-group-header">Thông tin pin & sạc</td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Dung lượng pin</th><td th:text="${product.specification?.batteryCapacity}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Power Supply</th><td th:text="${product.specification?.powerSupply}"></td></tr>
+            <div class="specs-group">
+                <div class="specs-group-header"><i class="fa-solid fa-star"></i> Other Utilities</div>
+                <div class="specs-item"><div class="specs-label">Special Features</div><div class="specs-value" th:text="${product.specification?.specialFeatures ?: '-'}"></div></div>
+            </div>
 
-                <tr><td colspan="2" class="table-group-header">Phụ kiện trong hộp</td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Phụ kiện trong hộp</th><td th:text="${product.specification?.accessories}"></td></tr>
+            <div class="specs-group">
+                <div class="specs-group-header"><i class="fa-solid fa-sliders"></i> Other Features</div>
+                <div class="specs-item"><div class="specs-label">Keyboard Backlight</div><div class="specs-value" th:text="${product.specification?.keyboardLight ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label">Security</div><div class="specs-value" th:text="${product.specification?.security ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label">Webcam</div><div class="specs-value" th:text="${product.specification?.webcam ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label" style="color: #007bff; font-weight: bold;">Operating System</div><div class="specs-value" th:text="${(product.specification?.osName != null and product.specification.osName != '' ? product.specification.osName : '') + (product.specification?.osVersion != null and product.specification.osVersion != '' ? ' ' + product.specification.osVersion : '') ?: '-'}"></div></div>
+            </div>
 
-                <tr><td colspan="2" class="table-group-header">Thiết kế & Trọng lượng</td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Kích thước</th><td th:text="${product.specification?.dimensions}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Trọng lượng sản phẩm</th><td th:text="${product.specification?.weight}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Chất liệu</th><td th:text="${product.specification?.material}"></td></tr>
+            <div class="specs-group">
+                <div class="specs-group-header"><i class="fa-solid fa-battery-half"></i> Battery & Charging</div>
+                <div class="specs-item"><div class="specs-label" style="color: #007bff; font-weight: bold;">Battery</div><div class="specs-value" th:text="${(product.specification?.batteryCapacity != null and product.specification.batteryCapacity != '' ? product.specification.batteryCapacity : '') + (product.specification?.powerSupply != null and product.specification.powerSupply != '' ? ', ' + product.specification.powerSupply : '') ?: '-'}"></div></div>
+            </div>
 
-                <tr><td colspan="2" class="table-group-header">Thông tin hàng hóa</td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>P/N</th><td th:text="${product.specification?.partNumber}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Xuất xứ</th><td th:text="${product.specification?.origin}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Thời điểm ra mắt</th><td th:text="${product.specification?.releaseYear}"></td></tr>
-                <tr style="border-bottom: 1px solid #f1f1f1;"><th>Thời gian bảo hành</th><td th:text="${product.specification?.warranty}"></td></tr>
-            </tbody>
-        </table>
+            <div class="specs-group">
+                <div class="specs-group-header"><i class="fa-solid fa-circle-info"></i> Product Information</div>
+                <div class="specs-item"><div class="specs-label">P/N</div><div class="specs-value" th:text="${product.specification?.partNumber ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label">Origin</div><div class="specs-value" th:text="${product.specification?.origin ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label">Release Year</div><div class="specs-value" th:text="${product.specification?.releaseYear ?: '-'}"></div></div>
+                <div class="specs-item"><div class="specs-label">Warranty Period</div><div class="specs-value" th:text="${product.specification?.warranty ?: '-'}"></div></div>
+            </div>
+
+        </div>
       </div>
     </div>
   </div>
+<div class="sticky-bottom-bar" style="position: fixed !important; bottom: 0 !important; left: 0 !important; right: 0 !important; width: 100% !important; background: white !important; box-shadow: 0 -5px 20px rgba(0,0,0,0.15) !important; padding: 15px 0 !important; z-index: 2147483647 !important; border-top: 1px solid #ddd !important; display: block !important; visibility: visible !important; opacity: 1 !important; transform: none !important;">
+    <div class="sticky-content" style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 15px;">
+        <div class="sticky-left" style="display: flex; align-items: center; gap: 15px;">
+            <img th:src="${product.firstImage}" alt="Product Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd;">
+            <div class="sticky-info">
+                <div class="sticky-name" th:text="${product.name} + ' (' + ${product.id} + ')'" style="font-weight: 600; font-size: 15px; color: #333;">MacBook Air 13 M5 2026 10CPU/8GPU/16GB/512GB/30W (00926589)</div>
+                <div style="font-size: 13px; color: #666; margin-top: 2px;">Category: <span th:text="${product.color != null ? product.color : 'Starlight'}">Starlight</span></div>
+            </div>
+        </div>
+        <div class="sticky-right" style="display: flex; align-items: center; gap: 20px;">
+            <div style="background: #fff9eb; color: #f39c12; font-size: 12px; padding: 4px 10px; border-radius: 20px; border: 1px solid #ffe6b3; display: flex; align-items: center; gap: 5px; font-weight: bold;">
+                <i class="fa-solid fa-coins"></i> +8.822
+            </div>
+            <div style="text-align: right; line-height: 1.2;">
+                <div class="sticky-price" th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + 'đ'">35.290.000đ</div>
+                <div style="font-size: 13px; color: #999; text-decoration: line-through;" th:if="${product.price > 10000000}">
+                    <span th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + 'đ'">35.990.000đ</span> <span style="color: #cd1818; text-decoration: none; font-weight: bold; margin-left: 5px;">-10%</span>
+                </div>
+            </div>
+            <form th:if="${session.user == null or session.user?.role?.name == 'USER'}" th:action="@{/add-product-from-view-detail}" method="post" style="margin: 0; display: flex; gap: 15px; align-items: center;">
+                <input type="hidden" name="id" th:value="${product.id}" />
+                <input type="hidden" name="quantity" value="1" />
+                <button class="btn-cart-sticky" type="submit" title="Add to cart" style="background: white; border: 1px solid #cd1818; color: #cd1818; width: 44px; height: 44px; border-radius: 6px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;">
+                    <i class="fa-solid fa-cart-plus"></i>
+                </button>
+                <button class="btn-buy-now" type="submit" onclick="this.form.action='/buy-now'" style="background: #cd1818; color: white; border: none; height: 44px; padding: 0 40px; border-radius: 6px; font-weight: 700; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; text-transform: uppercase; transition: 0.2s;">
+                    Buy Now
+                </button>
+            </form>
+        </div>
+    </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
