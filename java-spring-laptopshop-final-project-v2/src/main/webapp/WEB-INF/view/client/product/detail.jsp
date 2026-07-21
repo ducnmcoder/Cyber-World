@@ -72,12 +72,14 @@
                                 <div class="col-lg-8 col-xl-9">
                                     <div class="row g-4">
                                         <div class="col-lg-6">
-                                            <div class="border rounded">
-                                                <a href="#">
-                                                    <img src="/images/product/${product.image}"
-                                                        class="img-fluid rounded" alt="Image">
-                                                </a>
-                                            </div>
+                                              <div class="d-flex flex-column gap-3">
+                                                <c:forEach var="img" items="${product.images}">
+                                                  <a href="#">
+                                                      <img src="${img}"
+                                                          class="img-fluid rounded border" alt="Image">
+                                                  </a>
+                                                </c:forEach>
+                                              </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <h4 class="fw-bold mb-3"> ${product.name}</h4>

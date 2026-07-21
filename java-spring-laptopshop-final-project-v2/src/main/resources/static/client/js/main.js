@@ -243,6 +243,7 @@
         let factoryArr = [];
         let targetArr = [];
         let priceArr = [];
+        let cpuArr = [];
         //factory filter
         $("#factoryFilter .form-check-input:checked").each(function () {
             factoryArr.push($(this).val());
@@ -256,6 +257,11 @@
         //price filter
         $("#priceFilter .form-check-input:checked").each(function () {
             priceArr.push($(this).val());
+        });
+
+        //cpu filter
+        $("#cpuFilter .form-check-input:checked").each(function () {
+            cpuArr.push($(this).val());
         });
 
         //sort order
@@ -272,6 +278,7 @@
         searchParams.delete('factory');
         searchParams.delete('target');
         searchParams.delete('price');
+        searchParams.delete('cpu');
 
         if (factoryArr.length > 0) {
             searchParams.set('factory', factoryArr.join(','));
@@ -283,6 +290,10 @@
 
         if (priceArr.length > 0) {
             searchParams.set('price', priceArr.join(','));
+        }
+
+        if (cpuArr.length > 0) {
+            searchParams.set('cpu', cpuArr.join(','));
         }
 
         // Update the URL and reload the page
@@ -314,6 +325,14 @@
         const prices = params.get('price').split(',');
         prices.forEach(price => {
             $(`#priceFilter .form-check-input[value="${price}"]`).prop('checked', true);
+        });
+    }
+
+    // Set checkboxes for 'cpu'
+    if (params.has('cpu')) {
+        const cpus = params.get('cpu').split(',');
+        cpus.forEach(cpu => {
+            $(`#cpuFilter .form-check-input[value="${cpu}"]`).prop('checked', true);
         });
     }
 

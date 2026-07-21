@@ -108,6 +108,45 @@
                                                 </div>
 
                                             </div>
+                                            <div class="col-12" id="cpuFilter">
+                                                <div class="mb-2"><b>CPU Technology</b></div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="cpu-1" value="Intel Core i3">
+                                                    <label class="form-check-label" for="cpu-1">Intel Core i3</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="cpu-2" value="Intel Core i5">
+                                                    <label class="form-check-label" for="cpu-2">Intel Core i5</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="cpu-3" value="Intel Core i7">
+                                                    <label class="form-check-label" for="cpu-3">Intel Core i7</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="cpu-4" value="Intel Core i9">
+                                                    <label class="form-check-label" for="cpu-4">Intel Core i9</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="cpu-5" value="Intel Core Ultra 5">
+                                                    <label class="form-check-label" for="cpu-5">Intel Core Ultra 5</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="cpu-6" value="Intel Core Ultra 7">
+                                                    <label class="form-check-label" for="cpu-6">Intel Core Ultra 7</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="cpu-7" value="Apple M1 Series">
+                                                    <label class="form-check-label" for="cpu-7">Apple M1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="cpu-8" value="Apple M2 Series">
+                                                    <label class="form-check-label" for="cpu-8">Apple M2</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="cpu-9" value="Apple M3 Series">
+                                                    <label class="form-check-label" for="cpu-9">Apple M3</label>
+                                                </div>
+                                            </div>
                                             <div class="col-12" id="targetFilter">
                                                 <div class="mb-2"><b>Target Use</b></div>
                                                 <div class="form-check form-check-inline">
@@ -206,7 +245,7 @@
                                                 <div class="col-md-6 col-lg-4">
                                                     <div class="rounded position-relative fruite-item">
                                                         <div class="fruite-img">
-                                                            <img src="/images/product/${product.image}"
+                                                            <img src="${product.firstImage}"
                                                                 class="img-fluid w-100 rounded-top" alt="">
                                                         </div>
                                                         <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
@@ -220,23 +259,36 @@
                                                                 </a>
 
                                                             </h4>
-                                                            <p style="font-size: 13px;">
-                                                                ${product.shortDesc}</p>
-                                                            <div
-                                                                class="d-flex  flex-lg-wrap justify-content-center flex-column">
-                                                                <p style="font-size: 15px; text-align: center; width: 100%;"
-                                                                    class="text-dark  fw-bold mb-3">
-                                                                    <fmt:formatNumber type="number"
-                                                                        value="${product.price}" />
-                                                                    đ
-                                                                </p>
+                                                            <div class="d-flex flex-column mt-2">
+                                                                <div class="d-flex align-items-center mb-2">
+                                                                    <p style="font-size: 16px; color: red;" class="fw-bold mb-0 me-2">
+                                                                        <fmt:formatNumber type="number" value="${product.price}" /> đ
+                                                                    </p>
+                                                                    <c:if test="${product.originalPrice > 0}">
+                                                                        <p style="font-size: 13px; text-decoration: line-through; color: #888;" class="mb-0">
+                                                                            <fmt:formatNumber type="number" value="${product.originalPrice}" /> đ
+                                                                        </p>
+                                                                    </c:if>
+                                                                </div>
+                                                                <div class="d-flex flex-wrap mb-3 gap-2">
+                                                                    <c:if test="${not empty product.ram}">
+                                                                        <span class="border rounded px-2 py-1" style="font-size: 12px; color: #555;">${product.ram}</span>
+                                                                    </c:if>
+                                                                    <c:if test="${not empty product.storage}">
+                                                                        <span class="border rounded px-2 py-1" style="font-size: 12px; color: #555;">${product.storage}</span>
+                                                                    </c:if>
+                                                                    <c:if test="${not empty product.screenSize}">
+                                                                        <span class="border rounded px-2 py-1" style="font-size: 12px; color: #555;">${product.screenSize}</span>
+                                                                    </c:if>
+                                                                </div>
+
                                                                 <form action="/add-product-to-cart/${product.id}"
                                                                     method="post">
                                                                     <input type="hidden" name="${_csrf.parameterName}"
                                                                         value="${_csrf.token}" />
 
                                                                     <button
-                                                                        class="mx-auto btn border border-secondary rounded-pill px-3 text-primary"><i
+                                                                        class="btnAddToCartDetail mx-auto btn border border-secondary rounded-pill px-3 text-primary w-100"><i
                                                                             class="fa fa-shopping-bag me-2 text-primary"></i>
                                                                         Add to cart
                                                                     </button>

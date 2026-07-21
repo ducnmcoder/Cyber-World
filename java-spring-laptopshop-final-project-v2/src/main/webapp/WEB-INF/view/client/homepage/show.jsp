@@ -84,7 +84,7 @@
                                                     <div class="col-md-6 col-lg-4 col-xl-3">
                                                         <div class="rounded position-relative fruite-item">
                                                             <div class="fruite-img">
-                                                                <img src="/images/product/${product.image}"
+                                                                <img src="${product.firstImage}"
                                                                     class="img-fluid w-100 rounded-top" alt="">
                                                             </div>
                                                             <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
@@ -97,19 +97,28 @@
                                                                     </a>
 
                                                                 </h4>
-                                                                <p style="font-size: 13px;">${product.shortDesc}</p>
-                                                                <div
-                                                                    class="d-flex  flex-lg-wrap justify-content-center flex-column">
-                                                                    <p style="font-size: 15px; text-align: center; width: 100%;"
-                                                                        class="text-dark  fw-bold mb-3">
-                                                                        <fmt:formatNumber type="number"
-                                                                            value="${product.price}" /> đ
-                                                                    </p>
-                                                                    <!-- <form action="/add-product-to-cart/${product.id}"
-                                                                        method="post">
-                                                                        <input type="hidden"
-                                                                            name="${_csrf.parameterName}"
-                                                                            value="${_csrf.token}" /> -->
+                                                                <div class="d-flex flex-column mt-2">
+                                                                    <div class="d-flex align-items-center mb-2">
+                                                                        <p style="font-size: 16px; color: red;" class="fw-bold mb-0 me-2">
+                                                                            <fmt:formatNumber type="number" value="${product.price}" /> đ
+                                                                        </p>
+                                                                        <c:if test="${product.originalPrice > 0}">
+                                                                            <p style="font-size: 13px; text-decoration: line-through; color: #888;" class="mb-0">
+                                                                                <fmt:formatNumber type="number" value="${product.originalPrice}" /> đ
+                                                                            </p>
+                                                                        </c:if>
+                                                                    </div>
+                                                                    <div class="d-flex flex-wrap mb-3 gap-2">
+                                                                        <c:if test="${not empty product.ram}">
+                                                                            <span class="border rounded px-2 py-1" style="font-size: 12px; color: #555;">${product.ram}</span>
+                                                                        </c:if>
+                                                                        <c:if test="${not empty product.storage}">
+                                                                            <span class="border rounded px-2 py-1" style="font-size: 12px; color: #555;">${product.storage}</span>
+                                                                        </c:if>
+                                                                        <c:if test="${not empty product.screenSize}">
+                                                                            <span class="border rounded px-2 py-1" style="font-size: 12px; color: #555;">${product.screenSize}</span>
+                                                                        </c:if>
+                                                                    </div>
 
                                                                     <button data-product-id="${product.id}"
                                                                         class="btnAddToCartHomepage mx-auto btn border border-secondary rounded-pill px-3 text-primary">
@@ -117,7 +126,6 @@
                                                                             class="fa fa-shopping-bag me-2 text-primary"></i>
                                                                         Add to cart
                                                                     </button>
-                                                                    <!-- </form> -->
                                                                 </div>
                                                             </div>
                                                         </div>

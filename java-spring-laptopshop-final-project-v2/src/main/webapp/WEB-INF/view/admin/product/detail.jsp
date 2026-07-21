@@ -39,8 +39,11 @@
                                             <hr />
 
                                             <div class="card" style="width: 60%">
-                                                <img class="card-img-top" src="/images/product/${product.image}"
-                                                    alt="Card image cap">
+                                                <div class="d-flex overflow-auto gap-2 p-2 bg-light">
+                                                <c:forEach var="img" items="${product.images}">
+                                                    <img class="img-thumbnail" style="max-height: 200px" src="${img}" alt="Product Image">
+                                                </c:forEach>
+                                            </div>
 
                                                 <div class="card-header">
                                                     Product information

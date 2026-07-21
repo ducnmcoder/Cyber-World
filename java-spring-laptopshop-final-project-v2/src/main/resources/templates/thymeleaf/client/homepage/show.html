@@ -44,33 +44,49 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 5px;
         }
 
         .cyber-search {
             flex-grow: 1;
             margin: 0 40px;
             position: relative;
-            max-width: 500px;
+            max-width: 550px;
+            display: flex;
+            background: white;
+            border-radius: 30px;
+            align-items: center;
+            padding: 4px;
         }
 
         .cyber-search input {
-            width: 100%;
-            padding: 10px 40px 10px 15px;
-            border-radius: 20px;
+            flex-grow: 1;
+            padding: 8px 15px;
+            border-radius: 30px;
             border: none;
             outline: none;
+            background: transparent;
+            font-size: 14px;
+            color: #555;
         }
 
         .cyber-search button {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #ffebeb;
+            color: #cd1818;
             border: none;
             cursor: pointer;
-            color: #666;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s;
+            margin-right: 2px;
+            flex-shrink: 0;
+        }
+        .cyber-search button:hover {
+            background: #f8d0d0;
         }
 
         .cyber-header-actions {
@@ -269,6 +285,70 @@
             border-bottom: none;
             margin-bottom: 0;
             padding-bottom: 0;
+        }
+        /* Custom Checkbox */
+        .cyber-checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+        }
+        .cyber-checkbox-item input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+        .cyber-checkbox-item input[type="checkbox"]:checked {
+            background-color: #cd1818;
+            border-color: #cd1818;
+        }
+        .cyber-checkbox-item input[type="checkbox"]:checked::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: white;
+            font-size: 11px;
+        }
+        /* Range slider */
+        .range-slider-input::-webkit-slider-thumb {
+            pointer-events: auto;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border: 4px solid #4b5563;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        .custom-price-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #333;
+            outline: none;
+            text-align: right;
+            background: white;
+        }
+        .custom-price-input:focus {
+            border-color: #cd1818;
         }
         .filter-header {
             display: flex;
@@ -788,7 +868,7 @@
     <header class="cyber-header">
         <div class="container">
             <a th:href="${session.user != null and session.user?.role?.name == 'ADMIN' ? '#' : '/'}" class="cyber-logo">
-                <img th:src="@{/images/logo.png}" alt="Cyber World Logo" style="height: 40px; margin-right: 10px;">
+                <img th:src="@{/images/logo.png}" alt="Cyber World Logo" style="height: 40px; margin-right: 0px;">
                 Cyber World
             </a>
             
@@ -866,7 +946,6 @@
                 <a href="/products?factory=HP" class="brand-pill" style="color: #0096d6; font-weight: 800; font-style: italic;">HP</a>
                 <a href="/products?factory=Acer" class="brand-pill" style="color: #82b527; font-weight: 800;">ACER</a>
                 <a href="/products?factory=Lenovo" class="brand-pill" style="color: #e2231a; font-weight: 800;">LENOVO</a>
-                <a href="/products?factory=Colorful" class="brand-pill" style="color: #cd1818; font-weight: 800;">COLORFUL</a>
             </div>
         </div>
 
@@ -922,38 +1001,54 @@
                     <div class="filter-section">
                         <div class="filter-header" onclick="toggleFilter(this)" style="cursor: pointer;">
                             <span>Price Range</span>
-                            <i class="fa-solid fa-chevron-up" style="font-size: 12px; color: #999;"></i>
+                            <i class="fa-solid fa-chevron-up" style="font-size: 14px; color: #333;"></i>
                         </div>
                         <div class="filter-body">
-                            <div class="filter-radio-list">
-                            <label class="filter-radio-item">
-                                <input type="radio" name="priceRange" value="all" checked> All
-                            </label>
-                            <label class="filter-radio-item">
-                                <input type="radio" name="price" value="under10"> Under 10M
-                            </label>
-                            <label class="filter-radio-item">
-                                <input type="radio" name="price" value="10to15"> 10M - 15M
-                            </label>
-                            <label class="filter-radio-item">
-                                <input type="radio" name="price" value="15to20"> 15M - 20M
-                            </label>
-                            <label class="filter-radio-item">
-                                <input type="radio" name="price" value="20to25"> 20M - 25M
-                            </label>
-                            <label class="filter-radio-item">
-                                <input type="radio" name="price" value="25to30"> 25M - 30M
-                            </label>
-                            <label class="filter-radio-item">
-                                <input type="radio" name="price" value="over30"> Over 30M
-                            </label>
-                        </div>
-                        <div style="font-size: 12px; color: #666; margin-top: 15px;">Or enter custom range:</div>
-                        <div class="price-range-inputs">
-                            <input type="number" class="price-input" name="minPrice" placeholder="6.890.000" onkeypress="if(event.keyCode==13) { document.getElementById('filterForm').submit(); return false; }">
-                            <span>-</span>
-                            <input type="number" class="price-input" name="maxPrice" placeholder="199.990.000" onkeypress="if(event.keyCode==13) { document.getElementById('filterForm').submit(); return false; }">
-                        </div>
+                            <div class="filter-checkbox-list">
+                                <label class="cyber-checkbox-item">
+                                    <input type="checkbox" name="price" value="all" th:checked="${param.price == null or #lists.contains(param.price, 'all')}" onchange="if(this.checked) { document.querySelectorAll('input[name=price]:not([value=all])').forEach(cb => cb.checked = false); } else { if(document.querySelectorAll('input[name=price]:checked').length === 0) this.checked = true; }">
+                                    <span>All</span>
+                                </label>
+                                <label class="cyber-checkbox-item">
+                                    <input type="checkbox" name="price" value="10to15" th:checked="${param.price != null and #lists.contains(param.price, '10to15')}" onchange="if(this.checked) document.querySelector('input[name=price][value=all]').checked = false;">
+                                    <span>10M - 15M</span>
+                                </label>
+                                <label class="cyber-checkbox-item">
+                                    <input type="checkbox" name="price" value="15to20" th:checked="${param.price != null and #lists.contains(param.price, '15to20')}" onchange="if(this.checked) document.querySelector('input[name=price][value=all]').checked = false;">
+                                    <span>15M - 20M</span>
+                                </label>
+                                <label class="cyber-checkbox-item">
+                                    <input type="checkbox" name="price" value="20to25" th:checked="${param.price != null and #lists.contains(param.price, '20to25')}" onchange="if(this.checked) document.querySelector('input[name=price][value=all]').checked = false;">
+                                    <span>20M - 25M</span>
+                                </label>
+                                <label class="cyber-checkbox-item">
+                                    <input type="checkbox" name="price" value="25to30" th:checked="${param.price != null and #lists.contains(param.price, '25to30')}" onchange="if(this.checked) document.querySelector('input[name=price][value=all]').checked = false;">
+                                    <span>25M - 30M</span>
+                                </label>
+                                <label class="cyber-checkbox-item">
+                                    <input type="checkbox" name="price" value="over30" th:checked="${param.price != null and #lists.contains(param.price, 'over30')}" onchange="if(this.checked) document.querySelector('input[name=price][value=all]').checked = false;">
+                                    <span>Over 30M</span>
+                                </label>
+                            </div>
+
+                            <div style="font-size: 13px; color: #333; margin-top: 15px; margin-bottom: 10px;">Or enter custom range:</div>
+                            <div class="price-range-custom">
+                                <div class="price-inputs-row" style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="text" id="displayMinPrice" class="custom-price-input" placeholder="0đ" readonly>
+                                    <span style="color: #666; font-size: 14px;">~</span>
+                                    <input type="text" id="displayMaxPrice" class="custom-price-input" placeholder="200.000.000đ" readonly>
+                                </div>
+                                <div class="range-slider" style="position: relative; height: 4px; background: #e5e7eb; border-radius: 4px; margin-top: 25px; margin-bottom: 20px;">
+                                    <div class="range-slider-progress" id="sliderProgress" style="position: absolute; height: 100%; background: #4b5563; left: 0%; right: 0%; border-radius: 4px;"></div>
+                                    <input type="range" id="rangeMin" class="range-slider-input" min="0" max="200" value="0" step="0.5" style="position: absolute; width: 100%; height: 4px; background: none; pointer-events: none; -webkit-appearance: none; outline: none; z-index: 3;">
+                                    <input type="range" id="rangeMax" class="range-slider-input" min="0" max="200" value="200" step="0.5" style="position: absolute; width: 100%; height: 4px; background: none; pointer-events: none; -webkit-appearance: none; outline: none; z-index: 4;">
+                                </div>
+                                
+                                <input type="hidden" name="minPrice" id="minPriceInput" th:value="${param.minPrice != null ? param.minPrice : ''}">
+                                <input type="hidden" name="maxPrice" id="maxPriceInput" th:value="${param.maxPrice != null ? param.maxPrice : ''}">
+                                
+                                <button type="button" onclick="applyCustomPrice()" style="width: 100%; background: white; border: 1px solid #cd1818; color: #cd1818; padding: 6px 0; border-radius: 4px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-top: 5px;">Apply</button>
+                            </div>
                         </div>
                     </div>
 
@@ -966,18 +1061,36 @@
                         </div>
                         <div class="filter-body">
                             <div style="font-size: 13px; font-weight: 600; margin-bottom: 10px; color: #555;">CPU Technology</div>
-                        <div class="filter-radio-list">
                             <label class="filter-radio-item"><input type="checkbox" name="cpu" value="all" th:checked="${param.cpu == null or #arrays.contains(param.cpu, 'all')}"> All</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Apple M5 series" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Apple M5 series')}"> Apple M5 series</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Apple M4 series" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Apple M4 series')}"> Apple M4 series</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Intel Core Ultra X" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Intel Core Ultra X')}"> Intel Core Ultra X</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Intel Core Ultra 9" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Intel Core Ultra 9')}"> Intel Core Ultra 9</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Intel Core Ultra 7" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Intel Core Ultra 7')}"> Intel Core Ultra 7</label>
-                        </div>
-                        <a href="#" style="display: block; text-align: center; color: #007bff; font-size: 13px; margin-top: 10px; text-decoration: none;" onclick="document.getElementById('cpuMoreList').style.display='block'; this.style.display='none'; return false;">Show more <i class="fa-solid fa-chevron-down"></i></a>
-                        <div class="filter-radio-list" id="cpuMoreList" style="display: none;">
-                            <label class="filter-radio-item"><input type="checkbox" name="cpuType" value="CPU hậu tố H"> H-Series CPU</label>
-                        </div>
+                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Intel Core i3" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Intel Core i3')}"> Intel Core i3</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Intel Core i5" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Intel Core i5')}"> Intel Core i5</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Intel Core i7" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Intel Core i7')}"> Intel Core i7</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Intel Core i9" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Intel Core i9')}"> Intel Core i9</label>
+                            
+                            <div class="cpu-group">
+                                <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Apple M1 Series" onchange="document.getElementById('m1-sub').style.display = this.checked ? 'block' : 'none'" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Apple M1 Series')}"> Apple M1 Series</label>
+                                <div id="m1-sub" th:style="${param.cpu != null and #arrays.contains(param.cpu, 'Apple M1 Series') ? 'margin-left: 25px; display: block;' : 'margin-left: 25px; display: none;'}">
+                                    <label class="filter-radio-item" style="margin-bottom: 5px;"><input type="checkbox" name="cpu" value="Apple M1 Pro" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Apple M1 Pro')}"> Apple M1 Pro</label>
+                                    <label class="filter-radio-item" style="margin-bottom: 5px;"><input type="checkbox" name="cpu" value="Apple M1 Pro Max" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Apple M1 Pro Max')}"> Apple M1 Pro Max</label>
+                                    <label class="filter-radio-item" style="margin-bottom: 5px;"><input type="checkbox" name="cpu" value="Apple M1 Ultra" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Apple M1 Ultra')}"> Apple M1 Ultra</label>
+                                </div>
+                            </div>
+                            
+                            <div class="cpu-group">
+                                <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Apple M2 Series" onchange="document.getElementById('m2-sub').style.display = this.checked ? 'block' : 'none'" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Apple M2 Series')}"> Apple M2 Series</label>
+                                <div id="m2-sub" th:style="${param.cpu != null and #arrays.contains(param.cpu, 'Apple M2 Series') ? 'margin-left: 25px; display: block;' : 'margin-left: 25px; display: none;'}">
+                                    <label class="filter-radio-item" style="margin-bottom: 5px;"><input type="checkbox" name="cpu" value="Apple M2 Pro" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Apple M2 Pro')}"> Apple M2 Pro</label>
+                                    <label class="filter-radio-item" style="margin-bottom: 5px;"><input type="checkbox" name="cpu" value="Apple M2 Max" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Apple M2 Max')}"> Apple M2 Max</label>
+                                </div>
+                            </div>
+
+                            <div class="cpu-group">
+                                <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Apple M3 Series" onchange="document.getElementById('m3-sub').style.display = this.checked ? 'block' : 'none'" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Apple M3 Series')}"> Apple M3 Series</label>
+                                <div id="m3-sub" th:style="${param.cpu != null and #arrays.contains(param.cpu, 'Apple M3 Series') ? 'margin-left: 25px; display: block;' : 'margin-left: 25px; display: none;'}">
+                                    <label class="filter-radio-item" style="margin-bottom: 5px;"><input type="checkbox" name="cpu" value="Apple M3 Pro" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Apple M3 Pro')}"> Apple M3 Pro</label>
+                                    <label class="filter-radio-item" style="margin-bottom: 5px;"><input type="checkbox" name="cpu" value="Apple M3 Max" th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Apple M3 Max')}"> Apple M3 Max</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -1044,41 +1157,34 @@
                         <div class="filter-body">
                             <div class="filter-radio-list">
                             <label class="filter-radio-item"><input type="checkbox" name="screen" value="all" th:checked="${param.screen == null or #arrays.contains(param.screen, 'all')}"> All</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="screen" value="Under 14 inch" th:checked="${param.screen != null and #arrays.contains(param.screen, 'Under 14 inch')}"> Under 14 inch</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="screen" value="14 - 15 inch" th:checked="${param.screen != null and #arrays.contains(param.screen, '14 - 15 inch')}"> 14 - 15 inch</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="screen" value="15 - 17 inch" th:checked="${param.screen != null and #arrays.contains(param.screen, '15 - 17 inch')}"> 15 - 17 inch</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="screen" value="&lt;= 14 inch" th:checked="${param.screen != null and #arrays.contains(param.screen, '<= 14 inch')}"> &lt;= 14 inch</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="screen" value="15 - 16 inch" th:checked="${param.screen != null and #arrays.contains(param.screen, '15 - 16 inch')}"> 15 - 16 inch</label>
+                            <label class="filter-radio-item"><input type="checkbox" name="screen" value="17 - 18 inch" th:checked="${param.screen != null and #arrays.contains(param.screen, '17 - 18 inch')}"> 17 - 18 inch</label>
                         </div>
                         </div>
                     </div>
                     
-                    <!-- Refresh Rate -->
+
+                    <!-- Color -->
                     <div class="filter-section">
                         <div class="filter-header" onclick="toggleFilter(this)" style="cursor: pointer;">
-                            <span>Refresh Rate <i class="fa-regular fa-circle-question" style="color: #999; font-size: 12px; margin-left: 5px;"></i></span>
-                            <i class="fa-solid fa-chevron-up" style="font-size: 12px; color: #999;"></i>
-                        </div>
-                        <div class="filter-body">
-                            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                            <label style="border: 1px solid #ddd; padding: 5px 10px; border-radius: 4px; font-size: 13px; cursor: pointer; color: #555; display: flex; align-items: center; gap: 5px;"><input type="checkbox" name="hz" value="<= 120 Hz" th:checked="${param.hz != null and #arrays.contains(param.hz, '<= 120 Hz')}"> &le; 120 Hz</label>
-                            <label style="border: 1px solid #ddd; padding: 5px 10px; border-radius: 4px; font-size: 13px; cursor: pointer; color: #555; display: flex; align-items: center; gap: 5px;"><input type="checkbox" name="hz" value="144 Hz" th:checked="${param.hz != null and #arrays.contains(param.hz, '144 Hz')}"> 144 Hz</label>
-                            <label style="border: 1px solid #ddd; padding: 5px 10px; border-radius: 4px; font-size: 13px; cursor: pointer; color: #555; display: flex; align-items: center; gap: 5px;"><input type="checkbox" name="hz" value="165 Hz" th:checked="${param.hz != null and #arrays.contains(param.hz, '165 Hz')}"> 165 Hz</label>
-                            <label style="border: 1px solid #ddd; padding: 5px 10px; border-radius: 4px; font-size: 13px; cursor: pointer; color: #555; display: flex; align-items: center; gap: 5px;"><input type="checkbox" name="hz" value="240 Hz" th:checked="${param.hz != null and #arrays.contains(param.hz, '240 Hz')}"> 240 Hz</label>
-                        </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Security -->
-                    <div class="filter-section">
-                        <div class="filter-header" onclick="toggleFilter(this)" style="cursor: pointer;">
-                            <span>Security</span>
+                            <span>Color</span>
                             <i class="fa-solid fa-chevron-up" style="font-size: 12px; color: #999;"></i>
                         </div>
                         <div class="filter-body">
                             <div class="filter-radio-list">
-                            <label class="filter-radio-item"><input type="checkbox" name="security" value="all" th:checked="${param.security == null or #arrays.contains(param.security, 'all')}"> All</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="security" value="Fingerprint" th:checked="${param.security != null and #arrays.contains(param.security, 'Fingerprint')}"> Fingerprint</label>
-                            <label class="filter-radio-item"><input type="checkbox" name="security" value="Face ID" th:checked="${param.security != null and #arrays.contains(param.security, 'Face ID')}"> Face ID</label>
-                        </div>
+                                <label class="filter-radio-item"><input type="checkbox" name="color" value="all" th:checked="${param.color == null or #arrays.contains(param.color, 'all')}"> All</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="color" value="Black" th:checked="${param.color != null and #arrays.contains(param.color, 'Black')}"> Black</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="color" value="White" th:checked="${param.color != null and #arrays.contains(param.color, 'White')}"> White</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="color" value="Silver" th:checked="${param.color != null and #arrays.contains(param.color, 'Silver')}"> Silver</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="color" value="Gray" th:checked="${param.color != null and #arrays.contains(param.color, 'Gray')}"> Gray</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="color" value="Space Gray" th:checked="${param.color != null and #arrays.contains(param.color, 'Space Gray')}"> Space Gray</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="color" value="Blue" th:checked="${param.color != null and #arrays.contains(param.color, 'Blue')}"> Blue</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="color" value="Green" th:checked="${param.color != null and #arrays.contains(param.color, 'Green')}"> Green</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="color" value="Pink" th:checked="${param.color != null and #arrays.contains(param.color, 'Pink')}"> Pink</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="color" value="Gold" th:checked="${param.color != null and #arrays.contains(param.color, 'Gold')}"> Gold</label>
+                                <label class="filter-radio-item"><input type="checkbox" name="color" value="Purple" th:checked="${param.color != null and #arrays.contains(param.color, 'Purple')}"> Purple</label>
+                            </div>
                         </div>
                     </div>
                     
@@ -1119,7 +1225,7 @@
                         const form = document.getElementById('filterForm');
                         if (form) {
                             form.addEventListener('change', function(e) {
-                                if (e.target.type !== 'range') {
+                                if (e.target.type !== 'range' && e.target.type !== 'number') {
                                     form.submit();
                                 }
                             });
@@ -1133,18 +1239,18 @@
                 
                 <div class="products-header">
                     <div class="trending-tags">
-                        <span class="trending-label">Xu hướng:</span>
-                        <a href="#" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #00539b;"></i> ASUS</a>
-                        <a href="#" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #555;"></i> <i class="fa-brands fa-apple"></i></a>
-                        <a href="#" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #cd1818;"></i> Từ 15 - 20 triệu</a>
-                        <a href="#" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #f39c12;"></i> Gaming - Đồ họa</a>
-                        <a href="#" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #7000ff;"></i> AI</a>
-                        <a href="#" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #555;"></i> Apple M5 series</a>
+                        <span class="trending-label">Trending:</span>
+                        <a href="/products?factory=ASUS" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #00539b;"></i> ASUS</a>
+                        <a href="/products?factory=APPLE" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #555;"></i> <i class="fa-brands fa-apple"></i></a>
+                        <a href="/products?price=15to20" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #cd1818;"></i> 15 - 20 million</a>
+                        <a href="/products?target=Gaming" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #f39c12;"></i> Gaming - Graphic</a>
+                        <a href="/products?target=AI" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #7000ff;"></i> AI</a>
+                        <a href="/products?cpu=Apple M5 Series" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #555;"></i> Apple M5 series</a>
                     </div>
                 </div>
                 
                 <div class="products-header" style="border-bottom: 1px solid #ddd; padding-bottom: 15px;">
-                    <div class="result-count">Found <span style="color: #cd1818;">440</span> results</div>
+                    <div class="result-count">Found <span style="color: #cd1818;" th:text="${totalElements}">0</span> Products</div>
                     <div class="sort-bar">
                         <a th:href="@{/products(sort='featured', factory=${param.factory}, target=${param.target}, priceRange=${param.priceRange})}" class="sort-link" th:classappend="${param.sort == null or param.sort[0] == 'featured' ? 'active' : ''}">Featured</a>
                         <span style="color: #ccc;">•</span>
@@ -1163,7 +1269,7 @@
                         
                         <!-- Image -->
                         <div class="product-image-wrapper">
-                            <img th:src="@{'/images/product/' + ${product.image}}" alt="Product">
+                            <img th:src="@{${product.firstImage}}" alt="Product">
                             
                             <!-- Side Feature Icons (Mockup style) -->
                             <div class="feature-icons-right">
@@ -1178,37 +1284,28 @@
                             </div>
                         </div>
                         
+                        <a th:href="@{'/product/' + ${product.id}}" class="product-name" style="font-weight: 700; display: block; margin-bottom: 10px; min-height: 40px; text-decoration: none;" th:text="${product.name}">Laptop Acer Aspire Lite 14 AI AL14-53P-5387 Ultra5 115U</a>
+                        
                         <!-- Info -->
-                        <div class="product-price-section">
-                            <div class="old-price-row">
-                                <span class="old-price" th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'COMMA', 0, 'POINT')} + 'đ'">24.990.000đ</span>
-                                <span class="discount-percent">-10%</span>
+                        <div class="product-price-section" style="margin-top: 10px; margin-bottom: 15px;">
+                            <div class="old-price-row" style="margin-bottom: 3px;">
+                                <span class="old-price" style="text-decoration: line-through; color: #999; font-size: 13px;" th:text="${#numbers.formatDecimal(product.originalPrice > 0 ? product.originalPrice : product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + 'đ'">24.990.000đ</span>
+                                <span class="discount-percent" style="background: #ffebe6; color: #cd1818; font-size: 11px; padding: 2px 5px; border-radius: 4px; font-weight: bold; margin-left: 5px;" th:text="'-' + ${#numbers.formatDecimal(100 - (product.price * 100 / (product.originalPrice > 0 ? product.originalPrice : (product.price > 0 ? product.price * 1.1 : 1))), 1, 0)} + '%'">-10%</span>
                             </div>
-                            <div class="current-price" th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 0, 'POINT')} + 'đ'">22.490.000đ</div>
-                            <div class="discount-amount">Save 2.500.000đ</div>
-                            <div class="countdown"><i class="fa-regular fa-clock"></i> Ends in 03 days 13:40:51</div>
+                            <div class="current-price" style="color: #cd1818; font-size: 18px; font-weight: 700; margin-bottom: 3px;" th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + 'đ'">22.490.000đ</div>
+                            <div class="discount-amount" style="color: #28a745; font-size: 13px; font-weight: 600; margin-bottom: 5px;" th:text="'Save: ' + ${#numbers.formatDecimal((product.originalPrice > 0 ? product.originalPrice : (product.price > 0 ? product.price * 1.1 : 1)) - product.price, 1, 'POINT', 0, 'COMMA')} + 'đ'">Save: 2.500.000đ</div>
+                            <div class="countdown-timer" th:if="${product.promoEndDate != null and product.promoEndDate != ''}" style="font-size: 13px; color: #f39c12; font-weight: 600; margin-top: 5px; display: flex; align-items: center; gap: 5px;" th:data-endtime="${product.promoEndDate}">
+                                <i class="fa-regular fa-clock"></i> -- days --h --m --s
+                            </div>
                         </div>
                         
-                        <a th:href="@{'/product/' + ${product.id}}" class="product-name" th:text="${product.name}">Laptop Acer Aspire Lite 14 AI AL14-53P-5387 Ultra5 115U</a>
-                        
-                        <!-- Payment Logos -->
-                        <div class="payment-logos">
-                            <img th:src="@{/images/product/default.png}" style="width:30px; height:auto; object-fit:contain; border:none;" alt="ZaloPay" title="ZaloPay">
-                            <img th:src="@{/images/product/default.png}" style="width:30px; height:auto; object-fit:contain; border:none;" alt="MoMo" title="MoMo">
-                            <img th:src="@{/images/product/default.png}" style="width:30px; height:auto; object-fit:contain; border:none;" alt="VNPAY" title="VNPAY">
-                        </div>
-                        
-                        <div class="promo-box">
-                            Save 100.000đ for orders over 6M when paying via Postpaid Wallet...
-                        </div>
-                        
-                        <div class="card-actions" onclick="event.stopPropagation();">
+                        <div class="card-actions" th:if="${session.user == null or session.user?.role?.name == 'USER'}" onclick="event.stopPropagation();" style="margin-top: auto;">
                             <form th:action="@{/add-product-to-cart/{id}(id=${product.id})}" method="post" style="width: 100%; margin: 0;">
                                 <input type="hidden" name="id" th:value="${product.id}" />
                                 <button type="submit" class="btn-add-cart">Add to Cart</button>
                             </form>
                         </div>
-                        <a href="#" class="compare-link" onclick="event.stopPropagation();"><i class="fa-regular fa-circle-plus"></i> Add to Compare</a>
+                        <a href="#" class="compare-link" onclick="event.stopPropagation();" style="margin-top: 10px;"><i class="fa-regular fa-circle-plus"></i> Add to Compare</a>
                         
                     </div>
                 </div>
@@ -1509,7 +1606,7 @@
     <!-- Cart Notification Toast -->
     <div th:if="${cartMessage != null}" id="cartToast" style="position: fixed; top: 80px; right: 20px; background-color: #28a745; color: white; padding: 15px 25px; border-radius: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100000; display: flex; align-items: center; gap: 10px; animation: slideIn 0.5s, fadeOut 0.5s 2.5s forwards;">
         <i class="fa-solid fa-check-circle" style="font-size: 20px;"></i>
-        <span th:text="${cartMessage}">Thêm thành công</span>
+        <span th:text="${cartMessage}">Item successfully added to your cart!</span>
     </div>
 
     <style>
@@ -1529,6 +1626,99 @@
                 toast.style.display = 'none';
             }
         }, 3000);
+
+        document.addEventListener("DOMContentLoaded", function() {
+            function updateCountdowns() {
+                const timers = document.querySelectorAll(".countdown-timer");
+                timers.forEach(timer => {
+                    const endTimeStr = timer.getAttribute("data-endtime");
+                    if (!endTimeStr) {
+                        timer.innerHTML = `<i class="fa-regular fa-clock"></i> Expired`;
+                        return;
+                    }
+                    const endTime = new Date(endTimeStr).getTime();
+                    const now = new Date().getTime();
+                    const diff = endTime - now;
+                    if (diff <= 0) {
+                        timer.innerHTML = `<i class="fa-regular fa-clock"></i> Expired`;
+                        return;
+                    }
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                    
+                    timer.innerHTML = `<i class="fa-regular fa-clock"></i> ${days} days ${hours}h ${minutes}m ${seconds}s`;
+                });
+            }
+            updateCountdowns();
+            setInterval(updateCountdowns, 1000);
+
+            // Dual Range Slider Logic
+            const rangeMin = document.getElementById("rangeMin");
+            const rangeMax = document.getElementById("rangeMax");
+            const sliderProgress = document.getElementById("sliderProgress");
+            const displayMinPrice = document.getElementById("displayMinPrice");
+            const displayMaxPrice = document.getElementById("displayMaxPrice");
+            const minPriceInput = document.getElementById("minPriceInput");
+            const maxPriceInput = document.getElementById("maxPriceInput");
+
+            function formatVND(valueInMillions) {
+                return new Intl.NumberFormat('vi-VN').format(valueInMillions * 1000000) + 'đ';
+            }
+
+            function updateSliders(isInit = false) {
+                if(!rangeMin || !rangeMax) return;
+                
+                let minVal = parseFloat(rangeMin.value);
+                let maxVal = parseFloat(rangeMax.value);
+
+                if (minVal > maxVal - 0.5) {
+                    if (document.activeElement === rangeMin) {
+                        rangeMin.value = maxVal - 0.5;
+                        minVal = parseFloat(rangeMin.value);
+                    } else {
+                        rangeMax.value = minVal + 0.5;
+                        maxVal = parseFloat(rangeMax.value);
+                    }
+                }
+
+                let percentMin = (minVal / 200) * 100;
+                let percentMax = (maxVal / 200) * 100;
+
+                sliderProgress.style.left = percentMin + "%";
+                sliderProgress.style.right = (100 - percentMax) + "%";
+
+                displayMinPrice.value = formatVND(minVal);
+                displayMaxPrice.value = formatVND(maxVal);
+
+                if (!isInit) {
+                    minPriceInput.value = minVal;
+                    maxPriceInput.value = maxVal;
+                }
+            }
+
+            if(rangeMin && rangeMax) {
+                rangeMin.addEventListener("input", () => updateSliders());
+                rangeMax.addEventListener("input", () => updateSliders());
+
+                // Initialize from existing hidden inputs if any
+                if (minPriceInput.value) {
+                    rangeMin.value = parseFloat(minPriceInput.value);
+                }
+                if (maxPriceInput.value) {
+                    rangeMax.value = parseFloat(maxPriceInput.value);
+                }
+                updateSliders(true);
+            }
+        });
+
+        function applyCustomPrice() {
+            // Uncheck "all" if submitting custom price
+            let allCb = document.querySelector('input[name=price][value=all]');
+            if(allCb) allCb.checked = false;
+            document.getElementById('filterForm').submit();
+        }
     </script>
     <script>
         function submitContactForm(event) {
