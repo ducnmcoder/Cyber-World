@@ -32,8 +32,8 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         Map<String, String> roleTargetUrlMap = new HashMap<>();
         roleTargetUrlMap.put("ROLE_USER", "/");
         roleTargetUrlMap.put("ROLE_ADMIN", "/admin/user");
-        roleTargetUrlMap.put("ROLE_OWNER", "/admin");
-        roleTargetUrlMap.put("ROLE_STAFF", "/staff/order");
+        roleTargetUrlMap.put("ROLE_OWNER", "/owner");
+        roleTargetUrlMap.put("ROLE_STAFF", "/staff");
 
         // First, try matching from Spring Security authorities
         final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();

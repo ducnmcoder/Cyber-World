@@ -47,14 +47,14 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <c:forEach var="order" items="${orders}">
+                                                    <c:forEach var="order" items="${orders}" varStatus="loop">
                                                         <tr>
-                                                            <th>${order.id}</th>
+                                                            <th>${loop.index + 1 + (currentPage - 1) * 10}</th>
                                                             <td>
                                                                 <fmt:formatNumber type="number"
                                                                     value="${order.totalPrice}" /> đ
                                                             </td>
-                                                            <td>${order.user.fullName}</td>
+                                                            <td>${order.user != null ? order.user.email : order.receiverName}</td>
                                                             <td>${order.status}</td>
                                                             <td>
                                                                 <a href="/admin/order/${order.id}"
@@ -79,16 +79,18 @@
                                                             <span aria-hidden="true">&laquo;</span>
                                                         </a>
                                                     </li>
-                                                    <c:forEach begin="0" end="${totalPages - 1}" varStatus="loop">
-                                                        <li class="page-item">
-                                                            <a class="${(loop.index + 1) eq currentPage ? 'active page-link' : 'page-link'}"
-                                                                href="/admin/order?page=${loop.index + 1}">
-                                                                ${loop.index + 1}
-                                                            </a>
-                                                        </li>
-                                                    </c:forEach>
+                                                    <c:if test="${totalPages > 0}">
+                                                        <c:forEach begin="0" end="${totalPages - 1}" varStatus="loop">
+                                                            <li class="page-item">
+                                                                <a class="${(loop.index + 1) eq currentPage ? 'active page-link' : 'page-link'}"
+                                                                    href="/admin/order?page=${loop.index + 1}">
+                                                                    ${loop.index + 1}
+                                                                </a>
+                                                            </li>
+                                                        </c:forEach>
+                                                    </c:if>
                                                     <li class="page-item">
-                                                        <a class="${totalPages eq currentPage ? 'disabled page-link' : 'page-link'}"
+                                                        <a class="${(totalPages == 0) or (totalPages eq currentPage) ? 'disabled page-link' : 'page-link'}"
                                                             href="/admin/order?page=${currentPage + 1}"
                                                             aria-label="Next">
                                                             <span aria-hidden="true">&raquo;</span>
@@ -97,9 +99,7 @@
                                                 </ul>
                                             </nav>
                                         </div>
-
                                     </div>
-
                                 </div>
                             </div>
                         </main>
@@ -109,7 +109,6 @@
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
                     crossorigin="anonymous"></script>
                 <script src="/js/scripts.js"></script>
-
             </body>
 
             </html>

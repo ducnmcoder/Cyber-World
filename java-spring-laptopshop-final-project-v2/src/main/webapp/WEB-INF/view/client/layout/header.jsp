@@ -1,128 +1,225 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!-- CyberWorld Header -->
-<header class="navbar">
-    <div class="container d-flex align-center justify-between">
-        <!-- Logo -->
-        <div class="logo">
-            <c:choose>
-                <c:when test="${pageContext.request.isUserInRole('ROLE_OWNER')}">
-                    <a href="javascript:void(0)" onclick="return false;" class="d-flex align-center gap-sm" style="cursor: default;">
-                        <img src="/images/logo.png" alt="CyberWorld" style="height: 32px;" onerror="this.src='https://via.placeholder.com/32?text=CW'" />
-                        <span class="text-primary" style="font-weight: 700; font-size: 1.25rem;">CyberWorld</span>
-                    </a>
-                </c:when>
-                <c:otherwise>
-                    <a href="/" class="d-flex align-center gap-sm">
-                        <img src="/images/logo.png" alt="CyberWorld" style="height: 32px;" onerror="this.src='https://via.placeholder.com/32?text=CW'" />
-                        <span class="text-primary" style="font-weight: 700; font-size: 1.25rem;">CyberWorld</span>
-                    </a>
-                </c:otherwise>
-            </c:choose>
-        </div>
 
-        <!-- Navigation Links -->
-        <nav class="nav-links d-flex align-center">
-            <a href="/products" class="active">Laptops</a>
-            <a href="/products?category=phones">Phones</a>
-            <a href="/products?category=components">Components</a>
-            <a href="/products?category=gaming">Gaming</a>
-            <a href="/products?category=monitors">Monitors</a>
-            <a href="/products?category=accessories">Accessories</a>
-        </nav>
+<!-- Include FontAwesome 6 explicitly for the new icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        <!-- Right Actions -->
-        <div class="d-flex align-center gap-md">
-            <!-- Search -->
-            <div class="search-bar d-flex align-center" style="background: rgba(255,255,255,0.05); border-radius: var(--radius-xl); padding: 0.35rem 1rem; border: 1px solid var(--border-color);">
-                <i class="fas fa-search text-secondary" style="font-size: 0.875rem;"></i>
-                <input type="text" placeholder="Search products, brands..." style="padding-left: 0.75rem; font-size: 0.875rem; color: var(--text-primary); width: 220px; background: transparent; border: none; outline: none;">
-            </div>
+<style>
+    .cyber-header {
+        background-color: #cd1818;
+        color: white;
+        padding: 10px 0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        position: sticky;
+        top: 0;
+        z-index: 99999;
+    }
+    .cyber-header .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .cyber-logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .cyber-search {
+        flex-grow: 1;
+        margin: 0 40px;
+        position: relative;
+        max-width: 500px;
+    }
+    .cyber-search input {
+        width: 100%;
+        padding: 10px 40px 10px 15px;
+        border-radius: 20px;
+        border: none;
+        outline: none;
+        color: #111;
+    }
+    .cyber-search button {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #666;
+    }
+    .cyber-header-actions {
+        display: flex;
+        gap: 15px;
+    }
+    .cyber-action-btn {
+        display: flex;
+        align-items: center;
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+        gap: 8px;
+        background: #000000;
+        padding: 10px 18px;
+        border-radius: 8px;
+        transition: background 0.2s;
+        border: none;
+    }
+    .cyber-action-btn:hover {
+        background: #333333;
+        color: white;
+    }
 
-            <c:if test="${not empty pageContext.request.userPrincipal}">
-                <a href="/cart" style="position: relative; color: var(--text-secondary); margin-inline: 0.5rem; transition: color var(--transition-fast);">
-                    <i class="fas fa-shopping-cart" style="font-size: 1.1rem;"></i>
-                    <span style="position: absolute; top: -8px; right: -10px; background: var(--accent-blue); color: white; font-size: 0.65rem; padding: 2px 6px; border-radius: 12px; font-weight: 600;">
-                        ${sessionScope.sum != null ? sessionScope.sum : '0'}
-                    </span>
+    .cyber-menu-btn {
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 5px 10px;
+        transition: 0.2s;
+    }
+    .cyber-menu-btn:hover {
+        opacity: 0.8;
+    }
+
+    /* Dropdown Menu */
+    .cyber-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    .cyber-dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        background-color: #fff;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1000;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .cyber-dropdown-content a {
+        color: #333;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        transition: background 0.2s;
+        text-align: left;
+    }
+    .cyber-dropdown-content a i {
+        margin-right: 8px;
+        width: 16px;
+        text-align: center;
+    }
+    .cyber-dropdown-content a:hover {
+        background-color: #f1f2f6;
+        color: #cd1818;
+    }
+    .cyber-dropdown:hover .cyber-dropdown-content {
+        display: block;
+    }
+</style>
+
+<header class="cyber-header">
+    <div class="container">
+        <c:choose>
+            <c:when test="${sessionScope.user != null and sessionScope.user.role.name == 'ADMIN'}">
+                <a href="#" class="cyber-logo">
+            </c:when>
+            <c:otherwise>
+                <a href="/" class="cyber-logo">
+            </c:otherwise>
+        </c:choose>
+            <img src="/images/logo.png" alt="Cyber World Logo" style="height: 40px; margin-right: 10px;">
+            Cyber World
+        </a>
+        
+        <form class="cyber-search" action="/products" method="get">
+            <input type="text" name="name" placeholder="Search laptops, accessories...">
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+
+        <div class="cyber-header-actions" style="align-items: center;">
+            <!-- Order history for USER only -->
+            <c:if test="${sessionScope.user != null and sessionScope.user.role.name == 'USER'}">
+                <a href="/order-history" class="cyber-action-btn" title="Order History">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
                 </a>
-                
-                <div class="dropdown" style="position: relative;">
-                    <a href="#" style="color: var(--text-secondary); transition: color var(--transition-fast);" id="userDropdownTrigger">
-                        <i class="fas fa-user" style="font-size: 1.1rem;"></i>
-                    </a>
-                    <!-- Custom Dropdown Menu -->
-                    <div class="dropdown-menu" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 1rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; width: 260px; z-index: 100; box-shadow: var(--shadow-soft);">
-                        <div class="d-flex flex-col align-center text-center">
-                            <img style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-bottom: 0.75rem; border: 2px solid var(--border-color);" src="/images/avatar/${sessionScope.avatar}" onerror="this.src='https://ui-avatars.com/api/?name=${sessionScope.fullName}&background=random'" />
-                            <span class="text-primary" style="font-weight: 600; font-size: 1rem;"><c:out value="${sessionScope.fullName}" /></span>
-                            <span class="text-secondary" style="font-size: 0.8rem; margin-top: 0.25rem;">Member</span>
-                        </div>
-                        <hr style="border: none; border-top: 1px solid var(--border-color); margin: 1.25rem 0;">
-                        <ul class="d-flex flex-col gap-sm" style="padding: 0;">
-                            <li>
-                                <c:choose>
-                                    <c:when test="${pageContext.request.isUserInRole('ROLE_OWNER')}">
-                                        <a href="/admin" class="text-secondary" style="display: block; padding: 0.5rem; border-radius: var(--radius-sm); font-size: 0.875rem;">Manage Account</a>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <a href="/account/manage" class="text-secondary" style="display: block; padding: 0.5rem; border-radius: var(--radius-sm); font-size: 0.875rem;">Manage Account</a>
-                                    </c:otherwise>
-                                </c:choose>
-                            </li>
-                            <li><a href="/order-history" class="text-secondary" style="display: block; padding: 0.5rem; border-radius: var(--radius-sm); font-size: 0.875rem;">Order History</a></li>
-                            <li>
-                                <form method="post" action="/logout" style="margin: 0;">
-                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                                    <button class="text-secondary" style="display: block; padding: 0.5rem; width: 100%; text-align: left; cursor: pointer; border-radius: var(--radius-sm); font-size: 0.875rem; background: none; border: none;">Logout</button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
+            </c:if>
+            
+            <!-- Cart for USER and Guest -->
+            <c:if test="${sessionScope.user == null or sessionScope.user.role.name == 'USER'}">
+                <a href="/cart" class="cyber-action-btn" title="Cart">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span style="margin-left: 5px; font-weight: bold;">${sessionScope.sum != null ? sessionScope.sum : 0}</span>
+                </a>
+            </c:if>
+
+            <!-- Dashboard for STAFF -->
+            <c:if test="${sessionScope.user != null and sessionScope.user.role.name == 'STAFF'}">
+                <a href="/staff" class="cyber-action-btn" title="Dashboard">
+                    <i class="fa-solid fa-table-columns"></i>
+                </a>
+            </c:if>
+
+            <!-- Dashboard for OWNER -->
+            <c:if test="${sessionScope.user != null and sessionScope.user.role.name == 'OWNER'}">
+                <a href="/owner" class="cyber-action-btn" title="Dashboard">
+                    <i class="fa-solid fa-table-columns"></i>
+                </a>
+            </c:if>
+
+            <!-- Role / Logout Button for ADMIN, OWNER, STAFF -->
+            <c:if test="${sessionScope.user != null and sessionScope.user.role.name != 'USER'}">
+                <form method="post" action="/logout" style="margin: 0;">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                    <button type="submit" class="cyber-action-btn" title="Logout" style="cursor: pointer; font-family: inherit;">
+                        <i class="fa-solid fa-user-shield"></i>
+                        <span style="margin: 0 5px; color: white;">${sessionScope.user.role.name}</span>
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                    </button>
+                </form>
+            </c:if>
+
+            <!-- Account / Logout Button for USER and Guest -->
+            <c:if test="${sessionScope.user == null}">
+                <a href="/login" class="cyber-action-btn" title="Account">
+                    <i class="fa-solid fa-user"></i>
+                </a>
+            </c:if>
+            <c:if test="${sessionScope.user != null and sessionScope.user.role.name == 'USER'}">
+                <form method="post" action="/logout" style="margin: 0;">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                    <button type="submit" class="cyber-action-btn" title="Logout" style="cursor: pointer; font-family: inherit;">
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                    </button>
+                </form>
+            </c:if>
+
+            <!-- Hamburger Menu -->
+            <div class="cyber-dropdown" style="margin-left: 10px;">
+                <button class="cyber-menu-btn" title="Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="cyber-dropdown-content">
+                    <a href="/blog"><i class="fa-solid fa-blog"></i> Blog</a>
+                    <a href="#footer" onclick="document.getElementById('footer').scrollIntoView({behavior: 'smooth'})"><i class="fa-solid fa-envelope"></i> Contact</a>
+                    <a href="#footer" onclick="document.getElementById('footer').scrollIntoView({behavior: 'smooth'})"><i class="fa-solid fa-circle-info"></i> About Us</a>
+                    <c:if test="${sessionScope.user != null and sessionScope.user.role.name == 'USER'}">
+                        <a href="/account/manage"><i class="fa-solid fa-user-gear"></i> Manage Account</a>
+                    </c:if>
                 </div>
-            </c:if>
-            <c:if test="${empty pageContext.request.userPrincipal}">
-                <a href="/login" class="btn btn-primary" style="margin-left: 0.5rem;">Sign In</a>
-            </c:if>
+            </div>
         </div>
     </div>
 </header>
-<!-- Simple inline script for dropdown toggle since we removed bootstrap.js -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const userDropdownTrigger = document.getElementById('userDropdownTrigger');
-        if (userDropdownTrigger) {
-            userDropdownTrigger.addEventListener('click', function(e) {
-                e.preventDefault();
-                const menu = this.nextElementSibling;
-                if (menu.style.display === 'none' || menu.style.display === '') {
-                    menu.style.display = 'block';
-                    this.style.color = 'var(--text-primary)';
-                } else {
-                    menu.style.display = 'none';
-                    this.style.color = 'var(--text-secondary)';
-                }
-            });
-            // Click outside to close
-            document.addEventListener('click', function(e) {
-                if (!userDropdownTrigger.contains(e.target) && !userDropdownTrigger.nextElementSibling.contains(e.target)) {
-                    userDropdownTrigger.nextElementSibling.style.display = 'none';
-                    userDropdownTrigger.style.color = 'var(--text-secondary)';
-                }
-            });
-            
-            // Hover effects on dropdown items
-            const dropdownLinks = userDropdownTrigger.nextElementSibling.querySelectorAll('a, button');
-            dropdownLinks.forEach(link => {
-                link.addEventListener('mouseenter', function() {
-                    this.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
-                    this.style.color = 'var(--text-primary)';
-                });
-                link.addEventListener('mouseleave', function() {
-                    this.style.backgroundColor = 'transparent';
-                    this.style.color = 'var(--text-secondary)';
-                });
-            });
-        }
-    });
-</script>

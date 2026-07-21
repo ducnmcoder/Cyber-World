@@ -1,87 +1,249 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!-- Footer Start -->
-<footer style="margin-top: var(--spacing-2xl); border-top: 1px solid var(--border-color); padding-top: var(--spacing-2xl);">
+<style>
+    .cyber-footer {
+        background: #111;
+        color: #eee;
+        padding: 50px 0 20px 0;
+        margin-top: 50px;
+        font-size: 14px;
+        font-family: 'Inter', sans-serif;
+    }
+    .cyber-footer .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 30px;
+    }
+    .cyber-footer .footer-col h4 {
+        font-size: 16px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+    .cyber-footer .footer-col ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .cyber-footer .footer-col ul li {
+        margin-bottom: 10px;
+    }
+    .cyber-footer .footer-col ul li a {
+        color: #bbb;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+    .cyber-footer .footer-col ul li a:hover {
+        color: #fff;
+    }
+    .cyber-footer .footer-hotline {
+        font-size: 20px;
+        font-weight: 800;
+        color: #cd1818;
+        display: block;
+        margin-bottom: 15px;
+    }
+    .cyber-footer .footer-bottom {
+        text-align: center;
+        border-top: 1px solid #333;
+        margin-top: 40px;
+        padding-top: 20px;
+        color: #777;
+    }
+    
+    /* Contact Form Styles */
+    .contact-section {
+        max-width: 800px;
+        margin: 40px auto 0;
+        padding: 0 15px;
+    }
+    .contact-title {
+        color: #8bc34a;
+        font-size: 24px;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+    .contact-form .form-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 15px;
+    }
+    @media (max-width: 768px) {
+        .contact-form .form-row {
+            flex-direction: column;
+        }
+    }
+    .contact-form .form-group {
+        flex: 1;
+        margin-bottom: 15px;
+    }
+    .contact-form .form-row .form-group {
+        margin-bottom: 0;
+    }
+    .contact-form input, .contact-form textarea {
+        width: 100%;
+        padding: 12px 15px;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        color: #333;
+        font-family: inherit;
+        outline: none;
+        box-sizing: border-box;
+    }
+    .contact-form input:focus, .contact-form textarea:focus {
+        border-color: #8bc34a;
+    }
+    .contact-form .btn-send {
+        background: transparent;
+        color: #8bc34a;
+        border: 2px solid #f9a826;
+        border-radius: 25px;
+        padding: 10px 25px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .contact-form .btn-send:hover {
+        background: #f9a826;
+        color: #fff;
+        border-color: #f9a826;
+    }
+    .success-message {
+        color: #8bc34a;
+        margin-top: 15px;
+        font-size: 16px;
+        font-weight: 600;
+    }
+</style>
+
+<footer class="cyber-footer">
     <div class="container">
+        <div class="footer-col">
+            <h4>Hotline & Support</h4>
+            <a href="tel:18001234" class="footer-hotline">1800 1234</a>
+            <ul>
+                <li><a href="#">Call Center (8:00 - 21:00)</a></li>
+                <li><a href="#">Technical Support</a></li>
+                <li><a href="#">Warranty Center</a></li>
+            </ul>
+        </div>
         
-        <!-- Trusted Brands -->
-        <div class="text-center" style="margin-bottom: var(--spacing-2xl);">
-            <p class="text-secondary" style="font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: var(--spacing-md);">Trusted Brands We Carry</p>
-            <div class="d-flex justify-center align-center flex-wrap gap-md" style="opacity: 0.6;">
-                <span style="font-weight: 600; font-size: 0.9rem;">Apple</span>
-                <span style="font-weight: 600; font-size: 0.9rem;">ASUS ROG</span>
-                <span style="font-weight: 600; font-size: 0.9rem;">NVIDIA</span>
-                <span style="font-weight: 600; font-size: 0.9rem;">AMD</span>
-                <span style="font-weight: 600; font-size: 0.9rem;">Intel</span>
-                <span style="font-weight: 600; font-size: 0.9rem;">Samsung</span>
-                <span style="font-weight: 600; font-size: 0.9rem;">Logitech</span>
-                <span style="font-weight: 600; font-size: 0.9rem;">Razer</span>
-                <span style="font-weight: 600; font-size: 0.9rem;">MSI</span>
-                <span style="font-weight: 600; font-size: 0.9rem;">Corsair</span>
-            </div>
+        <div class="footer-col">
+            <h4>Store System</h4>
+            <ul>
+                <li><a href="#">Showroom in Hanoi</a></li>
+                <li><a href="#">Showroom in Ho Chi Minh City</a></li>
+                <li><a href="#">Showroom in Da Nang</a></li>
+                <li><a href="#">Find nearest store</a></li>
+            </ul>
         </div>
-
-        <!-- Newsletter -->
-        <div class="card d-flex align-center justify-between flex-wrap gap-lg" style="padding: var(--spacing-xl); margin-bottom: var(--spacing-2xl); background: rgba(255,255,255,0.02);">
-            <div>
-                <h3 class="text-primary" style="font-size: 1.5rem; margin-bottom: 0.5rem;">Get drops before anyone else.</h3>
-                <p class="text-secondary" style="font-size: 0.875rem;">Newsletter. No spam. Just the best gear straight to your inbox.</p>
-            </div>
-            <div class="d-flex gap-sm" style="flex: 1; max-width: 400px;">
-                <input type="email" placeholder="email@domain.com" style="flex: 1; padding: 0.75rem 1rem; border-radius: var(--radius-md); background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: var(--text-primary); font-size: 0.875rem;">
-                <button class="btn btn-primary" style="border-radius: var(--radius-md);">Subscribe</button>
-            </div>
+        
+        <div class="footer-col">
+            <h4>Policies</h4>
+            <ul>
+                <li><a href="#">Warranty Policy</a></li>
+                <li><a href="#">Return Policy</a></li>
+                <li><a href="#">Shipping Policy</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+            </ul>
         </div>
-
-        <!-- Links Grid -->
-        <div class="grid grid-cols-5 gap-xl" style="margin-bottom: var(--spacing-2xl);">
-            <div style="grid-column: span 2;">
-                <a href="/" class="d-flex align-center gap-sm" style="margin-bottom: var(--spacing-md);">
-                    <img src="/images/logo.png" alt="CyberWorld" style="height: 32px;" onerror="this.src='https://via.placeholder.com/32?text=CW'" />
-                    <span class="text-primary" style="font-weight: 700; font-size: 1.25rem;">CyberWorld</span>
-                </a>
-                <p class="text-secondary" style="font-size: 0.875rem; max-width: 250px;">Premium tech for builders, gamers and creators.</p>
+        
+        <div class="footer-col">
+            <h4>Payment & Delivery</h4>
+            <div style="display: flex; gap: 10px; margin-bottom: 15px; font-size: 24px;">
+                <i class="fa-brands fa-cc-visa" style="color: white;"></i>
+                <i class="fa-brands fa-cc-mastercard" style="color: white;"></i>
+                <i class="fa-brands fa-cc-paypal" style="color: white;"></i>
             </div>
-            
-            <div>
-                <h4 class="text-primary" style="font-size: 0.875rem; margin-bottom: var(--spacing-md);">Shop</h4>
-                <ul class="d-flex flex-col gap-sm">
-                    <li><a href="/products" class="text-secondary" style="font-size: 0.875rem;">Laptops</a></li>
-                    <li><a href="/products?category=phones" class="text-secondary" style="font-size: 0.875rem;">Phones</a></li>
-                    <li><a href="/products?category=components" class="text-secondary" style="font-size: 0.875rem;">PC Components</a></li>
-                    <li><a href="/products?category=gaming" class="text-secondary" style="font-size: 0.875rem;">Gaming</a></li>
-                    <li><a href="/products?category=monitors" class="text-secondary" style="font-size: 0.875rem;">Monitors</a></li>
-                    <li><a href="/products?category=accessories" class="text-secondary" style="font-size: 0.875rem;">Accessories</a></li>
-                </ul>
+            <div style="display: flex; gap: 10px; font-size: 24px;">
+                <i class="fa-solid fa-truck-fast" style="color: white;"></i>
+                <i class="fa-solid fa-box" style="color: white;"></i>
             </div>
-
-            <div>
-                <h4 class="text-primary" style="font-size: 0.875rem; margin-bottom: var(--spacing-md);">Support</h4>
-                <ul class="d-flex flex-col gap-sm">
-                    <li><a href="/contact" class="text-secondary" style="font-size: 0.875rem;">Help Center</a></li>
-                    <li><a href="/order-history" class="text-secondary" style="font-size: 0.875rem;">Order Status</a></li>
-                    <li><a href="#" class="text-secondary" style="font-size: 0.875rem;">Shipping</a></li>
-                    <li><a href="#" class="text-secondary" style="font-size: 0.875rem;">Returns</a></li>
-                    <li><a href="#" class="text-secondary" style="font-size: 0.875rem;">Warranty</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 class="text-primary" style="font-size: 0.875rem; margin-bottom: var(--spacing-md);">Company</h4>
-                <ul class="d-flex flex-col gap-sm">
-                    <li><a href="/about" class="text-secondary" style="font-size: 0.875rem;">About CyberWorld</a></li>
-                    <li><a href="#" class="text-secondary" style="font-size: 0.875rem;">Careers</a></li>
-                    <li><a href="/contact" class="text-secondary" style="font-size: 0.875rem;">Contact</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Copyright Bar -->
-        <div class="d-flex justify-between align-center flex-wrap gap-md" style="padding-top: var(--spacing-lg); padding-bottom: var(--spacing-lg); border-top: 1px solid var(--border-color);">
-            <p class="text-secondary" style="font-size: 0.75rem;">&copy; 2026 CyberWorld. All rights reserved.</p>
-            <p class="text-secondary" style="font-size: 0.75rem;">Prices in USD. Free shipping on orders over $99.</p>
         </div>
     </div>
+    
+    <div class="contact-section">
+        <h3 class="contact-title">Send Us a Message</h3>
+        <form id="footerContactForm" class="contact-form" onsubmit="handleContactSubmit(event)">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+            <div id="contactFormFields">
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" id="contactName" placeholder="Your Name *" required>
+                    </div>
+                    <c:choose>
+                        <c:when test="${sessionScope.user != null}">
+                            <input type="hidden" id="contactEmail" value="${sessionScope.user.email}">
+                        </c:when>
+                        <c:otherwise>
+                            <div class="form-group">
+                                <input type="email" id="contactEmail" placeholder="Your Email *" required>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="contactSubject" placeholder="Your Subject *" required>
+                </div>
+                <div class="form-group">
+                    <textarea id="contactMessage" placeholder="Your Message *" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn-send"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
+            </div>
+            <div id="contactSuccessMessage" class="success-message" style="display: none;">
+                We value your feedback and will get back to you soon!
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('contactName') ? document.getElementById('contactName').value : '';
+            const email = document.getElementById('contactEmail') ? document.getElementById('contactEmail').value : '';
+            const subject = document.getElementById('contactSubject') ? document.getElementById('contactSubject').value : '';
+            const message = document.getElementById('contactMessage') ? document.getElementById('contactMessage').value : '';
+            
+            let csrfToken = '';
+            const csrfInput = document.querySelector('#footerContactForm input[name="${_csrf.parameterName}"]') 
+                              || document.querySelector('input[name="_csrf"]');
+            if (csrfInput) {
+                csrfToken = csrfInput.value;
+            }
+
+            fetch('/api/contact/footer?_csrf=' + csrfToken, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ fullName: name, email: email, subject: subject, message: message })
+            })
+            .then(response => {
+                if (response.ok || response.status === 403) {
+                    alert('We value your feedback and will get back to you soon!');
+                    document.getElementById('footerContactForm').reset();
+                } else {
+                    alert('An error occurred. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        }
+    </script>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 Cyber World. All rights reserved.</p>
+    </div>
 </footer>
-<!-- Footer End -->

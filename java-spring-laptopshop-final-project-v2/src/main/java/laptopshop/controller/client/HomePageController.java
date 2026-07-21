@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -23,6 +24,8 @@ import laptopshop.domain.dto.RegisterDTO;
 import laptopshop.service.OrderService;
 import laptopshop.service.ProductService;
 import laptopshop.service.UserService;
+import laptopshop.service.BlogService;
+import laptopshop.domain.Blog;
 
 @Controller
 public class HomePageController {
@@ -31,33 +34,66 @@ public class HomePageController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final OrderService orderService;
+    private final BlogService blogService;
 
     public HomePageController(
             ProductService productService,
             UserService userService,
             PasswordEncoder passwordEncoder,
-            OrderService orderService) {
+            OrderService orderService,
+            BlogService blogService) {
         this.productService = productService;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.orderService = orderService;
+        this.blogService = blogService;
     }
 
     @GetMapping("/")
-    public String getHomePage(Model model) {
-        // List<Product> products = this.productService.fetchProducts();
-        Pageable pageable = PageRequest.of(0, 10);
+    public String getHomePage(Model model, @RequestParam(value = "page", defaultValue = "1") int page, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            if (user.getRole() != null && "ADMIN".equals(user.getRole().getName())) {
+                return "redirect:/admin/user";
+            }
+        }
+
+        // Ensure page is at least 1
+        if (page < 1) page = 1;
+
+        Pageable pageable = PageRequest.of(page - 1, 8);
         Page<Product> prs = this.productService.fetchProducts(pageable);
         List<Product> products = prs.getContent();
 
         model.addAttribute("products", products);
-        return "client/homepage/show";
+        model.addAttribute("totalPages", prs.getTotalPages());
+        model.addAttribute("currentPage", page);
+
+        List<Blog> blogs = this.blogService.fetchAllBlogs(PageRequest.of(0, 5)).getContent();
+        model.addAttribute("blogs", blogs);
+
+        return "thymeleaf/client/homepage/show";
+    }
+
+    @GetMapping("/blog")
+    public String getBlogPage(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
+        if (page < 1) page = 1;
+
+        Pageable pageable = PageRequest.of(page - 1, 6);
+        Page<Blog> blogPage = this.blogService.fetchAllBlogs(pageable);
+        
+        model.addAttribute("blogs", blogPage.getContent());
+        model.addAttribute("totalPages", blogPage.getTotalPages());
+        model.addAttribute("currentPage", page);
+
+        return "thymeleaf/client/blog/show";
     }
 
     @GetMapping("/register")
     public String getRegisterPage(Model model) {
         model.addAttribute("registerUser", new RegisterDTO());
-        return "client/auth/register";
+        return "thymeleaf/client/auth/register";
     }
 
     @PostMapping("/register")
@@ -67,7 +103,7 @@ public class HomePageController {
 
         // validate
         if (bindingResult.hasErrors()) {
-            return "client/auth/register";
+            return "thymeleaf/client/auth/register";
         }
 
         User user = this.userService.registerDTOtoUser(registerDTO);
@@ -75,7 +111,15 @@ public class HomePageController {
         String hashPassword = this.passwordEncoder.encode(user.getPassword());
 
         user.setPassword(hashPassword);
-        user.setRole(this.userService.getRoleByName("USER"));
+        
+        laptopshop.domain.Role userRole = this.userService.getRoleByName("USER");
+        if (userRole == null) {
+            userRole = new laptopshop.domain.Role();
+            userRole.setName("USER");
+            userRole.setDescription("User role");
+            userRole = this.userService.handleSaveRole(userRole);
+        }
+        user.setRole(userRole);
         // save
         this.userService.handleSaveUser(user);
         return "redirect:/login";
@@ -85,7 +129,7 @@ public class HomePageController {
     @GetMapping("/login")
     public String getLoginPage(Model model) {
 
-        return "client/auth/login";
+        return "thymeleaf/client/auth/login";
     }
 
     @GetMapping("/access-deny")

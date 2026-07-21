@@ -1,0 +1,49 @@
+<h4 class="mt-5 mb-3 w-100" style="border-bottom: 1px solid #ccc; padding-bottom: 10px;">Detailed Specifications</h4>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> C P U C O M P A N Y:</label><form:input type="text" class="form-control" path="specification.cpuCompany" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> C P U T E C H N O L O G Y:</label><form:input type="text" class="form-control" path="specification.cpuTechnology" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> C P U T Y P E:</label><form:input type="text" class="form-control" path="specification.cpuType" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> C P U S P E E D:</label><form:input type="text" class="form-control" path="specification.cpuSpeed" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> C P U M A X S P E E D:</label><form:input type="text" class="form-control" path="specification.cpuMaxSpeed" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> G P U C O M P A N Y:</label><form:input type="text" class="form-control" path="specification.gpuCompany" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> G P U M O D E L:</label><form:input type="text" class="form-control" path="specification.gpuModel" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> G P U F U L L N A M E:</label><form:input type="text" class="form-control" path="specification.gpuFullName" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> R A M C A P A C I T Y:</label><form:input type="text" class="form-control" path="specification.ramCapacity" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> R A M T Y P E:</label><form:input type="text" class="form-control" path="specification.ramType" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> R A M S L O T S:</label><form:input type="text" class="form-control" path="specification.ramSlots" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> R A M R E M A I N I N G S L O T S:</label><form:input type="text" class="form-control" path="specification.ramRemainingSlots" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> R A M M A X S U P P O R T:</label><form:input type="text" class="form-control" path="specification.ramMaxSupport" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> S T O R A G E T Y P E:</label><form:input type="text" class="form-control" path="specification.storageType" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> S T O R A G E T O T A L S L O T S:</label><form:input type="text" class="form-control" path="specification.storageTotalSlots" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> S T O R A G E R E M A I N I N G S L O T S:</label><form:input type="text" class="form-control" path="specification.storageRemainingSlots" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> S T O R A G E M A X U P G R A D E:</label><form:input type="text" class="form-control" path="specification.storageMaxUpgrade" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> S T O R A G E S S D T Y P E:</label><form:input type="text" class="form-control" path="specification.storageSsdType" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> S T O R A G E C A P A C I T Y:</label><form:input type="text" class="form-control" path="specification.storageCapacity" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> S C R E E N T E C H N O L O G Y:</label><form:input type="text" class="form-control" path="specification.screenTechnology" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> S C R E E N R E S O L U T I O N:</label><form:input type="text" class="form-control" path="specification.screenResolution" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> S C R E E N R E F R E S H R A T E:</label><form:input type="text" class="form-control" path="specification.screenRefreshRate" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> S C R E E N P A N E L:</label><form:input type="text" class="form-control" path="specification.screenPanel" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> S C R E E N B R I G H T N E S S:</label><form:input type="text" class="form-control" path="specification.screenBrightness" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> S C R E E N C O L O R C O V E R A G E:</label><form:input type="text" class="form-control" path="specification.screenColorCoverage" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> S C R E E N R A T I O:</label><form:input type="text" class="form-control" path="specification.screenRatio" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> P O R T S:</label><form:input type="text" class="form-control" path="specification.ports" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> W I F I:</label><form:input type="text" class="form-control" path="specification.wifi" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> B L U E T O O T H:</label><form:input type="text" class="form-control" path="specification.bluetooth" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> W E B C A M:</label><form:input type="text" class="form-control" path="specification.webcam" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> O S N A M E:</label><form:input type="text" class="form-control" path="specification.osName" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> O S V E R S I O N:</label><form:input type="text" class="form-control" path="specification.osVersion" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> S E C U R I T Y:</label><form:input type="text" class="form-control" path="specification.security" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> K E Y B O A R D T Y P E:</label><form:input type="text" class="form-control" path="specification.keyboardType" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> N U M P A D:</label><form:input type="text" class="form-control" path="specification.numpad" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> K E Y B O A R D L I G H T:</label><form:input type="text" class="form-control" path="specification.keyboardLight" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> T O U C H P A D:</label><form:input type="text" class="form-control" path="specification.touchpad" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> B A T T E R Y C A P A C I T Y:</label><form:input type="text" class="form-control" path="specification.batteryCapacity" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> P O W E R S U P P L Y:</label><form:input type="text" class="form-control" path="specification.powerSupply" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> A C C E S S O R I E S:</label><form:input type="text" class="form-control" path="specification.accessories" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> D I M E N S I O N S:</label><form:input type="text" class="form-control" path="specification.dimensions" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> W E I G H T:</label><form:input type="text" class="form-control" path="specification.weight" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> M A T E R I A L:</label><form:input type="text" class="form-control" path="specification.material" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> P A R T N U M B E R:</label><form:input type="text" class="form-control" path="specification.partNumber" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> O R I G I N:</label><form:input type="text" class="form-control" path="specification.origin" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> R E L E A S E Y E A R:</label><form:input type="text" class="form-control" path="specification.releaseYear" /></div>
+<div class="mb-3 col-12 col-md-4"><label class="form-label"> W A R R A N T Y:</label><form:input type="text" class="form-control" path="specification.warranty" /></div>
+

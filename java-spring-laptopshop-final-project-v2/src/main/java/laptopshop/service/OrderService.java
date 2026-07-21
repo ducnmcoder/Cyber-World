@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import laptopshop.domain.Order;
 import laptopshop.domain.OrderDetail;
@@ -33,6 +34,7 @@ public class OrderService {
         return this.orderRepository.findById(id);
     }
 
+    @Transactional
     public void deleteOrderById(long id) {
         // delete order detail
         Optional<Order> orderOptional = this.fetchOrderById(id);
@@ -47,6 +49,7 @@ public class OrderService {
         this.orderRepository.deleteById(id);
     }
 
+    @Transactional
     public void updateOrder(Order order) {
         Optional<Order> orderOptional = this.fetchOrderById(order.getId());
         if (orderOptional.isPresent()) {
@@ -74,6 +77,81 @@ public class OrderService {
 
     public List<Object[]> fetchTopProductsByRevenue(int limit) {
         return this.orderDetailRepository.findTopProductsByRevenue(limit);
+    }
+
+    public List<Object[]> fetchMonthlyRevenueByYear(int year) {
+        List<Object[]> dbData = this.orderRepository.findMonthlyRevenueByYear(year);
+        List<Object[]> paddedData = new java.util.ArrayList<>();
+        
+        for (int i = 1; i <= 12; i++) {
+            boolean found = false;
+            for (Object[] entry : dbData) {
+                if (Integer.parseInt(entry[0].toString()) == i) {
+                    paddedData.add(new Object[]{i, entry[1]});
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                paddedData.add(new Object[]{i, 0});
+            }
+        }
+        return paddedData;
+    }
+
+    public List<Object[]> fetchDailyRevenueByYearAndMonth(int year, int month) {
+        List<Object[]> dbData = this.orderRepository.findDailyRevenueByYearAndMonth(year, month);
+        List<Object[]> paddedData = new java.util.ArrayList<>();
+        
+        int daysInMonth = java.time.YearMonth.of(year, month).lengthOfMonth();
+        
+        for (int i = 1; i <= daysInMonth; i++) {
+            boolean found = false;
+            for (Object[] entry : dbData) {
+                if (Integer.parseInt(entry[0].toString()) == i) {
+                    paddedData.add(new Object[]{i, entry[1]});
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                paddedData.add(new Object[]{i, 0});
+            }
+        }
+        return paddedData;
+    }
+
+    public List<Object[]> fetchHourlyRevenueByYearMonthAndDay(int year, int month, int day) {
+        List<Object[]> dbData = this.orderRepository.findHourlyRevenueByYearMonthAndDay(year, month, day);
+        List<Object[]> paddedData = new java.util.ArrayList<>();
+        
+        for (int i = 0; i <= 23; i++) {
+            boolean found = false;
+            for (Object[] entry : dbData) {
+                if (Integer.parseInt(entry[0].toString()) == i) {
+                    paddedData.add(new Object[]{i, entry[1]});
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                paddedData.add(new Object[]{i, 0});
+            }
+        }
+        return paddedData;
+    }
+
+    public List<Object[]> fetchTopProductsByYear(int year, int limit) {
+        return this.orderDetailRepository.findTopProductsByYear(year, limit);
+    }
+    public List<Object[]> fetchTopProductsByYearAndMonth(int year, int month, int limit) {
+        return this.orderDetailRepository.findTopProductsByYearAndMonth(year, month, limit);
+    }
+    public List<Object[]> fetchTopProductsByYearMonthAndDay(int year, int month, int day, int limit) {
+        return this.orderDetailRepository.findTopProductsByYearMonthAndDay(year, month, day, limit);
+    }
+    public List<Object[]> fetchTopProductsByYearMonthDayAndHour(int year, int month, int day, int hour, int limit) {
+        return this.orderDetailRepository.findTopProductsByYearMonthDayAndHour(year, month, day, hour, limit);
     }
 
 }

@@ -26,6 +26,46 @@
                             <ol class="breadcrumb mb-4">
                                 <li class="breadcrumb-item active">Statistics</li>
                             </ol>
+                            
+                            <div class="row">
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="card text-white mb-4" style="background-color: #cd1818; border: none;">
+                                        <div class="card-body">Total Users (${countUsers})</div>
+                                        <div class="card-footer d-flex align-items-center justify-content-between">
+                                            <a class="small text-white stretched-link" href="/admin/user">View Details</a>
+                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="card text-white mb-4" style="background-color: #cd1818; border: none;">
+                                        <div class="card-body">Total Products (${countProducts})</div>
+                                        <div class="card-footer d-flex align-items-center justify-content-between">
+                                            <a class="small text-white stretched-link" href="/admin/product">View Details</a>
+                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="card text-white mb-4" style="background-color: #cd1818; border: none;">
+                                        <div class="card-body">Total Orders (${countOrders})</div>
+                                        <div class="card-footer d-flex align-items-center justify-content-between">
+                                            <a class="small text-white stretched-link" href="/admin/order">View Details</a>
+                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="card text-white mb-4" style="background-color: #cd1818; border: none;">
+                                        <div class="card-body">Total Contacts (${countContacts})</div>
+                                        <div class="card-footer d-flex align-items-center justify-content-between">
+                                            <a class="small text-white stretched-link" href="/admin/contact">View Details</a>
+                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col-12">
                                     <div class="card mb-4">
@@ -76,15 +116,8 @@
                                                     <th>Revenue</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <c:forEach items="${topProducts}" var="product" varStatus="loop">
-                                                    <tr>
-                                                        <td>${product[0]}</td>
-                                                        <td>${product[1]}</td>
-                                                        <td>${product[2]}</td>
-                                                        <td>${product[3]}</td>
-                                                    </tr>
-                                                </c:forEach>
+                                            <tbody id="topProductsBody">
+                                                <!-- Populated dynamically via JS -->
                                             </tbody>
                                         </table>
                                     </div>
@@ -101,50 +134,123 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
                 crossorigin="anonymous"></script>
             <script>
-                const monthlyRevenueData = [
-                    <c:forEach items="${monthlyRevenue}" var="entry" varStatus="status">
-                        ${entry[1]}<c:if test="${!status.last}">,</c:if>
-                    </c:forEach>
-                ];
-                const monthlyRevenueLabels = [
-                    <c:forEach items="${monthlyRevenue}" var="entry" varStatus="status">
-                        "${entry[0]}"<c:if test="${!status.last}">,</c:if>
-                    </c:forEach>
-                ];
+                let currentYear = new Date().getFullYear();
+                let currentMonth = null;
+                let currentDay = null;
+                let currentHour = null;
 
-                const dailyRevenueData = [
-                    <c:forEach items="${dailyRevenue}" var="entry" varStatus="status">
-                        ${entry[1]}<c:if test="${!status.last}">,</c:if>
-                    </c:forEach>
-                ];
-                const dailyRevenueLabels = [
-                    <c:forEach items="${dailyRevenue}" var="entry" varStatus="status">
-                        "${entry[0]}"<c:if test="${!status.last}">,</c:if>
-                    </c:forEach>
-                ];
+                let monthlyChart, dailyChart, hourlyChart;
 
-                const hourlyRevenueData = [
-                    <c:forEach items="${hourlyRevenue}" var="entry" varStatus="status">
-                        ${entry[1]}<c:if test="${!status.last}">,</c:if>
-                    </c:forEach>
-                ];
-                const hourlyRevenueLabels = [
-                    <c:forEach items="${hourlyRevenue}" var="entry" varStatus="status">
-                        "${entry[0]}"<c:if test="${!status.last}">,</c:if>
-                    </c:forEach>
-                ];
+                function initCharts() {
+                    monthlyChart = createRevenueChart('monthlyRevenueChart', [], [], 'Monthly Revenue', handleMonthlyClick);
+                    dailyChart = createRevenueChart('dailyRevenueChart', [], [], 'Daily Revenue', handleDailyClick);
+                    hourlyChart = createRevenueChart('hourlyRevenueChart', [], [], 'Hourly Revenue', handleHourlyClick);
+                }
 
-                function createRevenueChart(elementId, labels, data, label) {
+                function handleMonthlyClick(evt, item) {
+                    if (item.length > 0) {
+                        const index = item[0]._index;
+                        currentMonth = monthlyChart.data.labels[index];
+                        currentDay = null;
+                        currentHour = null;
+                        loadDailyData(currentYear, currentMonth);
+                        
+                        // Clear hourly chart
+                        hourlyChart.data.labels = [];
+                        hourlyChart.data.datasets[0].data = [];
+                        hourlyChart.update();
+                        
+                        loadTopProducts(currentYear, currentMonth);
+                    }
+                }
+
+                function handleDailyClick(evt, item) {
+                    if (item.length > 0) {
+                        const index = item[0]._index;
+                        currentDay = dailyChart.data.labels[index];
+                        currentHour = null;
+                        loadHourlyData(currentYear, currentMonth, currentDay);
+                        loadTopProducts(currentYear, currentMonth, currentDay);
+                    }
+                }
+
+                function handleHourlyClick(evt, item) {
+                    if (item.length > 0) {
+                        const index = item[0]._index;
+                        currentHour = hourlyChart.data.labels[index];
+                        loadTopProducts(currentYear, currentMonth, currentDay, currentHour);
+                    }
+                }
+
+                function loadMonthlyData(year) {
+                    fetch('/admin/api/dashboard/revenue/monthly?year=' + year)
+                        .then(res => res.json())
+                        .then(data => {
+                            const labels = data.map(d => d[0]);
+                            const values = data.map(d => d[1]);
+                            monthlyChart.data.labels = labels;
+                            monthlyChart.data.datasets[0].data = values;
+                            monthlyChart.update();
+                        });
+                }
+
+                function loadDailyData(year, month) {
+                    fetch('/admin/api/dashboard/revenue/daily?year=' + year + '&month=' + month)
+                        .then(res => res.json())
+                        .then(data => {
+                            const labels = data.map(d => d[0]);
+                            const values = data.map(d => d[1]);
+                            dailyChart.data.labels = labels;
+                            dailyChart.data.datasets[0].data = values;
+                            dailyChart.update();
+                        });
+                }
+
+                function loadHourlyData(year, month, day) {
+                    fetch('/admin/api/dashboard/revenue/hourly?year=' + year + '&month=' + month + '&day=' + day)
+                        .then(res => res.json())
+                        .then(data => {
+                            const labels = data.map(d => d[0]);
+                            const values = data.map(d => d[1]);
+                            hourlyChart.data.labels = labels;
+                            hourlyChart.data.datasets[0].data = values;
+                            hourlyChart.update();
+                        });
+                }
+
+                function loadTopProducts(year, month = null, day = null, hour = null) {
+                    let url = '/admin/api/dashboard/top-products?year=' + year;
+                    if (month) url += '&month=' + month;
+                    if (day) url += '&day=' + day;
+                    if (hour) url += '&hour=' + hour;
+
+                    fetch(url)
+                        .then(res => res.json())
+                        .then(data => {
+                            const tbody = document.getElementById('topProductsBody');
+                            tbody.innerHTML = '';
+                            data.forEach(product => {
+                                const tr = document.createElement('tr');
+                                tr.innerHTML = '<td>' + product[0] + '</td>' +
+                                               '<td>' + product[1] + '</td>' +
+                                               '<td>' + product[2] + '</td>' +
+                                               '<td>' + product[3] + '</td>';
+                                tbody.appendChild(tr);
+                            });
+                        });
+                }
+
+                function createRevenueChart(elementId, labels, data, label, onClickHandler) {
                     const ctx = document.getElementById(elementId).getContext('2d');
-                    new Chart(ctx, {
+                    return new Chart(ctx, {
                         type: 'bar',
                         data: {
                             labels: labels,
                             datasets: [{
                                 label: label,
                                 data: data,
-                                backgroundColor: 'rgba(54, 162, 235, 0.75)',
-                                borderColor: 'rgba(54, 162, 235, 1)',
+                                backgroundColor: 'rgba(205, 24, 24, 0.75)',
+                                borderColor: 'rgba(205, 24, 24, 1)',
                                 borderWidth: 1,
                                 barPercentage: 0.75,
                                 categoryPercentage: 0.9,
@@ -154,56 +260,37 @@
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
+                            onClick: onClickHandler,
                             scales: {
                                 xAxes: [{
                                     barPercentage: 0.75,
                                     categoryPercentage: 0.9,
-                                    gridLines: {
-                                        display: false
-                                    },
-                                    ticks: {
-                                        autoSkip: false,
-                                        maxRotation: 0,
-                                        minRotation: 0
-                                    }
+                                    gridLines: { display: false },
+                                    ticks: { autoSkip: false, maxRotation: 0, minRotation: 0 }
                                 }],
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true,
-                                        callback: function(value) {
-                                            return '$' + value.toLocaleString();
-                                        }
+                                        callback: function(value) { return '$' + value.toLocaleString(); }
                                     },
-                                    gridLines: {
-                                        color: 'rgba(200, 200, 200, 0.2)'
-                                    }
+                                    gridLines: { color: 'rgba(200, 200, 200, 0.2)' }
                                 }]
                             },
-                            layout: {
-                                padding: {
-                                    top: 10,
-                                    right: 10,
-                                    left: 10,
-                                    bottom: 10
-                                }
-                            },
-                            legend: {
-                                display: false
-                            },
+                            layout: { padding: { top: 10, right: 10, left: 10, bottom: 10 } },
+                            legend: { display: false },
                             tooltips: {
                                 callbacks: {
-                                    label: function(tooltipItem, data) {
-                                        return '$' + tooltipItem.yLabel.toLocaleString();
-                                    }
+                                    label: function(tooltipItem, data) { return '$' + tooltipItem.yLabel.toLocaleString(); }
                                 }
                             }
                         }
                     });
                 }
 
-                createRevenueChart('monthlyRevenueChart', monthlyRevenueLabels, monthlyRevenueData, 'Monthly Revenue');
-                createRevenueChart('dailyRevenueChart', dailyRevenueLabels, dailyRevenueData, 'Daily Revenue');
-                createRevenueChart('hourlyRevenueChart', hourlyRevenueLabels, hourlyRevenueData, 'Hourly Revenue');
+                // Initialize
+                initCharts();
+                loadMonthlyData(currentYear);
+                loadTopProducts(currentYear);
             </script>
             <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
                 crossorigin="anonymous"></script>

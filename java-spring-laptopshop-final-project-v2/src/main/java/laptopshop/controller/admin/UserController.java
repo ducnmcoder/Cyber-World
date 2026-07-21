@@ -42,7 +42,7 @@ public class UserController {
         System.out.println(arrUsers);
 
         model.addAttribute("eric", "test");
-        model.addAttribute("cyberworld", "from controller with model");
+        model.addAttribute("avatar", "from controller with model");
         return "hello";
     }
 
@@ -85,7 +85,7 @@ public class UserController {
     @RequestMapping("/admin/user/update/{id}") // GET
     public String getUpdateUserPage(Model model, @PathVariable long id) {
         User currentUser = this.userService.getUserById(id);
-
+        
         // Create a detached DTO-like User to avoid Hibernate flush errors
         // when Spring Form auto-grows the null 'role' property.
         User dto = new User();
@@ -99,17 +99,17 @@ public class UserController {
             r.setName(currentUser.getRole().getName());
             dto.setRole(r);
         }
-
+        
         model.addAttribute("newUser", dto);
         return "admin/user/update";
     }
 
     @PostMapping("/admin/user/update")
-    public String postUpdateUser(Model model, @ModelAttribute("newUser") User cyberworld) {
-        User currentUser = this.userService.getUserById(cyberworld.getId());
+    public String postUpdateUser(Model model, @ModelAttribute("newUser") User avatar) {
+        User currentUser = this.userService.getUserById(avatar.getId());
         if (currentUser != null) {
             // Only update the role, do not allow changing personal info
-            currentUser.setRole(this.userService.getRoleByName(cyberworld.getRole().getName()));
+            currentUser.setRole(this.userService.getRoleByName(avatar.getRole().getName()));
 
             // bug here
             this.userService.handleSaveUser(currentUser);
@@ -128,6 +128,17 @@ public class UserController {
 
     @PostMapping("/admin/user/delete")
     public String postDeleteUser(Model model, @ModelAttribute("newUser") User eric) {
+        User targetUser = this.userService.getUserById(eric.getId());
+        org.springframework.security.core.Authentication auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        
+        if (targetUser != null && targetUser.getRole() != null && "OWNER".equals(targetUser.getRole().getName())) {
+            boolean isOwner = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_OWNER"));
+            if (!isOwner) {
+                return "redirect:/admin/user?error=CannotDeleteOwner";
+            }
+        }
+        
         this.userService.deleteAUser(eric.getId());
         return "redirect:/admin/user";
     }
