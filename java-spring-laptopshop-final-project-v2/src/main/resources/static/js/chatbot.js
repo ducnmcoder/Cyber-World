@@ -182,6 +182,8 @@
         text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         // Italic: *text*
         text = text.replace(/(?<!\*)\*(?!\*)(.*?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
+        // Links: [text](url)
+        text = text.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" style="color: #cd1818; text-decoration: underline; font-weight: 600;">$1</a>');
         // Line breaks
         text = text.replace(/\n/g, '<br>');
         // Bullet points: - text
@@ -203,8 +205,9 @@
                 <span class="chatbot-typing-dot"></span>
                 <span class="chatbot-typing-dot"></span>
             `;
-            messagesContainer.appendChild(typingEl);
         }
+        // Move typing element to the bottom every time
+        messagesContainer.appendChild(typingEl);
         typingEl.classList.add('show');
         scrollToBottom();
     }

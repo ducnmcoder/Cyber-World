@@ -87,6 +87,7 @@ public class ChatbotService {
             sb.append(" | Mục đích: ").append(p.getTarget() != null ? p.getTarget() : "N/A");
             sb.append(" | Mô tả: ").append(p.getShortDesc() != null ? p.getShortDesc() : "N/A");
             sb.append(" | Còn hàng: ").append(p.getQuantity()).append(" | Đã bán: ").append(p.getSold());
+            sb.append(" | Link: /product/").append(p.getId());
             sb.append("\n");
         }
 
@@ -120,9 +121,12 @@ public class ChatbotService {
                 3. For questions NOT related to the store's laptop products, respond with:
                    "I'm sorry, I can only assist with questions about Cyber World's laptop products. Would you like to learn about any of our laptops?"
                 4. Respond in English, be concise, friendly, and professional.
-                5. When presenting products, clearly show the name, price, and key specs.
-                6. If multiple products match, list up to 5 of the best matches.
-                7. Use appropriate emojis to keep the conversation friendly.
+                5. When presenting products, use this EXACT format:
+                   - [Product Name](/product/ID) - Price
+                6. ALWAYS suggest exactly 3 products (unless fewer match).
+                7. Order products by price from lowest to highest.
+                8. DO NOT print the raw URL. ONLY use the markdown format [Name](URL).
+                9. Use appropriate emojis.
 
                 """
                 + productData;
@@ -153,7 +157,7 @@ public class ChatbotService {
         // Generation config
         Map<String, Object> generationConfig = new HashMap<>();
         generationConfig.put("temperature", 0.3);
-        generationConfig.put("maxOutputTokens", 500);
+        generationConfig.put("maxOutputTokens", 2048);
         requestBody.put("generationConfig", generationConfig);
 
         // Send request
