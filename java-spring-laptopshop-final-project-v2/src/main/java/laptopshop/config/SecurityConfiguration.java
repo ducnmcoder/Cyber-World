@@ -68,7 +68,7 @@ public class SecurityConfiguration {
 
                         .requestMatchers("/", "/login", "/product/**", "/register", "/products/**",
                                 "/client/**", "/css/**", "/js/**", "/images/**",
-                                "/about", "/contact", "/api/contact/footer", "/blogs", "/blog", "/blog/**", "/error",
+                                "/about", "/contact", "/api/contact/footer", "/api/chatbot", "/blogs", "/blog", "/blog/**", "/error",
                                 "/add-product-to-cart/**", "/add-product-from-view-detail",
                                 "/cart", "/checkout", "/place-order", "/delete-cart-product/**",
                                 "/confirm-checkout", "/thanks")
