@@ -180,6 +180,7 @@
                                                                     <li class="dropdown-item px-2 py-1"><div class="form-check"><input class="form-check-input target-checkbox" type="checkbox" value="THIET-KE-DO-HOA" id="target_3"><label class="form-check-label w-100" for="target_3">Graphic Design</label></div></li>
                                                                     <li class="dropdown-item px-2 py-1"><div class="form-check"><input class="form-check-input target-checkbox" type="checkbox" value="MONG-NHE" id="target_4"><label class="form-check-label w-100" for="target_4">Thin & Light</label></div></li>
                                                                     <li class="dropdown-item px-2 py-1"><div class="form-check"><input class="form-check-input target-checkbox" type="checkbox" value="DOANH-NHAN" id="target_5"><label class="form-check-label w-100" for="target_5">Business</label></div></li>
+                                                                    <li class="dropdown-item px-2 py-1"><div class="form-check"><input class="form-check-input target-checkbox" type="checkbox" value="AI-LAPTOP" id="target_6"><label class="form-check-label w-100" for="target_6">AI Laptop</label></div></li>
                                                                 </ul>
                                                                 <form:input type="hidden" path="target" id="hiddenTarget" />
                                                             </div>

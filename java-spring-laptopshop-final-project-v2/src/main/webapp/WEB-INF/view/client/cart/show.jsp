@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
             <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -121,7 +121,7 @@
                                                 </td>
                                                 <td>
                                                     <div style="font-weight: 600; color: #555;">
-                                                        <fmt:formatNumber type="number" value="${cartDetail.price}" /> đ
+                                                        <fmt:formatNumber type="number" value="${cartDetail.price}" /> VND
                                                     </div>
                                                 </td>
                                                 <td>
@@ -147,7 +147,7 @@
                                                 <td>
                                                     <div style="font-weight: 700; color: #cd1818;" data-cart-detail-id="${cartDetail.id}">
                                                         <fmt:formatNumber type="number"
-                                                            value="${cartDetail.price * cartDetail.quantity}" /> đ
+                                                            value="${cartDetail.price * cartDetail.quantity}" /> VND
                                                     </div>
                                                 </td>
                                                 <td>
@@ -173,18 +173,18 @@
                                             <div class="cyber-summary-row">
                                                 <span>Subtotal:</span>
                                                 <span data-cart-total-price="${totalPrice}">
-                                                    <fmt:formatNumber type="number" value="${totalPrice}" /> đ
+                                                    <fmt:formatNumber type="number" value="${totalPrice}" /> VND
                                                 </span>
                                             </div>
                                             <div class="cyber-summary-row">
                                                 <span>Shipping fee:</span>
-                                                <span>0 đ</span>
+                                                <span>0 VND</span>
                                             </div>
                                             
                                             <div class="cyber-summary-total">
                                                 <span>Total:</span>
                                                 <span data-cart-total-price="${totalPrice}">
-                                                    <fmt:formatNumber type="number" value="${totalPrice}" /> đ
+                                                    <fmt:formatNumber type="number" value="${totalPrice}" /> VND
                                                 </span>
                                             </div>
 
@@ -242,3 +242,5 @@
                 </body>
 
                 </html>
+
+

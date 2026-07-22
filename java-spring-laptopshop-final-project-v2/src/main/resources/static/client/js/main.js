@@ -190,14 +190,14 @@
         const price = input.attr("data-cart-detail-price");
         const id = input.attr("data-cart-detail-id");
 
-        const priceElement = $(`p[data-cart-detail-id='${id}']`);
+        const priceElement = $(`[data-cart-detail-id='${id}']`);
         if (priceElement) {
             const newPrice = +price * newVal;
-            priceElement.text(formatCurrency(newPrice.toFixed(2)) + " đ");
+            priceElement.text(formatCurrency(newPrice.toFixed(2)) + " VND");
         }
 
         //update total cart price
-        const totalPriceElement = $(`p[data-cart-total-price]`);
+        const totalPriceElement = $(`[data-cart-total-price]`);
 
         if (totalPriceElement && totalPriceElement.length) {
             const currentTotal = totalPriceElement.first().attr("data-cart-total-price");
@@ -214,7 +214,7 @@
             //update
             totalPriceElement?.each(function (index, element) {
                 //update text
-                $(totalPriceElement[index]).text(formatCurrency(newTotal.toFixed(2)) + " đ");
+                $(totalPriceElement[index]).text(formatCurrency(newTotal.toFixed(2)) + " VND");
 
                 //update data-attribute
                 $(totalPriceElement[index]).attr("data-cart-total-price", newTotal);
@@ -358,15 +358,7 @@
     $('.btnAddToCartHomepage').click(function (event) {
         event.preventDefault();
 
-        if (!isLogin()) {
-            $.toast({
-                heading: 'Lỗi thao tác',
-                text: 'Bạn cần đăng nhập tài khoản',
-                position: 'top-right',
-                icon: 'error'
-            })
-            return;
-        }
+
 
         const productId = $(this).attr('data-product-id');
         const token = $("meta[name='_csrf']").attr("content");
@@ -382,17 +374,7 @@
             contentType: "application/json",
 
             success: function (response) {
-                const sum = +response;
-                //update cart
-                $("#sumCart").text(sum)
-                //show message
-                $.toast({
-                    heading: 'Giỏ hàng',
-                    text: 'Thêm sản phẩm vào giỏ hàng thành công',
-                    position: 'top-right',
-
-                })
-
+                window.location.href = '/checkout';
             },
             error: function (response) {
                 alert("có lỗi xảy ra, check code đi ba :v")
@@ -404,15 +386,7 @@
 
     $('.btnAddToCartDetail').click(function (event) {
         event.preventDefault();
-        if (!isLogin()) {
-            $.toast({
-                heading: 'Lỗi thao tác',
-                text: 'Bạn cần đăng nhập tài khoản',
-                position: 'top-right',
-                icon: 'error'
-            })
-            return;
-        }
+
 
         const productId = $(this).attr('data-product-id');
         const token = $("meta[name='_csrf']").attr("content");
@@ -428,17 +402,7 @@
             contentType: "application/json",
 
             success: function (response) {
-                const sum = +response;
-                //update cart
-                $("#sumCart").text(sum)
-                //show message
-                $.toast({
-                    heading: 'Giỏ hàng',
-                    text: 'Thêm sản phẩm vào giỏ hàng thành công',
-                    position: 'top-right',
-
-                })
-
+                window.location.href = '/checkout';
             },
             error: function (response) {
                 alert("có lỗi xảy ra, check code đi ba :v")

@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
             <html lang="en">
@@ -100,11 +100,11 @@
                                                                 <div class="d-flex flex-column mt-2">
                                                                     <div class="d-flex align-items-center mb-2">
                                                                         <p style="font-size: 16px; color: red;" class="fw-bold mb-0 me-2">
-                                                                            <fmt:formatNumber type="number" value="${product.price}" /> đ
+                                                                            <fmt:formatNumber type="number" value="${product.price}" /> VND
                                                                         </p>
                                                                         <c:if test="${product.originalPrice > 0}">
                                                                             <p style="font-size: 13px; text-decoration: line-through; color: #888;" class="mb-0">
-                                                                                <fmt:formatNumber type="number" value="${product.originalPrice}" /> đ
+                                                                                <fmt:formatNumber type="number" value="${product.originalPrice}" /> VND
                                                                             </p>
                                                                         </c:if>
                                                                     </div>
@@ -166,3 +166,5 @@
             </body>
 
             </html>
+
+
