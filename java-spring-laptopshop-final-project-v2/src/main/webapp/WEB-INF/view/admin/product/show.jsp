@@ -33,7 +33,7 @@
                                         <div class="col-12 mx-auto">
                                             <div class="d-flex justify-content-between">
                                                 <h3>Table products</h3>
-                                                <a href="/admin/product/create" class="btn btn-primary">Create a
+                                                <a href="/admin/product/create?page=${currentPage}" class="btn btn-primary">Create a
                                                     product</a>
                                             </div>
 
@@ -49,9 +49,9 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <c:forEach var="product" items="${products}">
+                                                    <c:forEach var="product" items="${products}" varStatus="loop">
                                                         <tr>
-                                                            <th>${product.id}</th>
+                                                            <th>${(currentPage - 1) * 5 + loop.count}</th>
                                                             <td>${product.name}</td>
                                                             <td>
                                                                 <fmt:formatNumber type="number"
@@ -59,11 +59,11 @@
                                                             </td>
                                                             <td>${product.factory}</td>
                                                             <td>
-                                                                <a href="/admin/product/${product.id}"
+                                                                <a href="/admin/product/${product.id}?page=${currentPage}"
                                                                     class="btn btn-success">View</a>
-                                                                <a href="/admin/product/update/${product.id}"
+                                                                <a href="/admin/product/update/${product.id}?page=${currentPage}"
                                                                     class="btn btn-warning  mx-2">Update</a>
-                                                                <a href="/admin/product/delete/${product.id}"
+                                                                <a href="/admin/product/delete/${product.id}?page=${currentPage}"
                                                                     class="btn btn-danger">Delete</a>
                                                             </td>
                                                         </tr>

@@ -85,7 +85,7 @@ public class ProductService {
 
         if (productCriteriaDTO.getMinPrice() != null && productCriteriaDTO.getMinPrice().isPresent() &&
             productCriteriaDTO.getMaxPrice() != null && productCriteriaDTO.getMaxPrice().isPresent()) {
-            Specification<Product> currentSpecs = ProductSpecs.matchPrice(productCriteriaDTO.getMinPrice().get() * 1000000, productCriteriaDTO.getMaxPrice().get() * 1000000);
+            Specification<Product> currentSpecs = ProductSpecs.matchPrice(productCriteriaDTO.getMinPrice().get() * 1000, productCriteriaDTO.getMaxPrice().get() * 1000);
             combinedSpec = combinedSpec.and(currentSpecs);
         }
         

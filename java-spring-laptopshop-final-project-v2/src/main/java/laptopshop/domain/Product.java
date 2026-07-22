@@ -35,6 +35,7 @@ public class Product implements Serializable {
     @DecimalMin(value = "0", inclusive = false, message = "Price must be greater than 0")
     private double price;
 
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String image;
 
     @NotNull

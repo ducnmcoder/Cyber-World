@@ -63,7 +63,7 @@ public class HomePageController {
         // Ensure page is at least 1
         if (page < 1) page = 1;
 
-        Pageable pageable = PageRequest.of(page - 1, 8, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(page - 1, 8, Sort.by("id").ascending());
         Page<Product> prs = this.productService.fetchProducts(pageable);
         List<Product> products = prs.getContent();
 

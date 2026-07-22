@@ -243,7 +243,6 @@
         let factoryArr = [];
         let targetArr = [];
         let priceArr = [];
-        let cpuArr = [];
         //factory filter
         $("#factoryFilter .form-check-input:checked").each(function () {
             factoryArr.push($(this).val());
@@ -259,10 +258,10 @@
             priceArr.push($(this).val());
         });
 
-        //cpu filter
-        $("#cpuFilter .form-check-input:checked").each(function () {
-            cpuArr.push($(this).val());
-        });
+        //search input
+        let searchValue = $("#searchInput").val();
+        let customMinPrice = $("#customMinPrice").val();
+        let customMaxPrice = $("#customMaxPrice").val();
 
         //sort order
         let sortValue = $('input[name="radio-sort"]:checked').val();
@@ -278,7 +277,19 @@
         searchParams.delete('factory');
         searchParams.delete('target');
         searchParams.delete('price');
-        searchParams.delete('cpu');
+        searchParams.delete('name');
+        searchParams.delete('minPrice');
+        searchParams.delete('maxPrice');
+
+        if (searchValue) {
+            searchParams.set('name', searchValue);
+        }
+        if (customMinPrice) {
+            searchParams.set('minPrice', customMinPrice);
+        }
+        if (customMaxPrice) {
+            searchParams.set('maxPrice', customMaxPrice);
+        }
 
         if (factoryArr.length > 0) {
             searchParams.set('factory', factoryArr.join(','));
@@ -290,10 +301,6 @@
 
         if (priceArr.length > 0) {
             searchParams.set('price', priceArr.join(','));
-        }
-
-        if (cpuArr.length > 0) {
-            searchParams.set('cpu', cpuArr.join(','));
         }
 
         // Update the URL and reload the page
@@ -328,18 +335,21 @@
         });
     }
 
-    // Set checkboxes for 'cpu'
-    if (params.has('cpu')) {
-        const cpus = params.get('cpu').split(',');
-        cpus.forEach(cpu => {
-            $(`#cpuFilter .form-check-input[value="${cpu}"]`).prop('checked', true);
-        });
-    }
-
     // Set radio buttons for 'sort'
     if (params.has('sort')) {
         const sort = params.get('sort');
         $(`input[type="radio"][name="radio-sort"][value="${sort}"]`).prop('checked', true);
+    }
+
+    // Set search and custom price values
+    if (params.has('name')) {
+        $("#searchInput").val(params.get('name'));
+    }
+    if (params.has('minPrice')) {
+        $("#customMinPrice").val(params.get('minPrice'));
+    }
+    if (params.has('maxPrice')) {
+        $("#customMaxPrice").val(params.get('maxPrice'));
     }
 
 

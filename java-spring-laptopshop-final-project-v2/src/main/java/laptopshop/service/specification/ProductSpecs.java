@@ -11,7 +11,16 @@ import java.util.ArrayList;
 
 public class ProductSpecs {
     public static Specification<Product> nameLike(String name) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get(Product_.NAME), "%" + name + "%");
+        return (root, query, criteriaBuilder) -> {
+            String likePattern = "%" + name + "%";
+            return criteriaBuilder.or(
+                criteriaBuilder.like(root.get("name"), likePattern),
+                criteriaBuilder.like(root.get("shortDesc"), likePattern),
+                criteriaBuilder.like(root.get("detailDesc"), likePattern),
+                criteriaBuilder.like(root.get("color"), likePattern),
+                criteriaBuilder.like(root.get("target"), likePattern)
+            );
+        };
     }
 
     // case 1
