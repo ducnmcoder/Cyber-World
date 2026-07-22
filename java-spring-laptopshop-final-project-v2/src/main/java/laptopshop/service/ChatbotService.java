@@ -157,7 +157,7 @@ public class ChatbotService {
         // Generation config
         Map<String, Object> generationConfig = new HashMap<>();
         generationConfig.put("temperature", 0.3);
-        generationConfig.put("maxOutputTokens", 2048);
+        // maxOutputTokens is removed so the model can use its maximum capacity
         requestBody.put("generationConfig", generationConfig);
 
         // Send request
