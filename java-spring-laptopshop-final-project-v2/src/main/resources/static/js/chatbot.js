@@ -183,7 +183,7 @@
         // Italic: *text*
         text = text.replace(/(?<!\*)\*(?!\*)(.*?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
         // Links: [text](url)
-        text = text.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" style="color: #cd1818; text-decoration: underline; font-weight: 600;">$1</a>');
+        text = text.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" style="color: #cd1818; text-decoration: underline; font-weight: 600;">$1</a>');
         // Line breaks
         text = text.replace(/\n/g, '<br>');
         // Bullet points: - text
