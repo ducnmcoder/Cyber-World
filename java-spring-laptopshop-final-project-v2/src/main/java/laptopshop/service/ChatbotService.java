@@ -34,16 +34,34 @@ public class ChatbotService {
     }
 
     public String chat(String userMessage) {
+        String productData = "";
+        
+        // --- BƯỚC 1: Lấy dữ liệu từ Database ---
         try {
-            // Build product data from DB
-            String productData = buildProductData();
-
-            // Build system prompt
-            String systemPrompt = buildSystemPrompt(productData);
-
-            // Call Gemini API
-            return callGeminiAPI(systemPrompt, userMessage);
+            productData = buildProductData();
+        } catch (org.springframework.dao.DataAccessException e) {
+            System.err.println("[LỖI DATABASE] Không thể lấy dữ liệu sản phẩm: " + e.getMessage());
+            return "Sorry, database connection issue. Please try again later.";
         } catch (Exception e) {
+            System.err.println("[LỖI HỆ THỐNG] Lỗi không xác định khi truy vấn DB: " + e.getMessage());
+            return "Sorry, unable to load product data.";
+        }
+
+        // --- BƯỚC 2 & 3: Tạo System Prompt và Gọi Gemini API ---
+        try {
+            String systemPrompt = buildSystemPrompt(productData);
+            return callGeminiAPI(systemPrompt, userMessage);
+            
+        } catch (org.springframework.web.client.HttpStatusCodeException e) {
+            System.err.println("[LỖI GEMINI API] Mã lỗi " + e.getStatusCode() + ": " + e.getResponseBodyAsString());
+            return "Sorry, Gemini API error. Please check your API key or quota.";
+            
+        } catch (org.springframework.web.client.ResourceAccessException e) {
+            System.err.println("[LỖI MẠNG] Không thể kết nối tới Gemini: " + e.getMessage());
+            return "Sorry, unable to connect to Gemini AI service. Check internet connection.";
+            
+        } catch (Exception e) {
+            System.err.println("[LỖI KHÔNG XÁC ĐỊNH] Lỗi khi gọi API: " + e.getMessage());
             e.printStackTrace();
             return "Sorry, the system is currently experiencing issues. Please try again later.";
         }
@@ -106,7 +124,8 @@ public class ChatbotService {
                 6. If multiple products match, list up to 5 of the best matches.
                 7. Use appropriate emojis to keep the conversation friendly.
 
-                """ + productData;
+                """
+                + productData;
     }
 
     @SuppressWarnings("unchecked")
