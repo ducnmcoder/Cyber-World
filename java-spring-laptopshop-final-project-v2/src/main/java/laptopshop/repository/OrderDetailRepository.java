@@ -12,6 +12,7 @@ import java.util.List;
 
 @Repository
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> {
+    List<OrderDetail> findByProduct(Product product);
 
         @Query(value = "SELECT p.id AS product_id, p.name AS product_name, SUM(od.quantity) AS total_quantity, SUM(od.quantity * od.price) AS revenue "
                         + "FROM order_detail od "

@@ -31,10 +31,11 @@ public class Product implements Serializable {
     @NotEmpty(message = "Product name cannot be empty")
     private String name;
 
-    @NotNull
+    @NotNull(message = "Price is required")
     @DecimalMin(value = "0", inclusive = false, message = "Price must be greater than 0")
-    private double price;
+    private Double price;
 
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String image;
 
     @NotNull
@@ -46,11 +47,11 @@ public class Product implements Serializable {
     @NotEmpty(message = "shortDesc cannot be empty")
     private String shortDesc;
 
-    @NotNull
+    @NotNull(message = "Quantity is required")
     @Min(value = 1, message = "Quantity must be at least 1")
-    private long quantity;
+    private Long quantity;
 
-    private long sold;
+    private Long sold = 0L;
     private String factory;
     private String target;
 
@@ -59,7 +60,7 @@ public class Product implements Serializable {
     private String screenSize;
     private String storage;
     private String color;
-    private double originalPrice;
+    private Double originalPrice;
     private String promoEndDate;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -82,11 +83,11 @@ public class Product implements Serializable {
         this.name = name;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -116,19 +117,19 @@ public class Product implements Serializable {
         this.shortDesc = shortDesc;
     }
 
-    public long getQuantity() {
+    public Long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(long quantity) {
+    public void setQuantity(Long quantity) {
         this.quantity = quantity;
     }
 
-    public long getSold() {
+    public Long getSold() {
         return sold;
     }
 
-    public void setSold(long sold) {
+    public void setSold(Long sold) {
         this.sold = sold;
     }
 
@@ -180,11 +181,11 @@ public class Product implements Serializable {
         this.storage = storage;
     }
 
-    public double getOriginalPrice() {
+    public Double getOriginalPrice() {
         return originalPrice;
     }
 
-    public void setOriginalPrice(double originalPrice) {
+    public void setOriginalPrice(Double originalPrice) {
         this.originalPrice = originalPrice;
     }
 

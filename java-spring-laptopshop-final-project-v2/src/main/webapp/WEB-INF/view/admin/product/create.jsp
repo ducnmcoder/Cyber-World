@@ -15,20 +15,42 @@
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
                 <script>
                     $(document).ready(() => {
-                        const avatarFile = $("#avatarFile");
-                        avatarFile.change(function (e) {
-                            const imgURL = URL.createObjectURL(e.target.files[0]);
-                            $("#avatarPreview").attr("src", imgURL);
-                            $("#avatarPreview").css({ "display": "block" });
-                        });
-
-                        $("#imageUrl").on("input", function() {
-                            const url = $(this).val();
-                            if (url) {
-                                $("#avatarPreview").attr("src", url);
-                                $("#avatarPreview").css({ "display": "block" });
+                        function updatePreviews() {
+                            const container = $("#previewContainer");
+                            container.empty();
+                            const files = $("#avatarFile")[0].files;
+                            if (files && files.length > 0) {
+                                for (let i = 0; i < files.length; i++) {
+                                    const imgURL = URL.createObjectURL(files[i]);
+                                    appendImage(imgURL);
+                                }
                             }
-                        });
+                            const text = $("#imageUrl").val();
+                            if (text) {
+                                const urls = text.split(/[\n,]+/);
+                                urls.forEach(url => {
+                                    const trimmedUrl = url.trim();
+                                    if (trimmedUrl) {
+                                        appendImage(trimmedUrl);
+                                    }
+                                });
+                            }
+                        }
+
+                        function appendImage(src) {
+                            const img = $("<img>").attr("src", src).css({
+                                "max-height": "250px",
+                                "margin-right": "10px",
+                                "margin-bottom": "10px",
+                                "border": "1px solid #ccc",
+                                "border-radius": "4px",
+                                "padding": "5px"
+                            });
+                            $("#previewContainer").append(img);
+                        }
+
+                        $("#avatarFile").change(updatePreviews);
+                        $("#imageUrl").on("input", updatePreviews);
                     });
                 </script>
                 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -44,7 +66,7 @@
                                 <h1 class="mt-4">Products</h1>
                                 <ol class="breadcrumb mb-4">
                                     <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="/admin/product">Product</a></li>
+                                    <li class="breadcrumb-item"><a href="/admin/product?page=${page}">Product</a></li>
                                     <li class="breadcrumb-item active">Create</li>
                                 </ol>
                                 <div class="mt-5">
@@ -52,17 +74,18 @@
                                         <div class="col-md-8 col-12 mx-auto">
                                             <h3>Create a product</h3>
                                             <hr />
-                                            <form:form method="post" action="/admin/product/create" class="row"
+                                            <form:form method="post" action="/admin/product/create?page=${page}" class="row"
                                                 enctype="multipart/form-data" modelAttribute="newProduct">
                                                 <c:set var="errorName"><form:errors path="name" cssClass="invalid-feedback" /></c:set>
                                                 <c:set var="errorPrice"><form:errors path="price" cssClass="invalid-feedback" /></c:set>
                                                 <c:set var="errorDetailDesc"><form:errors path="detailDesc" cssClass="invalid-feedback" /></c:set>
                                                 <c:set var="errorShortDesc"><form:errors path="shortDesc" cssClass="invalid-feedback" /></c:set>
                                                 <c:set var="errorQuantity"><form:errors path="quantity" cssClass="invalid-feedback" /></c:set>
+                                                <c:set var="errorOriginalPrice"><form:errors path="originalPrice" cssClass="invalid-feedback" /></c:set>
 
                                                 <!-- Section 1: Basic Information -->
                                                 <div class="card mb-4 px-0">
-                                                    <div class="card-header bg-light"><strong>Thông tin cơ bản</strong></div>
+                                                    <div class="card-header bg-light"><strong>Basic Information</strong></div>
                                                     <div class="card-body row">
                                                         <div class="mb-3 col-12 col-md-6">
                                                             <label class="form-label">Name:</label>
@@ -74,14 +97,15 @@
                                                         <div class="mb-3 col-12 col-md-6">
                                                             <label class="form-label">Original Price:</label>
                                                             <form:input type="number" step="1"
-                                                                class="form-control"
-                                                                path="originalPrice" placeholder="Ví dụ: 19000000" />
+                                                                class="form-control ${not empty errorOriginalPrice ? 'is-invalid' : ''}"
+                                                                path="originalPrice" placeholder="Example: 19000000" />
+                                                            ${errorOriginalPrice}
                                                         </div>
                                                         <div class="mb-3 col-12 col-md-6">
                                                             <label class="form-label">Discounted Price:</label>
                                                             <form:input type="number" step="1"
                                                                 class="form-control ${not empty errorPrice ? 'is-invalid' : ''}"
-                                                                path="price" placeholder="Ví dụ: 17000000" />
+                                                                path="price" placeholder="Example: 17000000" />
                                                             ${errorPrice}
                                                         </div>
                                                         <div class="mb-3 col-12 col-md-6">
@@ -123,7 +147,7 @@
                                                             </form:select>
                                                         </div>
                                                         <div class="mb-3 col-12 col-md-6">
-                                                            <label class="form-label">Target (có thể chọn nhiều loại):</label>
+                                                            <label class="form-label">Target:</label>
                                                             <div class="dropdown w-100">
                                                                 <button class="form-select text-start bg-white" type="button" id="targetDropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                                                                     Select Targets
@@ -138,25 +162,31 @@
                                                                     <li class="dropdown-item px-2 py-1">
                                                                         <div class="form-check">
                                                                             <input class="form-check-input target-checkbox" type="checkbox" value="SINHVIEN-VANPHONG" id="target_2">
-                                                                            <label class="form-check-label w-100" for="target_2">Sinh viên - Văn phòng</label>
+                                                                            <label class="form-check-label w-100" for="target_2">Student - Office</label>
                                                                         </div>
                                                                     </li>
                                                                     <li class="dropdown-item px-2 py-1">
                                                                         <div class="form-check">
                                                                             <input class="form-check-input target-checkbox" type="checkbox" value="THIET-KE-DO-HOA" id="target_3">
-                                                                            <label class="form-check-label w-100" for="target_3">Thiết kế đồ họa</label>
+                                                                            <label class="form-check-label w-100" for="target_3">Graphic Design</label>
                                                                         </div>
                                                                     </li>
                                                                     <li class="dropdown-item px-2 py-1">
                                                                         <div class="form-check">
                                                                             <input class="form-check-input target-checkbox" type="checkbox" value="MONG-NHE" id="target_4">
-                                                                            <label class="form-check-label w-100" for="target_4">Mỏng nhẹ</label>
+                                                                            <label class="form-check-label w-100" for="target_4">Thin & Light</label>
                                                                         </div>
                                                                     </li>
                                                                     <li class="dropdown-item px-2 py-1">
                                                                         <div class="form-check">
                                                                             <input class="form-check-input target-checkbox" type="checkbox" value="DOANH-NHAN" id="target_5">
-                                                                            <label class="form-check-label w-100" for="target_5">Doanh nhân</label>
+                                                                            <label class="form-check-label w-100" for="target_5">Business</label>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li class="dropdown-item px-2 py-1">
+                                                                        <div class="form-check">
+                                                                            <input class="form-check-input target-checkbox" type="checkbox" value="AI-LAPTOP" id="target_6">
+                                                                            <label class="form-check-label w-100" for="target_6">AI Laptop</label>
                                                                         </div>
                                                                     </li>
                                                                 </ul>
@@ -164,7 +194,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="mb-3 col-12 col-md-6">
-                                                            <label class="form-label">Color (chọn nhiều loại màu):</label>
+                                                            <label class="form-label">Color:</label>
                                                             <div class="dropdown w-100">
                                                                 <button class="form-select text-start bg-white" type="button" id="colorDropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                                                                     Select Colors
@@ -185,123 +215,121 @@
                                                             </div>
                                                         </div>
                                                         <div class="mb-3 col-12 col-md-6">
-                                                            <label for="avatarFile" class="form-label">Image File (có thể chọn nhiều tệp):</label>
+                                                            <label for="avatarFile" class="form-label">Image File:</label>
                                                             <input class="form-control" type="file" id="avatarFile"
                                                                 accept=".png, .jpg, .jpeg" name="imageFiles" multiple="multiple" />
                                                         </div>
                                                         <div class="mb-3 col-12 col-md-6">
                                                             <label class="form-label">Or Image URL:</label>
-                                                            <textarea class="form-control" name="imageUrl" id="imageUrl" rows="3" placeholder="Dán các liên kết ảnh, mỗi liên kết nằm trên một dòng (nhấn Enter để xuống dòng)..."></textarea>
+                                                            <textarea class="form-control" name="imageUrl" id="imageUrl" rows="3" placeholder="Paste image URLs here, each on a new line (press Enter to separate)..."></textarea>
                                                         </div>
-                                                        <div class="col-12 mb-3">
-                                                            <img style="max-height: 250px; display: none;" alt="avatar preview"
-                                                                id="avatarPreview" />
+                                                        <div class="col-12 mb-3" id="previewContainer">
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <!-- Group 1: Bộ xử lý & Đồ họa -->
+                                                <!-- Group 1: Processor & Graphics -->
                                                 <div class="card mb-4 px-0">
-                                                    <div class="card-header bg-light"><strong>Bộ xử lý & Đồ họa</strong></div>
+                                                    <div class="card-header bg-light"><strong>Processor & Graphics</strong></div>
                                                     <div class="card-body row">
-                                                        <div class="mb-3 col-12 col-md-6"><label class="form-label">Loại card đồ họa:</label><form:input type="text" class="form-control" path="specification.gpuFullName" /></div>
-                                                        <div class="mb-3 col-12 col-md-6"><label class="form-label">Loại CPU:</label><form:input type="text" class="form-control" path="specification.cpuType" /></div>
+                                                        <div class="mb-3 col-12 col-md-6"><label class="form-label">GPU Type:</label><form:input type="text" class="form-control" path="specification.gpuFullName" /></div>
+                                                        <div class="mb-3 col-12 col-md-6"><label class="form-label">CPU Type:</label><form:input type="text" class="form-control" path="specification.cpuType" /></div>
                                                     </div>
                                                 </div>
 
-                                                <!-- Group 2: Bộ nhớ RAM, Ổ cứng -->
+                                                <!-- Group 2: Memory & Storage -->
                                                 <div class="card mb-4 px-0">
-                                                    <div class="card-header bg-light"><strong>Bộ nhớ RAM, Ổ cứng</strong></div>
+                                                    <div class="card-header bg-light"><strong>Memory & Storage</strong></div>
                                                     <div class="card-body row">
-                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Dung lượng RAM:</label><form:input type="text" class="form-control" path="specification.ramCapacity" /></div>
-                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Loại RAM:</label><form:input type="text" class="form-control" path="specification.ramType" /></div>
-                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Số khe ram:</label><form:input type="text" class="form-control" path="specification.ramSlots" /></div>
-                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Ổ cứng:</label><form:input type="text" class="form-control" path="specification.storageCapacity" /></div>
+                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">RAM Capacity:</label><form:input type="text" class="form-control" path="specification.ramCapacity" /></div>
+                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">RAM Type:</label><form:input type="text" class="form-control" path="specification.ramType" /></div>
+                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">RAM Slots:</label><form:input type="text" class="form-control" path="specification.ramSlots" /></div>
+                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Storage:</label><form:input type="text" class="form-control" path="specification.storageCapacity" /></div>
                                                     </div>
                                                 </div>
 
-                                                <!-- Group 3: Màn hình -->
+                                                <!-- Group 3: Display -->
                                                 <div class="card mb-4 px-0">
-                                                    <div class="card-header bg-light"><strong>Màn hình</strong></div>
+                                                    <div class="card-header bg-light"><strong>Display</strong></div>
                                                     <div class="card-body row">
-                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Tần số quét:</label><form:input type="text" class="form-control" path="specification.screenRefreshRate" /></div>
-                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Chất liệu tấm nền:</label><form:input type="text" class="form-control" path="specification.screenPanel" /></div>
-                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Kích thước màn hình:</label><form:input type="text" class="form-control" path="specification.screenTechnology" /></div>
-                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Độ sáng:</label><form:input type="text" class="form-control" path="specification.screenBrightness" /></div>
-                                                        <div class="mb-3 col-12 col-md-4"><label class="form-label">Độ phủ màu:</label><form:input type="text" class="form-control" path="specification.screenColorCoverage" /></div>
-                                                        <div class="mb-3 col-12 col-md-4"><label class="form-label">Tỉ lệ màn hình:</label><form:input type="text" class="form-control" path="specification.screenRatio" /></div>
-                                                        <div class="mb-3 col-12 col-md-4"><label class="form-label">Độ phân giải màn hình:</label><form:input type="text" class="form-control" path="specification.screenResolution" /></div>
+                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Refresh Rate:</label><form:input type="text" class="form-control" path="specification.screenRefreshRate" /></div>
+                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Panel Type:</label><form:input type="text" class="form-control" path="specification.screenPanel" /></div>
+                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Screen Technology:</label><form:input type="text" class="form-control" path="specification.screenTechnology" /></div>
+                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Brightness:</label><form:input type="text" class="form-control" path="specification.screenBrightness" /></div>
+                                                        <div class="mb-3 col-12 col-md-4"><label class="form-label">Color Coverage:</label><form:input type="text" class="form-control" path="specification.screenColorCoverage" /></div>
+                                                        <div class="mb-3 col-12 col-md-4"><label class="form-label">Screen Ratio:</label><form:input type="text" class="form-control" path="specification.screenRatio" /></div>
+                                                        <div class="mb-3 col-12 col-md-4"><label class="form-label">Screen Resolution:</label><form:input type="text" class="form-control" path="specification.screenResolution" /></div>
                                                     </div>
                                                 </div>
 
-                                                <!-- Group 4: Âm thanh -->
+                                                <!-- Group 4: Audio -->
                                                 <div class="card mb-4 px-0">
-                                                    <div class="card-header bg-light"><strong>Âm thanh</strong></div>
+                                                    <div class="card-header bg-light"><strong>Audio</strong></div>
                                                     <div class="card-body row">
-                                                        <div class="mb-3 col-12"><label class="form-label">Công nghệ âm thanh:</label><form:input type="text" class="form-control" path="specification.audioTechnology" /></div>
+                                                        <div class="mb-3 col-12"><label class="form-label">Audio Technology:</label><form:input type="text" class="form-control" path="specification.audioTechnology" /></div>
                                                     </div>
                                                 </div>
 
-                                                <!-- Group 5: Cổng kết nối -->
+                                                <!-- Group 5: Connectivity -->
                                                 <div class="card mb-4 px-0">
-                                                    <div class="card-header bg-light"><strong>Cổng kết nối</strong></div>
+                                                    <div class="card-header bg-light"><strong>Connectivity</strong></div>
                                                     <div class="card-body row">
-                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Khe đọc thẻ nhớ:</label><form:input type="text" class="form-control" path="specification.cardReader" /></div>
+                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Card Reader:</label><form:input type="text" class="form-control" path="specification.cardReader" /></div>
                                                         <div class="mb-3 col-12 col-md-3"><label class="form-label">Wi-Fi:</label><form:input type="text" class="form-control" path="specification.wifi" /></div>
                                                         <div class="mb-3 col-12 col-md-3"><label class="form-label">Bluetooth:</label><form:input type="text" class="form-control" path="specification.bluetooth" /></div>
-                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Cổng giao tiếp:</label><form:input type="text" class="form-control" path="specification.ports" /></div>
+                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Ports:</label><form:input type="text" class="form-control" path="specification.ports" /></div>
                                                     </div>
                                                 </div>
 
-                                                <!-- Group 6: Kích thước & Trọng lượng -->
+                                                <!-- Group 6: Dimensions & Weight -->
                                                 <div class="card mb-4 px-0">
-                                                    <div class="card-header bg-light"><strong>Kích thước & Trọng lượng</strong></div>
+                                                    <div class="card-header bg-light"><strong>Dimensions & Weight</strong></div>
                                                     <div class="card-body row">
-                                                        <div class="mb-3 col-12 col-md-4"><label class="form-label">Chất liệu:</label><form:input type="text" class="form-control" path="specification.material" /></div>
-                                                        <div class="mb-3 col-12 col-md-4"><label class="form-label">Chất liệu vỏ trên:</label><form:input type="text" class="form-control" path="specification.materialTop" /></div>
-                                                        <div class="mb-3 col-12 col-md-4"><label class="form-label">Chất liệu vỏ dưới:</label><form:input type="text" class="form-control" path="specification.materialBottom" /></div>
-                                                        <div class="mb-3 col-12 col-md-6"><label class="form-label">Kích thước:</label><form:input type="text" class="form-control" path="specification.dimensions" /></div>
-                                                        <div class="mb-3 col-12 col-md-6"><label class="form-label">Trọng lượng:</label><form:input type="text" class="form-control" path="specification.weight" /></div>
+                                                        <div class="mb-3 col-12 col-md-4"><label class="form-label">Material:</label><form:input type="text" class="form-control" path="specification.material" /></div>
+                                                        <div class="mb-3 col-12 col-md-4"><label class="form-label">Top Cover Material:</label><form:input type="text" class="form-control" path="specification.materialTop" /></div>
+                                                        <div class="mb-3 col-12 col-md-4"><label class="form-label">Bottom Cover Material:</label><form:input type="text" class="form-control" path="specification.materialBottom" /></div>
+                                                        <div class="mb-3 col-12 col-md-6"><label class="form-label">Dimensions:</label><form:input type="text" class="form-control" path="specification.dimensions" /></div>
+                                                        <div class="mb-3 col-12 col-md-6"><label class="form-label">Weight:</label><form:input type="text" class="form-control" path="specification.weight" /></div>
                                                     </div>
                                                 </div>
 
-                                                <!-- Group 7: Tiện ích khác -->
+                                                <!-- Group 7: Other Utilities -->
                                                 <div class="card mb-4 px-0">
-                                                    <div class="card-header bg-light"><strong>Tiện ích khác</strong></div>
+                                                    <div class="card-header bg-light"><strong>Other Utilities</strong></div>
                                                     <div class="card-body row">
-                                                        <div class="mb-3 col-12"><label class="form-label">Tính năng đặc biệt:</label><form:input type="text" class="form-control" path="specification.specialFeatures" /></div>
+                                                        <div class="mb-3 col-12"><label class="form-label">Special Features:</label><form:input type="text" class="form-control" path="specification.specialFeatures" /></div>
                                                     </div>
                                                 </div>
 
-                                                <!-- Group 8: Tính năng khác -->
+                                                <!-- Group 8: Other Features -->
                                                 <div class="card mb-4 px-0">
-                                                    <div class="card-header bg-light"><strong>Tính năng khác</strong></div>
+                                                    <div class="card-header bg-light"><strong>Other Features</strong></div>
                                                     <div class="card-body row">
-                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Loại đèn bàn phím:</label><form:input type="text" class="form-control" path="specification.keyboardLight" /></div>
-                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Bảo mật:</label><form:input type="text" class="form-control" path="specification.security" /></div>
+                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Keyboard Backlight:</label><form:input type="text" class="form-control" path="specification.keyboardLight" /></div>
+                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Security:</label><form:input type="text" class="form-control" path="specification.security" /></div>
                                                         <div class="mb-3 col-12 col-md-3"><label class="form-label">Webcam:</label><form:input type="text" class="form-control" path="specification.webcam" /></div>
                                                         <div class="mb-3 col-12 col-md-3"><label class="form-label">OS Name:</label><form:input type="text" class="form-control" path="specification.osName" /></div>
                                                         <div class="mb-3 col-12 col-md-12"><label class="form-label">OS Version:</label><form:input type="text" class="form-control" path="specification.osVersion" /></div>
                                                     </div>
                                                 </div>
 
-                                                <!-- Group 9: Pin & công nghệ sạc -->
+                                                <!-- Group 9: Battery & Power -->
                                                 <div class="card mb-4 px-0">
-                                                    <div class="card-header bg-light"><strong>Pin & công nghệ sạc</strong></div>
+                                                    <div class="card-header bg-light"><strong>Battery & Power</strong></div>
                                                     <div class="card-body row">
-                                                        <div class="mb-3 col-12 col-md-6"><label class="form-label">Pin (Dung lượng pin):</label><form:input type="text" class="form-control" path="specification.batteryCapacity" /></div>
-                                                        <div class="mb-3 col-12 col-md-6"><label class="form-label">Công nghệ sạc (Power Supply):</label><form:input type="text" class="form-control" path="specification.powerSupply" /></div>
+                                                        <div class="mb-3 col-12 col-md-6"><label class="form-label">Battery Capacity:</label><form:input type="text" class="form-control" path="specification.batteryCapacity" /></div>
+                                                        <div class="mb-3 col-12 col-md-6"><label class="form-label">Power Supply:</label><form:input type="text" class="form-control" path="specification.powerSupply" /></div>
                                                     </div>
                                                 </div>
 
-                                                <!-- Group 10: Thông tin hàng hóa -->
+                                                <!-- Group 10: Product Details -->
                                                 <div class="card mb-4 px-0">
-                                                    <div class="card-header bg-light"><strong>Thông tin hàng hóa</strong></div>
+                                                    <div class="card-header bg-light"><strong>Product Details</strong></div>
                                                     <div class="card-body row">
                                                         <div class="mb-3 col-12 col-md-3"><label class="form-label">P/N:</label><form:input type="text" class="form-control" path="specification.partNumber" /></div>
-                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Xuất xứ:</label><form:input type="text" class="form-control" path="specification.origin" /></div>
-                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Năm ra mắt:</label><form:input type="text" class="form-control" path="specification.releaseYear" /></div>
-                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Thời gian bảo hành:</label><form:input type="text" class="form-control" path="specification.warranty" /></div>
+                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Origin:</label><form:input type="text" class="form-control" path="specification.origin" /></div>
+                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Release Year:</label><form:input type="text" class="form-control" path="specification.releaseYear" /></div>
+                                                        <div class="mb-3 col-12 col-md-3"><label class="form-label">Warranty Period:</label><form:input type="text" class="form-control" path="specification.warranty" /></div>
                                                     </div>
                                                 </div>
 

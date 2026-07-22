@@ -72,6 +72,10 @@
                                 <div class="row g-4 fruite">
                                     <div class="col-12 col-md-4">
                                         <div class="row g-4">
+                                            <div class="col-12" id="searchFilter">
+                                                <div class="mb-2"><b>Search Filters</b></div>
+                                                <input type="text" class="form-control" id="searchInput" placeholder="Search by name, color, etc...">
+                                            </div>
                                             <div class="col-12" id="factoryFilter">
                                                 <div class="mb-2"><b>Manufacturer</b></div>
                                                 <div class="form-check form-check-inline">
@@ -203,6 +207,15 @@
                                                     <input class="form-check-input" type="checkbox" id="price-5"
                                                         value="tren-20-trieu">
                                                     <label class="form-check-label" for="price-5">Above 20 million</label>
+                                                </div>
+                                                <div class="mt-3">
+                                                    <b>Or enter custom range:</b>
+                                                    <div class="d-flex align-items-center mt-2">
+                                                        <input type="number" id="customMinPrice" class="form-control me-2" placeholder="Min (e.g. 10000)" oninput="if(this.value.length>6) this.value=this.value.slice(0,6);" />
+                                                        <span> ~ </span>
+                                                        <input type="number" id="customMaxPrice" class="form-control ms-2" placeholder="Max" oninput="if(this.value.length>6) this.value=this.value.slice(0,6);" />
+                                                    </div>
+                                                    <small class="text-muted mt-1 d-block">Enter up to 6 digits (e.g. 200000 = 200.000.000đ)</small>
                                                 </div>
                                             </div>
                                             <div class="col-12">

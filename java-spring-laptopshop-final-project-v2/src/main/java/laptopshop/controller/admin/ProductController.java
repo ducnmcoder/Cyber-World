@@ -51,7 +51,7 @@ public class ProductController {
             // TODO: handle exception
         }
 
-        Pageable pageable = PageRequest.of(page - 1, 5);
+        Pageable pageable = PageRequest.of(page - 1, 5, org.springframework.data.domain.Sort.by("id").ascending());
         Page<Product> prs = this.productService.fetchProducts(pageable);
         List<Product> listProducts = prs.getContent();
         model.addAttribute("products", listProducts);
@@ -63,10 +63,11 @@ public class ProductController {
     }
 
     @GetMapping("/admin/product/create")
-    public String getCreateProductPage(Model model) {
+    public String getCreateProductPage(Model model, @RequestParam(value = "page", defaultValue = "1") String page) {
         Product newProduct = new Product();
         newProduct.setSpecification(new laptopshop.domain.ProductSpecification());
         model.addAttribute("newProduct", newProduct);
+        model.addAttribute("page", page);
         return "admin/product/create";
     }
 
@@ -84,9 +85,12 @@ public class ProductController {
             @ModelAttribute("newProduct") @Valid Product pr,
             BindingResult newProductBindingResult,
             @RequestParam(value = "imageFiles", required = false) MultipartFile[] files,
-            @RequestParam(value = "imageUrl", required = false) String imageUrl) {
+            @RequestParam(value = "imageUrl", required = false) String imageUrl,
+            @RequestParam(value = "page", defaultValue = "1") String page,
+            Model model) {
         // validate
         if (newProductBindingResult.hasErrors()) {
+            model.addAttribute("page", page);
             return "admin/product/create";
         }
 
@@ -120,17 +124,18 @@ public class ProductController {
 
         this.productService.createProduct(pr);
 
-        return "redirect:/admin/product";
+        return "redirect:/admin/product?page=" + page;
     }
 
     @GetMapping("/admin/product/update/{id}")
-    public String getUpdateProductPage(Model model, @PathVariable long id) {
+    public String getUpdateProductPage(Model model, @PathVariable long id, @RequestParam(value = "page", defaultValue = "1") String page) {
         Optional<Product> currentProduct = this.productService.fetchProductById(id);
         Product product = currentProduct.get();
         if (product.getSpecification() == null) {
             product.setSpecification(new laptopshop.domain.ProductSpecification());
         }
         model.addAttribute("newProduct", product);
+        model.addAttribute("page", page);
         return "admin/product/update";
     }
 
@@ -138,10 +143,13 @@ public class ProductController {
     public String handleUpdateProduct(@ModelAttribute("newProduct") @Valid Product pr,
             BindingResult newProductBindingResult,
             @RequestParam(value = "imageFiles", required = false) MultipartFile[] files,
-            @RequestParam(value = "imageUrl", required = false) String imageUrl) {
+            @RequestParam(value = "imageUrl", required = false) String imageUrl,
+            @RequestParam(value = "page", defaultValue = "1") String page,
+            Model model) {
 
         // validate
         if (newProductBindingResult.hasErrors()) {
+            model.addAttribute("page", page);
             return "admin/product/update";
         }
 
@@ -199,27 +207,29 @@ public class ProductController {
             this.productService.createProduct(currentProduct);
         }
 
-        return "redirect:/admin/product";
+        return "redirect:/admin/product?page=" + page;
     }
 
     @GetMapping("/admin/product/delete/{id}")
-    public String getDeleteProductPage(Model model, @PathVariable long id) {
+    public String getDeleteProductPage(Model model, @PathVariable long id, @RequestParam(value = "page", defaultValue = "1") String page) {
         model.addAttribute("id", id);
         model.addAttribute("newProduct", new Product());
+        model.addAttribute("page", page);
         return "admin/product/delete";
     }
 
     @PostMapping("/admin/product/delete")
-    public String postDeleteProduct(Model model, @ModelAttribute("newProduct") Product pr) {
+    public String postDeleteProduct(Model model, @ModelAttribute("newProduct") Product pr, @RequestParam(value = "page", defaultValue = "1") String page) {
         this.productService.deleteProduct(pr.getId());
-        return "redirect:/admin/product";
+        return "redirect:/admin/product?page=" + page;
     }
 
     @GetMapping("/admin/product/{id}")
-    public String getProductDetailPage(Model model, @PathVariable long id) {
+    public String getProductDetailPage(Model model, @PathVariable long id, @RequestParam(value = "page", defaultValue = "1") String page) {
         Product pr = this.productService.fetchProductById(id).get();
         model.addAttribute("product", pr);
         model.addAttribute("id", id);
+        model.addAttribute("page", page);
         return "admin/product/detail";
     }
 }

@@ -6,7 +6,7 @@
     <title>Cyber World - Homepage</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&family=Orbitron:wght@900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Base styles */
@@ -38,13 +38,23 @@
         }
 
         .cyber-logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 5px;
+        }
+        .cyber-logo-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .cyber-logo-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            line-height: 1.1;
+            text-transform: uppercase;
+            color: white;
         }
 
         .cyber-search {
@@ -868,8 +878,11 @@
     <header class="cyber-header">
         <div class="container">
             <a th:href="${session.user != null and session.user?.role?.name == 'ADMIN' ? '#' : '/'}" class="cyber-logo">
-                <img th:src="@{/images/logo.png}" alt="Cyber World Logo" style="height: 40px; margin-right: 0px;">
-                Cyber World
+                <img th:src="@{/images/logo.png}" alt="Cyber World Logo" style="height: 50px; margin-right: 15px;">
+                <div class="cyber-logo-text">
+                    <span class="cyber-logo-title">CYBER</span>
+                    <span class="cyber-logo-title">WORLD</span>
+                </div>
             </a>
             
             <form class="cyber-search" action="/products" method="get">
@@ -1098,7 +1111,7 @@
                     <!-- RAM -->
                     <div class="filter-section">
                         <div class="filter-header" onclick="toggleFilter(this)" style="cursor: pointer;">
-                            <span>RAM <i class="fa-regular fa-circle-question" style="color: #999; font-size: 12px; margin-left: 5px;"></i></span>
+                            <span>RAM</span>
                             <i class="fa-solid fa-chevron-up" style="font-size: 12px; color: #999;"></i>
                         </div>
                         <div class="filter-body" style="padding-top: 10px;">
@@ -1253,11 +1266,11 @@
                 <div class="products-header" style="border-bottom: 1px solid #ddd; padding-bottom: 15px;">
                     <div class="result-count">Found <span style="color: #cd1818;" th:text="${totalElements}">0</span> Products</div>
                     <div class="sort-bar">
-                        <a th:href="@{/products(sort='featured', factory=${param.factory}, target=${param.target}, priceRange=${param.priceRange})}" class="sort-link" th:classappend="${param.sort == null or param.sort[0] == 'featured' ? 'active' : ''}">Featured</a>
+                        <a href="javascript:void(0)" onclick="applySort('featured')" class="sort-link" th:classappend="${param.sort == null or param.sort[0] == 'featured' ? 'active' : ''}">Featured</a>
                         <span style="color: #ccc;">•</span>
-                        <a th:href="@{/products(sort='gia-tang-dan', factory=${param.factory}, target=${param.target}, priceRange=${param.priceRange})}" class="sort-link" th:classappend="${param.sort != null and param.sort[0] == 'gia-tang-dan' ? 'active' : ''}">Price: Low to High</a>
+                        <a href="javascript:void(0)" onclick="applySort('gia-tang-dan')" class="sort-link" th:classappend="${param.sort != null and param.sort[0] == 'gia-tang-dan' ? 'active' : ''}">Price: Low to High</a>
                         <span style="color: #ccc;">•</span>
-                        <a th:href="@{/products(sort='gia-giam-dan', factory=${param.factory}, target=${param.target}, priceRange=${param.priceRange})}" class="sort-link" th:classappend="${param.sort != null and param.sort[0] == 'gia-giam-dan' ? 'active' : ''}">Price: High to Low</a>
+                        <a href="javascript:void(0)" onclick="applySort('gia-giam-dan')" class="sort-link" th:classappend="${param.sort != null and param.sort[0] == 'gia-giam-dan' ? 'active' : ''}">Price: High to Low</a>
                     </div>
                 </div>
 
@@ -1718,6 +1731,19 @@
             // Uncheck "all" if submitting custom price
             let allCb = document.querySelector('input[name=price][value=all]');
             if(allCb) allCb.checked = false;
+            document.getElementById('filterForm').submit();
+        }
+
+        function applySort(sortValue) {
+            let sortInput = document.getElementById('sortInput');
+            if (!sortInput) {
+                sortInput = document.createElement('input');
+                sortInput.type = 'hidden';
+                sortInput.name = 'sort';
+                sortInput.id = 'sortInput';
+                document.getElementById('filterForm').appendChild(sortInput);
+            }
+            sortInput.value = sortValue;
             document.getElementById('filterForm').submit();
         }
     </script>

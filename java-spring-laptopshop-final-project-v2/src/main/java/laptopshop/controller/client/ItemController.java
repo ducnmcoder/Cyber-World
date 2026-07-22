@@ -265,7 +265,7 @@ public class ItemController {
         }
 
         // check sort price
-        Pageable pageable = PageRequest.of(page - 1, 8, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(page - 1, 8, Sort.by("id").ascending());
 
         if (productCriteriaDTO.getSort() != null && productCriteriaDTO.getSort().isPresent()) {
             String sort = productCriteriaDTO.getSort().get();

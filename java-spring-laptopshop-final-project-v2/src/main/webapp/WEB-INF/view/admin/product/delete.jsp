@@ -26,7 +26,7 @@
                                 <h1 class="mt-4">Products</h1>
                                 <ol class="breadcrumb mb-4">
                                     <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="/admin/product">Product</a></li>
+                                    <li class="breadcrumb-item"><a href="/admin/product?page=${page}">Product</a></li>
                                     <li class="breadcrumb-item active">Delete</li>
                                 </ol>
                                 <div class=" mt-5">
@@ -40,7 +40,7 @@
                                             <div class="alert alert-danger">
                                                 Are you sure to delete this product ?
                                             </div>
-                                            <form:form method="post" action="/admin/product/delete"
+                                            <form:form method="post" action="/admin/product/delete?page=${page}"
                                                 modelAttribute="newProduct">
                                                 <div class="mb-3" style="display: none;">
                                                     <label class="form-label">Id:</label>

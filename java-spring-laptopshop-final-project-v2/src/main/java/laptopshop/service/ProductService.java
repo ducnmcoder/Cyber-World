@@ -58,15 +58,6 @@ public class ProductService {
     }
 
     public Page<Product> fetchProductsWithSpec(Pageable page, ProductCriteriaDTO productCriteriaDTO) {
-        if (productCriteriaDTO.getTarget() == null
-                && productCriteriaDTO.getFactory() == null
-                && productCriteriaDTO.getPrice() == null
-                && productCriteriaDTO.getCpu() == null
-                && productCriteriaDTO.getRam() == null
-                && productCriteriaDTO.getName() == null) {
-            return this.productRepository.findAll(page);
-        }
-
         Specification<Product> combinedSpec = Specification.where(null);
 
         if (productCriteriaDTO.getTarget() != null && productCriteriaDTO.getTarget().isPresent()) {
@@ -83,12 +74,16 @@ public class ProductService {
             combinedSpec = combinedSpec.and(currentSpecs);
         }
 
-        if (productCriteriaDTO.getMinPrice() != null && productCriteriaDTO.getMinPrice().isPresent() &&
-            productCriteriaDTO.getMaxPrice() != null && productCriteriaDTO.getMaxPrice().isPresent()) {
-            Specification<Product> currentSpecs = ProductSpecs.matchPrice(productCriteriaDTO.getMinPrice().get() * 1000000, productCriteriaDTO.getMaxPrice().get() * 1000000);
+        if (productCriteriaDTO.getMinPrice() != null && productCriteriaDTO.getMinPrice().isPresent()) {
+            Specification<Product> currentSpecs = ProductSpecs.minPrice(productCriteriaDTO.getMinPrice().get() * 1000000);
             combinedSpec = combinedSpec.and(currentSpecs);
         }
         
+        if (productCriteriaDTO.getMaxPrice() != null && productCriteriaDTO.getMaxPrice().isPresent()) {
+            Specification<Product> currentSpecs = ProductSpecs.maxPrice(productCriteriaDTO.getMaxPrice().get() * 1000000);
+            combinedSpec = combinedSpec.and(currentSpecs);
+        }
+
         if (productCriteriaDTO.getCpu() != null && productCriteriaDTO.getCpu().isPresent()) {
             Specification<Product> currentSpecs = ProductSpecs.matchListCpu(productCriteriaDTO.getCpu().get());
             combinedSpec = combinedSpec.and(currentSpecs);
@@ -141,6 +136,10 @@ public class ProductService {
     public Specification<Product> buildPriceSpecification(List<String> price) {
         Specification<Product> combinedSpec = Specification.where(null); // disconjunction
         for (String p : price) {
+            if ("all".equals(p)) {
+                return Specification.where(null);
+            }
+
             double min = 0;
             double max = 0;
 
