@@ -81,6 +81,7 @@
                                                 <c:set var="errorDetailDesc"><form:errors path="detailDesc" cssClass="invalid-feedback" /></c:set>
                                                 <c:set var="errorShortDesc"><form:errors path="shortDesc" cssClass="invalid-feedback" /></c:set>
                                                 <c:set var="errorQuantity"><form:errors path="quantity" cssClass="invalid-feedback" /></c:set>
+                                                <c:set var="errorOriginalPrice"><form:errors path="originalPrice" cssClass="invalid-feedback" /></c:set>
 
                                                 <!-- Section 1: Basic Information -->
                                                 <div class="card mb-4 px-0">
@@ -96,8 +97,9 @@
                                                         <div class="mb-3 col-12 col-md-6">
                                                             <label class="form-label">Original Price:</label>
                                                             <form:input type="number" step="1"
-                                                                class="form-control"
+                                                                class="form-control ${not empty errorOriginalPrice ? 'is-invalid' : ''}"
                                                                 path="originalPrice" placeholder="Example: 19000000" />
+                                                            ${errorOriginalPrice}
                                                         </div>
                                                         <div class="mb-3 col-12 col-md-6">
                                                             <label class="form-label">Discounted Price:</label>
@@ -179,6 +181,12 @@
                                                                         <div class="form-check">
                                                                             <input class="form-check-input target-checkbox" type="checkbox" value="DOANH-NHAN" id="target_5">
                                                                             <label class="form-check-label w-100" for="target_5">Business</label>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li class="dropdown-item px-2 py-1">
+                                                                        <div class="form-check">
+                                                                            <input class="form-check-input target-checkbox" type="checkbox" value="AI-LAPTOP" id="target_6">
+                                                                            <label class="form-check-label w-100" for="target_6">AI Laptop</label>
                                                                         </div>
                                                                     </li>
                                                                 </ul>

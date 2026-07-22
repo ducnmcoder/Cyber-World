@@ -260,6 +260,9 @@
 
         //search input
         let searchValue = $("#searchInput").val();
+        if (searchValue) {
+            searchValue = searchValue.trim();
+        }
         let customMinPrice = $("#customMinPrice").val();
         let customMaxPrice = $("#customMaxPrice").val();
 
@@ -271,7 +274,11 @@
 
         // Add or update query parameters
         searchParams.set('page', '1');
-        searchParams.set('sort', sortValue);
+        if (sortValue) {
+            searchParams.set('sort', sortValue);
+        } else {
+            searchParams.delete('sort');
+        }
 
         //reset
         searchParams.delete('factory');

@@ -1,0 +1,21 @@
+# Auto detect text files and perform LF normalization
+* text=auto eol=lf
+
+# Force specific file types
+*.java text diff=java
+*.properties text
+*.xml text
+*.jsp text
+*.html text
+*.css text
+*.js text
+*.sql text
+*.py text
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary

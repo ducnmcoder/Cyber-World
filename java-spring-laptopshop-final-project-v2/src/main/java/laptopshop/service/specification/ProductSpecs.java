@@ -25,12 +25,12 @@ public class ProductSpecs {
 
     // case 1
     public static Specification<Product> minPrice(double price) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.ge(root.get("originalPrice"), price);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.ge(root.get("price"), price);
     }
 
     // case 2
     public static Specification<Product> maxPrice(double price) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.le(root.get("originalPrice"), price);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.le(root.get("price"), price);
     }
 
     // case3
@@ -40,11 +40,13 @@ public class ProductSpecs {
 
     // case4
     public static Specification<Product> matchListFactory(List<String> factory) {
+        if (factory.contains("all")) return (root, query, cb) -> cb.conjunction();
         return (root, query, criteriaBuilder) -> criteriaBuilder.in(root.get(Product_.FACTORY)).value(factory);
     }
 
     // case4
     public static Specification<Product> matchListTarget(List<String> targets) {
+        if (targets.contains("all")) return (root, query, cb) -> cb.conjunction();
         return (root, query, criteriaBuilder) -> {
             List<jakarta.persistence.criteria.Predicate> predicates = new java.util.ArrayList<>();
             for (String target : targets) {
@@ -87,10 +89,21 @@ public class ProductSpecs {
             jakarta.persistence.criteria.Join<Object, Object> specJoin = root.join("specification", jakarta.persistence.criteria.JoinType.LEFT);
             for (String r : ram) {
                 if (r.equals("all")) continue;
-                predicates.add(criteriaBuilder.or(
-                    criteriaBuilder.like(specJoin.get("ramCapacity"), "%" + r + "%"),
-                    criteriaBuilder.like(root.get("ram"), "%" + r + "%")
-                ));
+                if (r.equals("8GB")) {
+                    predicates.add(criteriaBuilder.and(
+                        criteriaBuilder.or(
+                            criteriaBuilder.like(specJoin.get("ramCapacity"), "%8GB%"),
+                            criteriaBuilder.like(root.get("ram"), "%8GB%")
+                        ),
+                        criteriaBuilder.notLike(specJoin.get("ramCapacity"), "%128GB%"),
+                        criteriaBuilder.notLike(root.get("ram"), "%128GB%")
+                    ));
+                } else {
+                    predicates.add(criteriaBuilder.or(
+                        criteriaBuilder.like(specJoin.get("ramCapacity"), "%" + r + "%"),
+                        criteriaBuilder.like(root.get("ram"), "%" + r + "%")
+                    ));
+                }
             }
             if (predicates.isEmpty()) return criteriaBuilder.conjunction();
             return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
@@ -129,7 +142,9 @@ public class ProductSpecs {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             for (String s : screen) {
-                if (s.equals(">= 14 inch") || s.equals("<= 14 inch") || s.equals("all")) {
+                if (s.equals("all")) continue;
+
+                if (s.equals(">= 14 inch") || s.equals("<= 14 inch")) {
                     predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(Product_.SCREEN_SIZE), "14.9"));
                 } else if (s.equals("15 - >= 16 inch") || s.equals("15 - 16 inch")) {
                     predicates.add(criteriaBuilder.between(root.get(Product_.SCREEN_SIZE), "15.0", "16.9"));
@@ -139,6 +154,7 @@ public class ProductSpecs {
                     predicates.add(criteriaBuilder.equal(root.get(Product_.SCREEN_SIZE), s));
                 }
             }
+            if (predicates.isEmpty()) return criteriaBuilder.conjunction();
             return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
         };
     }
@@ -191,7 +207,7 @@ public class ProductSpecs {
     // case6
     public static Specification<Product> matchMultiplePrice(double min, double max) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.between(
-                root.get("originalPrice"), min, max);
+                root.get("price"), min, max);
     }
 
 }

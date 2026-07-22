@@ -98,6 +98,7 @@
                                                 <c:set var="errorDetailDesc"><form:errors path="detailDesc" cssClass="invalid-feedback" /></c:set>
                                                 <c:set var="errorShortDesc"><form:errors path="shortDesc" cssClass="invalid-feedback" /></c:set>
                                                 <c:set var="errorQuantity"><form:errors path="quantity" cssClass="invalid-feedback" /></c:set>
+                                                <c:set var="errorOriginalPrice"><form:errors path="originalPrice" cssClass="invalid-feedback" /></c:set>
 
                                                 <div class="mb-3" style="display: none;">
                                                     <label class="form-label">Id:</label>
@@ -118,8 +119,9 @@
                                                         <div class="mb-3 col-12 col-md-6">
                                                             <label class="form-label">Original Price:</label>
                                                             <form:input type="number" step="1"
-                                                                class="form-control"
+                                                                class="form-control ${not empty errorOriginalPrice ? 'is-invalid' : ''}"
                                                                 path="originalPrice" placeholder="Example: 19000000" />
+                                                            ${errorOriginalPrice}
                                                         </div>
                                                         <div class="mb-3 col-12 col-md-6">
                                                             <label class="form-label">Discounted Price:</label>
