@@ -495,6 +495,7 @@
                         <a href="#footer" onclick="document.getElementById('footer').scrollIntoView({behavior: 'smooth'})"><i class="fa-solid fa-envelope"></i> Contact</a>
                         <a href="#footer" onclick="document.getElementById('footer').scrollIntoView({behavior: 'smooth'})"><i class="fa-solid fa-circle-info"></i> About Us</a>
                         <a th:if="${session.user != null and session.user?.role?.name == 'USER'}" href="/account/manage"><i class="fa-solid fa-user-gear"></i> Manage Account</a>
+                        <a th:if="${session.user != null and session.user?.role?.name == 'USER'}" href="/feedback"><i class="fa-solid fa-comment-dots"></i> Feedback</a>
                     </div>
                 </div>
             </div>
