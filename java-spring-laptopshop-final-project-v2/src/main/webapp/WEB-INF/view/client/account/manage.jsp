@@ -77,6 +77,9 @@
             <c:if test="${param.error == 'email_exists'}">
                 <div class="alert alert-danger">Email already exists. Please choose another one.</div>
             </c:if>
+            <c:if test="${not empty updateEmailWarning}">
+                <div class="alert alert-warning">${updateEmailWarning}</div>
+            </c:if>
             
             <div class="row g-5">
                 <!-- Personal Info Column -->

@@ -2,10 +2,10 @@
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <nav class="sb-topnav navbar navbar-expand navbar-dark" style="background-color: #cd1818;">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3 d-flex align-items-center" href="/">
+            <span class="navbar-brand ps-3 d-flex align-items-center" style="cursor: default;">
                 <img src="/images/logo.png" alt="Logo" style="height: 30px; margin-right: 10px;" />
                 Cyber World
-            </a>
+            </span>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
                     class="fas fa-bars"></i></button>

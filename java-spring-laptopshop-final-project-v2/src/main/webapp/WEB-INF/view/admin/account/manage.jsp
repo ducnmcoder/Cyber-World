@@ -50,6 +50,9 @@
                                     <div class="alert alert-danger">Email already exists. Please choose another one.
                                     </div>
                                 </c:if>
+                                <c:if test="${not empty updateEmailWarning}">
+                                    <div class="alert alert-warning">${updateEmailWarning}</div>
+                                </c:if>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="card mb-4">

@@ -1,6 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<!-- Include FontAwesome 6 explicitly for the new icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <style>
     .cyber-header {
         background-color: #cd1818;
@@ -39,6 +42,7 @@
         border-radius: 20px;
         border: none;
         outline: none;
+        color: #111;
     }
     .cyber-search button {
         position: absolute;
@@ -59,15 +63,70 @@
         align-items: center;
         color: white;
         text-decoration: none;
-        font-size: 14px;
-        gap: 5px;
+        font-size: 16px;
+        gap: 8px;
         background: #000000;
-        padding: 8px 15px;
-        border-radius: 5px;
+        padding: 10px 18px;
+        border-radius: 8px;
         transition: background 0.2s;
+        border: none;
     }
     .cyber-action-btn:hover {
         background: #333333;
+        color: white;
+    }
+
+    .cyber-menu-btn {
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 5px 10px;
+        transition: 0.2s;
+    }
+    .cyber-menu-btn:hover {
+        opacity: 0.8;
+    }
+
+    /* Dropdown Menu */
+    .cyber-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    .cyber-dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        background-color: #fff;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1000;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .cyber-dropdown-content a {
+        color: #333;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        transition: background 0.2s;
+        text-align: left;
+    }
+    .cyber-dropdown-content a i {
+        margin-right: 8px;
+        width: 16px;
+        text-align: center;
+    }
+    .cyber-dropdown-content a:hover {
+        background-color: #f1f2f6;
+        color: #cd1818;
+    }
+    .cyber-dropdown:hover .cyber-dropdown-content {
+        display: block;
     }
 </style>
 
@@ -90,7 +149,7 @@
             <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
 
-        <div class="cyber-header-actions">
+        <div class="cyber-header-actions" style="align-items: center;">
             <!-- Order history for USER only -->
             <c:if test="${sessionScope.user != null and sessionScope.user.role.name == 'USER'}">
                 <a href="/order-history" class="cyber-action-btn" title="Order History">
@@ -102,7 +161,7 @@
             <c:if test="${sessionScope.user == null or sessionScope.user.role.name == 'USER'}">
                 <a href="/cart" class="cyber-action-btn" title="Cart">
                     <i class="fa-solid fa-cart-shopping"></i>
-                    <span class="badge bg-warning text-dark rounded-pill" style="margin-left: 5px;">${sessionScope.sum != null ? sessionScope.sum : 0}</span>
+                    <span style="margin-left: 5px; font-weight: bold;">${sessionScope.sum != null ? sessionScope.sum : 0}</span>
                 </a>
             </c:if>
 
@@ -124,9 +183,9 @@
             <c:if test="${sessionScope.user != null and sessionScope.user.role.name != 'USER'}">
                 <form method="post" action="/logout" style="margin: 0;">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                    <button type="submit" class="cyber-action-btn" title="Logout" style="border: none; cursor: pointer; font-family: inherit;">
+                    <button type="submit" class="cyber-action-btn" title="Logout" style="cursor: pointer; font-family: inherit;">
                         <i class="fa-solid fa-user-shield"></i>
-                        <span style="margin: 0 5px;">${sessionScope.user.role.name}</span>
+                        <span style="margin: 0 5px; color: white;">${sessionScope.user.role.name}</span>
                         <i class="fa-solid fa-sign-out-alt"></i>
                     </button>
                 </form>
@@ -141,11 +200,26 @@
             <c:if test="${sessionScope.user != null and sessionScope.user.role.name == 'USER'}">
                 <form method="post" action="/logout" style="margin: 0;">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                    <button type="submit" class="cyber-action-btn" title="Logout" style="border: none; cursor: pointer; font-family: inherit;">
+                    <button type="submit" class="cyber-action-btn" title="Logout" style="cursor: pointer; font-family: inherit;">
                         <i class="fa-solid fa-sign-out-alt"></i>
                     </button>
                 </form>
             </c:if>
+
+            <!-- Hamburger Menu -->
+            <div class="cyber-dropdown" style="margin-left: 10px;">
+                <button class="cyber-menu-btn" title="Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="cyber-dropdown-content">
+                    <a href="/blog"><i class="fa-solid fa-blog"></i> Blog</a>
+                    <a href="#footer" onclick="document.getElementById('footer').scrollIntoView({behavior: 'smooth'})"><i class="fa-solid fa-envelope"></i> Contact</a>
+                    <a href="#footer" onclick="document.getElementById('footer').scrollIntoView({behavior: 'smooth'})"><i class="fa-solid fa-circle-info"></i> About Us</a>
+                    <c:if test="${sessionScope.user != null and sessionScope.user.role.name == 'USER'}">
+                        <a href="/account/manage"><i class="fa-solid fa-user-gear"></i> Manage Account</a>
+                    </c:if>
+                </div>
+            </div>
         </div>
     </div>
 </header>

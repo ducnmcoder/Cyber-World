@@ -62,6 +62,10 @@ public class AccountController {
 
         model.addAttribute("currentUser", dto);
 
+        if (currentUser.getEmail() != null && currentUser.getEmail().endsWith("@facebook.local")) {
+            model.addAttribute("updateEmailWarning", "Please update your new email address.");
+        }
+
         String roleName = currentUser.getRole().getName();
         if (roleName != null && ("ROLE_OWNER".equals(roleName) || "OWNER".equals(roleName) || roleName.contains("OWNER"))) {
             return "redirect:/admin";
