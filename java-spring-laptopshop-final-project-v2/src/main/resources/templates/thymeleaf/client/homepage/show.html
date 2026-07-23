@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&family=Orbitron:wght@900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/chatbot.css">
     <style>
         /* Base styles */
         body {
@@ -937,6 +938,7 @@
                         <a href="#footer" onclick="document.getElementById('footer').scrollIntoView({behavior: 'smooth'})"><i class="fa-solid fa-envelope"></i> Contact</a>
                         <a href="#footer" onclick="document.getElementById('footer').scrollIntoView({behavior: 'smooth'})"><i class="fa-solid fa-circle-info"></i> About Us</a>
                         <a th:if="${session.user != null and session.user?.role?.name == 'USER'}" href="/account/manage"><i class="fa-solid fa-user-gear"></i> Manage Account</a>
+                        <a th:if="${session.user != null and session.user?.role?.name == 'USER'}" href="/feedback"><i class="fa-solid fa-comment-dots"></i> Feedback</a>
                     </div>
                 </div>
             </div>
@@ -1781,5 +1783,6 @@
             });
         }
     </script>
+    <script src="/js/chatbot.js" defer></script>
 </body>
 </html>

@@ -234,6 +234,7 @@
                     <a href="#footer" onclick="document.getElementById('footer').scrollIntoView({behavior: 'smooth'})"><i class="fa-solid fa-circle-info"></i> About Us</a>
                     <c:if test="${sessionScope.user != null and sessionScope.user.role.name == 'USER'}">
                         <a href="/account/manage"><i class="fa-solid fa-user-gear"></i> Manage Account</a>
+                        <a href="/feedback"><i class="fa-solid fa-comment-dots"></i> Feedback</a>
                     </c:if>
                 </div>
             </div>
