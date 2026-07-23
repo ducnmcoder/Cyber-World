@@ -711,9 +711,9 @@
 
                 <div class="price-box" style="display: flex; justify-content: space-between; align-items: stretch; background: white; border: 1px solid #f1f1f1; border-radius: 10px; overflow: hidden; margin-bottom: 15px;">
                     <div class="price-info" style="padding: 15px;">
-                        <div class="price-main" th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + 'đ'">22.490.000đ</div>
+                        <div class="price-main" th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + ' VND'">22.490.000 VND</div>
                         <div class="price-old-wrapper" th:if="${product.price > 10000000}" style="margin-top: 5px;">
-                            <div class="price-old" th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + 'đ'">24.990.000đ</div>
+                            <div class="price-old" th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + ' VND'">24.990.000 VND</div>
                             <div class="discount-percent">10%</div>
                         </div>
                     </div>
@@ -724,7 +724,7 @@
                 </div>
 
                 <div class="trade-in-box">
-                    <span>Trade-in - Extra discount up to <b>2.000.000đ</b></span>
+                    <span>Trade-in - Extra discount up to <b>2.000.000 VND</b></span>
                     <a href="#" style="color: #007bff; text-decoration: none;">Get quote now ❯</a>
                 </div>
 
@@ -744,7 +744,7 @@
                     </div>
                     <div style="text-align: right; color: #cd1818; font-weight: bold; font-size: 18px;">
                         <div style="font-size: 11px; font-weight: normal; color: #555;">Extra discount up to 10%</div>
-                        2.499.000đ
+                        2.499.000 VND
                     </div>
                 </div>
 
@@ -760,8 +760,8 @@
                             </div>
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <div>
-                                    <div style="font-size: 20px; font-weight: bold; color: #cd1818;" th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + 'đ ⚡'">22.490.000đ ⚡</div>
-                                    <div style="font-size: 12px; color: #999; text-decoration: line-through;" th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + 'đ'">24.990.000đ</div>
+                                    <div style="font-size: 20px; font-weight: bold; color: #cd1818;" th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + ' VND ⚡'">22.490.000 VND ⚡</div>
+                                    <div style="font-size: 12px; color: #999; text-decoration: line-through;" th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + ' VND'">24.990.000 VND</div>
                                 </div>
                                 <div style="font-size: 13px; color: #555;"><i class="fa-regular fa-clock"></i> 03:37:04</div>
                             </div>
@@ -770,7 +770,7 @@
                         <div style="font-weight: bold; margin-bottom: 10px;">Available offers:</div>
                         <div class="promo-item">
                             <i class="fa-solid fa-check"></i>
-                            <span>Instant 2,500,000đ off valid until 20/07</span>
+                            <span>Instant 2,500,000 VND off valid until 20/07</span>
                         </div>
                         <div class="promo-item">
                             <i class="fa-solid fa-check"></i>
@@ -778,7 +778,7 @@
                         </div>
                         <div class="promo-item">
                             <i class="fa-solid fa-check"></i>
-                            <span>Free comprehensive warranty combo: 1 year warranty + 400,000đ voucher for 1-to-1 exchange warranty</span>
+                            <span>Free comprehensive warranty combo: 1 year warranty + 400,000 VND voucher for 1-to-1 exchange warranty</span>
                         </div>
                         <a href="#" style="color: #007bff; text-decoration: none; display: block; margin-top: 10px;">View 10 more offers ˅</a>
                     </div>
@@ -1106,9 +1106,9 @@
                 <i class="fa-solid fa-coins"></i> +8.822
             </div>
             <div style="text-align: right; line-height: 1.2;">
-                <div class="sticky-price" th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + 'đ'">35.290.000đ</div>
+                <div class="sticky-price" th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + ' VND'">35.290.000 VND</div>
                 <div style="font-size: 13px; color: #999; text-decoration: line-through;" th:if="${product.price > 10000000}">
-                    <span th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + 'đ'">35.990.000đ</span> <span style="color: #cd1818; text-decoration: none; font-weight: bold; margin-left: 5px;">-10%</span>
+                    <span th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + ' VND'">35.990.000 VND</span> <span style="color: #cd1818; text-decoration: none; font-weight: bold; margin-left: 5px;">-10%</span>
                 </div>
             </div>
             <form th:if="${session.user == null or session.user?.role?.name == 'USER'}" th:action="@{/add-product-from-view-detail}" method="post" style="margin: 0; display: flex; gap: 15px; align-items: center;">

@@ -1047,9 +1047,9 @@
                             <div style="font-size: 13px; color: #333; margin-top: 15px; margin-bottom: 10px;">Or enter custom range:</div>
                             <div class="price-range-custom">
                                 <div class="price-inputs-row" style="display: flex; align-items: center; gap: 8px;">
-                                    <input type="text" id="displayMinPrice" class="custom-price-input" placeholder="0đ" readonly>
+                                    <input type="text" id="displayMinPrice" class="custom-price-input" placeholder="0 VND" readonly>
                                     <span style="color: #666; font-size: 14px;">~</span>
-                                    <input type="text" id="displayMaxPrice" class="custom-price-input" placeholder="200.000.000đ" readonly>
+                                    <input type="text" id="displayMaxPrice" class="custom-price-input" placeholder="200.000.000 VND" readonly>
                                 </div>
                                 <div class="range-slider" style="position: relative; height: 4px; background: #e5e7eb; border-radius: 4px; margin-top: 25px; margin-bottom: 20px;">
                                     <div class="range-slider-progress" id="sliderProgress" style="position: absolute; height: 100%; background: #4b5563; left: 0%; right: 0%; border-radius: 4px;"></div>
@@ -1302,11 +1302,11 @@
                         <!-- Info -->
                         <div class="product-price-section" style="margin-top: 10px; margin-bottom: 15px;">
                             <div class="old-price-row" style="margin-bottom: 3px;">
-                                <span class="old-price" style="text-decoration: line-through; color: #999; font-size: 13px;" th:text="${#numbers.formatDecimal(product.originalPrice > 0 ? product.originalPrice : product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + 'đ'">24.990.000đ</span>
+                                <span class="old-price" style="text-decoration: line-through; color: #999; font-size: 13px;" th:text="${#numbers.formatDecimal(product.originalPrice > 0 ? product.originalPrice : product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + ' VND'">24.990.000 VND</span>
                                 <span class="discount-percent" style="background: #ffebe6; color: #cd1818; font-size: 11px; padding: 2px 5px; border-radius: 4px; font-weight: bold; margin-left: 5px;" th:text="'-' + ${#numbers.formatDecimal(100 - (product.price * 100 / (product.originalPrice > 0 ? product.originalPrice : (product.price > 0 ? product.price * 1.1 : 1))), 1, 0)} + '%'">-10%</span>
                             </div>
-                            <div class="current-price" style="color: #cd1818; font-size: 18px; font-weight: 700; margin-bottom: 3px;" th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + 'đ'">22.490.000đ</div>
-                            <div class="discount-amount" style="color: #28a745; font-size: 13px; font-weight: 600; margin-bottom: 5px;" th:text="'Save: ' + ${#numbers.formatDecimal((product.originalPrice > 0 ? product.originalPrice : (product.price > 0 ? product.price * 1.1 : 1)) - product.price, 1, 'POINT', 0, 'COMMA')} + 'đ'">Save: 2.500.000đ</div>
+                            <div class="current-price" style="color: #cd1818; font-size: 18px; font-weight: 700; margin-bottom: 3px;" th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + ' VND'">22.490.000 VND</div>
+                            <div class="discount-amount" style="color: #28a745; font-size: 13px; font-weight: 600; margin-bottom: 5px;" th:text="'Save: ' + ${#numbers.formatDecimal((product.originalPrice > 0 ? product.originalPrice : (product.price > 0 ? product.price * 1.1 : 1)) - product.price, 1, 'POINT', 0, 'COMMA')} + ' VND'">Save: 2.500.000 VND</div>
                             <div class="countdown-timer" th:if="${product.promoEndDate != null and product.promoEndDate != ''}" style="font-size: 13px; color: #f39c12; font-weight: 600; margin-top: 5px; display: flex; align-items: center; gap: 5px;" th:data-endtime="${product.promoEndDate}">
                                 <i class="fa-regular fa-clock"></i> -- days --h --m --s
                             </div>
@@ -1677,7 +1677,7 @@
             const maxPriceInput = document.getElementById("maxPriceInput");
 
             function formatVND(valueInMillions) {
-                return new Intl.NumberFormat('vi-VN').format(valueInMillions * 1000000) + 'đ';
+                return new Intl.NumberFormat('vi-VN').format(valueInMillions * 1000000) + ' VND';
             }
 
             function updateSliders(isInit = false) {

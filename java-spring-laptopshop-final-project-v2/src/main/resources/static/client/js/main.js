@@ -160,66 +160,68 @@
     //     }
     //     button.parent().parent().find('input').val(newVal);
     // });
-    $('.quantity button').on('click', function () {
-        let change = 0;
-
-        var button = $(this);
-        var oldValue = button.parent().parent().find('input').val();
-        if (button.hasClass('btn-plus')) {
-            var newVal = parseFloat(oldValue) + 1;
-            change = 1;
-        } else {
-            if (oldValue > 1) {
-                var newVal = parseFloat(oldValue) - 1;
-                change = -1;
-            } else {
-                newVal = 1;
+    function updateCartPrices() {
+        let totalCartPrice = 0;
+        $('.cyber-qty-input').each(function() {
+            const input = $(this);
+            const qty = parseInt(input.val()) || 1;
+            const price = parseFloat(input.attr("data-cart-detail-price")) || 0;
+            const id = input.attr("data-cart-detail-id");
+            
+            const rowPrice = qty * price;
+            totalCartPrice += rowPrice;
+            
+            // update row total
+            const rowTotalElement = $(`div[data-cart-detail-id='${id}']`);
+            if (rowTotalElement.length) {
+                rowTotalElement.text(formatCurrency(rowPrice) + " VND");
             }
+        });
+        
+        // update overall total
+        const totalPriceElements = $(`[data-cart-total-price]`);
+        if (totalPriceElements.length) {
+            totalPriceElements.each(function() {
+                $(this).text(formatCurrency(totalCartPrice) + " VND");
+                $(this).attr("data-cart-total-price", totalCartPrice);
+            });
         }
-        const input = button.parent().parent().find('input');
+    }
+
+    $('.quantity button').on('click', function () {
+        var button = $(this);
+        var input = button.parent().parent().find('input');
+        var oldValue = parseInt(input.val()) || 1;
+        var newVal;
+        if (button.hasClass('btn-plus')) {
+            newVal = oldValue + 1;
+        } else {
+            newVal = (oldValue > 1) ? oldValue - 1 : 1;
+        }
         input.val(newVal);
 
         //set form index
-        const index = input.attr("data-cart-detail-index")
+        const index = input.attr("data-cart-detail-index");
         const el = document.getElementById(`cartDetails${index}.quantity`);
-        $(el).val(newVal);
+        if (el) $(el).val(newVal);
 
+        updateCartPrices();
+    });
 
-
-        //get price
-        const price = input.attr("data-cart-detail-price");
-        const id = input.attr("data-cart-detail-id");
-
-        const priceElement = $(`[data-cart-detail-id='${id}']`);
-        if (priceElement) {
-            const newPrice = +price * newVal;
-            priceElement.text(formatCurrency(newPrice.toFixed(2)) + " VND");
+    $('.cyber-qty-input').on('change', function() {
+        var input = $(this);
+        var val = parseInt(input.val());
+        if (isNaN(val) || val < 1) {
+            val = 1;
+            input.val(1);
         }
+        
+        //set form index
+        const index = input.attr("data-cart-detail-index");
+        const el = document.getElementById(`cartDetails${index}.quantity`);
+        if (el) $(el).val(val);
 
-        //update total cart price
-        const totalPriceElement = $(`[data-cart-total-price]`);
-
-        if (totalPriceElement && totalPriceElement.length) {
-            const currentTotal = totalPriceElement.first().attr("data-cart-total-price");
-            let newTotal = +currentTotal;
-            if (change === 0) {
-                newTotal = +currentTotal;
-            } else {
-                newTotal = change * (+price) + (+currentTotal);
-            }
-
-            //reset change
-            change = 0;
-
-            //update
-            totalPriceElement?.each(function (index, element) {
-                //update text
-                $(totalPriceElement[index]).text(formatCurrency(newTotal.toFixed(2)) + " VND");
-
-                //update data-attribute
-                $(totalPriceElement[index]).attr("data-cart-total-price", newTotal);
-            });
-        }
+        updateCartPrices();
     });
 
     function formatCurrency(value) {
