@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
             <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -82,7 +82,7 @@
                                                                     <td>
                                                                         <p class="mb-0 mt-4">
                                                                             <fmt:formatNumber type="number"
-                                                                                value="${orderDetail.price}" /> đ
+                                                                                value="${orderDetail.price}" /> VND
                                                                         </p>
                                                                     </td>
                                                                     <td>
@@ -98,7 +98,7 @@
                                                                             data-cart-detail-id="${orderDetail.id}">
                                                                             <fmt:formatNumber type="number"
                                                                                 value="${orderDetail.price * orderDetail.quantity}" />
-                                                                            đ
+                                                                            VND
                                                                         </p>
                                                                     </td>
                                                                 </tr>
@@ -126,3 +126,5 @@
                 </body>
 
                 </html>
+
+
