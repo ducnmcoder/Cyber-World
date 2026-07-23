@@ -24,14 +24,18 @@ import laptopshop.domain.Product_;
 import laptopshop.domain.User;
 import laptopshop.domain.dto.ProductCriteriaDTO;
 import laptopshop.service.ProductService;
+import laptopshop.service.BlogService;
+import laptopshop.domain.Blog;
 
 @Controller
 public class ItemController {
 
     private final ProductService productService;
+    private final BlogService blogService;
 
-    public ItemController(ProductService productService) {
+    public ItemController(ProductService productService, BlogService blogService) {
         this.productService = productService;
+        this.blogService = blogService;
     }
 
     @GetMapping("/product/{id}")
@@ -295,6 +299,8 @@ public class ItemController {
         model.addAttribute("totalElements", prs.getTotalElements());
         model.addAttribute("queryString", qs);
         
+        List<Blog> blogs = this.blogService.fetchAllBlogs(PageRequest.of(0, 5)).getContent();
+        model.addAttribute("blogs", blogs);
 
         return "thymeleaf/client/homepage/show";
     }
