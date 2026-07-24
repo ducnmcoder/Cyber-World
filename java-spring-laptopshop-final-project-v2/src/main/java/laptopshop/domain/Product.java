@@ -12,6 +12,7 @@ import jakarta.persistence.Transient;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -35,12 +36,14 @@ public class Product implements Serializable {
     @DecimalMin(value = "0", inclusive = false, message = "Price must be greater than 0")
     private Double price;
 
-    @Column(columnDefinition = "MEDIUMTEXT")
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String image;
 
     @NotNull
     @NotEmpty(message = "detailDesc cannot be empty")
-    @Column(columnDefinition = "MEDIUMTEXT")
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String detailDesc;
 
     @NotNull
