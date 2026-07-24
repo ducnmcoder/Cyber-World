@@ -15,7 +15,6 @@
     <name>laptopshop</name>
     <description>Demo project for Spring Boot</description>
     
-    <!-- ĐỔI THÀNH WAR ĐỂ KHỞI CHẠY ĐƯỢC JSP TRÊN DOCKER/RENDER -->
     <packaging>war</packaging>
 
     <properties>
@@ -93,12 +92,7 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-        <!-- Dev & Generation Tools -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-devtools</artifactId>
-            <optional>true</optional>
-        </dependency>
+        <!-- Code Generators & Specs -->
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-jpamodelgen</artifactId>
