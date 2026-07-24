@@ -3,13 +3,13 @@ FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /app
 COPY . .
 RUN mvn clean package -DskipTests
-# Xóa file jar phụ để đảm bảo chỉ còn duy nhất 1 file JAR chính
-RUN rm -f target/*-plain.jar target/*-original.jar
 
 # Bước 2: Chạy ứng dụng Java
 FROM eclipse-temurin:17-jdk
 WORKDIR /app
-# Đường dẫn đã chuẩn trở lại và sẽ copy đúng 1 file đổi tên thành app.jar
-COPY --from=build /app/target/*.jar app.jar
+# Copy toàn bộ thư mục target sang stage 2
+COPY --from=build /app/target /app/target
+
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Chạy trực tiếp file .jar (loại trừ file -plain.jar nếu có)
+ENTRYPOINT ["sh", "-c", "java -jar $(ls /app/target/*.jar | grep -v 'plain' | head -n 1)"]
