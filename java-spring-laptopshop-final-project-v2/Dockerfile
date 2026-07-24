@@ -13,5 +13,5 @@ COPY --from=build /app/target/*.war /app/app.war
 
 EXPOSE 8080
 
-# Chạy ứng dụng với giới hạn 384MB RAM (không bị tràn 512MB RAM của Render)
-ENTRYPOINT ["java", "-Xmx384m", "-jar", "/app/app.war"]
+# Chạy app và bắt ép Spring Boot lắng nghe đúng theo biến $PORT do Render cấp
+ENTRYPOINT ["sh", "-c", "java -Xmx384m -jar /app/app.war --server.port=${PORT:-8080}"]
