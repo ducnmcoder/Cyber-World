@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.JoinColumn;
@@ -30,10 +31,11 @@ public class Product implements Serializable {
     @NotEmpty(message = "Product name cannot be empty")
     private String name;
 
-    @NotNull
+    @NotNull(message = "Price is required")
     @DecimalMin(value = "0", inclusive = false, message = "Price must be greater than 0")
-    private double price;
+    private Double price;
 
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String image;
 
     @NotNull
@@ -45,11 +47,11 @@ public class Product implements Serializable {
     @NotEmpty(message = "shortDesc cannot be empty")
     private String shortDesc;
 
-    @NotNull
+    @NotNull(message = "Quantity is required")
     @Min(value = 1, message = "Quantity must be at least 1")
-    private long quantity;
+    private Long quantity;
 
-    private long sold;
+    private Long sold = 0L;
     private String factory;
     private String target;
 
@@ -58,6 +60,8 @@ public class Product implements Serializable {
     private String screenSize;
     private String storage;
     private String color;
+    private Double originalPrice;
+    private String promoEndDate;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "specification_id", referencedColumnName = "id")
@@ -79,11 +83,11 @@ public class Product implements Serializable {
         this.name = name;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -94,6 +98,8 @@ public class Product implements Serializable {
     public void setImage(String image) {
         this.image = image;
     }
+
+
 
     public String getDetailDesc() {
         return detailDesc;
@@ -111,19 +117,19 @@ public class Product implements Serializable {
         this.shortDesc = shortDesc;
     }
 
-    public long getQuantity() {
+    public Long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(long quantity) {
+    public void setQuantity(Long quantity) {
         this.quantity = quantity;
     }
 
-    public long getSold() {
+    public Long getSold() {
         return sold;
     }
 
-    public void setSold(long sold) {
+    public void setSold(Long sold) {
         this.sold = sold;
     }
 
@@ -175,6 +181,22 @@ public class Product implements Serializable {
         this.storage = storage;
     }
 
+    public Double getOriginalPrice() {
+        return originalPrice;
+    }
+
+    public void setOriginalPrice(Double originalPrice) {
+        this.originalPrice = originalPrice;
+    }
+
+    public String getPromoEndDate() {
+        return promoEndDate;
+    }
+
+    public void setPromoEndDate(String promoEndDate) {
+        this.promoEndDate = promoEndDate;
+    }
+
     public String getColor() {
         return color;
     }
@@ -189,6 +211,31 @@ public class Product implements Serializable {
 
     public void setSpecification(ProductSpecification specification) {
         this.specification = specification;
+    }
+
+    @Transient
+    public String getFirstImage() {
+        if (this.image == null || this.image.isEmpty()) return "/images/product/default.png";
+        String first = this.image.split(",")[0].trim();
+        if (first.startsWith("http://") || first.startsWith("https://")) {
+            return first;
+        }
+        return "/images/product/" + first;
+    }
+
+    @Transient
+    public java.util.List<String> getImages() {
+        if (this.image == null || this.image.isEmpty()) return java.util.Collections.emptyList();
+        java.util.List<String> result = new java.util.ArrayList<>();
+        for (String img : this.image.split(",")) {
+            String trimmed = img.trim();
+            if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+                result.add(trimmed);
+            } else {
+                result.add("/images/product/" + trimmed);
+            }
+        }
+        return result;
     }
 
     @Override

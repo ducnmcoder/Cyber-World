@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -62,12 +63,13 @@ public class HomePageController {
         // Ensure page is at least 1
         if (page < 1) page = 1;
 
-        Pageable pageable = PageRequest.of(page - 1, 8);
+        Pageable pageable = PageRequest.of(page - 1, 8, Sort.by("id").ascending());
         Page<Product> prs = this.productService.fetchProducts(pageable);
         List<Product> products = prs.getContent();
 
         model.addAttribute("products", products);
         model.addAttribute("totalPages", prs.getTotalPages());
+        model.addAttribute("totalElements", prs.getTotalElements());
         model.addAttribute("currentPage", page);
 
         List<Blog> blogs = this.blogService.fetchAllBlogs(PageRequest.of(0, 5)).getContent();

@@ -26,7 +26,7 @@
                                 <h1 class="mt-4">Products</h1>
                                 <ol class="breadcrumb mb-4">
                                     <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="/admin/product">Product</a></li>
+                                    <li class="breadcrumb-item"><a href="/admin/product?page=${page}">Product</a></li>
                                     <li class="breadcrumb-item active">View detail</li>
                                 </ol>
                                 <div class="container mt-5">
@@ -39,8 +39,11 @@
                                             <hr />
 
                                             <div class="card" style="width: 60%">
-                                                <img class="card-img-top" src="/images/product/${product.image}"
-                                                    alt="Card image cap">
+                                                <div class="d-flex overflow-auto gap-2 p-2 bg-light">
+                                                <c:forEach var="img" items="${product.images}">
+                                                    <img class="img-thumbnail" style="max-height: 200px" src="${img}" alt="Product Image">
+                                                </c:forEach>
+                                            </div>
 
                                                 <div class="card-header">
                                                     Product information
@@ -51,7 +54,7 @@
                                                     <li class="list-group-item">Price: ${product.price}</li>
                                                 </ul>
                                             </div>
-                                            <a href="/admin/product" class="btn btn-success mt-3">Back</a>
+                                            <a href="/admin/product?page=${page}" class="btn btn-success mt-3">Back</a>
 
                                         </div>
 

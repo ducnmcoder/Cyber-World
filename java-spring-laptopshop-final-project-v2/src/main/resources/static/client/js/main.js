@@ -258,6 +258,11 @@
             priceArr.push($(this).val());
         });
 
+        //search input
+        let searchValue = $("#searchInput").val();
+        let customMinPrice = $("#customMinPrice").val();
+        let customMaxPrice = $("#customMaxPrice").val();
+
         //sort order
         let sortValue = $('input[name="radio-sort"]:checked').val();
 
@@ -272,6 +277,19 @@
         searchParams.delete('factory');
         searchParams.delete('target');
         searchParams.delete('price');
+        searchParams.delete('name');
+        searchParams.delete('minPrice');
+        searchParams.delete('maxPrice');
+
+        if (searchValue) {
+            searchParams.set('name', searchValue);
+        }
+        if (customMinPrice) {
+            searchParams.set('minPrice', customMinPrice);
+        }
+        if (customMaxPrice) {
+            searchParams.set('maxPrice', customMaxPrice);
+        }
 
         if (factoryArr.length > 0) {
             searchParams.set('factory', factoryArr.join(','));
@@ -321,6 +339,17 @@
     if (params.has('sort')) {
         const sort = params.get('sort');
         $(`input[type="radio"][name="radio-sort"][value="${sort}"]`).prop('checked', true);
+    }
+
+    // Set search and custom price values
+    if (params.has('name')) {
+        $("#searchInput").val(params.get('name'));
+    }
+    if (params.has('minPrice')) {
+        $("#customMinPrice").val(params.get('minPrice'));
+    }
+    if (params.has('maxPrice')) {
+        $("#customMaxPrice").val(params.get('maxPrice'));
     }
 
 

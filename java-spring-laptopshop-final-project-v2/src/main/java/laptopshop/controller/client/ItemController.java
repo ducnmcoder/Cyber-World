@@ -24,14 +24,18 @@ import laptopshop.domain.Product_;
 import laptopshop.domain.User;
 import laptopshop.domain.dto.ProductCriteriaDTO;
 import laptopshop.service.ProductService;
+import laptopshop.service.BlogService;
+import laptopshop.domain.Blog;
 
 @Controller
 public class ItemController {
 
     private final ProductService productService;
+    private final BlogService blogService;
 
-    public ItemController(ProductService productService) {
+    public ItemController(ProductService productService, BlogService blogService) {
         this.productService = productService;
+        this.blogService = blogService;
     }
 
     @GetMapping("/product/{id}")
@@ -45,9 +49,21 @@ public class ItemController {
         return "thymeleaf/client/product/detail";
     }
 
+    private boolean isManager(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user != null && user.getRole() != null) {
+            String roleName = user.getRole().getName();
+            return "ADMIN".equals(roleName) || "STAFF".equals(roleName) || "OWNER".equals(roleName);
+        }
+        return false;
+    }
+
     @PostMapping("/add-product-to-cart/{id}")
     public String addProductToCart(@PathVariable long id, HttpServletRequest request, org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
         HttpSession session = request.getSession(true);
+        if (isManager(session)) {
+            return "redirect:/";
+        }
 
         long productId = id;
         String email = (String) session.getAttribute("email");
@@ -60,6 +76,10 @@ public class ItemController {
     @GetMapping("/cart")
     public String getCartPage(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession(true);
+        if (isManager(session)) {
+            return "redirect:/";
+        }
+
         String email = (String) session.getAttribute("email");
         Cart cart = null;
         if (email != null) {
@@ -89,6 +109,10 @@ public class ItemController {
     @PostMapping("/delete-cart-product/{id}")
     public String deleteCartDetail(@PathVariable long id, HttpServletRequest request) {
         HttpSession session = request.getSession(true);
+        if (isManager(session)) {
+            return "redirect:/";
+        }
+
         String email = (String) session.getAttribute("email");
         if (email != null) {
             this.productService.handleRemoveCartDetail(id, session);
@@ -108,6 +132,10 @@ public class ItemController {
     @GetMapping("/checkout")
     public String getCheckOutPage(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession(true);
+        if (isManager(session)) {
+            return "redirect:/";
+        }
+
         String email = (String) session.getAttribute("email");
         Cart cart = null;
         if (email != null) {
@@ -134,9 +162,13 @@ public class ItemController {
 
     @PostMapping("/confirm-checkout")
     public String getCheckOutPage(@ModelAttribute("cart") Cart cart, HttpServletRequest request) {
+        HttpSession session = request.getSession(true);
+        if (isManager(session)) {
+            return "redirect:/";
+        }
+
         List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
         
-        HttpSession session = request.getSession(true);
         String email = (String) session.getAttribute("email");
         if (email != null) {
             this.productService.handleUpdateCartBeforeCheckout(cartDetails);
@@ -165,6 +197,10 @@ public class ItemController {
             @RequestParam("receiverPhone") String receiverPhone) {
         
         HttpSession session = request.getSession(true);
+        if (isManager(session)) {
+            return "redirect:/";
+        }
+
         String email = (String) session.getAttribute("email");
         User currentUser = null;
         if (email != null) {
@@ -190,11 +226,29 @@ public class ItemController {
             @RequestParam("quantity") long quantity,
             HttpServletRequest request, org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
         HttpSession session = request.getSession(true);
+        if (isManager(session)) {
+            return "redirect:/product/" + id;
+        }
 
         String email = (String) session.getAttribute("email");
         this.productService.handleAddProductToCart(email, id, session, quantity);
         redirectAttributes.addFlashAttribute("cartMessage", "Item successfully added to your cart!");
         return "redirect:/product/" + id;
+    }
+
+    @PostMapping("/buy-now")
+    public String handleBuyNow(
+            @RequestParam("id") long id,
+            @RequestParam("quantity") long quantity,
+            HttpServletRequest request) {
+        HttpSession session = request.getSession(true);
+        if (isManager(session)) {
+            return "redirect:/product/" + id;
+        }
+
+        String email = (String) session.getAttribute("email");
+        this.productService.handleAddProductToCart(email, id, session, quantity);
+        return "redirect:/checkout";
     }
 
     @GetMapping("/products")
@@ -215,7 +269,7 @@ public class ItemController {
         }
 
         // check sort price
-        Pageable pageable = PageRequest.of(page - 1, 8);
+        Pageable pageable = PageRequest.of(page - 1, 8, Sort.by("id").ascending());
 
         if (productCriteriaDTO.getSort() != null && productCriteriaDTO.getSort().isPresent()) {
             String sort = productCriteriaDTO.getSort().get();
@@ -242,8 +296,11 @@ public class ItemController {
         model.addAttribute("products", products);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", prs.getTotalPages());
+        model.addAttribute("totalElements", prs.getTotalElements());
         model.addAttribute("queryString", qs);
         
+        List<Blog> blogs = this.blogService.fetchAllBlogs(PageRequest.of(0, 5)).getContent();
+        model.addAttribute("blogs", blogs);
 
         return "thymeleaf/client/homepage/show";
     }

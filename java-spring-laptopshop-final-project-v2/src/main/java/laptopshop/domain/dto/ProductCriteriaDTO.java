@@ -19,6 +19,15 @@ public class ProductCriteriaDTO {
     private Optional<List<String>> gpu;
     private Optional<List<String>> hz;
     private Optional<List<String>> security;
+    private Optional<List<String>> color;
+
+    public Optional<List<String>> getColor() {
+        return color;
+    }
+
+    public void setColor(Optional<List<String>> color) {
+        this.color = color;
+    }
 
     public Optional<List<String>> getStorage() {
         return storage;

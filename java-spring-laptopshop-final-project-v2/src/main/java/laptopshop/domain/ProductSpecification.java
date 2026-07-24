@@ -73,6 +73,16 @@ public class ProductSpecification implements Serializable {
     // Accessories
     private String accessories;
 
+    // New Audio field
+    private String audioTechnology;
+    // New Card Reader
+    private String cardReader;
+    // New Shell Materials
+    private String materialTop;
+    private String materialBottom;
+    // New Special Features
+    private String specialFeatures;
+
     // Design & Weight
     private String dimensions;
     private String weight;
@@ -229,4 +239,19 @@ public class ProductSpecification implements Serializable {
 
     public String getWarranty() { return warranty; }
     public void setWarranty(String warranty) { this.warranty = warranty; }
+
+    public String getAudioTechnology() { return audioTechnology; }
+    public void setAudioTechnology(String audioTechnology) { this.audioTechnology = audioTechnology; }
+
+    public String getCardReader() { return cardReader; }
+    public void setCardReader(String cardReader) { this.cardReader = cardReader; }
+
+    public String getMaterialTop() { return materialTop; }
+    public void setMaterialTop(String materialTop) { this.materialTop = materialTop; }
+
+    public String getMaterialBottom() { return materialBottom; }
+    public void setMaterialBottom(String materialBottom) { this.materialBottom = materialBottom; }
+
+    public String getSpecialFeatures() { return specialFeatures; }
+    public void setSpecialFeatures(String specialFeatures) { this.specialFeatures = specialFeatures; }
 }

@@ -51,7 +51,7 @@ public class ProductController {
             // TODO: handle exception
         }
 
-        Pageable pageable = PageRequest.of(page - 1, 5);
+        Pageable pageable = PageRequest.of(page - 1, 5, org.springframework.data.domain.Sort.by("id").ascending());
         Page<Product> prs = this.productService.fetchProducts(pageable);
         List<Product> listProducts = prs.getContent();
         model.addAttribute("products", listProducts);
@@ -63,108 +63,173 @@ public class ProductController {
     }
 
     @GetMapping("/admin/product/create")
-    public String getCreateProductPage(Model model) {
+    public String getCreateProductPage(Model model, @RequestParam(value = "page", defaultValue = "1") String page) {
         Product newProduct = new Product();
         newProduct.setSpecification(new laptopshop.domain.ProductSpecification());
         model.addAttribute("newProduct", newProduct);
+        model.addAttribute("page", page);
         return "admin/product/create";
+    }
+
+    private void syncProductSpecs(Product pr) {
+        if (pr.getSpecification() != null) {
+            pr.setCpu(pr.getSpecification().getCpuType());
+            pr.setRam(pr.getSpecification().getRamCapacity());
+            pr.setScreenSize(pr.getSpecification().getScreenTechnology());
+            pr.setStorage(pr.getSpecification().getStorageCapacity());
+        }
     }
 
     @PostMapping("/admin/product/create")
     public String handleCreateProduct(
             @ModelAttribute("newProduct") @Valid Product pr,
             BindingResult newProductBindingResult,
-            @RequestParam("imageFile") MultipartFile file,
-            @RequestParam(value = "imageUrl", required = false) String imageUrl) {
+            @RequestParam(value = "imageFiles", required = false) MultipartFile[] files,
+            @RequestParam(value = "imageUrl", required = false) String imageUrl,
+            @RequestParam(value = "page", defaultValue = "1") String page,
+            Model model) {
         // validate
         if (newProductBindingResult.hasErrors()) {
+            model.addAttribute("page", page);
             return "admin/product/create";
         }
 
-        // upload image
+        syncProductSpecs(pr);
+
+        // handle multiple images
+        java.util.List<String> savedImages = new java.util.ArrayList<>();
+        if (files != null) {
+            for (MultipartFile file : files) {
+                if (file != null && !file.isEmpty()) {
+                    String imgName = this.uploadService.handleSaveUploadFile(file, "product");
+                    savedImages.add(imgName);
+                }
+            }
+        }
         if (imageUrl != null && !imageUrl.trim().isEmpty()) {
-            pr.setImage(imageUrl.trim());
+            String[] urls = imageUrl.split("[,\\n\\r]+");
+            for (String url : urls) {
+                String trimmedUrl = url.trim();
+                if (!trimmedUrl.isEmpty()) {
+                    savedImages.add(trimmedUrl);
+                }
+            }
+        }
+
+        if (!savedImages.isEmpty()) {
+            pr.setImage(String.join(",", savedImages));
         } else {
-            String image = this.uploadService.handleSaveUploadFile(file, "product");
-            pr.setImage(image);
+            pr.setImage("default.png");
         }
 
         this.productService.createProduct(pr);
 
-        return "redirect:/admin/product";
+        return "redirect:/admin/product?page=" + page;
     }
 
     @GetMapping("/admin/product/update/{id}")
-    public String getUpdateProductPage(Model model, @PathVariable long id) {
+    public String getUpdateProductPage(Model model, @PathVariable long id, @RequestParam(value = "page", defaultValue = "1") String page) {
         Optional<Product> currentProduct = this.productService.fetchProductById(id);
         Product product = currentProduct.get();
         if (product.getSpecification() == null) {
             product.setSpecification(new laptopshop.domain.ProductSpecification());
         }
         model.addAttribute("newProduct", product);
+        model.addAttribute("page", page);
         return "admin/product/update";
     }
 
     @PostMapping("/admin/product/update")
     public String handleUpdateProduct(@ModelAttribute("newProduct") @Valid Product pr,
             BindingResult newProductBindingResult,
-            @RequestParam("imageFile") MultipartFile file,
-            @RequestParam(value = "imageUrl", required = false) String imageUrl) {
+            @RequestParam(value = "imageFiles", required = false) MultipartFile[] files,
+            @RequestParam(value = "imageUrl", required = false) String imageUrl,
+            @RequestParam(value = "page", defaultValue = "1") String page,
+            Model model) {
 
         // validate
         if (newProductBindingResult.hasErrors()) {
+            model.addAttribute("page", page);
             return "admin/product/update";
         }
 
         Product currentProduct = this.productService.fetchProductById(pr.getId()).get();
         if (currentProduct != null) {
-            // update new image
+            // handle multiple images
+            java.util.List<String> savedImages = new java.util.ArrayList<>();
+            if (files != null) {
+                for (MultipartFile file : files) {
+                    if (file != null && !file.isEmpty()) {
+                        String imgName = this.uploadService.handleSaveUploadFile(file, "product");
+                        savedImages.add(imgName);
+                    }
+                }
+            }
             if (imageUrl != null && !imageUrl.trim().isEmpty()) {
-                currentProduct.setImage(imageUrl.trim());
-            } else if (!file.isEmpty()) {
-                String img = this.uploadService.handleSaveUploadFile(file, "product");
-                currentProduct.setImage(img);
+                String[] urls = imageUrl.split("[,\\n\\r]+");
+                for (String url : urls) {
+                    String trimmedUrl = url.trim();
+                    if (!trimmedUrl.isEmpty()) {
+                        savedImages.add(trimmedUrl);
+                    }
+                }
+            }
+
+            if (!savedImages.isEmpty()) {
+                currentProduct.setImage(String.join(",", savedImages));
             }
 
             currentProduct.setName(pr.getName());
             currentProduct.setPrice(pr.getPrice());
+            currentProduct.setOriginalPrice(pr.getOriginalPrice());
+            currentProduct.setPromoEndDate(pr.getPromoEndDate());
             currentProduct.setQuantity(pr.getQuantity());
             currentProduct.setDetailDesc(pr.getDetailDesc());
             currentProduct.setShortDesc(pr.getShortDesc());
             currentProduct.setFactory(pr.getFactory());
             currentProduct.setTarget(pr.getTarget());
-            
-            // New spec fields
-            currentProduct.setCpu(pr.getCpu());
-            currentProduct.setRam(pr.getRam());
-            currentProduct.setScreenSize(pr.getScreenSize());
-            currentProduct.setStorage(pr.getStorage());
             currentProduct.setColor(pr.getColor());
+            
+            // Update specification
+            if (pr.getSpecification() != null) {
+                laptopshop.domain.ProductSpecification newSpec = pr.getSpecification();
+                if (currentProduct.getSpecification() == null) {
+                    currentProduct.setSpecification(newSpec);
+                } else {
+                    newSpec.setId(currentProduct.getSpecification().getId());
+                    currentProduct.setSpecification(newSpec);
+                }
+            }
+
+            // Sync base fields from specs
+            syncProductSpecs(currentProduct);
 
             this.productService.createProduct(currentProduct);
         }
 
-        return "redirect:/admin/product";
+        return "redirect:/admin/product?page=" + page;
     }
 
     @GetMapping("/admin/product/delete/{id}")
-    public String getDeleteProductPage(Model model, @PathVariable long id) {
+    public String getDeleteProductPage(Model model, @PathVariable long id, @RequestParam(value = "page", defaultValue = "1") String page) {
         model.addAttribute("id", id);
         model.addAttribute("newProduct", new Product());
+        model.addAttribute("page", page);
         return "admin/product/delete";
     }
 
     @PostMapping("/admin/product/delete")
-    public String postDeleteProduct(Model model, @ModelAttribute("newProduct") Product pr) {
+    public String postDeleteProduct(Model model, @ModelAttribute("newProduct") Product pr, @RequestParam(value = "page", defaultValue = "1") String page) {
         this.productService.deleteProduct(pr.getId());
-        return "redirect:/admin/product";
+        return "redirect:/admin/product?page=" + page;
     }
 
     @GetMapping("/admin/product/{id}")
-    public String getProductDetailPage(Model model, @PathVariable long id) {
+    public String getProductDetailPage(Model model, @PathVariable long id, @RequestParam(value = "page", defaultValue = "1") String page) {
         Product pr = this.productService.fetchProductById(id).get();
         model.addAttribute("product", pr);
         model.addAttribute("id", id);
+        model.addAttribute("page", page);
         return "admin/product/detail";
     }
 }

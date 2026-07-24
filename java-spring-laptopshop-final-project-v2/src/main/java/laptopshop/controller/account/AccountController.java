@@ -67,9 +67,8 @@ public class AccountController {
         }
 
         String roleName = currentUser.getRole().getName();
-        if (roleName != null && ("ROLE_OWNER".equals(roleName) || "OWNER".equals(roleName) || roleName.contains("OWNER"))) {
-            return "redirect:/admin";
-        } else if (roleName != null && ("ROLE_ADMIN".equals(roleName) || "ADMIN".equals(roleName) || roleName.contains("ADMIN"))) {
+        if (roleName != null && ("ROLE_OWNER".equals(roleName) || "OWNER".equals(roleName) || roleName.contains("OWNER")
+                || "ROLE_ADMIN".equals(roleName) || "ADMIN".equals(roleName) || roleName.contains("ADMIN"))) {
             return "admin/account/manage";
         } else if ("STAFF".equals(roleName) || (roleName != null && roleName.contains("STAFF"))) {
             return "staff/account/manage";

@@ -3,6 +3,10 @@
 
 <!-- Include FontAwesome 6 explicitly for the new icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Include Google Fonts for Logo -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&family=Orbitron:wght@900&display=swap" rel="stylesheet">
 
 <style>
     .cyber-header {
@@ -22,13 +26,23 @@
         justify-content: space-between;
     }
     .cyber-logo {
-        font-size: 24px;
-        font-weight: bold;
-        color: white;
         text-decoration: none;
         display: flex;
         align-items: center;
-        gap: 10px;
+    }
+    .cyber-logo-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .cyber-logo-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 26px;
+        font-weight: 900;
+        letter-spacing: 1px;
+        line-height: 1.1;
+        text-transform: uppercase;
+        color: white;
     }
     .cyber-search {
         flex-grow: 1;
@@ -140,8 +154,11 @@
                 <a href="/" class="cyber-logo">
             </c:otherwise>
         </c:choose>
-            <img src="/images/logo.png" alt="Cyber World Logo" style="height: 40px; margin-right: 10px;">
-            Cyber World
+            <img src="/images/logo.png" alt="Cyber World Logo" style="height: 50px; margin-right: 15px;">
+            <div class="cyber-logo-text">
+                <span class="cyber-logo-title">CYBER</span>
+                <span class="cyber-logo-title">WORLD</span>
+            </div>
         </a>
         
         <form class="cyber-search" action="/products" method="get">
@@ -217,6 +234,7 @@
                     <a href="#footer" onclick="document.getElementById('footer').scrollIntoView({behavior: 'smooth'})"><i class="fa-solid fa-circle-info"></i> About Us</a>
                     <c:if test="${sessionScope.user != null and sessionScope.user.role.name == 'USER'}">
                         <a href="/account/manage"><i class="fa-solid fa-user-gear"></i> Manage Account</a>
+                        <a href="/feedback"><i class="fa-solid fa-comment-dots"></i> Feedback</a>
                     </c:if>
                 </div>
             </div>
