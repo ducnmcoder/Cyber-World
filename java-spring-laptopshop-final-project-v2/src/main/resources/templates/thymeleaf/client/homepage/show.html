@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,6 +31,8 @@
             z-index: 100;
         }
 =======
+=======
+>>>>>>> Stashed changes
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -54,6 +57,9 @@
                 padding: 0;
                 color: #333;
             }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
             /* Header styles preserved from original */
@@ -67,6 +73,7 @@
                 z-index: 100;
             }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
         .cyber-logo {
             font-size: 24px;
@@ -1339,6 +1346,26 @@
                 track.style.transition = 'transform 0.4s ease';
                 track.style.transform = 'translateX(0)';
 =======
+=======
+            .cyber-header .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .cyber-logo {
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+            }
+            .cyber-logo-text {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+>>>>>>> Stashed changes
             .cyber-logo-title {
                 font-family: "Orbitron", sans-serif;
                 font-size: 26px;
@@ -1347,6 +1374,9 @@
                 line-height: 1.1;
                 text-transform: uppercase;
                 color: white;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             }
 
@@ -2138,7 +2168,11 @@
             }
             .contact-form input:focus,
             .contact-form textarea:focus {
+<<<<<<< Updated upstream
                 border-color: #8bc34a;
+=======
+                border-color: #cd1818;
+>>>>>>> Stashed changes
             }
             .contact-form .btn-send {
                 background: transparent;
@@ -2160,7 +2194,11 @@
                 border-color: #f9a826;
             }
             .success-message {
+<<<<<<< Updated upstream
                 color: #8bc34a;
+=======
+                color: #cd1818;
+>>>>>>> Stashed changes
                 margin-top: 15px;
                 font-size: 16px;
                 font-weight: 600;
@@ -4126,12 +4164,15 @@
             </div>
         </div>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     </div>
     <!-- Cart Notification Toast -->
     <div th:if="${cartMessage != null}" id="cartToast" style="position: fixed; top: 80px; right: 20px; background-color: #28a745; color: white; padding: 15px 25px; border-radius: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100000; display: flex; align-items: center; gap: 10px; animation: slideIn 0.5s, fadeOut 0.5s 2.5s forwards;">
         <i class="fa-solid fa-check-circle" style="font-size: 20px;"></i>
         <span th:text="${cartMessage}">Thêm thành công</span>
     </div>
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 
@@ -4168,6 +4209,7 @@
                 }
             }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         }, 3000);
     </script>
     <script>
@@ -4183,6 +4225,8 @@
             if (csrfInput) {
                 csrfToken = csrfInput.value;
 =======
+=======
+>>>>>>> Stashed changes
 
             function openBlogModal(btn) {
                 const title = btn.getAttribute("data-title");
@@ -4199,6 +4243,7 @@
                 document.getElementById("modalBlogTitle").innerText = title;
                 document.getElementById("modalBlogContent").innerText = content;
                 document.getElementById("blogModal").style.display = "flex";
+<<<<<<< Updated upstream
             }
 
             function closeBlogModal() {
@@ -4892,6 +4937,697 @@
     </script>
 </body>
 =======
+        </script>
+    </body>
+>>>>>>> Stashed changes
+=======
+            }
+
+            function closeBlogModal() {
+                document.getElementById("blogModal").style.display = "none";
+            }
+
+            // Close modal on outside click
+            window.addEventListener("click", function (event) {
+                const modal = document.getElementById("blogModal");
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
+            });
+        </script>
+
+        <!-- Footer -->
+        <footer id="footer" class="cyber-footer">
+            <div class="container">
+                <div class="footer-col">
+                    <h4>Hotline & Support</h4>
+                    <a href="tel:18001234" class="footer-hotline">1800 1234</a>
+                    <ul>
+                        <li><a href="#">Call Center (8:00 - 21:00)</a></li>
+                        <li><a href="#">Technical Support</a></li>
+                        <li><a href="#">Warranty Center</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Our Stores</h4>
+                    <ul>
+                        <li><a href="#">Showroom in Hanoi</a></li>
+                        <li><a href="#">Showroom in Ho Chi Minh City</a></li>
+                        <li><a href="#">Showroom in Da Nang</a></li>
+                        <li><a href="#">Find the nearest store</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Policies</h4>
+                    <ul>
+                        <li><a href="#">Warranty Policy</a></li>
+                        <li><a href="#">Return Policy</a></li>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Payment & Shipping</h4>
+                    <div
+                        style="
+                            display: flex;
+                            gap: 10px;
+                            margin-bottom: 15px;
+                            font-size: 24px;
+                        "
+                    >
+                        <i
+                            class="fa-brands fa-cc-visa"
+                            style="color: white"
+                        ></i>
+                        <i
+                            class="fa-brands fa-cc-mastercard"
+                            style="color: white"
+                        ></i>
+                        <i
+                            class="fa-brands fa-cc-paypal"
+                            style="color: white"
+                        ></i>
+                    </div>
+                    <div style="display: flex; gap: 10px; font-size: 24px">
+                        <i
+                            class="fa-solid fa-truck-fast"
+                            style="color: white"
+                        ></i>
+                        <i class="fa-solid fa-box" style="color: white"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Us Section -->
+            <div class="contact-section">
+                <h3 class="contact-title">Contact Us</h3>
+                <div id="contactFormContainer">
+                    <form
+                        id="footerContactForm"
+                        class="contact-form"
+                        onsubmit="submitContactForm(event)"
+                    >
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input
+                                    type="text"
+                                    id="contactName"
+                                    placeholder="Your Name *"
+                                    required
+                                />
+                            </div>
+                            <div
+                                class="form-group"
+                                th:if="${session.user == null}"
+                            >
+                                <input
+                                    type="email"
+                                    id="contactEmail"
+                                    placeholder="Your Email *"
+                                    required
+                                />
+                            </div>
+                            <input
+                                type="hidden"
+                                id="contactEmail"
+                                th:if="${session.user != null}"
+                                th:value="${session.user.email}"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <input
+                                type="text"
+                                id="contactSubject"
+                                placeholder="Your Subject *"
+                                required
+                            />
+                        </div>
+                        <div class="form-group">
+                            <textarea
+                                id="contactMessage"
+                                rows="4"
+                                placeholder="Your Message *"
+                                required
+                            ></textarea>
+                        </div>
+                        <button type="submit" class="btn-send">
+                            Send Message <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+                <div
+                    id="contactSuccessMessage"
+                    class="success-message"
+                    style="display: none"
+                >
+                    We value your feedback and will get back to you soon!
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Cyber World. All rights reserved.</p>
+            </div>
+        </footer>
+
+        <style>
+            .btn-load-more {
+                display: inline-block;
+                background: #fff;
+                color: #cd1818;
+                border: 1px solid #cd1818;
+                padding: 10px 30px;
+                border-radius: 5px;
+                font-weight: 600;
+                font-size: 16px;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
+            .btn-load-more:hover {
+                background: #cd1818;
+                color: #fff;
+            }
+        </style>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const btnLoadMore = document.getElementById("btn-load-more");
+                if (btnLoadMore) {
+                    btnLoadMore.addEventListener("click", function () {
+                        const currentPage = parseInt(
+                            this.getAttribute("data-current-page"),
+                        );
+                        const totalPages = parseInt(
+                            this.getAttribute("data-total-pages"),
+                        );
+                        const queryString =
+                            this.getAttribute("data-query-string");
+                        const nextPage = currentPage + 1;
+
+                        if (nextPage > totalPages) return;
+
+                        const originalText = this.innerHTML;
+                        this.innerHTML =
+                            '<i class="fa-solid fa-spinner fa-spin"></i> Đang tải...';
+                        this.disabled = true;
+
+                        const url =
+                            "/products?page=" +
+                            nextPage +
+                            (queryString ? "&" + queryString : "");
+
+                        fetch(url)
+                            .then((response) => response.text())
+                            .then((html) => {
+                                const parser = new DOMParser();
+                                const doc = parser.parseFromString(
+                                    html,
+                                    "text/html",
+                                );
+                                const newProducts =
+                                    doc.querySelectorAll(".product-card");
+                                const grid =
+                                    document.querySelector(".products-grid");
+
+                                newProducts.forEach((product) => {
+                                    grid.appendChild(product);
+                                });
+
+                                this.setAttribute(
+                                    "data-current-page",
+                                    nextPage,
+                                );
+                                this.innerHTML = originalText;
+                                this.disabled = false;
+
+                                if (nextPage >= totalPages) {
+                                    this.style.display = "none";
+                                }
+                            })
+                            .catch((err) => {
+                                console.error(
+                                    "Error loading more products:",
+                                    err,
+                                );
+                                this.innerHTML = originalText;
+                                this.disabled = false;
+                            });
+                    });
+                }
+            });
+        </script>
+
+        <!-- Login Modal -->
+        <div
+            id="loginModal"
+            style="
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 9999;
+                justify-content: center;
+                align-items: center;
+            "
+        >
+            <div
+                class="auth-container"
+                style="
+                    background: white;
+                    padding: 30px;
+                    border-radius: 10px;
+                    max-width: 400px;
+                    width: 100%;
+                    position: relative;
+                "
+            >
+                <button
+                    onclick="
+                        document.getElementById('loginModal').style.display =
+                            'none'
+                    "
+                    style="
+                        position: absolute;
+                        top: 10px;
+                        right: 15px;
+                        background: none;
+                        border: none;
+                        font-size: 20px;
+                        cursor: pointer;
+                    "
+                >
+                    &times;
+                </button>
+                <h2 style="text-align: center; margin-bottom: 20px">Login</h2>
+
+                <form method="post" th:action="@{/login}">
+                    <div class="form-group" style="margin-bottom: 15px">
+                        <label style="display: block; margin-bottom: 5px"
+                            >Email Address</label
+                        >
+                        <input
+                            type="email"
+                            name="username"
+                            placeholder="name@example.com"
+                            required
+                            style="
+                                width: 100%;
+                                padding: 10px;
+                                border: 1px solid #ccc;
+                                border-radius: 5px;
+                            "
+                        />
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px">
+                        <label style="display: block; margin-bottom: 5px"
+                            >Password</label
+                        >
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            required
+                            style="
+                                width: 100%;
+                                padding: 10px;
+                                border: 1px solid #ccc;
+                                border-radius: 5px;
+                            "
+                        />
+                    </div>
+
+                    <input
+                        type="hidden"
+                        th:name="${_csrf.parameterName}"
+                        th:value="${_csrf.token}"
+                    />
+
+                    <button
+                        type="submit"
+                        class="btn-submit"
+                        style="
+                            width: 100%;
+                            padding: 10px;
+                            background: #cd1818;
+                            color: white;
+                            border: none;
+                            border-radius: 5px;
+                            font-weight: bold;
+                            cursor: pointer;
+                        "
+                    >
+                        Login
+                    </button>
+                </form>
+
+                <div
+                    class="social-login"
+                    style="margin-top: 20px; text-align: center"
+                >
+                    <p style="margin-bottom: 10px; color: #666">
+                        Or login with
+                    </p>
+                    <a
+                        href="/oauth2/authorization/google"
+                        class="btn-social btn-google"
+                        style="
+                            display: block;
+                            width: 100%;
+                            padding: 10px;
+                            margin-bottom: 10px;
+                            background: white;
+                            color: #db4437;
+                            border: 1px solid #db4437;
+                            border-radius: 5px;
+                            text-decoration: none;
+                        "
+                    >
+                        <i class="fab fa-google"></i> Login with Google
+                    </a>
+                    <a
+                        href="/oauth2/authorization/facebook"
+                        class="btn-social btn-facebook"
+                        style="
+                            display: block;
+                            width: 100%;
+                            padding: 10px;
+                            background: white;
+                            color: #4267b2;
+                            border: 1px solid #4267b2;
+                            border-radius: 5px;
+                            text-decoration: none;
+                        "
+                    >
+                        <i class="fab fa-facebook-f"></i> Login with Facebook
+                    </a>
+                </div>
+
+                <div
+                    class="auth-links"
+                    style="
+                        margin-top: 20px;
+                        text-align: center;
+                        font-size: 14px;
+                    "
+                >
+                    <p>
+                        Don't have an account?
+                        <a
+                            href="/register"
+                            style="color: #007bff; text-decoration: none"
+                            >Register now!</a
+                        >
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Cart Notification Toast -->
+        <div
+            th:if="${cartMessage != null}"
+            id="cartToast"
+            style="
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                background-color: #28a745;
+                color: white;
+                padding: 15px 25px;
+                border-radius: 5px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                z-index: 100000;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                animation:
+                    slideIn 0.5s,
+                    fadeOut 0.5s 2.5s forwards;
+            "
+        >
+            <i class="fa-solid fa-check-circle" style="font-size: 20px"></i>
+            <span th:text="${cartMessage}"
+                >Item successfully added to your cart!</span
+            >
+        </div>
+
+        <style>
+            @keyframes slideIn {
+                from {
+                    right: -300px;
+                    opacity: 0;
+                }
+                to {
+                    right: 20px;
+                    opacity: 1;
+                }
+            }
+            @keyframes fadeOut {
+                from {
+                    opacity: 1;
+                }
+                to {
+                    opacity: 0;
+                    display: none;
+                }
+            }
+        </style>
+        <script>
+            setTimeout(() => {
+                const toast = document.getElementById("cartToast");
+                if (toast) {
+                    toast.style.display = "none";
+                }
+            }, 3000);
+
+            document.addEventListener("DOMContentLoaded", function () {
+                function updateCountdowns() {
+                    const timers =
+                        document.querySelectorAll(".countdown-timer");
+                    timers.forEach((timer) => {
+                        const endTimeStr = timer.getAttribute("data-endtime");
+                        if (!endTimeStr) {
+                            timer.innerHTML = `<i class="fa-regular fa-clock"></i> Expired`;
+                            return;
+                        }
+                        const endTime = new Date(endTimeStr).getTime();
+                        const now = new Date().getTime();
+                        const diff = endTime - now;
+                        if (diff <= 0) {
+                            timer.innerHTML = `<i class="fa-regular fa-clock"></i> Expired`;
+                            return;
+                        }
+                        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor(
+                            (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+                        );
+                        const minutes = Math.floor(
+                            (diff % (1000 * 60 * 60)) / (1000 * 60),
+                        );
+                        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                        timer.innerHTML = `<i class="fa-regular fa-clock"></i> ${days} days ${hours}h ${minutes}m ${seconds}s`;
+                    });
+                }
+                updateCountdowns();
+                setInterval(updateCountdowns, 1000);
+
+                // Dual Range Slider Logic
+                const rangeMin = document.getElementById("rangeMin");
+                const rangeMax = document.getElementById("rangeMax");
+                const sliderProgress =
+                    document.getElementById("sliderProgress");
+                const displayMinPrice =
+                    document.getElementById("displayMinPrice");
+                const displayMaxPrice =
+                    document.getElementById("displayMaxPrice");
+                const minPriceInput = document.getElementById("minPriceInput");
+                const maxPriceInput = document.getElementById("maxPriceInput");
+
+                function formatVND(valueInMillions) {
+                    return (
+                        new Intl.NumberFormat("vi-VN").format(
+                            valueInMillions * 1000000,
+                        ) + "đ"
+                    );
+                }
+
+                function updateSliders(isInit = false) {
+                    if (!rangeMin || !rangeMax) return;
+
+                    let minVal = parseFloat(rangeMin.value);
+                    let maxVal = parseFloat(rangeMax.value);
+
+                    if (minVal > maxVal - 0.5) {
+                        if (document.activeElement === rangeMin) {
+                            rangeMin.value = maxVal - 0.5;
+                            minVal = parseFloat(rangeMin.value);
+                        } else {
+                            rangeMax.value = minVal + 0.5;
+                            maxVal = parseFloat(rangeMax.value);
+                        }
+                    }
+
+                    let percentMin = (minVal / 200) * 100;
+                    let percentMax = (maxVal / 200) * 100;
+
+                    sliderProgress.style.left = percentMin + "%";
+                    sliderProgress.style.right = 100 - percentMax + "%";
+
+                    displayMinPrice.value = formatVND(minVal);
+                    displayMaxPrice.value = formatVND(maxVal);
+
+                    if (!isInit) {
+                        minPriceInput.value = minVal;
+                        maxPriceInput.value = maxVal;
+                    }
+                }
+
+                if (rangeMin && rangeMax) {
+                    rangeMin.addEventListener("input", () => updateSliders());
+                    rangeMax.addEventListener("input", () => updateSliders());
+
+                    // Initialize from existing hidden inputs if any
+                    if (minPriceInput.value) {
+                        rangeMin.value = parseFloat(minPriceInput.value);
+                    }
+                    if (maxPriceInput.value) {
+                        rangeMax.value = parseFloat(maxPriceInput.value);
+                    }
+                    updateSliders(true);
+                }
+            });
+
+            function applyCustomPrice() {
+                // Uncheck "all" if submitting custom price
+                let allCb = document.querySelector(
+                    "input[name=price][value=all]",
+                );
+                if (allCb) allCb.checked = false;
+                document.getElementById("filterForm").submit();
+            }
+
+            function applySort(sortValue) {
+                let sortInput = document.getElementById("sortInput");
+                if (!sortInput) {
+                    sortInput = document.createElement("input");
+                    sortInput.type = "hidden";
+                    sortInput.name = "sort";
+                    sortInput.id = "sortInput";
+                    document
+                        .getElementById("filterForm")
+                        .appendChild(sortInput);
+                }
+                sortInput.value = sortValue;
+                document.getElementById("filterForm").submit();
+            }
+        </script>
+        <script>
+            function submitContactForm(event) {
+                event.preventDefault();
+                const name = document.getElementById("contactName")
+                    ? document.getElementById("contactName").value
+                    : "";
+                const email = document.getElementById("contactEmail")
+                    ? document.getElementById("contactEmail").value
+                    : "";
+                const subject = document.getElementById("contactSubject")
+                    ? document.getElementById("contactSubject").value
+                    : "Contact from Footer";
+                const message = document.getElementById("contactMessage")
+                    ? document.getElementById("contactMessage").value
+                    : "";
+
+                let csrfToken = "";
+                const csrfInput = document.querySelector('input[name="_csrf"]');
+                if (csrfInput) {
+                    csrfToken = csrfInput.value;
+                }
+
+                fetch("/api/contact/footer?_csrf=" + csrfToken, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        fullName: name,
+                        email: email,
+                        subject: subject,
+                        message: message,
+                    }),
+                })
+                    .then((response) => {
+                        if (response.ok || response.status === 403) {
+                            alert(
+                                "We value your feedback and will get back to you soon!",
+                            );
+                            document
+                                .getElementById("footerContactForm")
+                                .reset();
+                        } else {
+                            alert("An error occurred. Please try again.");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                        alert("An error occurred. Please try again.");
+                    });
+            }
+        </script>
+        <script src="/js/chatbot.js" defer></script>
+        <script>
+            // Hero Carousel Script
+            let currentHeroSlide = 0;
+            const heroSlidesCount = 5;
+            const heroInner = document.getElementById("heroCarouselInner");
+            const heroIndicators = document.querySelectorAll(
+                ".carousel-indicator",
+            );
+            let heroSlideInterval;
+
+            function updateHeroCarousel() {
+                if (!heroInner) return;
+                heroInner.style.transform = `translateX(-${currentHeroSlide * 100}%)`;
+                heroIndicators.forEach((ind, index) => {
+                    if (index === currentHeroSlide) ind.classList.add("active");
+                    else ind.classList.remove("active");
+                });
+            }
+
+            function moveHeroCarousel(direction) {
+                currentHeroSlide =
+                    (currentHeroSlide + direction + heroSlidesCount) %
+                    heroSlidesCount;
+                updateHeroCarousel();
+                resetHeroInterval();
+            }
+
+            function goToHeroSlide(index) {
+                currentHeroSlide = index;
+                updateHeroCarousel();
+                resetHeroInterval();
+            }
+
+            function startHeroInterval() {
+                heroSlideInterval = setInterval(() => {
+                    moveHeroCarousel(1);
+                }, 5000);
+            }
+
+            function resetHeroInterval() {
+                clearInterval(heroSlideInterval);
+                startHeroInterval();
+            }
+
+            document.addEventListener("DOMContentLoaded", () => {
+                if (document.getElementById("heroCarouselInner")) {
+                    startHeroInterval();
+                }
+            });
         </script>
     </body>
 >>>>>>> Stashed changes
