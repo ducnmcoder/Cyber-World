@@ -8,10 +8,9 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:17-jre
 WORKDIR /app
 
-# Copy file JAR vừa build sang
 COPY --from=build /app/target/*.jar /app/app.jar
 
 EXPOSE 8080
 
-# Chạy trực tiếp file JAR và ép truyền PORT
-ENTRYPOINT ["sh", "-c", "java -Xmx384m -Dserver.port=${PORT:-8080} -jar /app/app.jar"]
+# Tối ưu cờ JVM giúp bật Tomcat tức thì trên Docker
+ENTRYPOINT ["sh", "-c", "java -Xmx384m -Djava.security.egd=file:/dev/./urandom -Dserver.port=${PORT:-8080} -jar /app/app.jar"]
