@@ -1,4 +1,4 @@
-# Stage 1: Build JAR bằng Maven
+# Stage 1: Build file WAR
 FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /app
 COPY . .
@@ -8,9 +8,9 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:17-jre
 WORKDIR /app
 
-COPY --from=build /app/target/*.jar /app/app.jar
+# Copy file WAR vừa build
+COPY --from=build /app/target/*.war /app/app.war
 
 EXPOSE 8080
 
-# Tối ưu cờ JVM giúp bật Tomcat tức thì trên Docker
-ENTRYPOINT ["sh", "-c", "java -Xmx384m -Djava.security.egd=file:/dev/./urandom -Dserver.port=${PORT:-8080} -jar /app/app.jar"]
+ENTRYPOINT ["sh", "-c", "java -Xmx384m -Djava.security.egd=file:/dev/./urandom -Dserver.port=${PORT:-8080} -jar /app/app.war"]
