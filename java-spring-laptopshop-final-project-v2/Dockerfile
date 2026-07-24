@@ -4,9 +4,10 @@ WORKDIR /app
 COPY . .
 RUN mvn clean package -DskipTests
 
-# Bước 2: Chạy ứng dụng Java (Sửa lại đường dẫn tìm file .jar)
+# Bước 2: Chạy ứng dụng Java
 FROM eclipse-temurin:17-jdk
 WORKDIR /app
-COPY --from=build /app/**/target/*.jar app.jar
+# Chỉ định chính xác đường dẫn chứa file target từ bước build
+COPY --from=build /app/java-spring-laptopshop-final-project-v2/target/*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
