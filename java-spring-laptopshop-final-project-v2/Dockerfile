@@ -4,14 +4,12 @@ WORKDIR /app
 COPY . .
 RUN mvn clean package -DskipTests
 
-# Bước 2: Runtime siêu nhẹ bằng JDK 17 (Tiết kiệm RAM)
+# Bước 2: Runtime siêu nhẹ bằng JDK 17
 FROM eclipse-temurin:17-jre
 WORKDIR /app
 
 # Copy file WAR đã build ở Bước 1
 COPY --from=build /app/target/*.war /app/app.war
 
-EXPOSE 8080
-
-# Chạy app và bắt ép Spring Boot lắng nghe đúng theo biến $PORT do Render cấp
-ENTRYPOINT ["sh", "-c", "java -Xmx384m -jar /app/app.war --server.port=${PORT:-8080}"]
+# Bắt buộc Spring Boot lắng nghe biến $PORT do Render cấp
+ENTRYPOINT ["sh", "-c", "java -Xmx384m -Dserver.port=${PORT:-8080} -jar /app/app.war"]
