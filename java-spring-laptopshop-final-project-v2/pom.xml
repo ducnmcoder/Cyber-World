@@ -15,7 +15,7 @@
 	<name>laptopshop</name>
 	<description>Demo project for Spring Boot</description>
  	<!-- jar không hỗ trợ jsp :v -->
-	<packaging>war</packaging>
+    <packaging>jar</packaging>
 	<properties>
 		<java.version>17</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
