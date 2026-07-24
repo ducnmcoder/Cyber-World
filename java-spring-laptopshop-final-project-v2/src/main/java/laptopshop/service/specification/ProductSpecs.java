@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 
 import laptopshop.domain.Product;
-import laptopshop.domain.Product_;
+
 import jakarta.persistence.criteria.Predicate;
 import java.util.ArrayList;
 
@@ -35,13 +35,13 @@ public class ProductSpecs {
 
     // case3
     public static Specification<Product> matchFactory(String factory) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get(Product_.FACTORY), factory);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("factory"), factory);
     }
 
     // case4
     public static Specification<Product> matchListFactory(List<String> factory) {
         if (factory.contains("all")) return (root, query, cb) -> cb.conjunction();
-        return (root, query, criteriaBuilder) -> criteriaBuilder.in(root.get(Product_.FACTORY)).value(factory);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.in(root.get("factory")).value(factory);
     }
 
     // case4
@@ -50,7 +50,7 @@ public class ProductSpecs {
         return (root, query, criteriaBuilder) -> {
             List<jakarta.persistence.criteria.Predicate> predicates = new java.util.ArrayList<>();
             for (String target : targets) {
-                predicates.add(criteriaBuilder.like(root.get(Product_.TARGET), "%" + target + "%"));
+                predicates.add(criteriaBuilder.like(root.get("target"), "%" + target + "%"));
             }
             return criteriaBuilder.or(predicates.toArray(new jakarta.persistence.criteria.Predicate[0]));
         };
@@ -131,7 +131,7 @@ public class ProductSpecs {
             List<Predicate> predicates = new ArrayList<>();
             for (String c : color) {
                 if (c.equals("all")) continue;
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(Product_.COLOR)), "%" + c.toLowerCase() + "%"));
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("color")), "%" + c.toLowerCase() + "%"));
             }
             if (predicates.isEmpty()) return criteriaBuilder.conjunction();
             return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
@@ -145,13 +145,13 @@ public class ProductSpecs {
                 if (s.equals("all")) continue;
 
                 if (s.equals(">= 14 inch") || s.equals("<= 14 inch")) {
-                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(Product_.SCREEN_SIZE), "14.9"));
+                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("screenSize"), "14.9"));
                 } else if (s.equals("15 - >= 16 inch") || s.equals("15 - 16 inch")) {
-                    predicates.add(criteriaBuilder.between(root.get(Product_.SCREEN_SIZE), "15.0", "16.9"));
+                    predicates.add(criteriaBuilder.between(root.get("screenSize"), "15.0", "16.9"));
                 } else if (s.equals("17 - >= 18 inch") || s.equals("17 - >=18 inch") || s.equals("17 - 18 inch")) {
-                    predicates.add(criteriaBuilder.between(root.get(Product_.SCREEN_SIZE), "17.0", "18.9"));
+                    predicates.add(criteriaBuilder.between(root.get("screenSize"), "17.0", "18.9"));
                 } else {
-                    predicates.add(criteriaBuilder.equal(root.get(Product_.SCREEN_SIZE), s));
+                    predicates.add(criteriaBuilder.equal(root.get("screenSize"), s));
                 }
             }
             if (predicates.isEmpty()) return criteriaBuilder.conjunction();

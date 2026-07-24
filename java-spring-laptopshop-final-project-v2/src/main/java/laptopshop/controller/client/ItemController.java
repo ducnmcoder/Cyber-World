@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpSession;
 import laptopshop.domain.Cart;
 import laptopshop.domain.CartDetail;
 import laptopshop.domain.Product;
-import laptopshop.domain.Product_;
+
 import laptopshop.domain.User;
 import laptopshop.domain.dto.ProductCriteriaDTO;
 import laptopshop.service.ProductService;
