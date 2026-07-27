@@ -31,8 +31,8 @@ public class EmailService {
                 "    <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color: #cd1818;\">" +
                 "      <tr><td align=\"center\" style=\"padding: 25px 30px;\">" +
                 "        <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>" +
-                "          <td valign=\"middle\"><img src=\"cid:logoImage\" alt=\"Cyber World Logo\" style=\"height: 55px; display: block; border: 0;\"></td>" +
-                "          <td valign=\"middle\" style=\"padding-left: 15px;\"><h1 style=\"margin: 0; color: #ffffff; font-size: 32px; font-weight: 800; letter-spacing: 2px; font-family: 'Arial Black', Impact, sans-serif;\">CYBER WORLD</h1></td>" +
+                "          <td valign=\"middle\"><img src=\"cid:logoImage\" alt=\"Cyber World Logo\" style=\"height: 70px; display: block; border: 0;\"></td>" +
+                "          <td valign=\"middle\" style=\"padding-left: 0;\"><h1 style=\"margin: 0; margin-left: -35px; position: relative; z-index: 10; color: #ffffff; font-size: 32px; font-weight: 800; letter-spacing: 2px; font-family: 'Arial Black', Impact, sans-serif;\">CYBER WORLD</h1></td>" +
                 "        </tr></table>" +
                 "      </td></tr>" +
                 "    </table>" +

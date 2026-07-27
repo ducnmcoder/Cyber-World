@@ -1,4 +1,4 @@
-﻿CREATE DATABASE  IF NOT EXISTS `laptopshop` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE  IF NOT EXISTS `laptopshop` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `laptopshop`;
 
 -- Drop existing tables to avoid conflicts
@@ -113,16 +113,16 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 LOCK TABLES `products` WRITE;
 INSERT INTO `products` (`id`, `name`, `factory`, `target`, `price`, `original_price`, `quantity`, `sold`, `short_desc`, `detail_desc`, `color`, `cpu`, `ram`, `storage`, `screen_size`, `specification_id`, `image`) VALUES 
-(1, 'Laptop Asus TUF Gaming', 'ASUS', 'GAMING', 17490000, 18490000, 100, 0, 'Intel, Core i5, 11400H', 'ASUS TUF Gaming F15 FX506HF HN017W lÃ  chiáº¿c laptop gaming giÃ¡ ráº» nhÆ°ng vÃ´ cÃ¹ng máº¡nh máº½...', 'Black', 'Intel Core i5', '16 GB', '512 GB', '15.6', 1, '1711078092373-asus-01.png'),
-(2, 'Laptop Dell Inspiron 15', 'DELL', 'SINHVIEN-VANPHONG', 15490000, 16000000, 200, 0, 'i5 1235U/16GB/512GB/15.6\"FHD', 'KhÃ¡m phÃ¡ sá»©c máº¡nh tá»‘i Æ°u tá»« Dell Inspiron 15 N3520...', 'Silver', 'Intel Core i5', '16 GB', '512 GB', '15.6', 2, '1711078452562-dell-01.png'),
-(3, 'Lenovo IdeaPad Gaming 3', 'LENOVO', 'GAMING', 19500000, 20000000, 150, 0, 'i5-10300H, RAM 8G', 'Má»›i Ä‘Ã¢y, Lenovo Ä‘Ã£ tung ra thá»‹ trÆ°á»ng má»™t sáº£n pháº©m gaming tháº¿ há»‡ má»›i...', 'Black', 'Intel Core i7', '8 GB', '512 GB', '15.6', 3, '1711079073759-lenovo-01.png'),
-(4, 'Asus K501UX', 'ASUS', 'THIET-KE-DO-HOA', 11900000, 12500000, 99, 0, 'VGA NVIDIA GTX 950M- 4G', 'Táº­n hÆ°á»Ÿng cáº£m giÃ¡c mÃ¡t láº¡nh sÃ nh Ä‘iá»‡u vá»›i thiáº¿t káº¿ kim loáº¡i...', 'Blue', 'Intel Core i7', '8 GB', '256 GB', '15.6', 4, '1711079496409-asus-02.png'),
-(5, 'MacBook Air 13 M1', 'APPLE', 'MONG-NHE', 17690000, 18500000, 99, 0, 'Apple M1 GPU 7 nhÃ¢n', 'Chiáº¿c MacBook Air cÃ³ hiá»‡u nÄƒng Ä‘á»™t phÃ¡ nháº¥t tá»« trÆ°á»›c Ä‘áº¿n nay Ä‘Ã£ xuáº¥t hiá»‡n...', 'Silver', 'Apple M1 Series', '8 GB', '256 GB', '13.3', 5, '1711079954090-apple-01.png'),
-(6, 'Laptop LG Gram Style', 'LG', 'DOANH-NHAN', 31490000, 32900000, 99, 0, 'Intel Iris Plus Graphics', '14.0 ChÃ­nh: inch, 2880 x 1800 Pixels, OLED, 90 Hz...', 'White', 'Intel Core i7', '16 GB', '1 TB', '14.0', 6, '1711080386941-lg-01.png'),
-(7, 'MacBook Air 13 M2', 'APPLE', 'MONG-NHE', 24990000, 26000000, 99, 0, 'Apple M2 GPU 8 nhÃ¢n', 'KhÃ´ng chá»‰ khÆ¡i gá»£i cáº£m há»©ng qua viá»‡c cÃ¡ch tÃ¢n thiáº¿t káº¿...', 'Midnight', 'Apple M2 Series', '8 GB', '256 GB', '13.6', 7, '1711080787179-apple-02.png'),
-(8, 'Laptop Acer Nitro 5', 'ACER', 'GAMING', 23490000, 24500000, 99, 0, 'AN515-58-769J i7 12700H', 'LÃ  chiáº¿c laptop gaming tháº¿ há»‡ má»›i nháº¥t thuá»™c dÃ²ng Nitro 5...', 'Black', 'Intel Core i7', '8 GB', '512 GB', '15.6', 8, '1711080948771-acer-01.png'),
+(1, 'Laptop Asus TUF Gaming', 'ASUS', 'GAMING', 17490000, 18490000, 100, 0, 'Intel, Core i5, 11400H', 'ASUS TUF Gaming F15 FX506HF HN017W là chiếc laptop gaming giá rẻ nhưng vô cùng mạnh mẽ...', 'Black', 'Intel Core i5', '16 GB', '512 GB', '15.6', 1, '1711078092373-asus-01.png'),
+(2, 'Laptop Dell Inspiron 15', 'DELL', 'SINHVIEN-VANPHONG', 15490000, 16000000, 200, 0, 'i5 1235U/16GB/512GB/15.6\"FHD', 'Khám phá sức mạnh tối ưu từ Dell Inspiron 15 N3520...', 'Silver', 'Intel Core i5', '16 GB', '512 GB', '15.6', 2, '1711078452562-dell-01.png'),
+(3, 'Lenovo IdeaPad Gaming 3', 'LENOVO', 'GAMING', 19500000, 20000000, 150, 0, 'i5-10300H, RAM 8G', 'Mới đây, Lenovo đã tung ra thị trường một sản phẩm gaming thế hệ mới...', 'Black', 'Intel Core i7', '8 GB', '512 GB', '15.6', 3, '1711079073759-lenovo-01.png'),
+(4, 'Asus K501UX', 'ASUS', 'THIET-KE-DO-HOA', 11900000, 12500000, 99, 0, 'VGA NVIDIA GTX 950M- 4G', 'Tận hưởng cảm giác mát lạnh sành điệu với thiết kế kim loại...', 'Blue', 'Intel Core i7', '8 GB', '256 GB', '15.6', 4, '1711079496409-asus-02.png'),
+(5, 'MacBook Air 13 M1', 'APPLE', 'MONG-NHE', 17690000, 18500000, 99, 0, 'Apple M1 GPU 7 nhân', 'Chiếc MacBook Air có hiệu năng đột phá nhất từ trước đến nay đã xuất hiện...', 'Silver', 'Apple M1 Series', '8 GB', '256 GB', '13.3', 5, '1711079954090-apple-01.png'),
+(6, 'Laptop LG Gram Style', 'LG', 'DOANH-NHAN', 31490000, 32900000, 99, 0, 'Intel Iris Plus Graphics', '14.0 Chính: inch, 2880 x 1800 Pixels, OLED, 90 Hz...', 'White', 'Intel Core i7', '16 GB', '1 TB', '14.0', 6, '1711080386941-lg-01.png'),
+(7, 'MacBook Air 13 M2', 'APPLE', 'MONG-NHE', 24990000, 26000000, 99, 0, 'Apple M2 GPU 8 nhân', 'Không chỉ khơi gợi cảm hứng qua việc cách tân thiết kế...', 'Midnight', 'Apple M2 Series', '8 GB', '256 GB', '13.6', 7, '1711080787179-apple-02.png'),
+(8, 'Laptop Acer Nitro 5', 'ACER', 'GAMING', 23490000, 24500000, 99, 0, 'AN515-58-769J i7 12700H', 'Là chiếc laptop gaming thế hệ mới nhất thuộc dòng Nitro 5...', 'Black', 'Intel Core i7', '8 GB', '512 GB', '15.6', 8, '1711080948771-acer-01.png'),
 (9, 'Laptop Acer Nitro V', 'ACER', 'GAMING', 26999000, 28000000, 99, 0, 'NVIDIA GeForce RTX 4050', '15.6 inch, FHD (1920 x 1080), IPS, 144 Hz, 250 nits...', 'Black', 'Intel Core i5', '8 GB', '512 GB', '15.6', 9, '1711081080930-asus-03.png'),
-(10, 'Laptop Dell Latitude 3420', 'DELL', 'DOANH-NHAN', 21399000, 22000000, 99, 0, 'Intel Iris Xe Graphics', 'Dell Inspiron N3520 lÃ  chiáº¿c laptop lÃ½ tÆ°á»Ÿng cho cÃ´ng viá»‡c hÃ ng ngÃ y...', 'Black', 'Intel Core i3', '8 GB', '256 GB', '14.0', 10, '1711081278418-dell-02.png');
+(10, 'Laptop Dell Latitude 3420', 'DELL', 'DOANH-NHAN', 21399000, 22000000, 99, 0, 'Intel Iris Xe Graphics', 'Dell Inspiron N3520 là chiếc laptop lý tưởng cho công việc hàng ngày...', 'Black', 'Intel Core i3', '8 GB', '256 GB', '14.0', 10, '1711081278418-dell-02.png');
 UNLOCK TABLES;
 
 -- Table structure for table `roles`
@@ -182,7 +182,7 @@ INSERT INTO product_specifications (
 INSERT INTO products (
     id, name, factory, target, price, original_price, quantity, sold, short_desc, detail_desc, color, cpu, ram, storage, screen_size, specification_id, image
 ) VALUES (
-    1, 'MacBook Pro 14 M3 Pro', 'APPLE', 'DOANH-NHAN', 39990000, 39990000, 10, 0, 'MacBook Pro 14 inch M3 Pro', 'Chi tiáº¿t MacBook Pro 14 M3 Pro...', 'Silver', 'Apple M3 Pro', '18 GB', '512 GB', '14.2', 1, 'macbook.jpg'
+    1, 'MacBook Pro 14 M3 Pro', 'APPLE', 'DOANH-NHAN', 39990000, 39990000, 10, 0, 'MacBook Pro 14 inch M3 Pro', 'Chi tiết MacBook Pro 14 M3 Pro...', 'Silver', 'Apple M3 Pro', '18 GB', '512 GB', '14.2', 1, 'macbook.jpg'
 );
 
 -- Insert Specification 2 (Asus)
@@ -196,7 +196,7 @@ INSERT INTO product_specifications (
 INSERT INTO products (
     id, name, factory, target, price, original_price, quantity, sold, short_desc, detail_desc, color, cpu, ram, storage, screen_size, specification_id, image
 ) VALUES (
-    2, 'Laptop Asus TUF Gaming F15', 'ASUS', 'GAMING', 25000000, 26000000, 20, 0, 'Asus TUF Gaming máº¡nh máº½', 'Chi tiáº¿t Asus TUF...', 'Black', 'Intel Core i7 13620H', '16 GB', '512 GB', '15.6', 2, 'asus_tuf.jpg'
+    2, 'Laptop Asus TUF Gaming F15', 'ASUS', 'GAMING', 25000000, 26000000, 20, 0, 'Asus TUF Gaming mạnh mẽ', 'Chi tiết Asus TUF...', 'Black', 'Intel Core i7 13620H', '16 GB', '512 GB', '15.6', 2, 'asus_tuf.jpg'
 );
 
 -- Insert Specification 3 (Dell)
@@ -210,7 +210,7 @@ INSERT INTO product_specifications (
 INSERT INTO products (
     id, name, factory, target, price, original_price, quantity, sold, short_desc, detail_desc, color, cpu, ram, storage, screen_size, specification_id, image
 ) VALUES (
-    3, 'Laptop Dell Inspiron 15', 'DELL', 'SINHVIEN-VANPHONG', 15000000, 15500000, 15, 0, 'Dell Inspiron bá»n bá»‰', 'Chi tiáº¿t Dell Inspiron...', 'Silver', 'Intel Core i5 1235U', '8 GB', '256 GB', '15.6', 3, 'dell.jpg'
+    3, 'Laptop Dell Inspiron 15', 'DELL', 'SINHVIEN-VANPHONG', 15000000, 15500000, 15, 0, 'Dell Inspiron bền bỉ', 'Chi tiết Dell Inspiron...', 'Silver', 'Intel Core i5 1235U', '8 GB', '256 GB', '15.6', 3, 'dell.jpg'
 );
 INSERT IGNORE INTO roles (id, description, name) VALUES (1, 'Admin role', 'ADMIN');
 INSERT IGNORE INTO roles (id, description, name) VALUES (2, 'Owner role', 'OWNER');

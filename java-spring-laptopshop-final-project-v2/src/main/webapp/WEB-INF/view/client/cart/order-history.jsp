@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
@@ -84,7 +84,7 @@
                                             <td colspan="2">Order Id = ${order.id}</td>
                                             <td colspan="1">
                                                 <fmt:formatNumber type="number" value=" ${order.totalPrice}" />
-                                                đ
+                                                VND
                                             </td>
                                             <td colspan="2"></td>
                                             <td colspan="1">
@@ -110,7 +110,7 @@
                                                 <td>
                                                     <p class="mb-0 mt-4">
                                                         <fmt:formatNumber type="number" value="${orderDetail.price}" />
-                                                        đ
+                                                        VND
                                                     </p>
                                                 </td>
                                                 <td>
@@ -123,7 +123,7 @@
                                                 <td>
                                                     <p class="mb-0 mt-4" data-cart-detail-id="${cartDetail.id}">
                                                         <fmt:formatNumber type="number"
-                                                            value="${orderDetail.price * orderDetail.quantity}" /> đ
+                                                            value="${orderDetail.price * orderDetail.quantity}" /> VND
                                                     </p>
                                                 </td>
                                                 <td></td>
@@ -162,3 +162,5 @@
             </body>
 
             </html>
+
+
