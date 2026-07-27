@@ -5,7 +5,7 @@
             "name": "Spring Boot-LaptopshopApplication<laptopshop>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "mainClass": "vn.cyberworld.laptopshop.LaptopshopApplication",
+            "mainClass": "vn.hoidanit.laptopshop.LaptopshopApplication",
             "projectName": "laptopshop",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
