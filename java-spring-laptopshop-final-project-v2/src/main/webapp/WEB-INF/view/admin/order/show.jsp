@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
@@ -52,7 +52,7 @@
                                                             <th>${loop.index + 1 + (currentPage - 1) * 10}</th>
                                                             <td>
                                                                 <fmt:formatNumber type="number"
-                                                                    value="${order.totalPrice}" /> đ
+                                                                    value="${order.totalPrice}" /> VND
                                                             </td>
                                                             <td>${order.user != null ? order.user.email : order.receiverName}</td>
                                                             <td>${order.status}</td>
@@ -112,3 +112,5 @@
             </body>
 
             </html>
+
+
