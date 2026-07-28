@@ -68,8 +68,12 @@ public class ItemController {
         long productId = id;
         String email = (String) session.getAttribute("email");
 
-        this.productService.handleAddProductToCart(email, productId, session, 1);
-        redirectAttributes.addFlashAttribute("cartMessage", "Item successfully added to your cart!");
+        try {
+            this.productService.handleAddProductToCart(email, productId, session, 1);
+            redirectAttributes.addFlashAttribute("cartMessage", "Item successfully added to your cart!");
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
         return "redirect:/";
     }
 
@@ -156,12 +160,13 @@ public class ItemController {
 
         model.addAttribute("cartDetails", cartDetails);
         model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("cart", cart != null ? cart : new Cart());
 
         return "client/cart/checkout";
     }
 
     @PostMapping("/confirm-checkout")
-    public String getCheckOutPage(@ModelAttribute("cart") Cart cart, HttpServletRequest request) {
+    public String getCheckOutPage(@ModelAttribute("cart") Cart cart, HttpServletRequest request, org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
         HttpSession session = request.getSession(true);
         if (isManager(session)) {
             return "redirect:/";
@@ -170,21 +175,30 @@ public class ItemController {
         List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
         
         String email = (String) session.getAttribute("email");
-        if (email != null) {
-            this.productService.handleUpdateCartBeforeCheckout(cartDetails);
-        } else {
-            Cart guestCart = (Cart) session.getAttribute("guestCart");
-            if (guestCart != null && guestCart.getCartDetails() != null) {
-                for (CartDetail cd : cartDetails) {
-                    for (CartDetail gcd : guestCart.getCartDetails()) {
-                        if (gcd.getId() == cd.getId()) {
-                            gcd.setQuantity(cd.getQuantity());
-                            break;
+        try {
+            if (email != null) {
+                this.productService.handleUpdateCartBeforeCheckout(cartDetails);
+            } else {
+                Cart guestCart = (Cart) session.getAttribute("guestCart");
+                if (guestCart != null && guestCart.getCartDetails() != null) {
+                    for (CartDetail cd : cartDetails) {
+                        for (CartDetail gcd : guestCart.getCartDetails()) {
+                            if (gcd.getId() == cd.getId()) {
+                                long productStock = gcd.getProduct() != null && gcd.getProduct().getQuantity() != null ? gcd.getProduct().getQuantity() : 0;
+                                if (cd.getQuantity() > productStock) {
+                                    throw new RuntimeException("Insufficient quantity of products");
+                                }
+                                gcd.setQuantity(cd.getQuantity());
+                                break;
+                            }
                         }
                     }
+                    session.setAttribute("guestCart", guestCart);
                 }
-                session.setAttribute("guestCart", guestCart);
             }
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/cart";
         }
         return "redirect:/checkout";
     }
@@ -194,7 +208,8 @@ public class ItemController {
             HttpServletRequest request,
             @RequestParam("receiverName") String receiverName,
             @RequestParam("receiverAddress") String receiverAddress,
-            @RequestParam("receiverPhone") String receiverPhone) {
+            @RequestParam("receiverPhone") String receiverPhone,
+            org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
         
         HttpSession session = request.getSession(true);
         if (isManager(session)) {
@@ -209,9 +224,13 @@ public class ItemController {
             currentUser.setId(id);
         }
 
-        this.productService.handlePlaceOrder(currentUser, session, receiverName, receiverAddress, receiverPhone);
-
-        return "redirect:/thanks";
+        try {
+            this.productService.handlePlaceOrder(currentUser, session, receiverName, receiverAddress, receiverPhone);
+            return "redirect:/thanks";
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/checkout";
+        }
     }
 
     @GetMapping("/thanks")
@@ -231,8 +250,12 @@ public class ItemController {
         }
 
         String email = (String) session.getAttribute("email");
-        this.productService.handleAddProductToCart(email, id, session, quantity);
-        redirectAttributes.addFlashAttribute("cartMessage", "Item successfully added to your cart!");
+        try {
+            this.productService.handleAddProductToCart(email, id, session, quantity);
+            redirectAttributes.addFlashAttribute("cartMessage", "Item successfully added to your cart!");
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
         return "redirect:/product/" + id;
     }
 
@@ -240,15 +263,20 @@ public class ItemController {
     public String handleBuyNow(
             @RequestParam("id") long id,
             @RequestParam("quantity") long quantity,
-            HttpServletRequest request) {
+            HttpServletRequest request, org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
         HttpSession session = request.getSession(true);
         if (isManager(session)) {
             return "redirect:/product/" + id;
         }
 
         String email = (String) session.getAttribute("email");
-        this.productService.handleAddProductToCart(email, id, session, quantity);
-        return "redirect:/checkout";
+        try {
+            this.productService.handleAddProductToCart(email, id, session, quantity);
+            return "redirect:/checkout";
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/product/" + id;
+        }
     }
 
     @GetMapping("/products")
