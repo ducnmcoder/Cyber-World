@@ -43,6 +43,8 @@ public class User implements Serializable {
 
     private String avatar;
 
+    private String provider = "LOCAL";
+
     // roleId
     // User many -> to one -> role
     @ManyToOne
@@ -115,6 +117,14 @@ public class User implements Serializable {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 
     public Role getRole() {

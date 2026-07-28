@@ -24,44 +24,72 @@ import laptopshop.domain.Product_;
 import laptopshop.domain.User;
 import laptopshop.domain.dto.ProductCriteriaDTO;
 import laptopshop.service.ProductService;
+import laptopshop.service.BlogService;
+import laptopshop.domain.Blog;
 
 @Controller
 public class ItemController {
 
     private final ProductService productService;
+    private final BlogService blogService;
 
-    public ItemController(ProductService productService) {
+    public ItemController(ProductService productService, BlogService blogService) {
         this.productService = productService;
+        this.blogService = blogService;
     }
 
     @GetMapping("/product/{id}")
     public String getProductPage(Model model, @PathVariable long id) {
-        Product pr = this.productService.fetchProductById(id).get();
+        Product pr = this.productService.fetchProductById(id).orElse(null);
+        if (pr == null) {
+            return "redirect:/products";
+        }
         model.addAttribute("product", pr);
         model.addAttribute("id", id);
-        return "client/product/detail";
+        return "thymeleaf/client/product/detail";
+    }
+
+    private boolean isManager(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user != null && user.getRole() != null) {
+            String roleName = user.getRole().getName();
+            return "ADMIN".equals(roleName) || "STAFF".equals(roleName) || "OWNER".equals(roleName);
+        }
+        return false;
     }
 
     @PostMapping("/add-product-to-cart/{id}")
-    public String addProductToCart(@PathVariable long id, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
+    public String addProductToCart(@PathVariable long id, HttpServletRequest request, org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+        HttpSession session = request.getSession(true);
+        if (isManager(session)) {
+            return "redirect:/";
+        }
 
         long productId = id;
         String email = (String) session.getAttribute("email");
 
         this.productService.handleAddProductToCart(email, productId, session, 1);
-
+        redirectAttributes.addFlashAttribute("cartMessage", "Item successfully added to your cart!");
         return "redirect:/";
     }
 
     @GetMapping("/cart")
     public String getCartPage(Model model, HttpServletRequest request) {
-        User currentUser = new User();// null
-        HttpSession session = request.getSession(false);
-        long id = (long) session.getAttribute("id");
-        currentUser.setId(id);
+        HttpSession session = request.getSession(true);
+        if (isManager(session)) {
+            return "redirect:/";
+        }
 
-        Cart cart = this.productService.fetchByUser(currentUser);
+        String email = (String) session.getAttribute("email");
+        Cart cart = null;
+        if (email != null) {
+            User currentUser = new User();
+            long id = (long) session.getAttribute("id");
+            currentUser.setId(id);
+            cart = this.productService.fetchByUser(currentUser);
+        } else {
+            cart = (Cart) session.getAttribute("guestCart");
+        }
 
         List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
 
@@ -73,27 +101,51 @@ public class ItemController {
         model.addAttribute("cartDetails", cartDetails);
         model.addAttribute("totalPrice", totalPrice);
 
-        model.addAttribute("cart", cart);
+        model.addAttribute("cart", cart != null ? cart : new Cart());
 
         return "client/cart/show";
     }
 
     @PostMapping("/delete-cart-product/{id}")
     public String deleteCartDetail(@PathVariable long id, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        long cartDetailId = id;
-        this.productService.handleRemoveCartDetail(cartDetailId, session);
+        HttpSession session = request.getSession(true);
+        if (isManager(session)) {
+            return "redirect:/";
+        }
+
+        String email = (String) session.getAttribute("email");
+        if (email != null) {
+            this.productService.handleRemoveCartDetail(id, session);
+        } else {
+            Cart guestCart = (Cart) session.getAttribute("guestCart");
+            if (guestCart != null && guestCart.getCartDetails() != null) {
+                guestCart.getCartDetails().removeIf(cd -> cd.getId() == id);
+                int s = guestCart.getCartDetails().size();
+                guestCart.setSum(s);
+                session.setAttribute("sum", s);
+                session.setAttribute("guestCart", guestCart);
+            }
+        }
         return "redirect:/cart";
     }
 
     @GetMapping("/checkout")
     public String getCheckOutPage(Model model, HttpServletRequest request) {
-        User currentUser = new User();// null
-        HttpSession session = request.getSession(false);
-        long id = (long) session.getAttribute("id");
-        currentUser.setId(id);
+        HttpSession session = request.getSession(true);
+        if (isManager(session)) {
+            return "redirect:/";
+        }
 
-        Cart cart = this.productService.fetchByUser(currentUser);
+        String email = (String) session.getAttribute("email");
+        Cart cart = null;
+        if (email != null) {
+            User currentUser = new User();
+            long id = (long) session.getAttribute("id");
+            currentUser.setId(id);
+            cart = this.productService.fetchByUser(currentUser);
+        } else {
+            cart = (Cart) session.getAttribute("guestCart");
+        }
 
         List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
 
@@ -109,9 +161,31 @@ public class ItemController {
     }
 
     @PostMapping("/confirm-checkout")
-    public String getCheckOutPage(@ModelAttribute("cart") Cart cart) {
+    public String getCheckOutPage(@ModelAttribute("cart") Cart cart, HttpServletRequest request) {
+        HttpSession session = request.getSession(true);
+        if (isManager(session)) {
+            return "redirect:/";
+        }
+
         List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
-        this.productService.handleUpdateCartBeforeCheckout(cartDetails);
+        
+        String email = (String) session.getAttribute("email");
+        if (email != null) {
+            this.productService.handleUpdateCartBeforeCheckout(cartDetails);
+        } else {
+            Cart guestCart = (Cart) session.getAttribute("guestCart");
+            if (guestCart != null && guestCart.getCartDetails() != null) {
+                for (CartDetail cd : cartDetails) {
+                    for (CartDetail gcd : guestCart.getCartDetails()) {
+                        if (gcd.getId() == cd.getId()) {
+                            gcd.setQuantity(cd.getQuantity());
+                            break;
+                        }
+                    }
+                }
+                session.setAttribute("guestCart", guestCart);
+            }
+        }
         return "redirect:/checkout";
     }
 
@@ -121,10 +195,19 @@ public class ItemController {
             @RequestParam("receiverName") String receiverName,
             @RequestParam("receiverAddress") String receiverAddress,
             @RequestParam("receiverPhone") String receiverPhone) {
-        User currentUser = new User();// null
-        HttpSession session = request.getSession(false);
-        long id = (long) session.getAttribute("id");
-        currentUser.setId(id);
+        
+        HttpSession session = request.getSession(true);
+        if (isManager(session)) {
+            return "redirect:/";
+        }
+
+        String email = (String) session.getAttribute("email");
+        User currentUser = null;
+        if (email != null) {
+            currentUser = new User();
+            long id = (long) session.getAttribute("id");
+            currentUser.setId(id);
+        }
 
         this.productService.handlePlaceOrder(currentUser, session, receiverName, receiverAddress, receiverPhone);
 
@@ -141,12 +224,31 @@ public class ItemController {
     public String handleAddProductFromViewDetail(
             @RequestParam("id") long id,
             @RequestParam("quantity") long quantity,
-            HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
+            HttpServletRequest request, org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+        HttpSession session = request.getSession(true);
+        if (isManager(session)) {
+            return "redirect:/product/" + id;
+        }
 
         String email = (String) session.getAttribute("email");
         this.productService.handleAddProductToCart(email, id, session, quantity);
+        redirectAttributes.addFlashAttribute("cartMessage", "Item successfully added to your cart!");
         return "redirect:/product/" + id;
+    }
+
+    @PostMapping("/buy-now")
+    public String handleBuyNow(
+            @RequestParam("id") long id,
+            @RequestParam("quantity") long quantity,
+            HttpServletRequest request) {
+        HttpSession session = request.getSession(true);
+        if (isManager(session)) {
+            return "redirect:/product/" + id;
+        }
+
+        String email = (String) session.getAttribute("email");
+        this.productService.handleAddProductToCart(email, id, session, quantity);
+        return "redirect:/checkout";
     }
 
     @GetMapping("/products")
@@ -167,14 +269,16 @@ public class ItemController {
         }
 
         // check sort price
-        Pageable pageable = PageRequest.of(page - 1, 10);
+        Pageable pageable = PageRequest.of(page - 1, 8, Sort.by("id").ascending());
 
         if (productCriteriaDTO.getSort() != null && productCriteriaDTO.getSort().isPresent()) {
             String sort = productCriteriaDTO.getSort().get();
             if (sort.equals("gia-tang-dan")) {
-                pageable = PageRequest.of(page - 1, 10, Sort.by(Product_.PRICE).ascending());
+                pageable = PageRequest.of(page - 1, 8, Sort.by("price").ascending());
             } else if (sort.equals("gia-giam-dan")) {
-                pageable = PageRequest.of(page - 1, 10, Sort.by(Product_.PRICE).descending());
+                pageable = PageRequest.of(page - 1, 8, Sort.by("price").descending());
+            } else if (sort.equals("featured")) {
+                pageable = PageRequest.of(page - 1, 8, Sort.by("sold").descending());
             }
         }
 
@@ -192,8 +296,13 @@ public class ItemController {
         model.addAttribute("products", products);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", prs.getTotalPages());
+        model.addAttribute("totalElements", prs.getTotalElements());
         model.addAttribute("queryString", qs);
-        return "client/product/show";
+        
+        List<Blog> blogs = this.blogService.fetchAllBlogs(PageRequest.of(0, 5)).getContent();
+        model.addAttribute("blogs", blogs);
+
+        return "thymeleaf/client/homepage/show";
     }
 
 }

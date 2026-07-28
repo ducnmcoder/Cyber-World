@@ -1,8 +1,10 @@
 package laptopshop.domain;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +24,9 @@ public class Order implements Serializable {
     private long id;
 
     private double totalPrice;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     private String receiverName;
 
@@ -53,6 +58,14 @@ public class Order implements Serializable {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getReceiverName() {

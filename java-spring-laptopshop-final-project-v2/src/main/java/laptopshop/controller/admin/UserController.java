@@ -42,7 +42,7 @@ public class UserController {
         System.out.println(arrUsers);
 
         model.addAttribute("eric", "test");
-        model.addAttribute("hoidanit", "from controller with model");
+        model.addAttribute("avatar", "from controller with model");
         return "hello";
     }
 
@@ -105,11 +105,11 @@ public class UserController {
     }
 
     @PostMapping("/admin/user/update")
-    public String postUpdateUser(Model model, @ModelAttribute("newUser") User hoidanit) {
-        User currentUser = this.userService.getUserById(hoidanit.getId());
+    public String postUpdateUser(Model model, @ModelAttribute("newUser") User avatar) {
+        User currentUser = this.userService.getUserById(avatar.getId());
         if (currentUser != null) {
             // Only update the role, do not allow changing personal info
-            currentUser.setRole(this.userService.getRoleByName(hoidanit.getRole().getName()));
+            currentUser.setRole(this.userService.getRoleByName(avatar.getRole().getName()));
 
             // bug here
             this.userService.handleSaveUser(currentUser);
@@ -128,6 +128,17 @@ public class UserController {
 
     @PostMapping("/admin/user/delete")
     public String postDeleteUser(Model model, @ModelAttribute("newUser") User eric) {
+        User targetUser = this.userService.getUserById(eric.getId());
+        org.springframework.security.core.Authentication auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        
+        if (targetUser != null && targetUser.getRole() != null && "OWNER".equals(targetUser.getRole().getName())) {
+            boolean isOwner = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_OWNER"));
+            if (!isOwner) {
+                return "redirect:/admin/user?error=CannotDeleteOwner";
+            }
+        }
+        
         this.userService.deleteAUser(eric.getId());
         return "redirect:/admin/user";
     }

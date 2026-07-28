@@ -61,6 +61,16 @@
                                                         </div>
                                                     </div>
                                                 </form>
+
+                                                <div class="mt-3 text-center">
+                                                    <p class="mb-2 text-muted">Or login with</p>
+                                                    <a href="/oauth2/authorization/google" class="btn btn-outline-danger w-100 mb-2">
+                                                        <i class="fab fa-google me-2"></i> Login with Google
+                                                    </a>
+                                                    <a href="/oauth2/authorization/facebook" class="btn btn-outline-primary w-100">
+                                                        <i class="fab fa-facebook-f me-2"></i> Login with Facebook
+                                                    </a>
+                                                </div>
                                             </div>
                                             <div class="card-footer text-center py-3">
                                                 <div class="small mb-2"><a href="/register">Need an account? Sign up!</a>

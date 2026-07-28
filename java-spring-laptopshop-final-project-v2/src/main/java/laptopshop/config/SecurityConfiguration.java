@@ -16,6 +16,7 @@ import org.springframework.session.security.web.authentication.SpringSessionReme
 import jakarta.servlet.DispatcherType;
 import laptopshop.service.CustomUserDetailsService;
 import laptopshop.service.UserService;
+import laptopshop.security.CustomOAuth2UserService;
 
 @Configuration
 @EnableMethodSecurity(securedEnabled = true)
@@ -57,7 +58,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http, CustomOAuth2UserService customOAuth2UserService) throws Exception {
         // v6. lamda
         http
                 .authorizeHttpRequests(authorize -> authorize
@@ -67,11 +68,18 @@ public class SecurityConfiguration {
 
                         .requestMatchers("/", "/login", "/product/**", "/register", "/products/**",
                                 "/client/**", "/css/**", "/js/**", "/images/**",
-                                "/about", "/contact", "/blogs", "/blog/**")
+                                "/about", "/contact", "/api/contact/footer", "/api/chatbot", "/blogs", "/blog", "/blog/**", "/error",
+                                "/add-product-to-cart/**", "/add-product-from-view-detail",
+                                "/cart", "/checkout", "/place-order", "/delete-cart-product/**",
+                                "/confirm-checkout", "/thanks")
                         .permitAll()
 
-                        .requestMatchers("/admin/user/**").hasRole("ADMIN")
+                        .requestMatchers("/admin").hasRole("OWNER")
+                        .requestMatchers("/admin/blog", "/admin/blog/**", "/admin/contact", "/admin/contact/**").hasAnyRole("STAFF", "OWNER")
+                        .requestMatchers("/admin/user/**").hasAnyRole("ADMIN", "OWNER")
+                        .requestMatchers("/admin/product", "/admin/product/**", "/admin/order", "/admin/order/**").hasRole("OWNER")
                         .requestMatchers("/admin/**").hasRole("OWNER")
+                        .requestMatchers("/owner/**").hasRole("OWNER")
                         .requestMatchers("/staff/**").hasRole("STAFF")
 
                         .anyRequest().authenticated())
@@ -90,6 +98,11 @@ public class SecurityConfiguration {
                         .failureUrl("/login?error")
                         .successHandler(customSuccessHandler())
                         .permitAll())
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login")
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
+                        .successHandler(customSuccessHandler())
+                )
                 .exceptionHandling(ex -> ex.accessDeniedPage("/access-deny"));
 
         return http.build();

@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
@@ -20,7 +20,7 @@
                     rel="stylesheet">
 
                 <!-- Icon Font Stylesheet -->
-                <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
                     rel="stylesheet">
 
@@ -63,11 +63,11 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Sản phẩm</th>
-                                        <th scope="col">Tên</th>
-                                        <th scope="col">Price cả</th>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Unit Price</th>
                                         <th scope="col">Quantity</th>
-                                        <th scope="col">Thành tiền</th>
+                                        <th scope="col">Total Price</th>
                                         <th scope="col">Status</th>
                                     </tr>
                                 </thead>
@@ -75,7 +75,7 @@
                                     <c:if test="${ empty orders}">
                                         <tr>
                                             <td colspan="6">
-                                                Không có đơn hàng nào được tạo
+                                                No orders have been created.
                                             </td>
                                         </tr>
                                     </c:if>
@@ -84,7 +84,7 @@
                                             <td colspan="2">Order Id = ${order.id}</td>
                                             <td colspan="1">
                                                 <fmt:formatNumber type="number" value=" ${order.totalPrice}" />
-                                                đ
+                                                VND
                                             </td>
                                             <td colspan="2"></td>
                                             <td colspan="1">
@@ -95,7 +95,7 @@
                                             <tr>
                                                 <th scope="row">
                                                     <div class="d-flex align-items-center">
-                                                        <img src="/images/product/${orderDetail.product.image}"
+                                                        <img src="${orderDetail.product.firstImage}"
                                                             class="img-fluid me-5 rounded-circle"
                                                             style="width: 80px; height: 80px;" alt="">
                                                     </div>
@@ -110,7 +110,7 @@
                                                 <td>
                                                     <p class="mb-0 mt-4">
                                                         <fmt:formatNumber type="number" value="${orderDetail.price}" />
-                                                        đ
+                                                        VND
                                                     </p>
                                                 </td>
                                                 <td>
@@ -123,7 +123,7 @@
                                                 <td>
                                                     <p class="mb-0 mt-4" data-cart-detail-id="${cartDetail.id}">
                                                         <fmt:formatNumber type="number"
-                                                            value="${orderDetail.price * orderDetail.quantity}" /> đ
+                                                            value="${orderDetail.price * orderDetail.quantity}" /> VND
                                                     </p>
                                                 </td>
                                                 <td></td>
@@ -162,3 +162,5 @@
             </body>
 
             </html>
+
+

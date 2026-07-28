@@ -73,6 +73,7 @@
                                         <div class="card h-100 shadow-sm border-0">
                                             <img src="/images/blog/${blog.image}" class="card-img-top"
                                                 alt="${blog.title}"
+                                                onerror="this.onerror=null;this.src='/images/logo.png';"
                                                 style="height: 220px; object-fit: cover;">
                                             <div class="card-body d-flex flex-column">
                                                 <h5 class="card-title">

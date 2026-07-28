@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
             <!DOCTYPE html>
@@ -48,7 +48,7 @@
                                                             <th>${order.id}</th>
                                                             <td>
                                                                 <fmt:formatNumber type="number"
-                                                                    value="${order.totalPrice}" /> đ
+                                                                    value="${order.totalPrice}" /> VND
                                                             </td>
                                                             <td>${order.user.fullName}</td>
                                                             <td>${order.status}</td>
@@ -100,3 +100,5 @@
             </body>
 
             </html>
+
+

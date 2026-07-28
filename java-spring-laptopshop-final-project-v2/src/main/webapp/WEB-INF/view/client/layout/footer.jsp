@@ -1,65 +1,249 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <!-- Footer Start -->
-        <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
-            <div class="container py-5">
-                <div class="pb-4 mb-4" style="border-bottom: 1px solid rgba(226, 175, 24, 0.5) ;">
-                    <div class="row g-4">
-                        <div class="col-lg-3">
-                            <a href="/">
-                                <h1 class="text-primary mb-0" style="color: blue !important;">Cyber World</h1>
-                                <p class="text-secondary mb-0">Premium Laptops</p>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="row g-5">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-item">
-                            <h4 class="text-light mb-3">Why Choose Us?</h4>
-                            <p class="mb-4">Quality is our top priority. We offer the best laptops with dedicated customer support.</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="d-flex flex-column text-start footer-item">
-                            <h4 class="text-light mb-3">Shop Info</h4>
-                            <a class="btn-link" href="/about">About Us</a>
-                            <a class="btn-link" href="/contact">Contact Us</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="d-flex flex-column text-start footer-item">
-                            <h4 class="text-light mb-3">Account</h4>
-                            <a class="btn-link" href="/client/cart">My Cart</a>
-                            <a class="btn-link" href="/client/order-history">Order History</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-item">
-                            <h4 class="text-light mb-3">Contact</h4>
-                            <p>Address: 123 ABC Street, District XYZ, HCMC</p>
-                            <p>Email: contact@cyberworld.vn</p>
-                            <p>Phone: 0123 456 789</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Footer End -->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-        <!-- Copyright Start -->
-        <div class="container-fluid copyright bg-dark py-4">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        <span class="text-light"><a href="/"><i
-                                    class="fas fa-copyright text-light me-2"></i>Cyber World</a>, All right
-                            reserved.</span>
-                    </div>
-                    <div class="col-md-6 my-auto text-center text-md-end text-white">
-                        
-                    </div>
-                </div>
+<style>
+    .cyber-footer {
+        background: #111;
+        color: #eee;
+        padding: 50px 0 20px 0;
+        margin-top: 50px;
+        font-size: 14px;
+        font-family: 'Inter', sans-serif;
+    }
+    .cyber-footer .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 30px;
+    }
+    .cyber-footer .footer-col h4 {
+        font-size: 16px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+    .cyber-footer .footer-col ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .cyber-footer .footer-col ul li {
+        margin-bottom: 10px;
+    }
+    .cyber-footer .footer-col ul li a {
+        color: #bbb;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+    .cyber-footer .footer-col ul li a:hover {
+        color: #fff;
+    }
+    .cyber-footer .footer-hotline {
+        font-size: 20px;
+        font-weight: 800;
+        color: #cd1818;
+        display: block;
+        margin-bottom: 15px;
+    }
+    .cyber-footer .footer-bottom {
+        text-align: center;
+        border-top: 1px solid #333;
+        margin-top: 40px;
+        padding-top: 20px;
+        color: #777;
+    }
+    
+    /* Contact Form Styles */
+    .contact-section {
+        max-width: 800px;
+        margin: 40px auto 0;
+        padding: 0 15px;
+    }
+    .contact-title {
+        color: #8bc34a;
+        font-size: 24px;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+    .contact-form .form-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 15px;
+    }
+    @media (max-width: 768px) {
+        .contact-form .form-row {
+            flex-direction: column;
+        }
+    }
+    .contact-form .form-group {
+        flex: 1;
+        margin-bottom: 15px;
+    }
+    .contact-form .form-row .form-group {
+        margin-bottom: 0;
+    }
+    .contact-form input, .contact-form textarea {
+        width: 100%;
+        padding: 12px 15px;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        color: #333;
+        font-family: inherit;
+        outline: none;
+        box-sizing: border-box;
+    }
+    .contact-form input:focus, .contact-form textarea:focus {
+        border-color: #8bc34a;
+    }
+    .contact-form .btn-send {
+        background: transparent;
+        color: #8bc34a;
+        border: 2px solid #f9a826;
+        border-radius: 25px;
+        padding: 10px 25px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .contact-form .btn-send:hover {
+        background: #f9a826;
+        color: #fff;
+        border-color: #f9a826;
+    }
+    .success-message {
+        color: #8bc34a;
+        margin-top: 15px;
+        font-size: 16px;
+        font-weight: 600;
+    }
+</style>
+
+<footer class="cyber-footer">
+    <div class="container">
+        <div class="footer-col">
+            <h4>Hotline & Support</h4>
+            <a href="tel:18001234" class="footer-hotline">1800 1234</a>
+            <ul>
+                <li><a href="#">Call Center (8:00 - 21:00)</a></li>
+                <li><a href="#">Technical Support</a></li>
+                <li><a href="#">Warranty Center</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-col">
+            <h4>Store System</h4>
+            <ul>
+                <li><a href="#">Showroom in Hanoi</a></li>
+                <li><a href="#">Showroom in Ho Chi Minh City</a></li>
+                <li><a href="#">Showroom in Da Nang</a></li>
+                <li><a href="#">Find nearest store</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-col">
+            <h4>Policies</h4>
+            <ul>
+                <li><a href="#">Warranty Policy</a></li>
+                <li><a href="#">Return Policy</a></li>
+                <li><a href="#">Shipping Policy</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-col">
+            <h4>Payment & Delivery</h4>
+            <div style="display: flex; gap: 10px; margin-bottom: 15px; font-size: 24px;">
+                <i class="fa-brands fa-cc-visa" style="color: white;"></i>
+                <i class="fa-brands fa-cc-mastercard" style="color: white;"></i>
+                <i class="fa-brands fa-cc-paypal" style="color: white;"></i>
+            </div>
+            <div style="display: flex; gap: 10px; font-size: 24px;">
+                <i class="fa-solid fa-truck-fast" style="color: white;"></i>
+                <i class="fa-solid fa-box" style="color: white;"></i>
             </div>
         </div>
-        <!-- Copyright End -->
+    </div>
+    
+    <div class="contact-section">
+        <h3 class="contact-title">Send Us a Message</h3>
+        <form id="footerContactForm" class="contact-form" onsubmit="handleContactSubmit(event)">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+            <div id="contactFormFields">
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" id="contactName" placeholder="Your Name *" required>
+                    </div>
+                    <c:choose>
+                        <c:when test="${sessionScope.user != null}">
+                            <input type="hidden" id="contactEmail" value="${sessionScope.user.email}">
+                        </c:when>
+                        <c:otherwise>
+                            <div class="form-group">
+                                <input type="email" id="contactEmail" placeholder="Your Email *" required>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="contactSubject" placeholder="Your Subject *" required>
+                </div>
+                <div class="form-group">
+                    <textarea id="contactMessage" placeholder="Your Message *" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn-send"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
+            </div>
+            <div id="contactSuccessMessage" class="success-message" style="display: none;">
+                We value your feedback and will get back to you soon!
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('contactName') ? document.getElementById('contactName').value : '';
+            const email = document.getElementById('contactEmail') ? document.getElementById('contactEmail').value : '';
+            const subject = document.getElementById('contactSubject') ? document.getElementById('contactSubject').value : '';
+            const message = document.getElementById('contactMessage') ? document.getElementById('contactMessage').value : '';
+            
+            let csrfToken = '';
+            const csrfInput = document.querySelector('#footerContactForm input[name="${_csrf.parameterName}"]') 
+                              || document.querySelector('input[name="_csrf"]');
+            if (csrfInput) {
+                csrfToken = csrfInput.value;
+            }
+
+            fetch('/api/contact/footer?_csrf=' + csrfToken, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ fullName: name, email: email, subject: subject, message: message })
+            })
+            .then(response => {
+                if (response.ok || response.status === 403) {
+                    alert('We value your feedback and will get back to you soon!');
+                    document.getElementById('footerContactForm').reset();
+                } else {
+                    alert('An error occurred. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        }
+    </script>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 Cyber World. All rights reserved.</p>
+    </div>
+</footer>

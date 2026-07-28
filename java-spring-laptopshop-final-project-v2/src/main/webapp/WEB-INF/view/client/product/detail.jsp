@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
             <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -72,18 +72,20 @@
                                 <div class="col-lg-8 col-xl-9">
                                     <div class="row g-4">
                                         <div class="col-lg-6">
-                                            <div class="border rounded">
-                                                <a href="#">
-                                                    <img src="/images/product/${product.image}"
-                                                        class="img-fluid rounded" alt="Image">
-                                                </a>
-                                            </div>
+                                              <div class="d-flex flex-column gap-3">
+                                                <c:forEach var="img" items="${product.images}">
+                                                  <a href="#">
+                                                      <img src="${img}"
+                                                          class="img-fluid rounded border" alt="Image">
+                                                  </a>
+                                                </c:forEach>
+                                              </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <h4 class="fw-bold mb-3"> ${product.name}</h4>
                                             <p class="mb-3">${product.factory}</p>
                                             <h5 class="fw-bold mb-3">
-                                                <fmt:formatNumber type="number" value="${product.price}" /> đ
+                                                <fmt:formatNumber type="number" value="${product.price}" /> VND
 
                                             </h5>
                                             <div class="d-flex mb-4">
@@ -223,3 +225,5 @@
                 </body>
 
                 </html>
+
+

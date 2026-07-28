@@ -42,4 +42,15 @@ public class ContactController {
         return "client/contact/show";
     }
 
+    @PostMapping("/api/contact/footer")
+    @org.springframework.web.bind.annotation.ResponseBody
+    public org.springframework.http.ResponseEntity<String> handleFooterContact(
+            @org.springframework.web.bind.annotation.RequestBody Contact contact) {
+        if (contact.getSubject() == null || contact.getSubject().trim().isEmpty()) {
+            contact.setSubject("Contact from Footer");
+        }
+        this.contactService.handleSaveContact(contact);
+        return org.springframework.http.ResponseEntity.ok("{\"status\":\"success\"}");
+    }
+
 }

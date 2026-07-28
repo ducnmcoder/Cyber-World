@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
@@ -33,7 +33,7 @@
                                         <div class="col-12 mx-auto">
                                             <div class="d-flex justify-content-between">
                                                 <h3>Table products</h3>
-                                                <a href="/admin/product/create" class="btn btn-primary">Create a
+                                                <a href="/admin/product/create?page=${currentPage}" class="btn btn-primary">Create a
                                                     product</a>
                                             </div>
 
@@ -49,21 +49,21 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <c:forEach var="product" items="${products}">
+                                                    <c:forEach var="product" items="${products}" varStatus="loop">
                                                         <tr>
-                                                            <th>${product.id}</th>
+                                                            <th>${(currentPage - 1) * 5 + loop.count}</th>
                                                             <td>${product.name}</td>
                                                             <td>
                                                                 <fmt:formatNumber type="number"
-                                                                    value="${product.price}" /> đ
+                                                                    value="${product.price}" /> VND
                                                             </td>
                                                             <td>${product.factory}</td>
                                                             <td>
-                                                                <a href="/admin/product/${product.id}"
+                                                                <a href="/admin/product/${product.id}?page=${currentPage}"
                                                                     class="btn btn-success">View</a>
-                                                                <a href="/admin/product/update/${product.id}"
+                                                                <a href="/admin/product/update/${product.id}?page=${currentPage}"
                                                                     class="btn btn-warning  mx-2">Update</a>
-                                                                <a href="/admin/product/delete/${product.id}"
+                                                                <a href="/admin/product/delete/${product.id}?page=${currentPage}"
                                                                     class="btn btn-danger">Delete</a>
                                                             </td>
                                                         </tr>
@@ -81,16 +81,18 @@
                                                             <span aria-hidden="true">&laquo;</span>
                                                         </a>
                                                     </li>
-                                                    <c:forEach begin="0" end="${totalPages - 1}" varStatus="loop">
-                                                        <li class="page-item">
-                                                            <a class="${(loop.index + 1) eq currentPage ? 'active page-link' : 'page-link'}"
-                                                                href="/admin/product?page=${loop.index + 1}">
-                                                                ${loop.index + 1}
-                                                            </a>
-                                                        </li>
-                                                    </c:forEach>
+                                                    <c:if test="${totalPages > 0}">
+                                                        <c:forEach begin="0" end="${totalPages - 1}" varStatus="loop">
+                                                            <li class="page-item">
+                                                                <a class="${(loop.index + 1) eq currentPage ? 'active page-link' : 'page-link'}"
+                                                                    href="/admin/product?page=${loop.index + 1}">
+                                                                    ${loop.index + 1}
+                                                                </a>
+                                                            </li>
+                                                        </c:forEach>
+                                                    </c:if>
                                                     <li class="page-item">
-                                                        <a class="${totalPages eq currentPage ? 'disabled page-link' : 'page-link'}"
+                                                        <a class="${(totalPages == 0) or (totalPages eq currentPage) ? 'disabled page-link' : 'page-link'}"
                                                             href="/admin/product?page=${currentPage + 1}"
                                                             aria-label="Next">
                                                             <span aria-hidden="true">&raquo;</span>
@@ -115,3 +117,5 @@
             </body>
 
             </html>
+
+

@@ -7,9 +7,13 @@ import laptopshop.domain.Cart;
 import laptopshop.domain.CartDetail;
 import laptopshop.domain.Product;
 
+import java.util.List;
+
 @Repository
 public interface CartDetailRepository extends JpaRepository<CartDetail, Long> {
     boolean existsByCartAndProduct(Cart cart, Product product);
 
     CartDetail findByCartAndProduct(Cart cart, Product product);
+
+    List<CartDetail> findByProduct(Product product);
 }
