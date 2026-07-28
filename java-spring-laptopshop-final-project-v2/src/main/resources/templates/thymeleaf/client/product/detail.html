@@ -750,8 +750,10 @@
                             <div class="discount-percent">10%</div>
                         </div>
                         <div class="quantity-info" style="margin-top: 10px; font-size: 14px; color: #555;">
-                            <span th:if="${product.quantity > 0}">Quantity: <strong style="color: #333;" th:text="${product.quantity}">10</strong></span>
-                            <span th:unless="${product.quantity > 0}" style="color: #cd1818; font-weight: bold;">Out of stock</span>
+                            <span th:if="${product.quantity > 0}">Quantity: <strong style="color: #333;"
+                                    th:text="${product.quantity}">10</strong></span>
+                            <span th:unless="${product.quantity > 0}" style="color: #cd1818; font-weight: bold;">Out of
+                                stock</span>
                         </div>
                     </div>
                     <div class="flash-sale-box"
@@ -766,7 +768,7 @@
 
                 <div class="trade-in-box">
                     <span>Trade-in - Extra discount up to <b>2.000.000 VND</b></span>
-                    <a href="#" style="color: #007bff; text-decoration: none;">Get quote now ❯</a>
+                    <a href="#" style="color: #007bff; text-decoration: none;">Get quote now</a>
                 </div>
 
                 <div class="color-options" style="margin-bottom: 15px;">
@@ -789,7 +791,7 @@
                             style="width: 40px; height: 40px; border-radius: 50%;">
                         <div style="font-size: 14px; font-weight: bold; color: #cd1818;">Redeem points <br><span
                                 style="background: #cd1818; color: #fff; font-size: 11px; padding: 2px 5px; border-radius: 10px;">CHECK
-                                NOW 🔍</span></div>
+                                NOW</span></div>
                     </div>
                     <div style="text-align: right; color: #cd1818; font-weight: bold; font-size: 18px;">
                         <div style="font-size: 11px; font-weight: normal; color: #555;">Extra discount up to 10%</div>
@@ -809,13 +811,13 @@
                                 <span
                                     style="background: #cd1818; color: #fff; padding: 2px 8px; border-radius: 15px; font-size: 11px; font-weight: bold;"><i
                                         class="fa-solid fa-clock"></i> Shocking price</span>
-                                <span style="font-size: 11px; color: #888;">🔥 Sold 0/10 slots</span>
+                                <span style="font-size: 11px; color: #888;">Sold 0/10 slots</span>
                             </div>
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <div>
                                     <div style="font-size: 20px; font-weight: bold; color: #cd1818;"
-                                        th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + ' VND ⚡'">
-                                        22.490.000 VND ⚡</div>
+                                        th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + ' VND '">
+                                        22.490.000 VND </div>
                                     <div style="font-size: 12px; color: #999; text-decoration: line-through;"
                                         th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + ' VND'">
                                         24.990.000 VND</div>
@@ -841,7 +843,7 @@
                         </div>
                         <a href="#"
                             style="color: #007bff; text-decoration: none; display: block; margin-top: 10px;">View 10
-                            more offers ˅</a>
+                            more offers </a>
                     </div>
                 </div>
 
@@ -1329,7 +1331,7 @@
                 <img th:src="${product.firstImage}" alt="Product Image"
                     style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd;">
                 <div class="sticky-info">
-                    <div class="sticky-name" th:text="${product.name} + ' (' + ${product.id} + ')'"
+                    <div class="sticky-name" th:text="${product.name}"
                         style="font-weight: 600; font-size: 15px; color: #333;">MacBook Air 13 M5 2026
                         10CPU/8GPU/16GB/512GB/30W (00926589)</div>
                     <div style="font-size: 13px; color: #666; margin-top: 2px;">Category: <span
@@ -1359,12 +1361,12 @@
                     <input type="hidden" name="id" th:value="${product.id}" />
                     <input type="hidden" name="quantity" value="1" />
                     <button class="btn-cart-sticky" type="submit" title="Add to cart"
-                        th:disabled="${product.quantity <= 0}" 
+                        th:disabled="${product.quantity <= 0}"
                         th:style="${product.quantity <= 0 ? 'background: #ccc; cursor: not-allowed; border: 1px solid #ccc; color: white; width: 44px; height: 44px; border-radius: 6px; font-size: 20px; display: flex; align-items: center; justify-content: center;' : 'background: white; border: 1px solid #cd1818; color: #cd1818; width: 44px; height: 44px; border-radius: 6px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;'}">
                         <i class="fa-solid fa-cart-plus"></i>
                     </button>
                     <button class="btn-buy-now" type="submit" onclick="this.form.action='/buy-now'"
-                        th:disabled="${product.quantity <= 0}" 
+                        th:disabled="${product.quantity <= 0}"
                         th:style="${product.quantity <= 0 ? 'background: #ccc; color: white; border: none; height: 44px; padding: 0 40px; border-radius: 6px; font-weight: 700; font-size: 16px; cursor: not-allowed; display: flex; align-items: center; justify-content: center; text-transform: uppercase;' : 'background: #cd1818; color: white; border: none; height: 44px; padding: 0 40px; border-radius: 6px; font-weight: 700; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; text-transform: uppercase; transition: 0.2s;'}">
                         Buy Now
                     </button>
