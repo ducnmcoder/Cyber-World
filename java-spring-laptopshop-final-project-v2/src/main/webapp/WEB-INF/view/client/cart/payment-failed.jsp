@@ -6,7 +6,7 @@
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Order - Cyber World</title>
+                <title>Payment Failed - Cyber World</title>
 
                 <!-- Google Web Fonts -->
                 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,13 +49,13 @@
                     <div class="row w-100">
                         <div class="col-md-8 offset-md-2 text-center mt-5">
                             <div style="background: white; border-radius: 15px; padding: 50px 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); animation: fadeInUp 0.6s ease-out;">
-                                <div style="width: 80px; height: 80px; background: #cd1818; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; margin: 0 auto 25px;">
-                                    <i class="fa-solid fa-check"></i>
+                                <div style="width: 80px; height: 80px; background: #dc3545; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; margin: 0 auto 25px;">
+                                    <i class="fa-solid fa-xmark"></i>
                                 </div>
-                                <h2 style="font-weight: 800; color: #333; margin-bottom: 15px;">Order Successfully Placed!</h2>
+                                <h2 style="font-weight: 800; color: #333; margin-bottom: 15px;">Payment Failed!</h2>
                                 <p style="color: #666; font-size: 16px; margin-bottom: 30px; line-height: 1.6;">
-                                    Thank you for trusting and shopping at <strong>Cyber World</strong>.<br>
-                                    Your order has been confirmed. We will contact you shortly.
+                                    Unfortunately, your payment could not be processed.<br>
+                                    Please try again or choose a different payment method.
                                 </p>
                                 <div class="d-flex justify-content-center gap-3">
                                     <a href="/" class="btn" style="background: #cd1818; color: white; padding: 12px 30px; font-weight: 600; border-radius: 30px; text-transform: uppercase; font-size: 14px; letter-spacing: 1px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(205, 24, 24, 0.3);">

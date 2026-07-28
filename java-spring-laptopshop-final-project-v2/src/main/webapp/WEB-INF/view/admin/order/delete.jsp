@@ -40,7 +40,7 @@
                                             <div class="alert alert-danger">
                                                 Are you sure to delete this order ?
                                             </div>
-                                            <form:form method="post" action="/admin/order/delete"
+                                            <form:form method="post" action="/admin/order/delete?page=${page}"
                                                 modelAttribute="newOrder">
                                                 <div class="mb-3" style="display: none;">
                                                     <label class="form-label">Id:</label>

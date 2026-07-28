@@ -11,7 +11,7 @@
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
                 <meta name="description" content="Cyber World - Dự án cyberworld" />
                 <meta name="author" content="Cyber World" />
-                <title>Manager Orders - Cyber World</title>
+                <title>Manager Payments - Cyber World</title>
                 <link href="/css/styles.css" rel="stylesheet" />
                 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
             </head>
@@ -23,16 +23,16 @@
                     <div id="layoutSidenav_content">
                         <main>
                             <div class="container-fluid px-4">
-                                <h1 class="mt-4">Manage Orders</h1>
+                                <h1 class="mt-4">Manage Payments</h1>
                                 <ol class="breadcrumb mb-4">
                                     <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                                    <li class="breadcrumb-item active">Order</li>
+                                    <li class="breadcrumb-item active">Payment</li>
                                 </ol>
                                 <div class="mt-5">
                                     <div class="row">
                                         <div class="col-12 mx-auto">
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <h3>Table Orders</h3>
+                                                <h3>Table Payments</h3>
                                             </div>
 
                                             <hr />
@@ -40,29 +40,41 @@
                                                 <thead>
                                                     <tr>
                                                         <th>ID</th>
-                                                        <th>Total Price</th>
-                                                        <th>User</th>
+                                                        <th>Transaction Ref</th>
+                                                        <th>Method</th>
                                                         <th>Status</th>
+                                                        <th>Amount</th>
+                                                        <th>Date</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <c:forEach var="order" items="${orders}" varStatus="loop">
+                                                    <c:forEach var="payment" items="${payments}" varStatus="loop">
                                                         <tr>
-                                                            <th>${loop.index + 1 + (currentPage - 1) * 10}</th>
+                                                            <th>${payment.id}</th>
+                                                            <td>${payment.transactionRef}</td>
+                                                            <td>${payment.paymentMethod}</td>
+                                                            <td>
+                                                                <c:choose>
+                                                                    <c:when test="${payment.paymentStatus == 'PAID'}">
+                                                                        <span class="badge bg-success">PAID</span>
+                                                                    </c:when>
+                                                                    <c:when test="${payment.paymentStatus == 'FAILED'}">
+                                                                        <span class="badge bg-danger">FAILED</span>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <span class="badge bg-warning text-dark">PENDING</span>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </td>
                                                             <td>
                                                                 <fmt:formatNumber type="number"
-                                                                    value="${order.totalPrice}" /> VND
+                                                                    value="${payment.amount}" /> VND
                                                             </td>
-                                                            <td>${order.user != null ? order.user.email : order.receiverName}</td>
-                                                            <td>${order.status}</td>
+                                                            <td>${payment.createdAt}</td>
                                                             <td>
-                                                                <a href="/admin/order/${order.id}?page=${currentPage}"
+                                                                <a href="/admin/payment/${payment.id}?page=${currentPage}"
                                                                     class="btn btn-success">View</a>
-                                                                <a href="/admin/order/update/${order.id}?page=${currentPage}"
-                                                                    class="btn btn-warning  mx-2">Update</a>
-                                                                <a href="/admin/order/delete/${order.id}?page=${currentPage}"
-                                                                    class="btn btn-danger">Delete</a>
                                                             </td>
                                                         </tr>
 
@@ -74,7 +86,7 @@
                                                 <ul class="pagination justify-content-center">
                                                     <li class="page-item">
                                                         <a class="${1 eq currentPage ? 'disabled page-link' : 'page-link'}"
-                                                            href="/admin/order?page=${currentPage - 1}"
+                                                            href="/admin/payment?page=${currentPage - 1}"
                                                             aria-label="Previous">
                                                             <span aria-hidden="true">&laquo;</span>
                                                         </a>
@@ -83,7 +95,7 @@
                                                         <c:forEach begin="0" end="${totalPages - 1}" varStatus="loop">
                                                             <li class="page-item">
                                                                 <a class="${(loop.index + 1) eq currentPage ? 'active page-link' : 'page-link'}"
-                                                                    href="/admin/order?page=${loop.index + 1}">
+                                                                    href="/admin/payment?page=${loop.index + 1}">
                                                                     ${loop.index + 1}
                                                                 </a>
                                                             </li>
@@ -91,7 +103,7 @@
                                                     </c:if>
                                                     <li class="page-item">
                                                         <a class="${(totalPages == 0) or (totalPages eq currentPage) ? 'disabled page-link' : 'page-link'}"
-                                                            href="/admin/order?page=${currentPage + 1}"
+                                                            href="/admin/payment?page=${currentPage + 1}"
                                                             aria-label="Next">
                                                             <span aria-hidden="true">&raquo;</span>
                                                         </a>
@@ -112,5 +124,3 @@
             </body>
 
             </html>
-
-

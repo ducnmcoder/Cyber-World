@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -972,12 +972,7 @@
         <div class="white-box">
             <h2 class="section-title">Usage Needs</h2>
             <div class="needs-grid">
-                <a href="/products?target=AI" class="need-card">
-                    <div class="need-icon-box" style="background: #ffe3e3;">
-                        <img th:src="@{/images/demand/laptopAI.png}" alt="AI">
-                    </div>
-                    <span class="need-title">AI Laptop</span>
-                </a>
+
                 <a href="/products?target=Gaming" class="need-card">
                     <div class="need-icon-box" style="background: #fff4cc;">
                         <img th:src="@{/images/demand/gaming.png}" alt="Gaming">
@@ -1263,7 +1258,7 @@
                         <a href="/products?factory=APPLE" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #555;"></i> <i class="fa-brands fa-apple"></i></a>
                         <a href="/products?price=15to20" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #cd1818;"></i> 15 - 20 million</a>
                         <a href="/products?target=Gaming" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #f39c12;"></i> Gaming - Graphic</a>
-                        <a href="/products?target=AI" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #7000ff;"></i> AI</a>
+
                         <a href="/products?cpu=Apple M5 Series" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #555;"></i> Apple M5 series</a>
                     </div>
                 </div>
@@ -1283,22 +1278,21 @@
                     <!-- Product Card Loop -->
                     <div class="product-card" th:each="product : ${products}" th:onclick="|window.location.href='/product/' + ${product.id}|" style="cursor: pointer;">
                         
-                        <!-- Badges -->
-                        <div class="badge-top-left" th:if="${product.id % 2 != 0}"><i class="fa-solid fa-wand-magic-sparkles"></i> AI</div>
+
                         
                         <!-- Image -->
                         <div class="product-image-wrapper">
                             <img th:src="@{${product.firstImage}}" alt="Product">
                             
                             <!-- Side Feature Icons (Mockup style) -->
-                            <div class="feature-icons-right">
-                                <div class="feature-icon">
+                            <div class="feature-icons-right" style="display: flex; flex-direction: row; gap: 8px;">
+                                <div class="feature-icon" style="color: #007bff;">
                                     <i class="fa-solid fa-shield-halved"></i>
-                                    <span>2 Years Warranty</span>
+                                    <span style="color: #007bff;">2 Years Warranty</span>
                                 </div>
-                                <div class="feature-icon">
+                                <div class="feature-icon" style="color: #007bff;">
                                     <i class="fa-solid fa-droplet"></i>
-                                    <span>Anti-glare</span>
+                                    <span style="color: #007bff;">Anti-glare</span>
                                 </div>
                             </div>
                         </div>

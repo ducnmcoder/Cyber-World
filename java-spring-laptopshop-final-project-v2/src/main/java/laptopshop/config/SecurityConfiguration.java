@@ -71,7 +71,8 @@ public class SecurityConfiguration {
                                 "/about", "/contact", "/api/contact/footer", "/api/chatbot", "/blogs", "/blog", "/blog/**", "/error",
                                 "/add-product-to-cart/**", "/add-product-from-view-detail",
                                 "/cart", "/checkout", "/place-order", "/delete-cart-product/**",
-                                "/confirm-checkout", "/thanks")
+                                "/confirm-checkout", "/thanks", "/payment-failed",
+                                "/api/payment/**")
                         .permitAll()
 
                         .requestMatchers("/admin").hasRole("OWNER")

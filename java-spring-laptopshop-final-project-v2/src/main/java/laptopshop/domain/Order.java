@@ -36,6 +36,12 @@ public class Order implements Serializable {
 
     private String status;
 
+    // COD, VNPAY, MOMO, ZALOPAY
+    private String paymentMethod;
+
+    // PENDING, PAID, FAILED
+    private String paymentStatus;
+
     // user id
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -43,6 +49,9 @@ public class Order implements Serializable {
 
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails;
+
+    @OneToMany(mappedBy = "order")
+    private List<Payment> payments;
 
     public long getId() {
         return id;
@@ -116,9 +125,33 @@ public class Order implements Serializable {
         this.orderDetails = orderDetails;
     }
 
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
+    }
+
     @Override
     public String toString() {
-        return "Order [id=" + id + ", totalPrice=" + totalPrice + "]";
+        return "Order [id=" + id + ", totalPrice=" + totalPrice + ", paymentMethod=" + paymentMethod + "]";
     }
 
 }
