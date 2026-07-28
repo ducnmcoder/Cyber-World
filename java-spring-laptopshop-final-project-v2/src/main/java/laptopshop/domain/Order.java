@@ -42,6 +42,10 @@ public class Order implements Serializable {
     // PENDING, PAID, FAILED
     private String paymentStatus;
 
+    // Tracking code for shipment
+    @Column(name = "tracking_code")
+    private String trackingCode;
+
     // user id
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -139,6 +143,14 @@ public class Order implements Serializable {
 
     public void setPaymentStatus(String paymentStatus) {
         this.paymentStatus = paymentStatus;
+    }
+
+    public String getTrackingCode() {
+        return trackingCode;
+    }
+
+    public void setTrackingCode(String trackingCode) {
+        this.trackingCode = trackingCode;
     }
 
     public List<Payment> getPayments() {

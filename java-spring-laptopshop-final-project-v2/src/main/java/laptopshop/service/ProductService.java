@@ -375,6 +375,7 @@ public class ProductService {
                 order.setStatus("PENDING");
                 order.setPaymentMethod(paymentMethod);
                 order.setPaymentStatus("COD".equals(paymentMethod) ? "PENDING" : "UNPAID");
+                order.setTrackingCode("CW" + java.util.UUID.randomUUID().toString().substring(0, 8).toUpperCase());
 
                 double sum = 0;
                 for (CartDetail cd : cartDetails) {

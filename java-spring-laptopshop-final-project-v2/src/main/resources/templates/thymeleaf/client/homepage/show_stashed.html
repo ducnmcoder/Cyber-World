@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8" />
@@ -219,8 +219,13 @@
                 min-width: 90px;
             }
             .brand-pill:hover {
-                border-color: #007bff;
-                color: #007bff;
+                border-color: #cd1818;
+                color: #cd1818;
+            }
+            .brand-pill.active {
+                border-color: #cd1818;
+                color: #cd1818;
+                background-color: rgba(205, 24, 24, 0.05);
             }
             .brand-pill i {
                 margin-right: 5px;
@@ -1253,15 +1258,7 @@
             <div class="white-box">
                 <h2 class="section-title">Usage Needs</h2>
                 <div class="needs-grid">
-                    <a href="/products?target=AI" class="need-card">
-                        <div class="need-icon-box" style="background: #ffe3e3">
-                            <img
-                                th:src="@{/images/demand/laptopAI.png}"
-                                alt="AI"
-                            />
-                        </div>
-                        <span class="need-title">AI Laptop</span>
-                    </a>
+
                     <a href="/products?target=Gaming" class="need-card">
                         <div class="need-icon-box" style="background: #fff4cc">
                             <img
@@ -2298,13 +2295,7 @@
                                 ></i>
                                 Gaming - Graphic</a
                             >
-                            <a href="/products?target=AI" class="trending-tag"
-                                ><i
-                                    class="fa-solid fa-arrow-trend-up"
-                                    style="color: #7000ff"
-                                ></i>
-                                AI</a
-                            >
+
                             <a
                                 href="/products?cpu=Apple M5 Series"
                                 class="trending-tag"
@@ -2333,27 +2324,25 @@
                             >
                             Products
                         </div>
-                        <div class="sort-bar">
+                        <div class="sort-bar" style="display: flex; gap: 10px; align-items: center;">
                             <a
                                 href="javascript:void(0)"
                                 onclick="applySort('featured')"
-                                class="sort-link"
+                                class="brand-pill"
                                 th:classappend="${param.sort == null or param.sort[0] == 'featured' ? 'active' : ''}"
                                 >Featured</a
                             >
-                            <span style="color: #ccc">•</span>
                             <a
                                 href="javascript:void(0)"
                                 onclick="applySort('gia-tang-dan')"
-                                class="sort-link"
+                                class="brand-pill"
                                 th:classappend="${param.sort != null and param.sort[0] == 'gia-tang-dan' ? 'active' : ''}"
                                 >Price: Low to High</a
                             >
-                            <span style="color: #ccc">•</span>
                             <a
                                 href="javascript:void(0)"
                                 onclick="applySort('gia-giam-dan')"
-                                class="sort-link"
+                                class="brand-pill"
                                 th:classappend="${param.sort != null and param.sort[0] == 'gia-giam-dan' ? 'active' : ''}"
                                 >Price: High to Low</a
                             >
@@ -2368,35 +2357,12 @@
                             th:onclick="|window.location.href='/product/' + ${product.id}|"
                             style="cursor: pointer"
                         >
-                            <!-- Badges -->
-                            <div
-                                class="badge-top-left"
-                                th:if="${product.id % 2 != 0}"
-                            >
-                                <i class="fa-solid fa-wand-magic-sparkles"></i>
-                                AI
-                            </div>
-
                             <!-- Image -->
                             <div class="product-image-wrapper">
                                 <img
                                     th:src="@{${product.firstImage}}"
                                     alt="Product"
                                 />
-
-                                <!-- Side Feature Icons (Mockup style) -->
-                                <div class="feature-icons-right">
-                                    <div class="feature-icon">
-                                        <i
-                                            class="fa-solid fa-shield-halved"
-                                        ></i>
-                                        <span>2 Years Warranty</span>
-                                    </div>
-                                    <div class="feature-icon">
-                                        <i class="fa-solid fa-droplet"></i>
-                                        <span>Anti-glare</span>
-                                    </div>
-                                </div>
                             </div>
 
                             <a
