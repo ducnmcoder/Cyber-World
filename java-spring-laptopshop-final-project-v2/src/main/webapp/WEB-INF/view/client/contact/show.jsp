@@ -107,7 +107,7 @@
 
                             <!-- Contact Form -->
                             <div class="col-lg-8">
-                                <h2 class="text-dark">Send Us a Message</h2>
+                                <h2 class="text-white mb-4">Contact Us</h2>
 
                                 <c:if test="${not empty success}">
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -155,7 +155,7 @@
                                         </div>
                                         <div class="col-12">
                                             <button type="submit"
-                                                class="btn border border-secondary rounded-pill px-4 py-3 text-primary fw-bold">
+                                                class="btn border border-secondary rounded-pill px-4 py-3 text-white fw-bold">
                                                 <i class="fas fa-paper-plane me-2"></i>Send Message
                                             </button>
                                         </div>

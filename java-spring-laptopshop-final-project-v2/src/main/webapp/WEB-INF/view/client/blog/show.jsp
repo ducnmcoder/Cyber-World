@@ -86,7 +86,7 @@
                                                 </p>
                                                 <div class="mt-auto">
                                                     <a href="/blog/${blog.id}"
-                                                        class="btn btn-primary btn-sm rounded-pill px-3">
+                                                        class="btn btn-primary btn-sm rounded-pill px-3 text-white">
                                                         Read More <i class="fas fa-arrow-right ms-1"></i>
                                                     </a>
                                                 </div>
@@ -101,21 +101,21 @@
                                         <nav aria-label="Blog pagination">
                                             <ul class="pagination justify-content-center">
                                                 <li class="page-item">
-                                                    <a class="${1 eq currentPage ? 'disabled page-link' : 'page-link'}"
+                                                    <a class="${1 eq currentPage ? 'disabled page-link' : 'page-link'} text-white"
                                                         href="/blogs?page=${currentPage - 1}" aria-label="Previous">
                                                         <span aria-hidden="true">&laquo;</span>
                                                     </a>
                                                 </li>
                                                 <c:forEach begin="0" end="${totalPages - 1}" varStatus="loop">
                                                     <li class="page-item">
-                                                        <a class="${(loop.index + 1) eq currentPage ? 'active page-link' : 'page-link'}"
+                                                        <a class="${(loop.index + 1) eq currentPage ? 'active page-link' : 'page-link'} text-white"
                                                             href="/blogs?page=${loop.index + 1}">
                                                             ${loop.index + 1}
                                                         </a>
                                                     </li>
                                                 </c:forEach>
                                                 <li class="page-item">
-                                                    <a class="${totalPages eq currentPage ? 'disabled page-link' : 'page-link'}"
+                                                    <a class="${totalPages eq currentPage ? 'disabled page-link' : 'page-link'} text-white"
                                                         href="/blogs?page=${currentPage + 1}" aria-label="Next">
                                                         <span aria-hidden="true">&raquo;</span>
                                                     </a>

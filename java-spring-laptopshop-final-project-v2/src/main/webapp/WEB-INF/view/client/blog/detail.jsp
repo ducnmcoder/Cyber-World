@@ -73,7 +73,7 @@
                                     <p>${blog.content}</p>
                                 </div>
                                 <hr class="my-4">
-                                <a href="/blogs" class="btn btn-outline-primary rounded-pill px-4">
+                                <a href="/blogs" class="btn btn-outline-primary text-white rounded-pill px-4">
                                     <i class="fas fa-arrow-left me-2"></i> Back to Blog
                                 </a>
                             </div>
