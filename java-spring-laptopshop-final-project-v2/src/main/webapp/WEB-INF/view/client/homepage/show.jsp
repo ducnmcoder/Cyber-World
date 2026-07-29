@@ -79,7 +79,7 @@
                                 Shop by category</p>
                             <div class="d-flex justify-between align-center flex-wrap gap-md"
                                 style="margin-bottom: var(--spacing-xl);">
-                                <h2 class="text-white" style="font-size: 2.5rem; font-weight: 700; m-0">Everything,
+                                <h2 class="text-primary" style="font-size: 2.5rem; font-weight: 700; m-0">Everything,
                                     precisely organised.</h2>
                                 <a href="/products" class="text-secondary"
                                     style="font-size: 0.875rem; text-decoration: underline;">View all &rarr;</a>
@@ -90,7 +90,7 @@
                                 <a href="/products?category=laptops" class="card d-flex justify-between align-center"
                                     style="padding: 1.5rem; background: rgba(255,255,255,0.02);">
                                     <div>
-                                        <h4 class="text-white" style="font-size: 1rem; margin-bottom: 0.25rem;">
+                                        <h4 class="text-primary" style="font-size: 1rem; margin-bottom: 0.25rem;">
                                             Laptops</h4>
                                         <p class="text-secondary" style="font-size: 0.75rem;">Ultrabooks, gaming rigs,
                                             creator machines.</p>
@@ -100,7 +100,7 @@
                                 <a href="/products?category=phones" class="card d-flex justify-between align-center"
                                     style="padding: 1.5rem; background: rgba(255,255,255,0.02);">
                                     <div>
-                                        <h4 class="text-white" style="font-size: 1rem; margin-bottom: 0.25rem;">Phones
+                                        <h4 class="text-primary" style="font-size: 1rem; margin-bottom: 0.25rem;">Phones
                                         </h4>
                                         <p class="text-secondary" style="font-size: 0.75rem;">Flagship smartphones and
                                             everyday devices.</p>
@@ -110,7 +110,7 @@
                                 <a href="/products?category=components" class="card d-flex justify-between align-center"
                                     style="padding: 1.5rem; background: rgba(255,255,255,0.02);">
                                     <div>
-                                        <h4 class="text-white" style="font-size: 1rem; margin-bottom: 0.25rem;">PC
+                                        <h4 class="text-primary" style="font-size: 1rem; margin-bottom: 0.25rem;">PC
                                             Components</h4>
                                         <p class="text-secondary" style="font-size: 0.75rem;">CPUs, GPUs, memory and
                                             storage.</p>
@@ -120,7 +120,7 @@
                                 <a href="/products?category=gaming" class="card d-flex justify-between align-center"
                                     style="padding: 1.5rem; background: rgba(255,255,255,0.02);">
                                     <div>
-                                        <h4 class="text-white" style="font-size: 1rem; margin-bottom: 0.25rem;">Gaming
+                                        <h4 class="text-primary" style="font-size: 1rem; margin-bottom: 0.25rem;">Gaming
                                         </h4>
                                         <p class="text-secondary" style="font-size: 0.75rem;">Consoles, controllers and
                                             gaming gear.</p>
@@ -135,7 +135,7 @@
                             <p class="text-accent"
                                 style="font-weight: 600; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 0.5rem;">
                                 New Drops</p>
-                            <h2 class="text-white"
+                            <h2 class="text-primary"
                                 style="font-size: 2.5rem; font-weight: 700; margin-bottom: var(--spacing-xl);">Right now
                                 at CyberWorld.</h2>
 
@@ -168,7 +168,7 @@
                                             <span class="text-secondary"
                                                 style="font-size: 0.7rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">${product.factory}</span>
                                             <a href="/product/${product.id}">
-                                                <h4 class="text-white"
+                                                <h4 class="text-primary"
                                                     style="font-size: 1rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0;">
                                                     ${product.name}</h4>
                                             </a>
@@ -179,7 +179,7 @@
                                             <!-- Rating placeholder -->
                                             <div class="d-flex align-center gap-xs" style="margin-bottom: 0.5rem;">
                                                 <i class="fas fa-star" style="color: #FBBF24; font-size: 0.75rem;"></i>
-                                                <span class="text-white"
+                                                <span class="text-primary"
                                                     style="font-size: 0.8rem; font-weight: 600;">4.8</span>
                                                 <span class="text-secondary" style="font-size: 0.75rem;">(124
                                                     reviews)</span>
@@ -195,7 +195,7 @@
                                             </div>
                                             <div class="d-flex justify-between align-center">
                                                 <div class="d-flex align-center gap-sm">
-                                                    <h4 class="text-white"
+                                                    <h4 class="text-primary"
                                                         style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0;">
                                                         <fmt:formatNumber type="number" value="${product.price}" /> VND
                                                     </h4>

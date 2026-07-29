@@ -1,4 +1,4 @@
-﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
@@ -22,8 +22,7 @@
                 <!-- Icon Font Stylesheet -->
                 <link rel="stylesheet"
                     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-                <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
-                    rel="stylesheet">
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
                 <!-- Libraries Stylesheet -->
                 <link href="/client/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
@@ -54,7 +53,7 @@
                         <div class="mb-3">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="/" class="text-dark">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="/">Home</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Order History</li>
                                 </ol>
                             </nav>
@@ -164,7 +163,8 @@
                                                                                     ${orderDetail.product.name}
                                                                                 </a>
                                                                             </h6>
-
+                                                                            <small class="text-muted">Product ID:
+                                                                                #${orderDetail.product.id}</small>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -220,8 +220,8 @@
 
 
                 <!-- Back to Top -->
-                <a href="#" class="btn btn-danger border-3 border-danger rounded-circle back-to-top"><i
-                        class="fa fa-arrow-up text-white"></i></a>
+                <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
+                        class="fa fa-arrow-up"></i></a>
 
 
                 <!-- JavaScript Libraries -->
