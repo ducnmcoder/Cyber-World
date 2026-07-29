@@ -35,6 +35,11 @@
                                 Blog
                             </a>
 
+                            <a class="nav-link" href="/admin/payment">
+                                <div class="sb-nav-link-icon"><i class="fas fa-money-bill"></i></div>
+                                Payment
+                            </a>
+
                             <a class="nav-link" href="/admin/contact">
                                 <div class="sb-nav-link-icon"><i class="fas fa-envelope"></i></div>
                                 Contact

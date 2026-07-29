@@ -213,8 +213,13 @@
             min-width: 90px;
         }
         .brand-pill:hover {
-            border-color: #007bff;
-            color: #007bff;
+            border-color: #cd1818;
+            color: #cd1818;
+        }
+        .brand-pill.active {
+            border-color: #cd1818;
+            color: #cd1818;
+            background-color: rgba(205, 24, 24, 0.05);
         }
         .brand-pill i {
             margin-right: 5px;
@@ -968,12 +973,7 @@
         <div class="white-box">
             <h2 class="section-title">Usage Needs</h2>
             <div class="needs-grid">
-                <a href="/products?target=AI" class="need-card">
-                    <div class="need-icon-box" style="background: #ffe3e3;">
-                        <img th:src="@{/images/demand/laptopAI.png}" alt="AI">
-                    </div>
-                    <span class="need-title">AI Laptop</span>
-                </a>
+
                 <a href="/products?target=Gaming" class="need-card">
                     <div class="need-icon-box" style="background: #fff4cc;">
                         <img th:src="@{/images/demand/gaming.png}" alt="Gaming">
@@ -1259,19 +1259,17 @@
                         <a href="/products?factory=APPLE" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #555;"></i> <i class="fa-brands fa-apple"></i></a>
                         <a href="/products?price=15to20" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #cd1818;"></i> 15 - 20 million</a>
                         <a href="/products?target=Gaming" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #f39c12;"></i> Gaming - Graphic</a>
-                        <a href="/products?target=AI" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #7000ff;"></i> AI</a>
+
                         <a href="/products?cpu=Apple M5 Series" class="trending-tag"><i class="fa-solid fa-arrow-trend-up" style="color: #555;"></i> Apple M5 series</a>
                     </div>
                 </div>
                 
                 <div class="products-header" style="border-bottom: 1px solid #ddd; padding-bottom: 15px;">
                     <div class="result-count">Found <span style="color: #cd1818;" th:text="${totalElements}">0</span> Products</div>
-                    <div class="sort-bar">
-                        <a href="javascript:void(0)" onclick="applySort('featured')" class="sort-link" th:classappend="${param.sort == null or param.sort[0] == 'featured' ? 'active' : ''}">Featured</a>
-                        <span style="color: #ccc;">•</span>
-                        <a href="javascript:void(0)" onclick="applySort('gia-tang-dan')" class="sort-link" th:classappend="${param.sort != null and param.sort[0] == 'gia-tang-dan' ? 'active' : ''}">Price: Low to High</a>
-                        <span style="color: #ccc;">•</span>
-                        <a href="javascript:void(0)" onclick="applySort('gia-giam-dan')" class="sort-link" th:classappend="${param.sort != null and param.sort[0] == 'gia-giam-dan' ? 'active' : ''}">Price: High to Low</a>
+                    <div class="sort-bar" style="display: flex; gap: 10px; align-items: center;">
+                        <a href="javascript:void(0)" onclick="applySort('featured')" class="brand-pill" th:classappend="${param.sort == null or param.sort[0] == 'featured' ? 'active' : ''}">Featured</a>
+                        <a href="javascript:void(0)" onclick="applySort('gia-tang-dan')" class="brand-pill" th:classappend="${param.sort != null and param.sort[0] == 'gia-tang-dan' ? 'active' : ''}">Price: Low to High</a>
+                        <a href="javascript:void(0)" onclick="applySort('gia-giam-dan')" class="brand-pill" th:classappend="${param.sort != null and param.sort[0] == 'gia-giam-dan' ? 'active' : ''}">Price: High to Low</a>
                     </div>
                 </div>
 
@@ -1279,24 +1277,9 @@
                     <!-- Product Card Loop -->
                     <div class="product-card" th:each="product : ${products}" th:onclick="|window.location.href='/product/' + ${product.id}|" style="cursor: pointer;">
                         
-                        <!-- Badges -->
-                        <div class="badge-top-left" th:if="${product.id % 2 != 0}"><i class="fa-solid fa-wand-magic-sparkles"></i> AI</div>
-                        
                         <!-- Image -->
                         <div class="product-image-wrapper">
                             <img th:src="@{${product.firstImage}}" alt="Product">
-                            
-                            <!-- Side Feature Icons (Mockup style) -->
-                            <div class="feature-icons-right">
-                                <div class="feature-icon">
-                                    <i class="fa-solid fa-shield-halved"></i>
-                                    <span>2 Years Warranty</span>
-                                </div>
-                                <div class="feature-icon">
-                                    <i class="fa-solid fa-droplet"></i>
-                                    <span>Anti-glare</span>
-                                </div>
-                            </div>
                         </div>
                         
                         <a th:href="@{'/product/' + ${product.id}}" class="product-name" style="font-weight: 700; display: block; margin-bottom: 10px; min-height: 40px; text-decoration: none;" th:text="${product.name}">Laptop Acer Aspire Lite 14 AI AL14-53P-5387 Ultra5 115U</a>

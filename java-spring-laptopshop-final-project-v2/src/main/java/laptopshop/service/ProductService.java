@@ -348,9 +348,10 @@ public class ProductService {
         }
     }
 
-    public void handlePlaceOrder(
+    public Order handlePlaceOrder(
             User user, HttpSession session,
-            String receiverName, String receiverAddress, String receiverPhone) {
+            String receiverName, String receiverAddress, String receiverPhone,
+            String paymentMethod) {
 
         // step 1: get cart
         Cart cart = null;
@@ -372,6 +373,9 @@ public class ProductService {
                 order.setReceiverAddress(receiverAddress);
                 order.setReceiverPhone(receiverPhone);
                 order.setStatus("PENDING");
+                order.setPaymentMethod(paymentMethod);
+                order.setPaymentStatus("COD".equals(paymentMethod) ? "PENDING" : "UNPAID");
+                order.setTrackingCode("CW" + java.util.UUID.randomUUID().toString().substring(0, 8).toUpperCase());
 
                 double sum = 0;
                 for (CartDetail cd : cartDetails) {
@@ -405,8 +409,11 @@ public class ProductService {
 
                 // step 3 : update session
                 session.setAttribute("sum", 0);
+
+                return order;
             }
         }
 
+        return null;
     }
 }

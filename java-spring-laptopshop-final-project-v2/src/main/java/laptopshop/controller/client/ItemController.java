@@ -19,23 +19,43 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import laptopshop.domain.Cart;
 import laptopshop.domain.CartDetail;
+import laptopshop.domain.Order;
 import laptopshop.domain.Product;
 import laptopshop.domain.Product_;
 import laptopshop.domain.User;
 import laptopshop.domain.dto.ProductCriteriaDTO;
 import laptopshop.service.ProductService;
 import laptopshop.service.BlogService;
+import laptopshop.service.EmailService;
+import laptopshop.service.PaymentService;
+import laptopshop.service.VNPayService;
+import laptopshop.service.MoMoService;
+import laptopshop.service.ZaloPayService;
 import laptopshop.domain.Blog;
+import laptopshop.domain.Payment;
 
 @Controller
 public class ItemController {
 
     private final ProductService productService;
     private final BlogService blogService;
+    private final PaymentService paymentService;
+    private final VNPayService vnPayService;
+    private final MoMoService moMoService;
+    private final ZaloPayService zaloPayService;
+    private final EmailService emailService;
 
-    public ItemController(ProductService productService, BlogService blogService) {
+    public ItemController(ProductService productService, BlogService blogService,
+            PaymentService paymentService, VNPayService vnPayService,
+            MoMoService moMoService, ZaloPayService zaloPayService,
+            EmailService emailService) {
         this.productService = productService;
         this.blogService = blogService;
+        this.paymentService = paymentService;
+        this.vnPayService = vnPayService;
+        this.moMoService = moMoService;
+        this.zaloPayService = zaloPayService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/product/{id}")
@@ -194,7 +214,8 @@ public class ItemController {
             HttpServletRequest request,
             @RequestParam("receiverName") String receiverName,
             @RequestParam("receiverAddress") String receiverAddress,
-            @RequestParam("receiverPhone") String receiverPhone) {
+            @RequestParam("receiverPhone") String receiverPhone,
+            @RequestParam(value = "paymentMethod", defaultValue = "COD") String paymentMethod) {
         
         HttpSession session = request.getSession(true);
         if (isManager(session)) {
@@ -209,15 +230,66 @@ public class ItemController {
             currentUser.setId(id);
         }
 
-        this.productService.handlePlaceOrder(currentUser, session, receiverName, receiverAddress, receiverPhone);
+        // Create order with payment method
+        Order order = this.productService.handlePlaceOrder(
+                currentUser, session, receiverName, receiverAddress, receiverPhone, paymentMethod);
 
-        return "redirect:/thanks";
+        if (order == null) {
+            return "redirect:/cart";
+        }
+
+        // Create payment record
+        Payment payment = this.paymentService.createPayment(order, paymentMethod);
+
+        switch (paymentMethod) {
+            case "VNPAY":
+                String vnpayUrl = this.vnPayService.createPaymentUrl(order, payment.getTransactionRef(), request);
+                if (vnpayUrl != null) {
+                    return "redirect:" + vnpayUrl;
+                }
+                // If VNPay URL creation fails, mark as failed
+                this.paymentService.updatePaymentStatus(payment.getId(), "FAILED", null);
+                order.setPaymentStatus("FAILED");
+                return "redirect:/payment-failed";
+
+            case "MOMO":
+                String momoUrl = this.moMoService.createPaymentUrl(order, payment.getTransactionRef());
+                if (momoUrl != null) {
+                    return "redirect:" + momoUrl;
+                }
+                this.paymentService.updatePaymentStatus(payment.getId(), "FAILED", null);
+                order.setPaymentStatus("FAILED");
+                return "redirect:/payment-failed";
+
+            case "ZALOPAY":
+                String zalopayUrl = this.zaloPayService.createPaymentUrl(order, payment.getTransactionRef());
+                if (zalopayUrl != null) {
+                    return "redirect:" + zalopayUrl;
+                }
+                this.paymentService.updatePaymentStatus(payment.getId(), "FAILED", null);
+                order.setPaymentStatus("FAILED");
+                return "redirect:/payment-failed";
+
+            case "COD":
+            default:
+                // COD: mark payment as pending, send email
+                order.setPaymentStatus("PENDING");
+                if (email != null) {
+                    this.emailService.sendOrderConfirmationEmail(email, order);
+                }
+                return "redirect:/thanks";
+        }
     }
 
     @GetMapping("/thanks")
     public String getThankYouPage(Model model) {
 
         return "client/cart/thanks";
+    }
+
+    @GetMapping("/payment-failed")
+    public String getPaymentFailedPage(Model model) {
+        return "client/cart/payment-failed";
     }
 
     @PostMapping("/add-product-from-view-detail")
