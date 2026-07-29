@@ -22,7 +22,12 @@
                 <div id="layoutSidenav_content">
                     <main>
                         <div class="container-fluid px-4">
-                            <h1 class="mt-4">Dashboard</h1>
+                            <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+                                <h1>Dashboard</h1>
+                                <a href="/owner/dashboard/export" class="btn btn-success">
+                                    <i class="fas fa-file-excel me-1"></i> Export to Excel
+                                </a>
+                            </div>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="card mb-4">

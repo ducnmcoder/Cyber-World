@@ -30,6 +30,14 @@ public class OrderService {
         return this.orderRepository.findAll(page);
     }
 
+    public List<Order> fetchAllOrdersList() {
+        return this.orderRepository.findAll();
+    }
+
+    public List<Order> fetchOrdersByStatus(String status) {
+        return this.orderRepository.findByStatus(status);
+    }
+
     public Optional<Order> fetchOrderById(long id) {
         return this.orderRepository.findById(id);
     }

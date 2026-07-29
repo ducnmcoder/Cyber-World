@@ -14,6 +14,7 @@ import org.springframework.data.repository.query.Param;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByUser(User user);
+    List<Order> findByStatus(String status);
 
     @Query(value = "SELECT MONTH(created_at) AS period, SUM(total_price) AS total FROM orders WHERE created_at IS NOT NULL AND YEAR(created_at) = :year GROUP BY MONTH(created_at) ORDER BY MONTH(created_at)", nativeQuery = true)
     List<Object[]> findMonthlyRevenueByYear(@Param("year") int year);
