@@ -72,6 +72,27 @@
 
                     <jsp:include page="../layout/header.jsp" />
 
+                    <!-- Error Notification Toast -->
+                    <c:if test="${not empty errorMessage}">
+                        <div id="errorToast"
+                            style="position: fixed; top: 80px; right: 20px; background-color: #cd1818; color: white; padding: 15px 25px; border-radius: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100000; display: flex; align-items: center; gap: 10px; animation: slideIn 0.5s;">
+                            <i class="fa-solid fa-circle-exclamation" style="font-size: 20px;"></i>
+                            <span>${errorMessage}</span>
+                        </div>
+                        <style>
+                            @keyframes slideIn {
+                                from { right: -300px; opacity: 0; }
+                                to { right: 20px; opacity: 1; }
+                            }
+                        </style>
+                        <script>
+                            setTimeout(function() {
+                                var toast = document.getElementById('errorToast');
+                                if (toast) { toast.style.display = 'none'; }
+                            }, 5000);
+                        </script>
+                    </c:if>
+
                     <!-- Cart Page Start -->
                     <div class="container-fluid py-5">
                         <div class="container py-5">

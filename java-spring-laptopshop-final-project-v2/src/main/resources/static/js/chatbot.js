@@ -242,10 +242,14 @@
         addUserMessage(message);
         inputField.value = '';
 
-        // Hide suggestions after first message
+        // Hide original suggestions after first message
         if (suggestionsContainer) {
             suggestionsContainer.style.display = 'none';
         }
+
+        // Remove any in-chat suggestions when sending a new message
+        const inChatSuggestions = messagesContainer.querySelectorAll('.chatbot-suggestions.in-chat');
+        inChatSuggestions.forEach(el => el.style.display = 'none');
 
         // Show typing
         showTyping();
@@ -273,13 +277,16 @@
             if (response.ok) {
                 const data = await response.json();
                 addBotMessage(data.reply || 'Sorry, I don\'t have an answer right now.');
+                appendQuickSuggestions();
             } else {
                 addBotMessage('Sorry, an error occurred. Please try again later. 😔');
+                appendQuickSuggestions();
             }
         } catch (error) {
             hideTyping();
             console.error('Chatbot error:', error);
             addBotMessage('Sorry, unable to connect to the server. Please try again later. 😔');
+            appendQuickSuggestions();
         } finally {
             isProcessing = false;
             sendBtn.disabled = false;
@@ -301,14 +308,40 @@
         }
     });
 
-    // Quick suggestion buttons
-    suggestionsContainer.addEventListener('click', (e) => {
+    // Quick suggestion buttons (original container)
+    if (suggestionsContainer) {
+        suggestionsContainer.addEventListener('click', (e) => {
+            const btn = e.target.closest('.chatbot-suggestion-btn');
+            if (btn) {
+                const msg = btn.getAttribute('data-msg');
+                sendMessage(msg);
+            }
+        });
+    }
+
+    // Quick suggestion buttons inside messages area
+    messagesContainer.addEventListener('click', (e) => {
         const btn = e.target.closest('.chatbot-suggestion-btn');
         if (btn) {
             const msg = btn.getAttribute('data-msg');
             sendMessage(msg);
         }
     });
+
+    function appendQuickSuggestions() {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'chatbot-suggestions in-chat';
+        wrapper.style.padding = '8px 0 0 0';
+        wrapper.style.background = 'transparent';
+        wrapper.innerHTML = `
+            <button class="chatbot-suggestion-btn" data-msg="Laptops under 15 million VND">💰 Under 15M</button>
+            <button class="chatbot-suggestion-btn" data-msg="Best gaming laptops">🎮 Gaming Laptops</button>
+            <button class="chatbot-suggestion-btn" data-msg="Laptops for students">🎓 For Students</button>
+            <button class="chatbot-suggestion-btn" data-msg="What Dell laptops do you have?">💻 Dell Laptops</button>
+        `;
+        messagesContainer.appendChild(wrapper);
+        scrollToBottom();
+    }
 
     // Close on Escape
     document.addEventListener('keydown', (e) => {

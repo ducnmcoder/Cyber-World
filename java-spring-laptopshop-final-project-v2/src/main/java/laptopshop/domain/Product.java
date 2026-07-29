@@ -48,7 +48,7 @@ public class Product implements Serializable {
     private String shortDesc;
 
     @NotNull(message = "Quantity is required")
-    @Min(value = 1, message = "Quantity must be at least 1")
+    @Min(value = 0, message = "Quantity must be at least 0")
     private Long quantity;
 
     private Long sold = 0L;

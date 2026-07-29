@@ -34,6 +34,34 @@
 
                 <jsp:include page="../layout/header.jsp" />
 
+                <!-- Error Notification Toast -->
+                <c:if test="${not empty errorMessage}">
+                    <div id="errorToast"
+                        style="position: fixed; top: 80px; right: 20px; background-color: #cd1818; color: white; padding: 15px 25px; border-radius: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100000; display: flex; align-items: center; gap: 10px; animation: slideIn 0.5s;">
+                        <i class="fas fa-exclamation-circle" style="font-size: 20px;"></i>
+                        <span>${errorMessage}</span>
+                    </div>
+                    <style>
+                        @keyframes slideIn {
+                            from {
+                                right: -300px;
+                                opacity: 0;
+                            }
+
+                            to {
+                                right: 20px;
+                                opacity: 1;
+                            }
+                        }
+                    </style>
+                    <script>
+                        setTimeout(function () {
+                            var toast = document.getElementById('errorToast');
+                            if (toast) { toast.style.display = 'none'; }
+                        }, 5000);
+                    </script>
+                </c:if>
+
 
                 <jsp:include page="../layout/banner.jsp" />
 
@@ -104,56 +132,97 @@
 
                         <!-- Featured Products Grid -->
                         <div>
-                            <p class="text-accent" style="font-weight: 600; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 0.5rem;">New Drops</p>
-                            <h2 class="text-primary" style="font-size: 2.5rem; font-weight: 700; margin-bottom: var(--spacing-xl);">Right now at CyberWorld.</h2>
+                            <p class="text-accent"
+                                style="font-weight: 600; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 0.5rem;">
+                                New Drops</p>
+                            <h2 class="text-primary"
+                                style="font-size: 2.5rem; font-weight: 700; margin-bottom: var(--spacing-xl);">Right now
+                                at CyberWorld.</h2>
+                            <p class="text-accent"
+                                style="font-weight: 600; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 0.5rem;">
+                                New Drops</p>
+                            <h2 class="text-primary"
+                                style="font-size: 2.5rem; font-weight: 700; margin-bottom: var(--spacing-xl);">Right now
+                                at CyberWorld.</h2>
 
                             <div class="grid grid-cols-4 gap-lg">
                                 <c:forEach var="product" items="${products}">
                                     <div class="card d-flex flex-col" style="position: relative; padding: 1.25rem;">
                                         <!-- Sale Badge & Wishlist -->
-                                        <div class="d-flex justify-between align-center" style="margin-bottom: 1rem; z-index: 2;">
-                                            <span style="background: var(--accent-blue); color: white; padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.7rem; font-weight: 700; box-shadow: var(--glow-blue);">SALE</span>
-                                            <i class="far fa-heart text-secondary" style="cursor: pointer; transition: color 0.2s;"></i>
+                                        <div class="d-flex justify-between align-center"
+                                            style="margin-bottom: 1rem; z-index: 2;">
+                                            <span
+                                                style="background: var(--accent-blue); color: white; padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.7rem; font-weight: 700; box-shadow: var(--glow-blue);">SALE</span>
+                                            <i class="far fa-heart text-secondary"
+                                                style="cursor: pointer; transition: color 0.2s;"></i>
                                         </div>
 
                                         <!-- Product Image (Centered) -->
-                                        <a href="/product/${product.id}" style="display: block; text-align: center; margin-bottom: 1.5rem; height: 180px; display: flex; align-items: center; justify-content: center; position: relative;">
+                                        <a href="/product/${product.id}"
+                                            style="display: block; text-align: center; margin-bottom: 1.5rem; height: 180px; display: flex; align-items: center; justify-content: center; position: relative;">
                                             <!-- Subtle glow behind image -->
-                                            <div style="position: absolute; width: 60%; height: 60%; background: var(--accent-blue); opacity: 0.1; filter: blur(30px); border-radius: 50%;"></div>
-                                            <img src="${product.firstImage}" alt="${product.name}" style="max-height: 100%; max-width: 100%; object-fit: contain; position: relative; z-index: 1;" onerror="this.src='https://via.placeholder.com/200?text=Product+Image'">
+                                            <div
+                                                style="position: absolute; width: 60%; height: 60%; background: var(--accent-blue); opacity: 0.1; filter: blur(30px); border-radius: 50%;">
+                                            </div>
+                                            <img src="${product.firstImage}" alt="${product.name}"
+                                                style="max-height: 100%; max-width: 100%; object-fit: contain; position: relative; z-index: 1;"
+                                                onerror="this.src='https://via.placeholder.com/200?text=Product+Image'">
                                         </a>
 
                                         <!-- Product Info -->
                                         <div class="d-flex flex-col gap-sm" style="flex: 1;">
-                                            <span class="text-secondary" style="font-size: 0.7rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">${product.factory}</span>
+                                            <span class="text-secondary"
+                                                style="font-size: 0.7rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">${product.factory}</span>
                                             <a href="/product/${product.id}">
-                                                <h4 class="text-primary" style="font-size: 1rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0;">${product.name}</h4>
+                                                <h4 class="text-primary"
+                                                    style="font-size: 1rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0;">
+                                                    ${product.name}</h4>
                                             </a>
-                                            <p class="text-secondary" style="font-size: 0.75rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0;">${product.shortDesc}</p>
+                                            <p class="text-secondary"
+                                                style="font-size: 0.75rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0;">
+                                                ${product.shortDesc}</p>
+                                            <p class="text-secondary"
+                                                style="font-size: 0.75rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0;">
+                                                ${product.shortDesc}</p>
 
                                             <!-- Rating placeholder -->
                                             <div class="d-flex align-center gap-xs" style="margin-bottom: 0.5rem;">
                                                 <i class="fas fa-star" style="color: #FBBF24; font-size: 0.75rem;"></i>
-                                                <span class="text-primary" style="font-size: 0.8rem; font-weight: 600;">4.8</span>
-                                                <span class="text-secondary" style="font-size: 0.75rem;">(124 reviews)</span>
+                                                <span class="text-primary"
+                                                    style="font-size: 0.8rem; font-weight: 600;">4.8</span>
+                                                <span class="text-secondary" style="font-size: 0.75rem;">(124
+                                                    reviews)</span>
                                             </div>
                                         </div>
 
                                         <!-- Price and Action -->
-                                        <div class="d-flex justify-between align-center" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.05);">
-                                            <div class="d-flex align-center gap-sm">
-                                                <h4 class="text-primary" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0;">
-                                                    <fmt:formatNumber type="number" value="${product.price}" /> VND
-                                                </h4>
-                                                <c:if test="${product.originalPrice > 0}">
-                                                    <span class="text-secondary" style="text-decoration: line-through; font-size: 0.8rem;">
-                                                        <fmt:formatNumber type="number" value="${product.originalPrice}" /> VND
-                                                    </span>
-                                                </c:if>
+                                        <div
+                                            style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.05);">
+                                            <div class="mb-2">
+                                                <span class="text-secondary" style="font-size: 0.85rem;">Quantity:
+                                                    <strong>${product.quantity}</strong></span>
                                             </div>
-                                            <button data-product-id="${product.id}" class="btnAddToCartHomepage" style="background: rgba(255,255,255,0.05); color: var(--text-primary); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='var(--accent-blue)'; this.style.color='white';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.color='var(--text-primary)';">
-                                                <i class="fas fa-plus"></i>
-                                            </button>
+                                            <div class="d-flex justify-between align-center">
+                                                <div class="d-flex align-center gap-sm">
+                                                    <h4 class="text-primary"
+                                                        style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0;">
+                                                        <fmt:formatNumber type="number" value="${product.price}" /> VND
+                                                    </h4>
+                                                    <c:if test="${product.originalPrice > 0}">
+                                                        <span class="text-secondary"
+                                                            style="text-decoration: line-through; font-size: 0.8rem;">
+                                                            <fmt:formatNumber type="number"
+                                                                value="${product.originalPrice}" /> VND
+                                                        </span>
+                                                    </c:if>
+                                                </div>
+                                                <button data-product-id="${product.id}" class="btnAddToCartHomepage"
+                                                    style="background: rgba(255,255,255,0.05); color: var(--text-primary); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;"
+                                                    onmouseover="this.style.background='var(--accent-blue)'; this.style.color='white';"
+                                                    onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.color='var(--text-primary)';">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </c:forEach>
