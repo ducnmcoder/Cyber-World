@@ -77,7 +77,6 @@ public class OrderService {
         if (orderOptional.isPresent()) {
             Order currentOrder = orderOptional.get();
             currentOrder.setStatus(order.getStatus());
-            currentOrder.setPaymentStatus(order.getPaymentStatus());
             this.orderRepository.save(currentOrder);
         }
     }

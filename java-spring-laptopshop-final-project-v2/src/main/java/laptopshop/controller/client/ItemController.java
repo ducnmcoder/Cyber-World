@@ -22,7 +22,6 @@ import laptopshop.domain.CartDetail;
 import laptopshop.domain.Order;
 import laptopshop.domain.Product;
 import laptopshop.domain.Product_;
-import laptopshop.domain.Review;
 import laptopshop.domain.User;
 import laptopshop.domain.dto.ProductCriteriaDTO;
 import laptopshop.service.ProductService;
@@ -34,8 +33,6 @@ import laptopshop.service.MoMoService;
 import laptopshop.service.ZaloPayService;
 import laptopshop.domain.Blog;
 import laptopshop.domain.Payment;
-import laptopshop.service.ReviewService;
-import laptopshop.service.UserService;
 
 @Controller
 public class ItemController {
@@ -47,13 +44,11 @@ public class ItemController {
     private final MoMoService moMoService;
     private final ZaloPayService zaloPayService;
     private final EmailService emailService;
-    private final ReviewService reviewService;
-    private final UserService userService;
 
     public ItemController(ProductService productService, BlogService blogService,
             PaymentService paymentService, VNPayService vnPayService,
             MoMoService moMoService, ZaloPayService zaloPayService,
-            EmailService emailService, ReviewService reviewService, UserService userService) {
+            EmailService emailService) {
         this.productService = productService;
         this.blogService = blogService;
         this.paymentService = paymentService;
@@ -61,43 +56,16 @@ public class ItemController {
         this.moMoService = moMoService;
         this.zaloPayService = zaloPayService;
         this.emailService = emailService;
-        this.reviewService = reviewService;
-        this.userService = userService;
     }
 
     @GetMapping("/product/{id}")
-    public String getProductPage(Model model, @PathVariable long id, HttpServletRequest request) {
+    public String getProductPage(Model model, @PathVariable long id) {
         Product pr = this.productService.fetchProductById(id).orElse(null);
         if (pr == null) {
             return "redirect:/products";
         }
         model.addAttribute("product", pr);
         model.addAttribute("id", id);
-        
-        // Reviews pagination
-        Pageable pageable = PageRequest.of(0, 50, Sort.by("createdAt").descending());
-        Page<Review> reviews = this.reviewService.getApprovedReviewsByProduct(pr, pageable);
-        model.addAttribute("reviews", reviews.getContent());
-
-        // Check if user is logged in and can review
-        HttpSession session = request.getSession(false);
-        boolean canReview = false;
-        Review userReview = null;
-
-        if (session != null && session.getAttribute("email") != null) {
-            long userId = (long) session.getAttribute("id");
-            User user = this.userService.getUserById(userId);
-            if (user != null) {
-                canReview = this.reviewService.canUserReview(user, pr);
-                if (canReview) {
-                    userReview = this.reviewService.getUserReviewForProduct(user, pr);
-                }
-            }
-        }
-        
-        model.addAttribute("canReview", canReview);
-        model.addAttribute("userReview", userReview);
-
         return "thymeleaf/client/product/detail";
     }
 

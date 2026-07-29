@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
@@ -63,11 +63,8 @@
                                                                     class="btn btn-success">View</a>
                                                                 <a href="/admin/product/update/${product.id}?page=${currentPage}"
                                                                     class="btn btn-warning  mx-2">Update</a>
-                                                                <form action="/admin/product/delete?page=${currentPage}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this product?');">
-                                                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                                                                    <input type="hidden" name="id" value="${product.id}" />
-                                                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                                                </form>
+                                                                <a href="/admin/product/delete/${product.id}?page=${currentPage}"
+                                                                    class="btn btn-danger">Delete</a>
                                                             </td>
                                                         </tr>
 

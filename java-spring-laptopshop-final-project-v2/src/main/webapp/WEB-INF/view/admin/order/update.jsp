@@ -73,15 +73,6 @@
                                                             <form:option value="CANCEL">CANCEL</form:option>
                                                         </form:select>
                                                     </div>
-
-                                                    <div class="mb-3 col-12 col-md-6">
-                                                        <label class="form-label">Payment Status:</label>
-                                                        <form:select class="form-select" path="paymentStatus">
-                                                            <form:option value="PENDING">PENDING</form:option>
-                                                            <form:option value="PAID">PAID</form:option>
-                                                            <form:option value="FAILED">FAILED</form:option>
-                                                        </form:select>
-                                                    </div>
                                                     <div class="col-12 mb-5">
                                                         <button type="submit" class="btn btn-warning">Update</button>
                                                     </div>

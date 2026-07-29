@@ -44,11 +44,6 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-envelope"></i></div>
                                 Contact
                             </a>
-
-                            <a class="nav-link" href="/admin/review">
-                                <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
-                                Review
-                            </a>
                         </c:if>
                     </div>
                 </div>

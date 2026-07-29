@@ -29,19 +29,16 @@ public class PaymentController {
     private final MoMoService moMoService;
     private final ZaloPayService zaloPayService;
     private final EmailService emailService;
-    private final laptopshop.service.ProductService productService;
 
     public PaymentController(PaymentService paymentService, OrderService orderService,
             VNPayService vnPayService, MoMoService moMoService,
-            ZaloPayService zaloPayService, EmailService emailService,
-            laptopshop.service.ProductService productService) {
+            ZaloPayService zaloPayService, EmailService emailService) {
         this.paymentService = paymentService;
         this.orderService = orderService;
         this.vnPayService = vnPayService;
         this.moMoService = moMoService;
         this.zaloPayService = zaloPayService;
         this.emailService = emailService;
-        this.productService = productService;
     }
 
     @GetMapping("/vnpay-return")
@@ -65,9 +62,6 @@ public class PaymentController {
             order.setPaymentStatus("PAID");
             this.orderService.updateOrderPaymentStatus(order);
 
-            // Clear the cart
-            this.productService.handleClearCart(order.getUser(), request.getSession(false));
-
             // Send confirmation email
             if (order.getUser() != null && order.getUser().getEmail() != null) {
                 this.emailService.sendOrderConfirmationEmail(order.getUser().getEmail(), order);
@@ -84,7 +78,7 @@ public class PaymentController {
     }
 
     @GetMapping("/momo-return")
-    public String momoReturn(@RequestParam Map<String, String> params, HttpServletRequest request) {
+    public String momoReturn(@RequestParam Map<String, String> params) {
         String orderId = params.get("orderId");
         String transId = params.get("transId");
 
@@ -100,9 +94,6 @@ public class PaymentController {
             this.paymentService.updatePaymentStatus(payment.getId(), "PAID", transId);
             order.setPaymentStatus("PAID");
             this.orderService.updateOrderPaymentStatus(order);
-
-            // Clear the cart
-            this.productService.handleClearCart(order.getUser(), request.getSession(false));
 
             // Send confirmation email
             if (order.getUser() != null && order.getUser().getEmail() != null) {
@@ -120,7 +111,7 @@ public class PaymentController {
     }
 
     @GetMapping("/zalopay-return")
-    public String zalopayReturn(@RequestParam Map<String, String> params, HttpServletRequest request) {
+    public String zalopayReturn(@RequestParam Map<String, String> params) {
         String appTransId = params.get("apptransid");
 
         // Extract our transactionRef from ZaloPay's app_trans_id format: yyMMdd_transactionRef
@@ -138,9 +129,6 @@ public class PaymentController {
             this.paymentService.updatePaymentStatus(payment.getId(), "PAID", appTransId);
             order.setPaymentStatus("PAID");
             this.orderService.updateOrderPaymentStatus(order);
-
-            // Clear the cart
-            this.productService.handleClearCart(order.getUser(), request.getSession(false));
 
             // Send confirmation email
             if (order.getUser() != null && order.getUser().getEmail() != null) {
