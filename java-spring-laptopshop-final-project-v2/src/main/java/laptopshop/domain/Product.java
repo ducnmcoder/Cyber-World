@@ -63,6 +63,10 @@ public class Product implements Serializable {
     private Double originalPrice;
     private String promoEndDate;
 
+    private Double averageRating = 0.0;
+    
+    private Integer reviewCount = 0;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "specification_id", referencedColumnName = "id")
     private ProductSpecification specification;
@@ -211,6 +215,22 @@ public class Product implements Serializable {
 
     public void setSpecification(ProductSpecification specification) {
         this.specification = specification;
+    }
+
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public Integer getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(Integer reviewCount) {
+        this.reviewCount = reviewCount;
     }
 
     @Transient

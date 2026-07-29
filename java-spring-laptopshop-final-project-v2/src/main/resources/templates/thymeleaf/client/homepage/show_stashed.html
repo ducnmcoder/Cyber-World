@@ -964,6 +964,100 @@
                 transform: scale(1.2);
                 box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
             }
+
+            /* --- Popup Notification Styles --- */
+            .cyber-toast-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 10000;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s ease, visibility 0.3s ease;
+                backdrop-filter: blur(4px);
+            }
+
+            .cyber-toast-overlay.show {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .cyber-toast-box {
+                background: white;
+                border-radius: 12px;
+                padding: 30px 40px;
+                text-align: center;
+                box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+                max-width: 450px;
+                width: 90%;
+                transform: translateY(-20px) scale(0.95);
+                transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                position: relative;
+            }
+
+            .cyber-toast-overlay.show .cyber-toast-box {
+                transform: translateY(0) scale(1);
+            }
+
+            .cyber-toast-icon {
+                width: 60px;
+                height: 60px;
+                background: #e8f5e9;
+                color: #2e7d32;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 30px;
+                margin: 0 auto 20px auto;
+            }
+
+            .cyber-toast-message {
+                font-size: 18px;
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 25px;
+                line-height: 1.5;
+            }
+
+            .cyber-toast-btn {
+                background: #cd1818;
+                color: white;
+                border: none;
+                padding: 12px 30px;
+                border-radius: 30px;
+                font-size: 15px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                text-decoration: none;
+                display: inline-block;
+            }
+
+            .cyber-toast-btn:hover {
+                background: #a71414;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(205, 24, 24, 0.3);
+            }
+            
+            .cyber-toast-close {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                color: #999;
+                font-size: 20px;
+                cursor: pointer;
+                transition: color 0.2s;
+            }
+            .cyber-toast-close:hover {
+                color: #333;
+            }
         </style>
     </head>
     <body>
@@ -3539,6 +3633,70 @@
             document.addEventListener("DOMContentLoaded", () => {
                 if (document.getElementById("heroCarouselInner")) {
                     startHeroInterval();
+                }
+            });
+        </script>
+
+        <!-- Cyber Notification Popup -->
+        <div class="cyber-toast-overlay" id="cyberToastOverlay">
+            <div class="cyber-toast-box">
+                <i class="fa-solid fa-xmark cyber-toast-close" onclick="closeNotification()"></i>
+                <div class="cyber-toast-icon" id="cyberToastIcon">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <div class="cyber-toast-message" id="cyberToastMessage">
+                    Sản phẩm đã thêm vào giỏ hàng của bạn, vui lòng kiểm tra giỏ hàng!
+                </div>
+                <a href="/cart" class="cyber-toast-btn" id="cyberToastBtn">Đến giỏ hàng</a>
+            </div>
+        </div>
+
+        <script>
+            // Popup Notification Script
+            function showNotification(message, isError = false, btnText = 'Đến giỏ hàng', btnUrl = '/cart') {
+                const overlay = document.getElementById('cyberToastOverlay');
+                const msgEl = document.getElementById('cyberToastMessage');
+                const iconEl = document.getElementById('cyberToastIcon');
+                const btnEl = document.getElementById('cyberToastBtn');
+
+                if (message) {
+                    msgEl.textContent = message;
+                }
+
+                if (isError) {
+                    iconEl.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
+                    iconEl.style.background = '#ffebeb';
+                    iconEl.style.color = '#cd1818';
+                } else {
+                    iconEl.innerHTML = '<i class="fa-solid fa-check"></i>';
+                    iconEl.style.background = '#e8f5e9';
+                    iconEl.style.color = '#2e7d32';
+                }
+
+                btnEl.textContent = btnText;
+                if (btnUrl) {
+                    btnEl.href = btnUrl;
+                    btnEl.onclick = null;
+                } else {
+                    btnEl.removeAttribute('href');
+                    btnEl.onclick = function(e) {
+                        e.preventDefault();
+                        closeNotification();
+                    };
+                }
+
+                overlay.classList.add('show');
+            }
+
+            function closeNotification() {
+                const overlay = document.getElementById('cyberToastOverlay');
+                overlay.classList.remove('show');
+            }
+
+            // Close on overlay click
+            document.getElementById('cyberToastOverlay').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeNotification();
                 }
             });
         </script>
