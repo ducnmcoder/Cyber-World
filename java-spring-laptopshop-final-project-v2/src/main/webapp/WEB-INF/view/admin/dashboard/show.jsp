@@ -23,12 +23,11 @@
                     <main>
                         <div class="container-fluid px-4">
                             <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
-                                <h1>Dashboard</h1>
+                                <h1 class="m-0">Dashboard</h1>
                                 <a href="/owner/dashboard/export" class="btn btn-success">
                                     <i class="fas fa-file-excel me-1"></i> Export to Excel
                                 </a>
                             </div>
-                            <h1 class="mt-4">Dashboard</h1>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="card mb-4">
@@ -202,7 +201,7 @@
                                 tr.innerHTML = '<td>' + product[0] + '</td>' +
                                     '<td>' + product[1] + '</td>' +
                                     '<td>' + product[2] + '</td>' +
-                                    '<td>' + product[3] + '</td>';
+                                    '<td>' + Number(product[3]).toLocaleString('vi-VN') + ' VNĐ</td>';
                                 tbody.appendChild(tr);
                             });
                         });
@@ -239,7 +238,7 @@
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true,
-                                        callback: function (value) { return '$' + value.toLocaleString(); }
+                                        callback: function (value) { return value.toLocaleString('vi-VN') + ' VNĐ'; }
                                     },
                                     gridLines: { color: 'rgba(200, 200, 200, 0.2)' }
                                 }]
@@ -248,7 +247,7 @@
                             legend: { display: false },
                             tooltips: {
                                 callbacks: {
-                                    label: function (tooltipItem, data) { return '$' + tooltipItem.yLabel.toLocaleString(); }
+                                    label: function (tooltipItem, data) { return tooltipItem.yLabel.toLocaleString('vi-VN') + ' VNĐ'; }
                                 }
                             }
                         }
