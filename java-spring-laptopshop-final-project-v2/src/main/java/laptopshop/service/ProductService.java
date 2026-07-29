@@ -75,12 +75,14 @@ public class ProductService {
         }
 
         if (productCriteriaDTO.getMinPrice() != null && productCriteriaDTO.getMinPrice().isPresent()) {
-            Specification<Product> currentSpecs = ProductSpecs.minPrice(productCriteriaDTO.getMinPrice().get() * 1000000);
+            Specification<Product> currentSpecs = ProductSpecs
+                    .minPrice(productCriteriaDTO.getMinPrice().get() * 1000000);
             combinedSpec = combinedSpec.and(currentSpecs);
         }
-        
+
         if (productCriteriaDTO.getMaxPrice() != null && productCriteriaDTO.getMaxPrice().isPresent()) {
-            Specification<Product> currentSpecs = ProductSpecs.maxPrice(productCriteriaDTO.getMaxPrice().get() * 1000000);
+            Specification<Product> currentSpecs = ProductSpecs
+                    .maxPrice(productCriteriaDTO.getMaxPrice().get() * 1000000);
             combinedSpec = combinedSpec.and(currentSpecs);
         }
 
@@ -115,7 +117,8 @@ public class ProductService {
         }
 
         if (productCriteriaDTO.getSecurity() != null && productCriteriaDTO.getSecurity().isPresent()) {
-            Specification<Product> currentSpecs = ProductSpecs.matchListSecurity(productCriteriaDTO.getSecurity().get());
+            Specification<Product> currentSpecs = ProductSpecs
+                    .matchListSecurity(productCriteriaDTO.getSecurity().get());
             combinedSpec = combinedSpec.and(currentSpecs);
         }
 
@@ -210,7 +213,8 @@ public class ProductService {
             }
 
             // Delete associated OrderDetails
-            java.util.List<laptopshop.domain.OrderDetail> orderDetails = this.orderDetailRepository.findByProduct(product);
+            java.util.List<laptopshop.domain.OrderDetail> orderDetails = this.orderDetailRepository
+                    .findByProduct(product);
             for (laptopshop.domain.OrderDetail od : orderDetails) {
                 this.orderDetailRepository.deleteById(od.getId());
             }
@@ -218,7 +222,6 @@ public class ProductService {
             this.productRepository.deleteById(id);
         }
     }
-
 
     public void handleAddProductToCart(String email, long productId, HttpSession session, long quantity) {
 
@@ -359,7 +362,7 @@ public class ProductService {
         } else {
             cart = (Cart) session.getAttribute("guestCart");
         }
-        
+
         if (cart != null) {
             List<CartDetail> cartDetails = cart.getCartDetails();
 
