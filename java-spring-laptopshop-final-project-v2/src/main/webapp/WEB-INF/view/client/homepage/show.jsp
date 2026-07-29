@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
             <html lang="en">
@@ -43,107 +43,219 @@
                 <!-- Products Section Start -->
                 <section class="section-padding">
                     <div class="container">
-                        
+
                         <!-- Categories Section -->
                         <div style="margin-bottom: var(--spacing-2xl);">
-                            <p class="text-accent" style="font-weight: 600; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 0.5rem;">Shop by category</p>
-                            <div class="d-flex justify-between align-center flex-wrap gap-md" style="margin-bottom: var(--spacing-xl);">
-                                <h2 class="text-primary" style="font-size: 2.5rem; font-weight: 700; m-0">Everything, precisely organised.</h2>
-                                <a href="/products" class="text-secondary" style="font-size: 0.875rem; text-decoration: underline;">View all &rarr;</a>
+                            <p class="text-accent"
+                                style="font-weight: 600; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 0.5rem;">
+                                Shop by category</p>
+                            <div class="d-flex justify-between align-center flex-wrap gap-md"
+                                style="margin-bottom: var(--spacing-xl);">
+                                <h2 class="text-primary" style="font-size: 2.5rem; font-weight: 700; m-0">Everything,
+                                    precisely organised.</h2>
+                                <a href="/products" class="text-secondary"
+                                    style="font-size: 0.875rem; text-decoration: underline;">View all &rarr;</a>
                             </div>
-                            
+
                             <!-- Categories Grid -->
                             <div class="grid grid-cols-4 gap-md">
-                                <a href="/products?category=laptops" class="card d-flex justify-between align-center" style="padding: 1.5rem; background: rgba(255,255,255,0.02);">
+                                <a href="/products?category=laptops" class="card d-flex justify-between align-center"
+                                    style="padding: 1.5rem; background: rgba(255,255,255,0.02);">
                                     <div>
-                                        <h4 class="text-primary" style="font-size: 1rem; margin-bottom: 0.25rem;">Laptops</h4>
-                                        <p class="text-secondary" style="font-size: 0.75rem;">Ultrabooks, gaming rigs, creator machines.</p>
+                                        <h4 class="text-primary" style="font-size: 1rem; margin-bottom: 0.25rem;">
+                                            Laptops</h4>
+                                        <p class="text-secondary" style="font-size: 0.75rem;">Ultrabooks, gaming rigs,
+                                            creator machines.</p>
                                     </div>
                                     <i class="fas fa-arrow-right text-secondary" style="opacity: 0.5;"></i>
                                 </a>
-                                <a href="/products?category=phones" class="card d-flex justify-between align-center" style="padding: 1.5rem; background: rgba(255,255,255,0.02);">
+                                <a href="/products?category=phones" class="card d-flex justify-between align-center"
+                                    style="padding: 1.5rem; background: rgba(255,255,255,0.02);">
                                     <div>
-                                        <h4 class="text-primary" style="font-size: 1rem; margin-bottom: 0.25rem;">Phones</h4>
-                                        <p class="text-secondary" style="font-size: 0.75rem;">Flagship smartphones and everyday devices.</p>
+                                        <h4 class="text-primary" style="font-size: 1rem; margin-bottom: 0.25rem;">Phones
+                                        </h4>
+                                        <p class="text-secondary" style="font-size: 0.75rem;">Flagship smartphones and
+                                            everyday devices.</p>
                                     </div>
                                     <i class="fas fa-arrow-right text-secondary" style="opacity: 0.5;"></i>
                                 </a>
-                                <a href="/products?category=components" class="card d-flex justify-between align-center" style="padding: 1.5rem; background: rgba(255,255,255,0.02);">
+                                <a href="/products?category=components" class="card d-flex justify-between align-center"
+                                    style="padding: 1.5rem; background: rgba(255,255,255,0.02);">
                                     <div>
-                                        <h4 class="text-primary" style="font-size: 1rem; margin-bottom: 0.25rem;">PC Components</h4>
-                                        <p class="text-secondary" style="font-size: 0.75rem;">CPUs, GPUs, memory and storage.</p>
+                                        <h4 class="text-primary" style="font-size: 1rem; margin-bottom: 0.25rem;">PC
+                                            Components</h4>
+                                        <p class="text-secondary" style="font-size: 0.75rem;">CPUs, GPUs, memory and
+                                            storage.</p>
                                     </div>
                                     <i class="fas fa-arrow-right text-secondary" style="opacity: 0.5;"></i>
                                 </a>
-                                <a href="/products?category=gaming" class="card d-flex justify-between align-center" style="padding: 1.5rem; background: rgba(255,255,255,0.02);">
+                                <a href="/products?category=gaming" class="card d-flex justify-between align-center"
+                                    style="padding: 1.5rem; background: rgba(255,255,255,0.02);">
                                     <div>
-                                        <h4 class="text-primary" style="font-size: 1rem; margin-bottom: 0.25rem;">Gaming</h4>
-                                        <p class="text-secondary" style="font-size: 0.75rem;">Consoles, controllers and gaming gear.</p>
+                                        <h4 class="text-primary" style="font-size: 1rem; margin-bottom: 0.25rem;">Gaming
+                                        </h4>
+                                        <p class="text-secondary" style="font-size: 0.75rem;">Consoles, controllers and
+                                            gaming gear.</p>
                                     </div>
                                     <i class="fas fa-arrow-right text-secondary" style="opacity: 0.5;"></i>
                                 </a>
                             </div>
-                        </div>
+                            <div class="tab-content">
+                                <div id="tab-1" class="tab-pane fade show p-0 active">
+                                    <div class="row g-4">
+                                        <div class="col-lg-12">
+                                            <div class="row g-4">
+                                                <c:forEach var="product" items="${products}">
+                                                    <div class="col-md-6 col-lg-4 col-xl-3">
+                                                        <div class="rounded position-relative fruite-item">
+                                                            <div class="fruite-img">
+                                                                <img src="${product.firstImage}"
+                                                                    class="img-fluid w-100 rounded-top" alt="">
+                                                            </div>
+                                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                                                                style="top: 10px; left: 10px;">Laptop</div>
+                                                            <div
+                                                                class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                                <h4 style="font-size: 15px;">
+                                                                    <a href="/product/${product.id}">
+                                                                        ${product.name}
+                                                                    </a>
 
-                        <!-- Featured Products Grid -->
-                        <div>
-                            <p class="text-accent" style="font-weight: 600; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 0.5rem;">New Drops</p>
-                            <h2 class="text-primary" style="font-size: 2.5rem; font-weight: 700; margin-bottom: var(--spacing-xl);">Right now at CyberWorld.</h2>
-                            
-                            <div class="grid grid-cols-4 gap-lg">
-                                <c:forEach var="product" items="${products}">
-                                    <div class="card d-flex flex-col" style="position: relative; padding: 1.25rem;">
-                                        <!-- Sale Badge & Wishlist -->
-                                        <div class="d-flex justify-between align-center" style="margin-bottom: 1rem; z-index: 2;">
-                                            <span style="background: var(--accent-blue); color: white; padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.7rem; font-weight: 700; box-shadow: var(--glow-blue);">SALE</span>
-                                            <i class="far fa-heart text-secondary" style="cursor: pointer; transition: color 0.2s;"></i>
-                                        </div>
-                                        
-                                        <!-- Product Image (Centered) -->
-                                        <a href="/product/${product.id}" style="display: block; text-align: center; margin-bottom: 1.5rem; height: 180px; display: flex; align-items: center; justify-content: center; position: relative;">
-                                            <!-- Subtle glow behind image -->
-                                            <div style="position: absolute; width: 60%; height: 60%; background: var(--accent-blue); opacity: 0.1; filter: blur(30px); border-radius: 50%;"></div>
-                                            <img src="${product.firstImage}" alt="${product.name}" style="max-height: 100%; max-width: 100%; object-fit: contain; position: relative; z-index: 1;" onerror="this.src='https://via.placeholder.com/200?text=Product+Image'">
-                                        </a>
+                                                                </h4>
+                                                                <div class="d-flex flex-column mt-2">
+                                                                    <div class="d-flex align-items-center mb-2">
+                                                                        <p style="font-size: 16px; color: red;"
+                                                                            class="fw-bold mb-0 me-2">
+                                                                            <fmt:formatNumber type="number"
+                                                                                value="${product.price}" /> VND
+                                                                        </p>
+                                                                        <c:if test="${product.originalPrice > 0}">
+                                                                            <p style="font-size: 13px; text-decoration: line-through; color: #888;"
+                                                                                class="mb-0">
+                                                                                <fmt:formatNumber type="number"
+                                                                                    value="${product.originalPrice}" />
+                                                                                VND
+                                                                            </p>
+                                                                        </c:if>
+                                                                    </div>
+                                                                    <div class="d-flex flex-wrap mb-3 gap-2">
+                                                                        <c:if test="${not empty product.ram}">
+                                                                            <span class="border rounded px-2 py-1"
+                                                                                style="font-size: 12px; color: #555;">${product.ram}</span>
+                                                                        </c:if>
+                                                                        <c:if test="${not empty product.storage}">
+                                                                            <span class="border rounded px-2 py-1"
+                                                                                style="font-size: 12px; color: #555;">${product.storage}</span>
+                                                                        </c:if>
+                                                                        <c:if test="${not empty product.screenSize}">
+                                                                            <span class="border rounded px-2 py-1"
+                                                                                style="font-size: 12px; color: #555;">${product.screenSize}</span>
+                                                                        </c:if>
+                                                                    </div>
 
-                                        <!-- Product Info -->
-                                        <div class="d-flex flex-col gap-sm" style="flex: 1;">
-                                            <span class="text-secondary" style="font-size: 0.7rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">${product.factory}</span>
-                                            <a href="/product/${product.id}">
-                                                <h4 class="text-primary" style="font-size: 1rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0;">${product.name}</h4>
-                                            </a>
-                                            <p class="text-secondary" style="font-size: 0.75rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0;">${product.shortDesc}</p>
-                                            
-                                            <!-- Rating placeholder -->
-                                            <div class="d-flex align-center gap-xs" style="margin-bottom: 0.5rem;">
-                                                <i class="fas fa-star" style="color: #FBBF24; font-size: 0.75rem;"></i>
-                                                <span class="text-primary" style="font-size: 0.8rem; font-weight: 600;">4.8</span>
-                                                <span class="text-secondary" style="font-size: 0.75rem;">(124 reviews)</span>
+                                                                    <button data-product-id="${product.id}"
+                                                                        class="btnAddToCartHomepage mx-auto btn border border-secondary rounded-pill px-3 text-primary">
+                                                                        <i
+                                                                            class="fa fa-shopping-bag me-2 text-primary"></i>
+                                                                        Add to cart
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </c:forEach>
                                             </div>
-                                        </div>
 
-                                        <!-- Price and Action -->
-                                        <div class="d-flex justify-between align-center" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.05);">
-                                            <div class="d-flex align-center gap-sm">
-                                                <h4 class="text-primary" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0;">
-                                                    <fmt:formatNumber type="number" value="${product.price}" /> VND
-                                                </h4>
-                                                <c:if test="${product.originalPrice > 0}">
-                                                    <span class="text-secondary" style="text-decoration: line-through; font-size: 0.8rem;">
-                                                        <fmt:formatNumber type="number" value="${product.originalPrice}" /> VND
-                                                    </span>
-                                                </c:if>
+                                            <!-- Featured Products Grid -->
+                                            <div>
+                                                <p class="text-accent"
+                                                    style="font-weight: 600; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 0.5rem;">
+                                                    New Drops</p>
+                                                <h2 class="text-primary"
+                                                    style="font-size: 2.5rem; font-weight: 700; margin-bottom: var(--spacing-xl);">
+                                                    Right now at CyberWorld.</h2>
+
+                                                <div class="grid grid-cols-4 gap-lg">
+                                                    <c:forEach var="product" items="${products}">
+                                                        <div class="card d-flex flex-col"
+                                                            style="position: relative; padding: 1.25rem;">
+                                                            <!-- Sale Badge & Wishlist -->
+                                                            <div class="d-flex justify-between align-center"
+                                                                style="margin-bottom: 1rem; z-index: 2;">
+                                                                <span
+                                                                    style="background: var(--accent-blue); color: white; padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.7rem; font-weight: 700; box-shadow: var(--glow-blue);">SALE</span>
+                                                                <i class="far fa-heart text-secondary"
+                                                                    style="cursor: pointer; transition: color 0.2s;"></i>
+                                                            </div>
+
+                                                            <!-- Product Image (Centered) -->
+                                                            <a href="/product/${product.id}"
+                                                                style="display: block; text-align: center; margin-bottom: 1.5rem; height: 180px; display: flex; align-items: center; justify-content: center; position: relative;">
+                                                                <!-- Subtle glow behind image -->
+                                                                <div
+                                                                    style="position: absolute; width: 60%; height: 60%; background: var(--accent-blue); opacity: 0.1; filter: blur(30px); border-radius: 50%;">
+                                                                </div>
+                                                                <img src="${product.firstImage}" alt="${product.name}"
+                                                                    style="max-height: 100%; max-width: 100%; object-fit: contain; position: relative; z-index: 1;"
+                                                                    onerror="this.src='https://via.placeholder.com/200?text=Product+Image'">
+                                                            </a>
+
+                                                            <!-- Product Info -->
+                                                            <div class="d-flex flex-col gap-sm" style="flex: 1;">
+                                                                <span class="text-secondary"
+                                                                    style="font-size: 0.7rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">${product.factory}</span>
+                                                                <a href="/product/${product.id}">
+                                                                    <h4 class="text-primary"
+                                                                        style="font-size: 1rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0;">
+                                                                        ${product.name}</h4>
+                                                                </a>
+                                                                <p class="text-secondary"
+                                                                    style="font-size: 0.75rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0;">
+                                                                    ${product.shortDesc}</p>
+
+                                                                <!-- Rating placeholder -->
+                                                                <div class="d-flex align-center gap-xs"
+                                                                    style="margin-bottom: 0.5rem;">
+                                                                    <i class="fas fa-star"
+                                                                        style="color: #FBBF24; font-size: 0.75rem;"></i>
+                                                                    <span class="text-primary"
+                                                                        style="font-size: 0.8rem; font-weight: 600;">4.8</span>
+                                                                    <span class="text-secondary"
+                                                                        style="font-size: 0.75rem;">(124 reviews)</span>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Price and Action -->
+                                                            <div class="d-flex justify-between align-center"
+                                                                style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.05);">
+                                                                <div class="d-flex align-center gap-sm">
+                                                                    <h4 class="text-primary"
+                                                                        style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0;">
+                                                                        <fmt:formatNumber type="number"
+                                                                            value="${product.price}" /> VND
+                                                                    </h4>
+                                                                    <c:if test="${product.originalPrice > 0}">
+                                                                        <span class="text-secondary"
+                                                                            style="text-decoration: line-through; font-size: 0.8rem;">
+                                                                            <fmt:formatNumber type="number"
+                                                                                value="${product.originalPrice}" /> VND
+                                                                        </span>
+                                                                    </c:if>
+                                                                </div>
+                                                                <button data-product-id="${product.id}"
+                                                                    class="btnAddToCartHomepage"
+                                                                    style="background: rgba(255,255,255,0.05); color: var(--text-primary); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;"
+                                                                    onmouseover="this.style.background='var(--accent-blue)'; this.style.color='white';"
+                                                                    onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.color='var(--text-primary)';">
+                                                                    <i class="fas fa-plus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </c:forEach>
+                                                </div>
                                             </div>
-                                            <button data-product-id="${product.id}" class="btnAddToCartHomepage" style="background: rgba(255,255,255,0.05); color: var(--text-primary); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='var(--accent-blue)'; this.style.color='white';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.color='var(--text-primary)';">
-                                                <i class="fas fa-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </c:forEach>
-                            </div>
-                        </div>
 
-                    </div>
+                                        </div>
                 </section>
                 <!-- Products Section End-->
 
@@ -172,5 +284,3 @@
             </body>
 
             </html>
-
-
