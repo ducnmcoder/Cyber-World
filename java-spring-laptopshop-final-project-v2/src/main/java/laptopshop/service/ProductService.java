@@ -397,23 +397,45 @@ public class ProductService {
                     this.orderDetailRepository.save(orderDetail);
                 }
 
-                // step 2: delete cart_detail and cart
-                if (user != null && user.getId() != 0) {
-                    for (CartDetail cd : cartDetails) {
-                        this.cartDetailRepository.deleteById(cd.getId());
+                // step 2: delete cart_detail and cart only if COD. For online payments, delete upon successful callback.
+                if ("COD".equals(paymentMethod)) {
+                    if (user != null && user.getId() != 0) {
+                        for (CartDetail cd : cartDetails) {
+                            this.cartDetailRepository.deleteById(cd.getId());
+                        }
+                        this.cartRepository.deleteById(cart.getId());
+                    } else {
+                        session.removeAttribute("guestCart");
                     }
-                    this.cartRepository.deleteById(cart.getId());
-                } else {
-                    session.removeAttribute("guestCart");
-                }
 
-                // step 3 : update session
-                session.setAttribute("sum", 0);
+                    // step 3 : update session
+                    session.setAttribute("sum", 0);
+                }
 
                 return order;
             }
         }
 
         return null;
+    }
+
+    public void handleClearCart(User user, HttpSession session) {
+        if (user != null && user.getId() != 0) {
+            Cart cart = this.cartRepository.findByUser(user);
+            if (cart != null) {
+                List<CartDetail> cartDetails = cart.getCartDetails();
+                if (cartDetails != null) {
+                    for (CartDetail cd : cartDetails) {
+                        this.cartDetailRepository.deleteById(cd.getId());
+                    }
+                }
+                this.cartRepository.deleteById(cart.getId());
+            }
+        } else if (session != null) {
+            session.removeAttribute("guestCart");
+        }
+        if (session != null) {
+            session.setAttribute("sum", 0);
+        }
     }
 }

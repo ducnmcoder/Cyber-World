@@ -211,6 +211,8 @@
             justify-content: center;
             transition: 0.2s;
             min-width: 90px;
+            flex: 1;
+            white-space: nowrap;
         }
         .brand-pill:hover {
             border-color: #cd1818;
@@ -228,7 +230,7 @@
         /* Usage Needs Section */
         .needs-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 15px;
             text-align: center;
         }
@@ -1267,9 +1269,9 @@
                 <div class="products-header" style="border-bottom: 1px solid #ddd; padding-bottom: 15px;">
                     <div class="result-count">Found <span style="color: #cd1818;" th:text="${totalElements}">0</span> Products</div>
                     <div class="sort-bar" style="display: flex; gap: 10px; align-items: center;">
-                        <a href="javascript:void(0)" onclick="applySort('featured')" class="brand-pill" th:classappend="${param.sort == null or param.sort[0] == 'featured' ? 'active' : ''}">Featured</a>
-                        <a href="javascript:void(0)" onclick="applySort('gia-tang-dan')" class="brand-pill" th:classappend="${param.sort != null and param.sort[0] == 'gia-tang-dan' ? 'active' : ''}">Price: Low to High</a>
-                        <a href="javascript:void(0)" onclick="applySort('gia-giam-dan')" class="brand-pill" th:classappend="${param.sort != null and param.sort[0] == 'gia-giam-dan' ? 'active' : ''}">Price: High to Low</a>
+                        <a href="javascript:void(0)" onclick="applySort('featured')" class="brand-pill" style="flex: initial;" th:classappend="${param.sort == null or param.sort[0] == 'featured' ? 'active' : ''}">Featured</a>
+                        <a href="javascript:void(0)" onclick="applySort('gia-tang-dan')" class="brand-pill" style="flex: initial;" th:classappend="${param.sort != null and param.sort[0] == 'gia-tang-dan' ? 'active' : ''}">Price: Low to High</a>
+                        <a href="javascript:void(0)" onclick="applySort('gia-giam-dan')" class="brand-pill" style="flex: initial;" th:classappend="${param.sort != null and param.sort[0] == 'gia-giam-dan' ? 'active' : ''}">Price: High to Low</a>
                     </div>
                 </div>
 
