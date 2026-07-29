@@ -59,7 +59,5 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
                         + "ORDER BY revenue DESC "
                         + "LIMIT ?5", nativeQuery = true)
         List<Object[]> findTopProductsByYearMonthDayAndHour(int year, int month, int day, int hour, int limit);
-                        + "LIMIT :limit", nativeQuery = true)
-        List<Object[]> findTopProductsByYearMonthDayAndHour(@Param("year") int year, @Param("month") int month,
-                        @Param("day") int day, @Param("hour") int hour, @Param("limit") int limit);
+
 }

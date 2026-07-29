@@ -233,9 +233,8 @@ public class ItemController {
             @RequestParam("receiverName") String receiverName,
             @RequestParam("receiverAddress") String receiverAddress,
             @RequestParam("receiverPhone") String receiverPhone,
+            @RequestParam(value = "paymentMethod", defaultValue = "COD") String paymentMethod,
             org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
-            @RequestParam("receiverPhone") String receiverPhone,
-            @RequestParam(value = "paymentMethod", defaultValue = "COD") String paymentMethod) {
         
         HttpSession session = request.getSession(true);
         if (isManager(session)) {
@@ -250,16 +249,15 @@ public class ItemController {
             currentUser.setId(id);
         }
 
+        Order order = null;
         try {
-            this.productService.handlePlaceOrder(currentUser, session, receiverName, receiverAddress, receiverPhone);
-            return "redirect:/thanks";
+            // Create order with payment method
+            order = this.productService.handlePlaceOrder(
+                    currentUser, session, receiverName, receiverAddress, receiverPhone, paymentMethod);
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/checkout";
         }
-        // Create order with payment method
-        Order order = this.productService.handlePlaceOrder(
-                currentUser, session, receiverName, receiverAddress, receiverPhone, paymentMethod);
 
         if (order == null) {
             return "redirect:/cart";

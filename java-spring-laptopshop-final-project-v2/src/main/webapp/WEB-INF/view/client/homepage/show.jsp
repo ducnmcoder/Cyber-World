@@ -138,12 +138,6 @@
                             <h2 class="text-primary"
                                 style="font-size: 2.5rem; font-weight: 700; margin-bottom: var(--spacing-xl);">Right now
                                 at CyberWorld.</h2>
-                            <p class="text-accent"
-                                style="font-weight: 600; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 0.5rem;">
-                                New Drops</p>
-                            <h2 class="text-primary"
-                                style="font-size: 2.5rem; font-weight: 700; margin-bottom: var(--spacing-xl);">Right now
-                                at CyberWorld.</h2>
 
                             <div class="grid grid-cols-4 gap-lg">
                                 <c:forEach var="product" items="${products}">
@@ -178,9 +172,6 @@
                                                     style="font-size: 1rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0;">
                                                     ${product.name}</h4>
                                             </a>
-                                            <p class="text-secondary"
-                                                style="font-size: 0.75rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0;">
-                                                ${product.shortDesc}</p>
                                             <p class="text-secondary"
                                                 style="font-size: 0.75rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0;">
                                                 ${product.shortDesc}</p>

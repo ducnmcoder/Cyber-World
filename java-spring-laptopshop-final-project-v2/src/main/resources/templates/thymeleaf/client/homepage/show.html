@@ -1180,7 +1180,8 @@
                                 </label>
                             </div>
 
-                            <div style="font-size: 13px; color: #333; margin-top: 15px; margin-bottom: 10px;">Or enter
+                            <div style="font-size: 13px; color: #333; margin-top: 15px; margin-bottom: 10px;">Or
+                                enter
                                 custom range:</div>
                             <div class="price-range-custom">
                                 <div class="price-inputs-row" style="display: flex; align-items: center; gap: 8px;">
@@ -1225,7 +1226,8 @@
                             <div style="font-size: 13px; font-weight: 600; margin-bottom: 10px; color: #555;">CPU
                                 Technology</div>
                             <label class="filter-radio-item"><input type="checkbox" name="cpu" value="all"
-                                    th:checked="${param.cpu == null or #arrays.contains(param.cpu, 'all')}"> All</label>
+                                    th:checked="${param.cpu == null or #arrays.contains(param.cpu, 'all')}">
+                                All</label>
                             <label class="filter-radio-item"><input type="checkbox" name="cpu" value="Intel Core i3"
                                     th:checked="${param.cpu != null and #arrays.contains(param.cpu, 'Intel Core i3')}">
                                 Intel Core i3</label>
@@ -2336,13 +2338,8 @@
                 startHeroInterval();
             }
         });
-
     </script>
     <script src="/js/chatbot.js" defer></script>
 </body>
-</script>
-</body>
-
-</html>
 
 </html>

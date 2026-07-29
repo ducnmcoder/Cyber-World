@@ -22,10 +22,7 @@
                 <!-- Icon Font Stylesheet -->
                 <link rel="stylesheet"
                     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-                <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" <link
-                    rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-                <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
-                    rel="stylesheet">
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
                 <!-- Libraries Stylesheet -->
                 <link href="/client/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
@@ -212,75 +209,7 @@
                                 </c:forEach>
                             </c:otherwise>
                         </c:choose>
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Product</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Unit Price</th>
-                                        <th scope="col">Quantity</th>
-                                        <th scope="col">Total Price</th>
-                                        <th scope="col">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:if test="${ empty orders}">
-                                        <tr>
-                                            <td colspan="6">
-                                                No orders have been created.
-                                            </td>
-                                        </tr>
-                                    </c:if>
-                                    <c:forEach var="order" items="${orders}">
-                                        <c:forEach var="orderDetail" items="${order.orderDetails}">
-                                            <tr>
-                                                <th scope="row">
-                                                    <div class="d-flex align-items-center">
-                                                        <img src="${orderDetail.product.firstImage}"
-                                                            class="img-fluid me-5 rounded-circle"
-                                                            style="width: 80px; height: 80px;" alt="">
-                                                    </div>
-                                                </th>
-                                                <td>
-                                                    <p class="mb-0 mt-4">
-                                                        <a href="/product/${orderDetail.product.id}" target="_blank">
-                                                            ${orderDetail.product.name}
-                                                        </a>
-                                                    </p>
-                                                </td>
-                                                <td>
-                                                    <p class="mb-0 mt-4">
-                                                        <fmt:formatNumber type="number" value="${orderDetail.price}" />
-                                                        VND
-                                                    </p>
-                                                </td>
-                                                <td>
-                                                    <div class="input-group quantity mt-4" style="width: 100px;">
-                                                        <input type="text"
-                                                            class="form-control form-control-sm text-center border-0"
-                                                            value="${orderDetail.quantity}">
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <p class="mb-0 mt-4" data-cart-detail-id="${cartDetail.id}">
-                                                        <fmt:formatNumber type="number"
-                                                            value="${orderDetail.price * orderDetail.quantity}" /> VND
-                                                    </p>
-                                                </td>
-                                                <td>
-                                                    <p class="mb-0 mt-4">
-                                                        ${order.status}
-                                                    </p>
-                                                </td>
 
-                                            </tr>
-                                        </c:forEach>
-                                    </c:forEach>
-
-                                </tbody>
-                            </table>
-                        </div>
 
                     </div>
                 </div>
