@@ -107,7 +107,7 @@
 
                             <!-- Contact Form -->
                             <div class="col-lg-8">
-                                <h2 class="text-primary mb-4">Send Us a Message</h2>
+                                <h2 class="text-dark">Send Us a Message</h2>
 
                                 <c:if test="${not empty success}">
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
