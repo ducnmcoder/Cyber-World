@@ -61,8 +61,11 @@
                                                                     class="btn btn-success">View</a>
                                                                 <a href="/admin/order/update/${order.id}?page=${currentPage}"
                                                                     class="btn btn-warning  mx-2">Update</a>
-                                                                <a href="/admin/order/delete/${order.id}?page=${currentPage}"
-                                                                    class="btn btn-danger">Delete</a>
+                                                                <form action="/admin/order/delete?page=${currentPage}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this order?');">
+                                                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                                                    <input type="hidden" name="id" value="${order.id}" />
+                                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                                </form>
                                                             </td>
                                                         </tr>
 
