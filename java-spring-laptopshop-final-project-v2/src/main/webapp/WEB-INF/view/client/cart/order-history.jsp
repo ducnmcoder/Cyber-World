@@ -20,7 +20,8 @@
                     rel="stylesheet">
 
                 <!-- Icon Font Stylesheet -->
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+                <link rel="stylesheet"
+                    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
                     rel="stylesheet">
 
@@ -80,17 +81,6 @@
                                         </tr>
                                     </c:if>
                                     <c:forEach var="order" items="${orders}">
-                                        <tr>
-                                            <td colspan="2">Order Id = ${order.id}</td>
-                                            <td colspan="1">
-                                                <fmt:formatNumber type="number" value=" ${order.totalPrice}" />
-                                                VND
-                                            </td>
-                                            <td colspan="2"></td>
-                                            <td colspan="1">
-                                                ${order.status}
-                                            </td>
-                                        </tr>
                                         <c:forEach var="orderDetail" items="${order.orderDetails}">
                                             <tr>
                                                 <th scope="row">
@@ -126,7 +116,11 @@
                                                             value="${orderDetail.price * orderDetail.quantity}" /> VND
                                                     </p>
                                                 </td>
-                                                <td></td>
+                                                <td>
+                                                    <p class="mb-0 mt-4">
+                                                        ${order.status}
+                                                    </p>
+                                                </td>
 
                                             </tr>
                                         </c:forEach>
@@ -162,5 +156,3 @@
             </body>
 
             </html>
-
-
