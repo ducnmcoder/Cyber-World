@@ -749,12 +749,6 @@
                                 24.990.000 VND</div>
                             <div class="discount-percent">10%</div>
                         </div>
-                        <div class="quantity-info" style="margin-top: 10px; font-size: 14px; color: #555;">
-                            <span th:if="${product.quantity > 0}">Quantity: <strong style="color: #333;"
-                                    th:text="${product.quantity}">10</strong></span>
-                            <span th:unless="${product.quantity > 0}" style="color: #cd1818; font-weight: bold;">Out of
-                                stock</span>
-                        </div>
                     </div>
                     <div class="flash-sale-box"
                         style="background: linear-gradient(to right, #d32f2f, #b71c1c); color: white; padding: 15px; border-radius: 0 10px 10px 0; display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 180px;">
@@ -768,7 +762,7 @@
 
                 <div class="trade-in-box">
                     <span>Trade-in - Extra discount up to <b>2.000.000 VND</b></span>
-                    <a href="#" style="color: #007bff; text-decoration: none;">Get quote now</a>
+                    <a href="#" style="color: #007bff; text-decoration: none;">Get quote now ❯</a>
                 </div>
 
                 <div class="color-options" style="margin-bottom: 15px;">
@@ -779,19 +773,18 @@
                         <span th:text="${product.color != null ? product.color : 'Grey'}">Grey</span>
                         <div
                             style="position: absolute; top: 0; right: 0; background: #cd1818; color: white; font-size: 8px; padding: 1px 3px; border-radius: 0 4px 0 4px;">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
+                            <i class="fa-solid fa-check"></i></div>
                     </div>
                 </div>
 
                 <div
                     style="margin-bottom: 20px; border: 1px dashed #cd1818; border-radius: 5px; padding: 10px; display: flex; align-items: center; justify-content: space-between;">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <img src="/images/avatar/redeem_point.png"
+                        <img src="/images/avatar/default-avatar.png"
                             style="width: 40px; height: 40px; border-radius: 50%;">
                         <div style="font-size: 14px; font-weight: bold; color: #cd1818;">Redeem points <br><span
                                 style="background: #cd1818; color: #fff; font-size: 11px; padding: 2px 5px; border-radius: 10px;">CHECK
-                                NOW</span></div>
+                                NOW 🔍</span></div>
                     </div>
                     <div style="text-align: right; color: #cd1818; font-weight: bold; font-size: 18px;">
                         <div style="font-size: 11px; font-weight: normal; color: #555;">Extra discount up to 10%</div>
@@ -811,13 +804,13 @@
                                 <span
                                     style="background: #cd1818; color: #fff; padding: 2px 8px; border-radius: 15px; font-size: 11px; font-weight: bold;"><i
                                         class="fa-solid fa-clock"></i> Shocking price</span>
-                                <span style="font-size: 11px; color: #888;">Sold 0/10 slots</span>
+                                <span style="font-size: 11px; color: #888;">🔥 Sold 0/10 slots</span>
                             </div>
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <div>
                                     <div style="font-size: 20px; font-weight: bold; color: #cd1818;"
-                                        th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + ' VND '">
-                                        22.490.000 VND </div>
+                                        th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + ' VND ⚡'">
+                                        22.490.000 VND ⚡</div>
                                     <div style="font-size: 12px; color: #999; text-decoration: line-through;"
                                         th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + ' VND'">
                                         24.990.000 VND</div>
@@ -843,7 +836,7 @@
                         </div>
                         <a href="#"
                             style="color: #007bff; text-decoration: none; display: block; margin-top: 10px;">View 10
-                            more offers </a>
+                            more offers ˅</a>
                     </div>
                 </div>
 
@@ -883,7 +876,7 @@
                 <div style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px;">
                     <div
                         style="min-width: 160px; height: 280px; background: #333; border-radius: 10px; position: relative; overflow: hidden;">
-                        <img src="/images/avatar/Game_icon.png"
+                        <img src="https://surfaceviet.vn/wp-content/uploads/2024/05/Surface-Laptop-7-Black-13.8-inch.jpg"
                             style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6;">
                         <i class="fa-solid fa-play"
                             style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255,255,255,0.8); font-size: 30px;"></i>
@@ -896,7 +889,7 @@
                     </div>
                     <div
                         style="min-width: 160px; height: 280px; background: #222; border-radius: 10px; position: relative; overflow: hidden;">
-                        <img src="/images/avatar/Record_icon.png"
+                        <img src="https://surfaceviet.vn/wp-content/uploads/2024/05/Surface-Laptop-7-Black-13.8-inch.jpg"
                             style="width: 100%; height: 100%; object-fit: cover; opacity: 0.5;">
                         <i class="fa-solid fa-play"
                             style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255,255,255,0.8); font-size: 30px;"></i>
@@ -913,76 +906,156 @@
             </div>
         </div>
 
-        <div
-            style="background: white; padding: 25px; border-radius: 10px; margin-top: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 40px;">
+        <div style="background: white; padding: 25px; border-radius: 10px; margin-top: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 40px;"
+            id="reviews-section">
             <h3 style="margin-bottom: 25px; font-size: 22px; font-weight: bold;">Reviews and Comments</h3>
+
+            <!-- Success/Error Messages -->
+            <div th:if="${success}"
+                style="background: #d4edda; color: #155724; padding: 10px 15px; border-radius: 5px; margin-bottom: 15px;"
+                th:text="${success}"></div>
+            <div th:if="${error}"
+                style="background: #f8d7da; color: #721c24; padding: 10px 15px; border-radius: 5px; margin-bottom: 15px;"
+                th:text="${error}"></div>
+
             <div style="display: flex; gap: 40px; margin-bottom: 30px; align-items: center;">
                 <div style="text-align: center; min-width: 180px;">
-                    <div style="font-size: 56px; font-weight: bold; line-height: 1;">5</div>
-                    <div style="color: #666; font-size: 14px; margin-bottom: 5px;">24 reviews</div>
+                    <div style="font-size: 56px; font-weight: bold; line-height: 1;" th:text="${product.averageRating}">
+                        0.0</div>
+                    <div style="color: #666; font-size: 14px; margin-bottom: 5px;"><span
+                            th:text="${product.reviewCount}">0</span> reviews</div>
                     <div style="color: #f39c12; font-size: 16px; margin-bottom: 15px; letter-spacing: 2px;">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
-                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
-                            class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"
+                            th:classappend="${product.averageRating >= 1 ? '' : (product.averageRating >= 0.5 ? 'fa-star-half-stroke' : 'fa-regular fa-star')}"></i>
+                        <i class="fa-solid fa-star"
+                            th:classappend="${product.averageRating >= 2 ? '' : (product.averageRating >= 1.5 ? 'fa-star-half-stroke' : 'fa-regular fa-star')}"></i>
+                        <i class="fa-solid fa-star"
+                            th:classappend="${product.averageRating >= 3 ? '' : (product.averageRating >= 2.5 ? 'fa-star-half-stroke' : 'fa-regular fa-star')}"></i>
+                        <i class="fa-solid fa-star"
+                            th:classappend="${product.averageRating >= 4 ? '' : (product.averageRating >= 3.5 ? 'fa-star-half-stroke' : 'fa-regular fa-star')}"></i>
+                        <i class="fa-solid fa-star"
+                            th:classappend="${product.averageRating >= 5 ? '' : (product.averageRating >= 4.5 ? 'fa-star-half-stroke' : 'fa-regular fa-star')}"></i>
                     </div>
-                    <button
-                        style="background: #cd1818; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 14px; width: 100%;">Review
-                        Product</button>
                 </div>
-                <div style="flex-grow: 1; max-width: 500px;">
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                        <span style="font-size: 13px; color: #555; width: 20px;">5 <i class="fa-solid fa-star"
-                                style="color: #f39c12; font-size: 10px;"></i></span>
-                        <div style="flex-grow: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden;">
-                            <div style="height: 100%; background: #cd1818; width: 100%;"></div>
-                        </div>
-                        <span style="font-size: 13px; color: #555; width: 20px; text-align: right;">24</span>
+                <div style="flex-grow: 1; max-width: 500px;" th:if="${!canReview}">
+                    <p style="color: #666; font-size: 14px;">Only customers who have purchased and completed their
+                        orders can submit a review. Log in and buy this product to leave a review!</p>
+                </div>
+            </div>
+
+            <!-- Reviews List -->
+            <div style="margin-bottom: 30px;">
+                <div th:if="${reviews == null or #lists.isEmpty(reviews)}" style="color: #777; font-style: italic;">No
+                    reviews yet.</div>
+
+                <div th:each="r : ${reviews}"
+                    style="border-bottom: 1px solid #eee; padding: 15px 0; margin-bottom: 15px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                        <img src="/images/avatar/default-avatar.png"
+                            style="width: 30px; height: 30px; border-radius: 50%;">
+                        <strong th:text="${r.user.fullName}">User</strong>
+                        <span style="color: #999; font-size: 12px;"
+                            th:text="${#temporals.format(r.createdAt, 'dd/MM/yyyy HH:mm')}">Date</span>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                        <span style="font-size: 13px; color: #555; width: 20px;">4 <i class="fa-solid fa-star"
-                                style="color: #f39c12; font-size: 10px;"></i></span>
-                        <div style="flex-grow: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden;">
-                        </div>
-                        <span style="font-size: 13px; color: #555; width: 20px; text-align: right;">0</span>
+                    <div style="color: #f39c12; font-size: 12px; margin-bottom: 10px;">
+                        <i th:each="i : ${#numbers.sequence(1, 5)}" class="fa-solid"
+                            th:classappend="${r.rating >= i ? 'fa-star' : 'fa-regular fa-star'}"></i>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                        <span style="font-size: 13px; color: #555; width: 20px;">3 <i class="fa-solid fa-star"
-                                style="color: #f39c12; font-size: 10px;"></i></span>
-                        <div style="flex-grow: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden;">
-                        </div>
-                        <span style="font-size: 13px; color: #555; width: 20px; text-align: right;">0</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                        <span style="font-size: 13px; color: #555; width: 20px;">2 <i class="fa-solid fa-star"
-                                style="color: #f39c12; font-size: 10px;"></i></span>
-                        <div style="flex-grow: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden;">
-                        </div>
-                        <span style="font-size: 13px; color: #555; width: 20px; text-align: right;">0</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="font-size: 13px; color: #555; width: 20px;">1 <i class="fa-solid fa-star"
-                                style="color: #f39c12; font-size: 10px;"></i></span>
-                        <div style="flex-grow: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden;">
-                        </div>
-                        <span style="font-size: 13px; color: #555; width: 20px; text-align: right;">0</span>
+                    <p style="margin: 0; font-size: 14px; color: #333;" th:text="${r.content}"></p>
+
+                    <!-- Admin Reply -->
+                    <div th:if="${r.reply != null and r.reply != ''}"
+                        style="margin-top: 10px; background: #f8f9fa; padding: 10px; border-radius: 5px; border-left: 3px solid #cd1818;">
+                        <strong style="color: #cd1818; font-size: 13px;"><i class="fa-solid fa-user-shield"></i> Shop
+                            Reply:</strong>
+                        <p style="margin: 5px 0 0 0; font-size: 13px; color: #555;" th:text="${r.reply}"></p>
                     </div>
                 </div>
             </div>
 
-            <div style="position: relative;">
-                <textarea placeholder="Enter your comment..."
-                    style="width: 100%; height: 110px; border: 1px solid #ddd; border-radius: 10px; padding: 15px; resize: none; font-family: inherit; font-size: 14px; outline: none; background: #fafafa;"></textarea>
-                <div
-                    style="position: absolute; bottom: 15px; right: 15px; display: flex; align-items: center; gap: 15px;">
-                    <span style="color: #aaa; font-size: 12px;">0/3000</span>
-                    <button
-                        style="background: #111; color: white; border: none; padding: 8px 20px; border-radius: 20px; font-weight: bold; font-size: 14px; cursor: pointer;">Submit
-                        Comment</button>
+            <!-- Review Form -->
+            <div th:if="${canReview}" style="position: relative; border-top: 1px solid #eee; padding-top: 20px;">
+                <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 15px;"
+                    th:text="${userReview != null ? 'Edit your review' : 'Write a review'}"></h4>
+                <div th:if="${userReview != null and userReview.status == 'PENDING'}"
+                    style="background: #fff3cd; color: #856404; padding: 10px 15px; border-radius: 5px; margin-bottom: 15px; font-size: 13px;">
+                    Your review is currently pending approval from the shop owner. You can edit it below.
                 </div>
-                <div style="position: absolute; bottom: 15px; left: 15px;">
-                    <a href="#" style="color: #007bff; font-size: 14px; text-decoration: none;"><i
-                            class="fa-solid fa-image"></i> Add up to 5 images and 1 video</a>
-                </div>
+                <form th:action="@{/product/review}" method="post">
+                    <input type="hidden" name="productId" th:value="${product.id}" />
+
+                    <div style="margin-bottom: 15px; display: flex; flex-direction: column; gap: 8px;">
+                        <input type="hidden" name="rating" id="review-rating-input" th:value="${userReview != null ? userReview.rating : 5}">
+                        <div id="review-stars-container" style="display: flex; gap: 8px; font-size: 28px; color: #f39c12; cursor: pointer;">
+                            <i class="fa-solid fa-star" data-rating="1"></i>
+                            <i class="fa-solid fa-star" data-rating="2"></i>
+                            <i class="fa-solid fa-star" data-rating="3"></i>
+                            <i class="fa-solid fa-star" data-rating="4"></i>
+                            <i class="fa-solid fa-star" data-rating="5"></i>
+                        </div>
+                        <div id="review-rating-text" style="font-size: 14px; font-weight: 600; color: #cd1818;">5 Stars (Excellent)</div>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const starsContainer = document.getElementById('review-stars-container');
+                                if (starsContainer) {
+                                    const stars = starsContainer.querySelectorAll('i');
+                                    const ratingInput = document.getElementById('review-rating-input');
+                                    const ratingText = document.getElementById('review-rating-text');
+                                    
+                                    const ratingLabels = {
+                                        1: '1 Star (Terrible)',
+                                        2: '2 Stars (Poor)',
+                                        3: '3 Stars (Average)',
+                                        4: '4 Stars (Good)',
+                                        5: '5 Stars (Excellent)'
+                                    };
+
+                                    function updateStars(rating) {
+                                        stars.forEach(star => {
+                                            const starRating = parseInt(star.getAttribute('data-rating'));
+                                            if (starRating <= rating) {
+                                                star.classList.remove('fa-regular');
+                                                star.classList.add('fa-solid');
+                                            } else {
+                                                star.classList.remove('fa-solid');
+                                                star.classList.add('fa-regular');
+                                            }
+                                        });
+                                        ratingText.textContent = ratingLabels[rating];
+                                    }
+
+                                    // Initialize
+                                    updateStars(parseInt(ratingInput.value));
+
+                                    // Hover and Click events
+                                    stars.forEach(star => {
+                                        star.addEventListener('mouseover', function() {
+                                            updateStars(parseInt(this.getAttribute('data-rating')));
+                                        });
+                                        
+                                        star.addEventListener('click', function() {
+                                            ratingInput.value = this.getAttribute('data-rating');
+                                        });
+                                    });
+
+                                    starsContainer.addEventListener('mouseleave', function() {
+                                        updateStars(parseInt(ratingInput.value));
+                                    });
+                                }
+                            });
+                        </script>
+                    </div>
+
+                    <textarea name="content" placeholder="Enter your comment..." required
+                        style="width: 100%; height: 110px; border: 1px solid #ddd; border-radius: 10px; padding: 15px; resize: none; font-family: inherit; font-size: 14px; outline: none; background: #fafafa;"
+                        th:text="${userReview != null ? userReview.content : ''}"></textarea>
+
+                    <div style="display: flex; justify-content: flex-end; margin-top: 15px;">
+                        <button type="submit"
+                            style="background: #111; color: white; border: none; padding: 8px 20px; border-radius: 20px; font-weight: bold; font-size: 14px; cursor: pointer;">Submit
+                            Review</button>
+                    </div>
+                </form>
             </div>
         </div>
     </main>
@@ -1331,7 +1404,7 @@
                 <img th:src="${product.firstImage}" alt="Product Image"
                     style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd;">
                 <div class="sticky-info">
-                    <div class="sticky-name" th:text="${product.name}"
+                    <div class="sticky-name" th:text="${product.name} + ' (' + ${product.id} + ')'"
                         style="font-weight: 600; font-size: 15px; color: #333;">MacBook Air 13 M5 2026
                         10CPU/8GPU/16GB/512GB/30W (00926589)</div>
                     <div style="font-size: 13px; color: #666; margin-top: 2px;">Category: <span
@@ -1361,69 +1434,17 @@
                     <input type="hidden" name="id" th:value="${product.id}" />
                     <input type="hidden" name="quantity" value="1" />
                     <button class="btn-cart-sticky" type="submit" title="Add to cart"
-                        th:disabled="${product.quantity <= 0}"
-                        th:style="${product.quantity <= 0 ? 'background: #ccc; cursor: not-allowed; border: 1px solid #ccc; color: white; width: 44px; height: 44px; border-radius: 6px; font-size: 20px; display: flex; align-items: center; justify-content: center;' : 'background: white; border: 1px solid #cd1818; color: #cd1818; width: 44px; height: 44px; border-radius: 6px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;'}">
+                        style="background: white; border: 1px solid #cd1818; color: #cd1818; width: 44px; height: 44px; border-radius: 6px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;">
                         <i class="fa-solid fa-cart-plus"></i>
                     </button>
                     <button class="btn-buy-now" type="submit" onclick="this.form.action='/buy-now'"
-                        th:disabled="${product.quantity <= 0}"
-                        th:style="${product.quantity <= 0 ? 'background: #ccc; color: white; border: none; height: 44px; padding: 0 40px; border-radius: 6px; font-weight: 700; font-size: 16px; cursor: not-allowed; display: flex; align-items: center; justify-content: center; text-transform: uppercase;' : 'background: #cd1818; color: white; border: none; height: 44px; padding: 0 40px; border-radius: 6px; font-weight: 700; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; text-transform: uppercase; transition: 0.2s;'}">
+                        style="background: #cd1818; color: white; border: none; height: 44px; padding: 0 40px; border-radius: 6px; font-weight: 700; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; text-transform: uppercase; transition: 0.2s;">
                         Buy Now
                     </button>
                 </form>
             </div>
         </div>
     </div>
-    <!-- Cart Notification Toast -->
-    <div th:if="${cartMessage != null}" id="cartToast"
-        style="position: fixed; top: 80px; right: 20px; background-color: #28a745; color: white; padding: 15px 25px; border-radius: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100000; display: flex; align-items: center; gap: 10px; animation: slideIn 0.5s, fadeOut 0.5s 2.5s forwards;">
-        <i class="fa-solid fa-check-circle" style="font-size: 20px;"></i>
-        <span th:text="${cartMessage}">Item successfully added to your cart!</span>
-    </div>
-
-    <!-- Error Notification Toast -->
-    <div th:if="${errorMessage != null}" id="errorToast"
-        style="position: fixed; top: 80px; right: 20px; background-color: #cd1818; color: white; padding: 15px 25px; border-radius: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100000; display: flex; align-items: center; gap: 10px; animation: slideIn 0.5s, fadeOut 0.5s 2.5s forwards;">
-        <i class="fa-solid fa-circle-exclamation" style="font-size: 20px;"></i>
-        <span th:text="${errorMessage}">Error occurred!</span>
-    </div>
-
-    <style>
-        @keyframes slideIn {
-            from {
-                right: -300px;
-                opacity: 0;
-            }
-
-            to {
-                right: 20px;
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeOut {
-            from {
-                opacity: 1;
-            }
-
-            to {
-                opacity: 0;
-                display: none;
-            }
-        }
-    </style>
-    <script>
-        setTimeout(() => {
-            const cartToast = document.getElementById('cartToast');
-            if (cartToast) {
-                cartToast.style.display = 'none';
-            }
-            const errorToast = document.getElementById('errorToast');
-            if (errorToast) {
-                errorToast.style.display = 'none';
-            }
-        }, 3000);
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <script src="/js/chatbot.js" defer></script>
