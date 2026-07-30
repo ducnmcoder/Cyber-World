@@ -35,12 +35,12 @@ public class Product implements Serializable {
     @DecimalMin(value = "0", inclusive = false, message = "Price must be greater than 0")
     private Double price;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String image;
 
     @NotNull
     @NotEmpty(message = "detailDesc cannot be empty")
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String detailDesc;
 
     @NotNull
