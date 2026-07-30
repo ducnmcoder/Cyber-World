@@ -63,7 +63,7 @@
         padding: 0 15px;
     }
     .contact-title {
-        color: #8bc34a;
+        color: #cd1818;
         font-size: 24px;
         margin-bottom: 20px;
         font-weight: 600;
@@ -97,11 +97,11 @@
         box-sizing: border-box;
     }
     .contact-form input:focus, .contact-form textarea:focus {
-        border-color: #8bc34a;
+        border-color: #cd1818;
     }
     .contact-form .btn-send {
         background: transparent;
-        color: #8bc34a;
+        color: #cd1818;
         border: 2px solid #f9a826;
         border-radius: 25px;
         padding: 10px 25px;
@@ -119,7 +119,7 @@
         border-color: #f9a826;
     }
     .success-message {
-        color: #8bc34a;
+        color: #cd1818;
         margin-top: 15px;
         font-size: 16px;
         font-weight: 600;
