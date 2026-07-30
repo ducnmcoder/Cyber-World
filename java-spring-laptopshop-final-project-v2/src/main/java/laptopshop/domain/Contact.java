@@ -37,7 +37,7 @@ public class Contact implements Serializable {
 
     @NotNull
     @NotEmpty(message = "Content cannot be empty")
-    @Column(columnDefinition = "MEDIUMTEXT")
+    @Column(columnDefinition = "TEXT")
     private String message;
 
     private String status;
