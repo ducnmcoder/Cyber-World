@@ -1,4 +1,4 @@
-﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
             <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -71,6 +71,27 @@
                     <!-- Spinner End -->
 
                     <jsp:include page="../layout/header.jsp" />
+
+                    <!-- Error Notification Toast -->
+                    <c:if test="${not empty errorMessage}">
+                        <div id="errorToast"
+                            style="position: fixed; top: 80px; right: 20px; background-color: #cd1818; color: white; padding: 15px 25px; border-radius: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100000; display: flex; align-items: center; gap: 10px; animation: slideIn 0.5s;">
+                            <i class="fa-solid fa-circle-exclamation" style="font-size: 20px;"></i>
+                            <span>${errorMessage}</span>
+                        </div>
+                        <style>
+                            @keyframes slideIn {
+                                from { right: -300px; opacity: 0; }
+                                to { right: 20px; opacity: 1; }
+                            }
+                        </style>
+                        <script>
+                            setTimeout(function() {
+                                var toast = document.getElementById('errorToast');
+                                if (toast) { toast.style.display = 'none'; }
+                            }, 5000);
+                        </script>
+                    </c:if>
 
                     <!-- Cart Page Start -->
                     <div class="container-fluid py-5">
@@ -170,6 +191,58 @@
                                             <div class="cyber-checkout-box">
                                                 <div class="cyber-box-title">Payment Information</div>
 
+                                                <div class="mb-4">
+                                                    <label class="cyber-form-label">Payment Method</label>
+                                                    
+                                                    <div class="payment-method-option" style="border: 2px solid #cd1818; border-radius: 8px; padding: 12px 15px; margin-bottom: 10px; cursor: pointer; transition: 0.3s; background: #fff5f5;">
+                                                        <label style="cursor: pointer; display: flex; align-items: center; margin: 0; width: 100%;">
+                                                            <input type="radio" name="paymentMethod" value="COD" checked 
+                                                                style="accent-color: #cd1818; width: 18px; height: 18px; margin-right: 12px;" />
+                                                            <span style="font-size: 20px; margin-right: 10px;">&#128181;</span>
+                                                            <div>
+                                                                <div style="font-weight: 600; color: #333;">Cash on Delivery (COD)</div>
+                                                                <div style="font-size: 12px; color: #888;">Pay when you receive your order</div>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="payment-method-option" style="border: 2px solid #ddd; border-radius: 8px; padding: 12px 15px; margin-bottom: 10px; cursor: pointer; transition: 0.3s;">
+                                                        <label style="cursor: pointer; display: flex; align-items: center; margin: 0; width: 100%;">
+                                                            <input type="radio" name="paymentMethod" value="VNPAY" 
+                                                                style="accent-color: #cd1818; width: 18px; height: 18px; margin-right: 12px;" />
+                                                            <span style="font-size: 20px; margin-right: 10px;">&#127974;</span>
+                                                            <div>
+                                                                <div style="font-weight: 600; color: #333;">VNPay</div>
+                                                                <div style="font-size: 12px; color: #888;">ATM / Visa / MasterCard / QR Pay</div>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="payment-method-option" style="border: 2px solid #ddd; border-radius: 8px; padding: 12px 15px; margin-bottom: 10px; cursor: pointer; transition: 0.3s;">
+                                                        <label style="cursor: pointer; display: flex; align-items: center; margin: 0; width: 100%;">
+                                                            <input type="radio" name="paymentMethod" value="MOMO" 
+                                                                style="accent-color: #cd1818; width: 18px; height: 18px; margin-right: 12px;" />
+                                                            <span style="font-size: 20px; margin-right: 10px;">&#128241;</span>
+                                                            <div>
+                                                                <div style="font-weight: 600; color: #333;">MoMo</div>
+                                                                <div style="font-size: 12px; color: #888;">Pay via MoMo e-wallet</div>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="payment-method-option" style="border: 2px solid #ddd; border-radius: 8px; padding: 12px 15px; margin-bottom: 0; cursor: pointer; transition: 0.3s;">
+                                                        <label style="cursor: pointer; display: flex; align-items: center; margin: 0; width: 100%;">
+                                                            <input type="radio" name="paymentMethod" value="ZALOPAY" 
+                                                                style="accent-color: #cd1818; width: 18px; height: 18px; margin-right: 12px;" />
+                                                            <span style="font-size: 20px; margin-right: 10px;">&#128179;</span>
+                                                            <div>
+                                                                <div style="font-weight: 600; color: #333;">ZaloPay</div>
+                                                                <div style="font-size: 12px; color: #888;">Pay via ZaloPay e-wallet</div>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+
                                                 <div class="cyber-summary-row mt-4">
                                                     <span>Shipping fee:</span>
                                                     <span>0 VND</span>
@@ -214,6 +287,25 @@
 
                     <!-- Template Javascript -->
                     <script src="/client/js/main.js"></script>
+
+                    <script>
+                        // Payment method radio button interaction
+                        document.querySelectorAll('input[name="paymentMethod"]').forEach(function(radio) {
+                            radio.addEventListener('change', function() {
+                                // Reset all options
+                                document.querySelectorAll('.payment-method-option').forEach(function(opt) {
+                                    opt.style.borderColor = '#ddd';
+                                    opt.style.background = '#fff';
+                                });
+                                // Highlight selected
+                                if (this.checked) {
+                                    var parent = this.closest('.payment-method-option');
+                                    parent.style.borderColor = '#cd1818';
+                                    parent.style.background = '#fff5f5';
+                                }
+                            });
+                        });
+                    </script>
                 </body>
 
                 </html>

@@ -1,4 +1,4 @@
-﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
@@ -31,7 +31,7 @@
                                 <div class="mt-5">
                                     <div class="row">
                                         <div class="col-12 mx-auto">
-                                            <div class="d-flex">
+                                            <div class="d-flex justify-content-between align-items-center">
                                                 <h3>Table Orders</h3>
                                             </div>
 
@@ -57,12 +57,15 @@
                                                             <td>${order.user != null ? order.user.email : order.receiverName}</td>
                                                             <td>${order.status}</td>
                                                             <td>
-                                                                <a href="/admin/order/${order.id}"
+                                                                <a href="/admin/order/${order.id}?page=${currentPage}"
                                                                     class="btn btn-success">View</a>
-                                                                <a href="/admin/order/update/${order.id}"
+                                                                <a href="/admin/order/update/${order.id}?page=${currentPage}"
                                                                     class="btn btn-warning  mx-2">Update</a>
-                                                                <a href="/admin/order/delete/${order.id}"
-                                                                    class="btn btn-danger">Delete</a>
+                                                                <form action="/admin/order/delete?page=${currentPage}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this order?');">
+                                                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                                                    <input type="hidden" name="id" value="${order.id}" />
+                                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                                </form>
                                                             </td>
                                                         </tr>
 

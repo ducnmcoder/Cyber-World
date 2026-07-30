@@ -12,7 +12,6 @@ import jakarta.persistence.Transient;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -36,14 +35,12 @@ public class Product implements Serializable {
     @DecimalMin(value = "0", inclusive = false, message = "Price must be greater than 0")
     private Double price;
 
-    @Lob
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String image;
 
     @NotNull
     @NotEmpty(message = "detailDesc cannot be empty")
-    @Lob
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String detailDesc;
 
     @NotNull
@@ -51,7 +48,7 @@ public class Product implements Serializable {
     private String shortDesc;
 
     @NotNull(message = "Quantity is required")
-    @Min(value = 1, message = "Quantity must be at least 1")
+    @Min(value = 0, message = "Quantity must be at least 0")
     private Long quantity;
 
     private Long sold = 0L;
@@ -65,6 +62,10 @@ public class Product implements Serializable {
     private String color;
     private Double originalPrice;
     private String promoEndDate;
+
+    private Double averageRating = 0.0;
+    
+    private Integer reviewCount = 0;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "specification_id", referencedColumnName = "id")
@@ -214,6 +215,22 @@ public class Product implements Serializable {
 
     public void setSpecification(ProductSpecification specification) {
         this.specification = specification;
+    }
+
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public Integer getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(Integer reviewCount) {
+        this.reviewCount = reviewCount;
     }
 
     @Transient

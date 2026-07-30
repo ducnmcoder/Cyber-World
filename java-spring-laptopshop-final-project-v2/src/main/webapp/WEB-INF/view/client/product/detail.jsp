@@ -1,4 +1,4 @@
-﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
             <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -56,6 +56,27 @@
 
                     <jsp:include page="../layout/header.jsp" />
 
+                    <!-- Error Notification Toast -->
+                    <c:if test="${not empty errorMessage}">
+                        <div id="errorToast"
+                            style="position: fixed; top: 80px; right: 20px; background-color: #cd1818; color: white; padding: 15px 25px; border-radius: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100000; display: flex; align-items: center; gap: 10px; animation: slideIn 0.5s;">
+                            <i class="fas fa-exclamation-circle" style="font-size: 20px;"></i>
+                            <span>${errorMessage}</span>
+                        </div>
+                        <style>
+                            @keyframes slideIn {
+                                from { right: -300px; opacity: 0; }
+                                to { right: 20px; opacity: 1; }
+                            }
+                        </style>
+                        <script>
+                            setTimeout(function() {
+                                var toast = document.getElementById('errorToast');
+                                if (toast) { toast.style.display = 'none'; }
+                            }, 5000);
+                        </script>
+                    </c:if>
+
                     <!-- Single Product Start -->
                     <div class="container-fluid py-5 mt-5">
                         <div class="container py-5">
@@ -72,14 +93,13 @@
                                 <div class="col-lg-8 col-xl-9">
                                     <div class="row g-4">
                                         <div class="col-lg-6">
-                                              <div class="d-flex flex-column gap-3">
+                                            <div class="d-flex flex-column gap-3">
                                                 <c:forEach var="img" items="${product.images}">
-                                                  <a href="#">
-                                                      <img src="${img}"
-                                                          class="img-fluid rounded border" alt="Image">
-                                                  </a>
+                                                    <a href="#">
+                                                        <img src="${img}" class="img-fluid rounded border" alt="Image">
+                                                    </a>
                                                 </c:forEach>
-                                              </div>
+                                            </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <h4 class="fw-bold mb-3"> ${product.name}</h4>
@@ -88,6 +108,8 @@
                                                 <fmt:formatNumber type="number" value="${product.price}" /> VND
 
                                             </h5>
+                                            <p class="mb-3 text-secondary">Quantity: <strong
+                                                    class="text-dark">${product.quantity}</strong></p>
                                             <div class="d-flex mb-4">
                                                 <i class="fa fa-star text-secondary"></i>
                                                 <i class="fa fa-star text-secondary"></i>
@@ -122,11 +144,22 @@
 
                                             <input class="form-control d-none" type="text" name="quantity"
                                                 id="cartDetails0.quantity" value="1" />
-                                            <button data-product-id="${product.id}"
-                                                class="btnAddToCartDetail btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
-                                                    class="fa fa-shopping-bag me-2 text-primary"></i>
-                                                Add to cart
-                                            </button>
+                                            <c:choose>
+                                                <c:when test="${product.quantity > 0}">
+                                                    <button data-product-id="${product.id}"
+                                                        class="btnAddToCartDetail btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
+                                                            class="fa fa-shopping-bag me-2 text-primary"></i>
+                                                        Add to cart
+                                                    </button>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <button disabled
+                                                        class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-danger"><i
+                                                            class="fa fa-times me-2 text-danger"></i>
+                                                        Out of stock
+                                                    </button>
+                                                </c:otherwise>
+                                            </c:choose>
                                             <!-- </form> -->
 
                                         </div>
@@ -225,5 +258,3 @@
                 </body>
 
                 </html>
-
-

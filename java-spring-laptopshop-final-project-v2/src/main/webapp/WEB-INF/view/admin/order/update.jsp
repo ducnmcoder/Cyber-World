@@ -1,4 +1,4 @@
-﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
             <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -41,7 +41,7 @@
                                             <div class="col-md-6 col-12 mx-auto">
                                                 <h3>Update a order</h3>
                                                 <hr />
-                                                <form:form method="post" action="/admin/order/update" class="row"
+                                                <form:form method="post" action="/admin/order/update?page=${page}" class="row"
                                                     modelAttribute="newOrder">
 
 
@@ -71,6 +71,15 @@
                                                             <form:option value="SHIPPING">SHIPPING</form:option>
                                                             <form:option value="COMPLETE">COMPLETE</form:option>
                                                             <form:option value="CANCEL">CANCEL</form:option>
+                                                        </form:select>
+                                                    </div>
+
+                                                    <div class="mb-3 col-12 col-md-6">
+                                                        <label class="form-label">Payment Status:</label>
+                                                        <form:select class="form-select" path="paymentStatus">
+                                                            <form:option value="PENDING">PENDING</form:option>
+                                                            <form:option value="PAID">PAID</form:option>
+                                                            <form:option value="FAILED">FAILED</form:option>
                                                         </form:select>
                                                     </div>
                                                     <div class="col-12 mb-5">

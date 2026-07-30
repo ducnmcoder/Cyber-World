@@ -30,7 +30,7 @@ public class Blog implements Serializable {
 
     @NotNull
     @NotEmpty(message = "Content cannot be empty")
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String content;
 
     private String image;

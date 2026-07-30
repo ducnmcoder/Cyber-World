@@ -1,4 +1,4 @@
-﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
             <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -107,7 +107,56 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                <a href="/admin/order" class="btn btn-success mt-3">Back</a>
+                                                
+                                                <div class="mt-5">
+                                                    <h4>Payment History</h4>
+                                                    <hr/>
+                                                    <table class="table table-bordered">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th>Transaction Ref</th>
+                                                                <th>Method</th>
+                                                                <th>Status</th>
+                                                                <th>Amount</th>
+                                                                <th>Date</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <c:if test="${empty payments}">
+                                                                <tr>
+                                                                    <td colspan="5" class="text-center">No payment history found.</td>
+                                                                </tr>
+                                                            </c:if>
+                                                            <c:forEach var="payment" items="${payments}">
+                                                                <tr>
+                                                                    <td>
+                                                                        <a href="/admin/payment/${payment.id}" class="text-primary text-decoration-underline">
+                                                                            ${payment.transactionRef}
+                                                                        </a>
+                                                                    </td>
+                                                                    <td>${payment.paymentMethod}</td>
+                                                                    <td>
+                                                                        <c:choose>
+                                                                            <c:when test="${payment.paymentStatus == 'PAID'}">
+                                                                                <span class="badge bg-success">PAID</span>
+                                                                            </c:when>
+                                                                            <c:when test="${payment.paymentStatus == 'FAILED'}">
+                                                                                <span class="badge bg-danger">FAILED</span>
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                <span class="badge bg-warning text-dark">PENDING</span>
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+                                                                    </td>
+                                                                    <td><fmt:formatNumber type="number" value="${payment.amount}" /> VND</td>
+                                                                    <td>${payment.createdAt}</td>
+                                                                </tr>
+                                                            </c:forEach>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                <a href="/admin/order?page=${page}" class="btn btn-success mt-3">Back</a>
 
                                             </div>
 
