@@ -15,6 +15,7 @@ import org.springframework.data.repository.query.Param;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByUser(User user);
+    List<Order> findByStatus(String status);
 
     @Query("SELECT COUNT(o) > 0 FROM Order o JOIN o.orderDetails od WHERE o.user = :user AND o.status = :status AND od.product = :product")
     boolean existsByUserAndStatusAndProduct(@Param("user") User user, @Param("status") String status, @Param("product") Product product);
