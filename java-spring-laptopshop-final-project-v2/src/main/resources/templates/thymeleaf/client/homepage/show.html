@@ -1216,7 +1216,7 @@
         <header class="cyber-header">
             <div class="container">
                 <a
-                    th:href="@{/}"
+                    th:href="${session.user != null and session.user?.role?.name == 'ADMIN' ? '#' : '/'}"
                     class="cyber-logo"
                 >
                     <img

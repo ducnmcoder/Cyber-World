@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `laptopshop` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+﻿CREATE DATABASE  IF NOT EXISTS `laptopshop` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `laptopshop`;
 
 -- Drop existing tables to avoid conflicts
@@ -104,8 +104,6 @@ CREATE TABLE `products` (
   `screen_size` varchar(255) DEFAULT NULL,
   `storage` varchar(255) DEFAULT NULL,
   `specification_id` bigint DEFAULT NULL,
-  `average_rating` double DEFAULT 0.0,
-  `review_count` int DEFAULT 0,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_products_specification` FOREIGN KEY (`specification_id`) REFERENCES `product_specifications` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -162,7 +160,6 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `phone` varchar(255) DEFAULT NULL,
   `role_id` bigint DEFAULT NULL,
-  `provider` varchar(255) DEFAULT 'LOCAL',
   PRIMARY KEY (`id`),
   KEY `FKp56c1712k691lhsyewcssf40f` (`role_id`),
   CONSTRAINT `FKp56c1712k691lhsyewcssf40f` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
