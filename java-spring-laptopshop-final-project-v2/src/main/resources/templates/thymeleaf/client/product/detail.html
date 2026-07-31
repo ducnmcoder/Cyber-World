@@ -749,6 +749,12 @@
                                 24.990.000 VND</div>
                             <div class="discount-percent">10%</div>
                         </div>
+                        <div class="quantity-info" style="margin-top: 10px; font-size: 14px; color: #555;">
+                            <span th:if="${product.quantity > 0}">Stock: <strong style="color: #333;"
+                                    th:text="${product.quantity}">10</strong></span>
+                            <span th:unless="${product.quantity > 0}" style="color: #cd1818; font-weight: bold;">Out of
+                                stock</span>
+                        </div>
                     </div>
                     <div class="flash-sale-box"
                         style="background: linear-gradient(to right, #d32f2f, #b71c1c); color: white; padding: 15px; border-radius: 0 10px 10px 0; display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 180px;">
@@ -762,7 +768,7 @@
 
                 <div class="trade-in-box">
                     <span>Trade-in - Extra discount up to <b>2.000.000 VND</b></span>
-                    <a href="#" style="color: #007bff; text-decoration: none;">Get quote now ❯</a>
+                    <a href="#" style="color: #007bff; text-decoration: none;">Get quote now</a>
                 </div>
 
                 <div class="color-options" style="margin-bottom: 15px;">
@@ -773,18 +779,19 @@
                         <span th:text="${product.color != null ? product.color : 'Grey'}">Grey</span>
                         <div
                             style="position: absolute; top: 0; right: 0; background: #cd1818; color: white; font-size: 8px; padding: 1px 3px; border-radius: 0 4px 0 4px;">
-                            <i class="fa-solid fa-check"></i></div>
+                            <i class="fa-solid fa-check"></i>
+                        </div>
                     </div>
                 </div>
 
                 <div
                     style="margin-bottom: 20px; border: 1px dashed #cd1818; border-radius: 5px; padding: 10px; display: flex; align-items: center; justify-content: space-between;">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <img src="/images/avatar/default-avatar.png"
+                        <img src="/images/avatar/redeem_point.png"
                             style="width: 40px; height: 40px; border-radius: 50%;">
                         <div style="font-size: 14px; font-weight: bold; color: #cd1818;">Redeem points <br><span
                                 style="background: #cd1818; color: #fff; font-size: 11px; padding: 2px 5px; border-radius: 10px;">CHECK
-                                NOW 🔍</span></div>
+                                NOW</span></div>
                     </div>
                     <div style="text-align: right; color: #cd1818; font-weight: bold; font-size: 18px;">
                         <div style="font-size: 11px; font-weight: normal; color: #555;">Extra discount up to 10%</div>
@@ -804,13 +811,13 @@
                                 <span
                                     style="background: #cd1818; color: #fff; padding: 2px 8px; border-radius: 15px; font-size: 11px; font-weight: bold;"><i
                                         class="fa-solid fa-clock"></i> Shocking price</span>
-                                <span style="font-size: 11px; color: #888;">🔥 Sold 0/10 slots</span>
+                                <span style="font-size: 11px; color: #888;">Sold 0/10 slots</span>
                             </div>
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <div>
                                     <div style="font-size: 20px; font-weight: bold; color: #cd1818;"
-                                        th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + ' VND ⚡'">
-                                        22.490.000 VND ⚡</div>
+                                        th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + ' VND'">
+                                        22.490.000 VND</div>
                                     <div style="font-size: 12px; color: #999; text-decoration: line-through;"
                                         th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + ' VND'">
                                         24.990.000 VND</div>
@@ -985,23 +992,26 @@
                     <input type="hidden" name="productId" th:value="${product.id}" />
 
                     <div style="margin-bottom: 15px; display: flex; flex-direction: column; gap: 8px;">
-                        <input type="hidden" name="rating" id="review-rating-input" th:value="${userReview != null ? userReview.rating : 5}">
-                        <div id="review-stars-container" style="display: flex; gap: 8px; font-size: 28px; color: #f39c12; cursor: pointer;">
+                        <input type="hidden" name="rating" id="review-rating-input"
+                            th:value="${userReview != null ? userReview.rating : 5}">
+                        <div id="review-stars-container"
+                            style="display: flex; gap: 8px; font-size: 28px; color: #f39c12; cursor: pointer;">
                             <i class="fa-solid fa-star" data-rating="1"></i>
                             <i class="fa-solid fa-star" data-rating="2"></i>
                             <i class="fa-solid fa-star" data-rating="3"></i>
                             <i class="fa-solid fa-star" data-rating="4"></i>
                             <i class="fa-solid fa-star" data-rating="5"></i>
                         </div>
-                        <div id="review-rating-text" style="font-size: 14px; font-weight: 600; color: #cd1818;">5 Stars (Excellent)</div>
+                        <div id="review-rating-text" style="font-size: 14px; font-weight: 600; color: #cd1818;">5 Stars
+                            (Excellent)</div>
                         <script>
-                            document.addEventListener('DOMContentLoaded', function() {
+                            document.addEventListener('DOMContentLoaded', function () {
                                 const starsContainer = document.getElementById('review-stars-container');
                                 if (starsContainer) {
                                     const stars = starsContainer.querySelectorAll('i');
                                     const ratingInput = document.getElementById('review-rating-input');
                                     const ratingText = document.getElementById('review-rating-text');
-                                    
+
                                     const ratingLabels = {
                                         1: '1 Star (Terrible)',
                                         2: '2 Stars (Poor)',
@@ -1029,16 +1039,16 @@
 
                                     // Hover and Click events
                                     stars.forEach(star => {
-                                        star.addEventListener('mouseover', function() {
+                                        star.addEventListener('mouseover', function () {
                                             updateStars(parseInt(this.getAttribute('data-rating')));
                                         });
-                                        
-                                        star.addEventListener('click', function() {
+
+                                        star.addEventListener('click', function () {
                                             ratingInput.value = this.getAttribute('data-rating');
                                         });
                                     });
 
-                                    starsContainer.addEventListener('mouseleave', function() {
+                                    starsContainer.addEventListener('mouseleave', function () {
                                         updateStars(parseInt(ratingInput.value));
                                     });
                                 }
@@ -1404,7 +1414,7 @@
                 <img th:src="${product.firstImage}" alt="Product Image"
                     style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd;">
                 <div class="sticky-info">
-                    <div class="sticky-name" th:text="${product.name} + ' (' + ${product.id} + ')'"
+                    <div class="sticky-name" th:text="${product.name}"
                         style="font-weight: 600; font-size: 15px; color: #333;">MacBook Air 13 M5 2026
                         10CPU/8GPU/16GB/512GB/30W (00926589)</div>
                     <div style="font-size: 13px; color: #666; margin-top: 2px;">Category: <span
@@ -1434,11 +1444,13 @@
                     <input type="hidden" name="id" th:value="${product.id}" />
                     <input type="hidden" name="quantity" value="1" />
                     <button class="btn-cart-sticky" type="submit" title="Add to cart"
-                        style="background: white; border: 1px solid #cd1818; color: #cd1818; width: 44px; height: 44px; border-radius: 6px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;">
+                        th:disabled="${product.quantity <= 0}"
+                        th:style="${product.quantity <= 0 ? 'background: #f1f1f1; border: 1px solid #ccc; color: #999; width: 44px; height: 44px; border-radius: 6px; font-size: 20px; cursor: not-allowed; display: flex; align-items: center; justify-content: center; transition: 0.2s;' : 'background: white; border: 1px solid #cd1818; color: #cd1818; width: 44px; height: 44px; border-radius: 6px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;'}">
                         <i class="fa-solid fa-cart-plus"></i>
                     </button>
                     <button class="btn-buy-now" type="submit" onclick="this.form.action='/buy-now'"
-                        style="background: #cd1818; color: white; border: none; height: 44px; padding: 0 40px; border-radius: 6px; font-weight: 700; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; text-transform: uppercase; transition: 0.2s;">
+                        th:disabled="${product.quantity <= 0}"
+                        th:style="${product.quantity <= 0 ? 'background: #ccc; color: #666; border: none; height: 44px; padding: 0 40px; border-radius: 6px; font-weight: 700; font-size: 16px; cursor: not-allowed; display: flex; align-items: center; justify-content: center; text-transform: uppercase; transition: 0.2s;' : 'background: #cd1818; color: white; border: none; height: 44px; padding: 0 40px; border-radius: 6px; font-weight: 700; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; text-transform: uppercase; transition: 0.2s;'}">
                         Buy Now
                     </button>
                 </form>
