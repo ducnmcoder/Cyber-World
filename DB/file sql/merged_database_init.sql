@@ -2,7 +2,6 @@ CREATE DATABASE  IF NOT EXISTS `laptopshop` /*!40100 DEFAULT CHARACTER SET utf8m
 USE `laptopshop`;
 
 -- Drop existing tables to avoid conflicts
-SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `cart_detail`;
 DROP TABLE IF EXISTS `carts`;
 DROP TABLE IF EXISTS `order_detail`;
@@ -11,7 +10,6 @@ DROP TABLE IF EXISTS `products`;
 DROP TABLE IF EXISTS `product_specifications`;
 DROP TABLE IF EXISTS `users`;
 DROP TABLE IF EXISTS `roles`;
-SET FOREIGN_KEY_CHECKS = 1;
 
 -- Table structure for table `product_specifications`
 CREATE TABLE `product_specifications` (
@@ -106,6 +104,8 @@ CREATE TABLE `products` (
   `screen_size` varchar(255) DEFAULT NULL,
   `storage` varchar(255) DEFAULT NULL,
   `specification_id` bigint DEFAULT NULL,
+  `average_rating` double DEFAULT 0.0,
+  `review_count` int DEFAULT 0,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_products_specification` FOREIGN KEY (`specification_id`) REFERENCES `product_specifications` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -142,6 +142,16 @@ INSERT INTO `roles` (`id`, `description`, `name`) VALUES
 (4, 'User role', 'USER');
 UNLOCK TABLES;
 
+CREATE TABLE `blogs` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `content` mediumtext NOT NULL,
+  `created_at` datetime(6) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `title` varchar(255) NOT NULL,
+  `updated_at` datetime(6) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 -- Table structure for table `users`
 CREATE TABLE `users` (
   `id` bigint NOT NULL AUTO_INCREMENT,
@@ -152,6 +162,7 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `phone` varchar(255) DEFAULT NULL,
   `role_id` bigint DEFAULT NULL,
+  `provider` varchar(255) DEFAULT 'LOCAL',
   PRIMARY KEY (`id`),
   KEY `FKp56c1712k691lhsyewcssf40f` (`role_id`),
   CONSTRAINT `FKp56c1712k691lhsyewcssf40f` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
@@ -164,55 +175,74 @@ INSERT INTO `users` (`id`, `email`, `full_name`, `password`, `role_id`) VALUES
 (2, 'owner@gmail.com', 'Owner User', '$2a$10$oClXt1y512M.0YeGKA1s5utpmusrAIGHHv/NP4nD9aiMsZfknx8HW', 2),
 (3, 'staff@gmail.com', 'Staff User', '$2a$10$oClXt1y512M.0YeGKA1s5utpmusrAIGHHv/NP4nD9aiMsZfknx8HW', 3);
 UNLOCK TABLES;
-SET FOREIGN_KEY_CHECKS = 0;
-TRUNCATE TABLE cart_detail;
-TRUNCATE TABLE order_detail;
-TRUNCATE TABLE products;
-TRUNCATE TABLE product_specifications;
-SET FOREIGN_KEY_CHECKS = 1;
 
 -- Insert Specification 1 (Apple)
 INSERT INTO product_specifications (
     id, cpu_technology, gpu_model, ram_capacity, storage_capacity, screen_refresh_rate
 ) VALUES (
-    1, 'Apple M3 Pro', 'Apple GPU 14-core', '18 GB', '512 GB', '120 Hz'
+    11, 'Apple M3 Pro', 'Apple GPU 14-core', '18 GB', '512 GB', '120 Hz'
 );
 
 -- Insert Product 1 (Apple)
 INSERT INTO products (
     id, name, factory, target, price, original_price, quantity, sold, short_desc, detail_desc, color, cpu, ram, storage, screen_size, specification_id, image
 ) VALUES (
-    1, 'MacBook Pro 14 M3 Pro', 'APPLE', 'DOANH-NHAN', 39990000, 39990000, 10, 0, 'MacBook Pro 14 inch M3 Pro', 'Chi tiết MacBook Pro 14 M3 Pro...', 'Silver', 'Apple M3 Pro', '18 GB', '512 GB', '14.2', 1, 'macbook.jpg'
+    11, 'MacBook Pro 14 M3 Pro', 'APPLE', 'DOANH-NHAN', 39990000, 39990000, 10, 0, 'MacBook Pro 14 inch M3 Pro', 'Chi tiết MacBook Pro 14 M3 Pro...', 'Silver', 'Apple M3 Pro', '18 GB', '512 GB', '14.2', 11, 'macbook.jpg'
 );
 
 -- Insert Specification 2 (Asus)
 INSERT INTO product_specifications (
     id, cpu_technology, gpu_model, ram_capacity, storage_capacity, screen_refresh_rate
 ) VALUES (
-    2, 'Intel Core i7 13620H', 'RTX 4060', '16 GB', '512 GB', '144 Hz'
+    12, 'Intel Core i7 13620H', 'RTX 4060', '16 GB', '512 GB', '144 Hz'
 );
 
 -- Insert Product 2 (Asus)
 INSERT INTO products (
     id, name, factory, target, price, original_price, quantity, sold, short_desc, detail_desc, color, cpu, ram, storage, screen_size, specification_id, image
 ) VALUES (
-    2, 'Laptop Asus TUF Gaming F15', 'ASUS', 'GAMING', 25000000, 26000000, 20, 0, 'Asus TUF Gaming mạnh mẽ', 'Chi tiết Asus TUF...', 'Black', 'Intel Core i7 13620H', '16 GB', '512 GB', '15.6', 2, 'asus_tuf.jpg'
+    12, 'Laptop Asus TUF Gaming F15', 'ASUS', 'GAMING', 25000000, 26000000, 20, 0, 'Asus TUF Gaming manh me', 'Chi tiet Asus TUF...', 'Black', 'Intel Core i7 13620H', '16 GB', '512 GB', '15.6', 12, 'asus_tuf.jpg'
 );
 
 -- Insert Specification 3 (Dell)
 INSERT INTO product_specifications (
     id, cpu_technology, gpu_model, ram_capacity, storage_capacity, screen_refresh_rate
 ) VALUES (
-    3, 'Intel Core i5 1235U', 'Intel Iris Xe', '8 GB', '256 GB', '60 Hz'
+    13, 'Intel Core i5 1235U', 'Intel Iris Xe', '8 GB', '256 GB', '60 Hz'
 );
 
 -- Insert Product 3 (Dell)
 INSERT INTO products (
     id, name, factory, target, price, original_price, quantity, sold, short_desc, detail_desc, color, cpu, ram, storage, screen_size, specification_id, image
 ) VALUES (
-    3, 'Laptop Dell Inspiron 15', 'DELL', 'SINHVIEN-VANPHONG', 15000000, 15500000, 15, 0, 'Dell Inspiron bền bỉ', 'Chi tiết Dell Inspiron...', 'Silver', 'Intel Core i5 1235U', '8 GB', '256 GB', '15.6', 3, 'dell.jpg'
+    13, 'Laptop Dell Inspiron 15', 'DELL', 'SINHVIEN-VANPHONG', 15000000, 15500000, 15, 0, 'Dell Inspiron ben bi', 'Chi tiet Dell Inspiron...', 'Silver', 'Intel Core i5 1235U', '8 GB', '256 GB', '15.6', 13, 'dell.jpg'
 );
 INSERT IGNORE INTO roles (id, description, name) VALUES (1, 'Admin role', 'ADMIN');
 INSERT IGNORE INTO roles (id, description, name) VALUES (2, 'Owner role', 'OWNER');
 INSERT IGNORE INTO roles (id, description, name) VALUES (3, 'Staff role', 'STAFF');
 INSERT IGNORE INTO roles (id, description, name) VALUES (4, 'User role', 'USER');
+
+
+-- Lệnh tạo bảng Spring Session
+CREATE TABLE IF NOT EXISTS SPRING_SESSION (
+	PRIMARY_ID CHAR(36) NOT NULL,
+	SESSION_ID CHAR(36) NOT NULL,
+	CREATION_TIME BIGINT NOT NULL,
+	LAST_ACCESS_TIME BIGINT NOT NULL,
+	MAX_INACTIVE_INTERVAL INT NOT NULL,
+	EXPIRY_TIME BIGINT NOT NULL,
+	PRINCIPAL_NAME VARCHAR(100),
+	CONSTRAINT SPRING_SESSION_PK PRIMARY KEY (PRIMARY_ID)
+) ENGINE=InnoDB ROW_FORMAT=DYNAMIC;
+
+CREATE UNIQUE INDEX SPRING_SESSION_IX1 ON SPRING_SESSION (SESSION_ID);
+CREATE INDEX SPRING_SESSION_IX2 ON SPRING_SESSION (EXPIRY_TIME);
+CREATE INDEX SPRING_SESSION_IX3 ON SPRING_SESSION (PRINCIPAL_NAME);
+
+CREATE TABLE IF NOT EXISTS SPRING_SESSION_ATTRIBUTES (
+	SESSION_PRIMARY_ID CHAR(36) NOT NULL,
+	ATTRIBUTE_NAME VARCHAR(200) NOT NULL,
+	ATTRIBUTE_BYTES BLOB NOT NULL,
+	CONSTRAINT SPRING_SESSION_ATTRIBUTES_PK PRIMARY KEY (SESSION_PRIMARY_ID, ATTRIBUTE_NAME),
+	CONSTRAINT SPRING_SESSION_ATTRIBUTES_FK FOREIGN KEY (SESSION_PRIMARY_ID) REFERENCES SPRING_SESSION(PRIMARY_ID) ON DELETE CASCADE
+) ENGINE=InnoDB ROW_FORMAT=DYNAMIC;

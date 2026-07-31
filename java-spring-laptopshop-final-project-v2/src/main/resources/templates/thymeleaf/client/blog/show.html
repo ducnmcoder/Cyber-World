@@ -464,7 +464,7 @@
         <header class="cyber-header">
             <div class="container">
                 <a
-                    th:href="${session.user != null and session.user?.role?.name == 'ADMIN' ? '#' : '/'}"
+                    th:href="@{/}"
                     class="cyber-logo"
                 >
                     <img
