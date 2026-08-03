@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
             <!DOCTYPE html>
@@ -60,7 +60,7 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <img style="max-height: 250px;" alt="Blog preview" id="blogPreview"
-                                                        src="/images/blog/${newBlog.image}" />
+                                                        src="/images/blogs/${newBlog.image}" />
                                                 </div>
                                                 <button type="submit" class="btn btn-warning">Update</button>
                                                 <a href="/admin/blog" class="btn btn-secondary ms-2">Cancel</a>
@@ -79,3 +79,4 @@
             </body>
 
             </html>
+

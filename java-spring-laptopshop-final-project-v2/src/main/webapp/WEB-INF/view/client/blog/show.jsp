@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
             <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -71,7 +71,7 @@
                                 <c:forEach var="blog" items="${blogs}">
                                     <div class="col-md-6 col-lg-4">
                                         <div class="card h-100 shadow-sm border-0">
-                                            <img src="/images/blog/${blog.image}" class="card-img-top"
+                                            <img src="/images/blogs/${blog.image}" class="card-img-top"
                                                 alt="${blog.title}"
                                                 onerror="this.onerror=null;this.src='/images/logo.png';"
                                                 style="height: 220px; object-fit: cover;">
@@ -149,3 +149,4 @@
                 </body>
 
                 </html>
+

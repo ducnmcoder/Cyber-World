@@ -188,7 +188,8 @@
         }
     }
 
-    $('.quantity button').on('click', function () {
+    $('.quantity button').on('click', function (e) {
+        e.preventDefault();
         var button = $(this);
         var input = button.parent().parent().find('input');
         var oldValue = parseInt(input.val()) || 1;
@@ -226,16 +227,12 @@
 
     function formatCurrency(value) {
         // Use the 'vi-VN' locale to format the number according to Vietnamese currency format
-        // and 'VND' as the currency type for Vietnamese đồng
         const formatter = new Intl.NumberFormat('vi-VN', {
             style: 'decimal',
-            minimumFractionDigits: 0, // No decimal part for whole numbers
+            minimumFractionDigits: 0, 
         });
 
-        let formatted = formatter.format(value);
-        // Replace dots with commas for thousands separator
-        formatted = formatted.replace(/\./g, ',');
-        return formatted;
+        return formatter.format(value);
     }
 
     //handle filter products
@@ -262,6 +259,9 @@
 
         //search input
         let searchValue = $("#searchInput").val();
+        if (searchValue) {
+            searchValue = searchValue.trim();
+        }
         let customMinPrice = $("#customMinPrice").val();
         let customMaxPrice = $("#customMaxPrice").val();
 
@@ -273,7 +273,11 @@
 
         // Add or update query parameters
         searchParams.set('page', '1');
-        searchParams.set('sort', sortValue);
+        if (sortValue) {
+            searchParams.set('sort', sortValue);
+        } else {
+            searchParams.delete('sort');
+        }
 
         //reset
         searchParams.delete('factory');
@@ -360,7 +364,15 @@
     $('.btnAddToCartHomepage').click(function (event) {
         event.preventDefault();
 
-
+        if (!isLogin()) {
+            $.toast({
+                heading: 'Lỗi thao tác',
+                text: 'Bạn cần đăng nhập tài khoản',
+                position: 'top-right',
+                icon: 'error'
+            })
+            return;
+        }
 
         const productId = $(this).attr('data-product-id');
         const token = $("meta[name='_csrf']").attr("content");
@@ -376,7 +388,17 @@
             contentType: "application/json",
 
             success: function (response) {
-                window.location.href = '/checkout';
+                const sum = +response;
+                //update cart
+                $("#sumCart").text(sum)
+                //show message
+                $.toast({
+                    heading: 'Giỏ hàng',
+                    text: 'Thêm sản phẩm vào giỏ hàng thành công',
+                    position: 'top-right',
+
+                })
+
             },
             error: function (response) {
                 alert("có lỗi xảy ra, check code đi ba :v")
@@ -388,7 +410,15 @@
 
     $('.btnAddToCartDetail').click(function (event) {
         event.preventDefault();
-
+        if (!isLogin()) {
+            $.toast({
+                heading: 'Lỗi thao tác',
+                text: 'Bạn cần đăng nhập tài khoản',
+                position: 'top-right',
+                icon: 'error'
+            })
+            return;
+        }
 
         const productId = $(this).attr('data-product-id');
         const token = $("meta[name='_csrf']").attr("content");
@@ -404,7 +434,17 @@
             contentType: "application/json",
 
             success: function (response) {
-                window.location.href = '/checkout';
+                const sum = +response;
+                //update cart
+                $("#sumCart").text(sum)
+                //show message
+                $.toast({
+                    heading: 'Giỏ hàng',
+                    text: 'Thêm sản phẩm vào giỏ hàng thành công',
+                    position: 'top-right',
+
+                })
+
             },
             error: function (response) {
                 alert("có lỗi xảy ra, check code đi ba :v")

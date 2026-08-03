@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <!DOCTYPE html>
         <html lang="en">
@@ -47,7 +47,7 @@
                                                         <th>${blog.id}</th>
                                                         <td>${blog.title}</td>
                                                         <td>
-                                                            <img src="/images/blog/${blog.image}"
+                                                            <img src="/images/blogs/${blog.image}"
                                                                 style="width: 80px; height: 60px; object-fit: cover;"
                                                                 alt="${blog.title}" />
                                                         </td>
@@ -103,3 +103,4 @@
         </body>
 
         </html>
+

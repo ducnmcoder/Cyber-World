@@ -62,7 +62,7 @@ public class BlogAdminController {
     @PostMapping("/admin/blog/create")
     public String handleCreateBlog(@ModelAttribute("newBlog") Blog blog,
             @RequestParam("blogFile") MultipartFile file) {
-        String image = this.uploadService.handleSaveUploadFile(file, "blog");
+        String image = this.uploadService.handleSaveUploadFile(file, "blogs");
         blog.setImage(image);
         this.blogService.handleSaveBlog(blog);
         return "redirect:/admin/blog";
@@ -94,7 +94,7 @@ public class BlogAdminController {
         if (blogOptional.isPresent()) {
             Blog currentBlog = blogOptional.get();
             if (!file.isEmpty()) {
-                String image = this.uploadService.handleSaveUploadFile(file, "blog");
+                String image = this.uploadService.handleSaveUploadFile(file, "blogs");
                 currentBlog.setImage(image);
             }
             currentBlog.setTitle(blog.getTitle());

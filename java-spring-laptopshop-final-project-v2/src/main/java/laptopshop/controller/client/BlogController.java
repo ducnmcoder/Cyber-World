@@ -52,7 +52,13 @@ public class BlogController {
     public String getBlogDetailPage(Model model, @PathVariable long id) {
         Optional<Blog> blogOptional = this.blogService.fetchBlogById(id);
         if (blogOptional.isPresent()) {
-            model.addAttribute("blog", blogOptional.get());
+            Blog blog = blogOptional.get();
+            model.addAttribute("blog", blog);
+            
+            if (blog.getCreatedAt() != null) {
+                java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+                model.addAttribute("formattedDate", blog.getCreatedAt().format(formatter));
+            }
         }
         return "client/blog/detail";
     }

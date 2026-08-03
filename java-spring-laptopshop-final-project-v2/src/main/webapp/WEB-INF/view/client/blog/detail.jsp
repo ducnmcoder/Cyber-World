@@ -61,11 +61,9 @@
                                 <h1 class="mb-4">${blog.title}</h1>
                                 <div class="text-muted mb-4">
                                     <i class="fas fa-calendar-alt me-2"></i>
-                                    <fmt:parseDate value="${blog.createdAt}" pattern="yyyy-MM-dd'T'HH:mm"
-                                        var="parsedDate" type="both" />
-                                    <fmt:formatDate value="${parsedDate}" pattern="MMMM dd, yyyy" />
+                                    ${formattedDate}
                                 </div>
-                                <img src="/images/blog/${blog.image}" class="img-fluid rounded mb-4 w-100"
+                                <img src="/images/blogs/${blog.image}" class="img-fluid rounded mb-4 w-100"
                                     alt="${blog.title}" 
                                     onerror="this.onerror=null;this.src='/images/logo.png';"
                                     style="max-height: 450px; object-fit: cover;">
@@ -101,3 +99,4 @@
             </body>
 
             </html>
+
