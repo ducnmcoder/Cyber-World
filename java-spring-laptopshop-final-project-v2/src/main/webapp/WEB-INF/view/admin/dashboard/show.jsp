@@ -28,6 +28,7 @@
                                     <i class="fas fa-file-excel me-1"></i> Export to Excel
                                 </a>
                             </div>
+                            <h1 class="mt-4">Dashboard</h1>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="card mb-4">
@@ -238,7 +239,7 @@
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true,
-                                        callback: function (value) { return value.toLocaleString() + ' VND'; }
+                                        callback: function (value) { return '$' + value.toLocaleString(); }
                                     },
                                     gridLines: { color: 'rgba(200, 200, 200, 0.2)' }
                                 }]
@@ -247,7 +248,7 @@
                             legend: { display: false },
                             tooltips: {
                                 callbacks: {
-                                    label: function (tooltipItem, data) { return tooltipItem.yLabel.toLocaleString() + ' VND'; }
+                                    label: function (tooltipItem, data) { return '$' + tooltipItem.yLabel.toLocaleString(); }
                                 }
                             }
                         }

@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8" />
@@ -636,7 +636,7 @@
                     >
                         <img
                             th:if="${not #strings.isEmpty(blog.image)}"
-                            th:src="@{'/images/blogs/' + ${blog.image}}"
+                            th:src="@{'/images/blog/' + ${blog.image}}"
                             onerror="
                                 this.onerror = null;
                                 this.src = '/images/logo.png';
@@ -865,7 +865,7 @@
                 };
 
                 if (image && image.trim() !== "") {
-                    imgElement.src = "/images/blogs/" + image;
+                    imgElement.src = "/images/blog/" + image;
                 } else {
                     imgElement.src = "/images/logo.png";
                 }
@@ -1085,4 +1085,3 @@
         <script src="/js/chatbot.js" defer></script>
     </body>
 </html>
-

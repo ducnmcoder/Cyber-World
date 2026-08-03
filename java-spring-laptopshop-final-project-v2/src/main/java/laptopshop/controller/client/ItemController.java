@@ -21,8 +21,12 @@ import laptopshop.domain.Cart;
 import laptopshop.domain.CartDetail;
 import laptopshop.domain.Order;
 import laptopshop.domain.Product;
+<<<<<<< Updated upstream
+
+=======
 import laptopshop.domain.Product_;
 import laptopshop.domain.Review;
+>>>>>>> Stashed changes
 import laptopshop.domain.User;
 import laptopshop.domain.dto.ProductCriteriaDTO;
 import laptopshop.service.ProductService;
