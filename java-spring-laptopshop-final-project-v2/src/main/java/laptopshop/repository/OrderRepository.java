@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import laptopshop.domain.Order;
+import laptopshop.domain.Product;
 import laptopshop.domain.User;
 
 import java.util.List;
@@ -14,6 +15,10 @@ import org.springframework.data.repository.query.Param;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByUser(User user);
+
+    @Query("SELECT COUNT(o) > 0 FROM Order o JOIN o.orderDetails od WHERE o.user = :user AND o.status = :status AND od.product = :product")
+    boolean existsByUserAndStatusAndProduct(@Param("user") User user, @Param("status") String status, @Param("product") Product product);
+
 
     @Query(value = "SELECT MONTH(created_at) AS period, SUM(total_price) AS total FROM orders WHERE created_at IS NOT NULL AND YEAR(created_at) = :year GROUP BY MONTH(created_at) ORDER BY MONTH(created_at)", nativeQuery = true)
     List<Object[]> findMonthlyRevenueByYear(@Param("year") int year);

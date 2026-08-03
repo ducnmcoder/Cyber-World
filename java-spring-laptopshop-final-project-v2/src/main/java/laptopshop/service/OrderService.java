@@ -10,24 +10,37 @@ import org.springframework.transaction.annotation.Transactional;
 
 import laptopshop.domain.Order;
 import laptopshop.domain.OrderDetail;
+import laptopshop.domain.Payment;
 import laptopshop.domain.User;
 import laptopshop.repository.OrderDetailRepository;
 import laptopshop.repository.OrderRepository;
+import laptopshop.repository.PaymentRepository;
 
 @Service
 public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
+    private final PaymentRepository paymentRepository;
 
     public OrderService(
             OrderRepository orderRepository,
-            OrderDetailRepository orderDetailRepository) {
+            OrderDetailRepository orderDetailRepository,
+            PaymentRepository paymentRepository) {
         this.orderDetailRepository = orderDetailRepository;
         this.orderRepository = orderRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     public Page<Order> fetchAllOrders(Pageable page) {
         return this.orderRepository.findAll(page);
+    }
+
+    public List<Order> fetchAllOrdersList() {
+        return this.orderRepository.findAll();
+    }
+
+    public List<Order> fetchOrdersByStatus(String status) {
+        return this.orderRepository.findByStatus(status);
     }
 
     public Optional<Order> fetchOrderById(long id) {
@@ -36,10 +49,19 @@ public class OrderService {
 
     @Transactional
     public void deleteOrderById(long id) {
-        // delete order detail
         Optional<Order> orderOptional = this.fetchOrderById(id);
         if (orderOptional.isPresent()) {
             Order order = orderOptional.get();
+            
+            // Delete payments first
+            List<Payment> payments = order.getPayments();
+            if (payments != null) {
+                for (Payment payment : payments) {
+                    this.paymentRepository.deleteById(payment.getId());
+                }
+            }
+
+            // delete order detail
             List<OrderDetail> orderDetails = order.getOrderDetails();
             for (OrderDetail orderDetail : orderDetails) {
                 this.orderDetailRepository.deleteById(orderDetail.getId());
@@ -55,6 +77,17 @@ public class OrderService {
         if (orderOptional.isPresent()) {
             Order currentOrder = orderOptional.get();
             currentOrder.setStatus(order.getStatus());
+            currentOrder.setPaymentStatus(order.getPaymentStatus());
+            this.orderRepository.save(currentOrder);
+        }
+    }
+
+    @Transactional
+    public void updateOrderPaymentStatus(Order order) {
+        Optional<Order> orderOptional = this.fetchOrderById(order.getId());
+        if (orderOptional.isPresent()) {
+            Order currentOrder = orderOptional.get();
+            currentOrder.setPaymentStatus(order.getPaymentStatus());
             this.orderRepository.save(currentOrder);
         }
     }

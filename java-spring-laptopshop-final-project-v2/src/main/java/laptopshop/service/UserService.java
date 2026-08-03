@@ -38,7 +38,7 @@ public class UserService {
     }
 
     public List<User> getAllUsersByEmail(String email) {
-        return this.userRepository.findOneByEmail(email);
+        return this.userRepository.findAllByEmail(email);
     }
 
     public User handleSaveUser(User user) {
@@ -48,7 +48,7 @@ public class UserService {
     }
 
     public User getUserById(long id) {
-        return this.userRepository.findById(id);
+        return this.userRepository.findById(id).orElse(null);
     }
 
     public void deleteAUser(long id) {

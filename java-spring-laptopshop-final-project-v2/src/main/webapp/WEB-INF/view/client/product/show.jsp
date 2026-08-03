@@ -1,4 +1,4 @@
-﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
             <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -54,6 +54,27 @@
                     <!-- Spinner End -->
 
                     <jsp:include page="../layout/header.jsp" />
+
+                    <!-- Error Notification Toast -->
+                    <c:if test="${not empty errorMessage}">
+                        <div id="errorToast"
+                            style="position: fixed; top: 80px; right: 20px; background-color: #cd1818; color: white; padding: 15px 25px; border-radius: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100000; display: flex; align-items: center; gap: 10px; animation: slideIn 0.5s;">
+                            <i class="fas fa-exclamation-circle" style="font-size: 20px;"></i>
+                            <span>${errorMessage}</span>
+                        </div>
+                        <style>
+                            @keyframes slideIn {
+                                from { right: -300px; opacity: 0; }
+                                to { right: 20px; opacity: 1; }
+                            }
+                        </style>
+                        <script>
+                            setTimeout(function() {
+                                var toast = document.getElementById('errorToast');
+                                if (toast) { toast.style.display = 'none'; }
+                            }, 5000);
+                        </script>
+                    </c:if>
 
                     <!-- Single Product Start -->
                     <div class="container-fluid py-5 mt-5">
@@ -300,11 +321,22 @@
                                                                     <input type="hidden" name="${_csrf.parameterName}"
                                                                         value="${_csrf.token}" />
 
-                                                                    <button
-                                                                        class="btnAddToCartDetail mx-auto btn border border-secondary rounded-pill px-3 text-primary w-100"><i
-                                                                            class="fa fa-shopping-bag me-2 text-primary"></i>
-                                                                        Add to cart
-                                                                    </button>
+                                                                    <c:choose>
+                                                                        <c:when test="${product.quantity > 0}">
+                                                                            <button
+                                                                                class="btnAddToCartDetail mx-auto btn border border-secondary rounded-pill px-3 text-primary w-100"><i
+                                                                                    class="fa fa-shopping-bag me-2 text-primary"></i>
+                                                                                Add to cart
+                                                                            </button>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <button disabled
+                                                                                class="mx-auto btn border border-secondary rounded-pill px-3 text-danger w-100"><i
+                                                                                    class="fa fa-times me-2 text-danger"></i>
+                                                                                Out of stock
+                                                                            </button>
+                                                                        </c:otherwise>
+                                                                    </c:choose>
                                                                 </form>
                                                             </div>
                                                         </div>

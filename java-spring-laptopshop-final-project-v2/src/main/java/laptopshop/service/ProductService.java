@@ -245,6 +245,13 @@ public class ProductService {
 
                 // check sản phẩm đã từng được thêm vào giỏ hàng trước đây chưa ?
                 CartDetail oldDetail = this.cartDetailRepository.findByCartAndProduct(cart, realProduct);
+
+                long currentCartQuantity = (oldDetail != null) ? oldDetail.getQuantity() : 0;
+                long productStock = realProduct.getQuantity() != null ? realProduct.getQuantity() : 0;
+                if (currentCartQuantity + quantity > productStock) {
+                    throw new RuntimeException("Insufficient quantity of products");
+                }
+
                 //
                 if (oldDetail == null) {
                     CartDetail cd = new CartDetail();
@@ -277,11 +284,15 @@ public class ProductService {
             Optional<Product> productOptional = this.productRepository.findById(productId);
             if (productOptional.isPresent()) {
                 Product realProduct = productOptional.get();
+                long productStock = realProduct.getQuantity() != null ? realProduct.getQuantity() : 0;
 
                 boolean found = false;
                 if (guestCart.getCartDetails() != null) {
                     for (CartDetail cd : guestCart.getCartDetails()) {
                         if (cd.getProduct().getId() == realProduct.getId()) {
+                            if (cd.getQuantity() + quantity > productStock) {
+                                throw new RuntimeException("Insufficient quantity of products");
+                            }
                             cd.setQuantity(cd.getQuantity() + quantity);
                             found = true;
                             break;
@@ -292,6 +303,9 @@ public class ProductService {
                 }
 
                 if (!found) {
+                    if (quantity > productStock) {
+                        throw new RuntimeException("Insufficient quantity of products");
+                    }
                     CartDetail cd = new CartDetail();
                     cd.setProduct(realProduct);
                     cd.setPrice(realProduct.getPrice());
@@ -342,15 +356,21 @@ public class ProductService {
             Optional<CartDetail> cdOptional = this.cartDetailRepository.findById(cartDetail.getId());
             if (cdOptional.isPresent()) {
                 CartDetail currentCartDetail = cdOptional.get();
+                Product product = currentCartDetail.getProduct();
+                long productStock = (product != null && product.getQuantity() != null) ? product.getQuantity() : 0;
+                if (cartDetail.getQuantity() > productStock) {
+                    throw new RuntimeException("Insufficient quantity of products");
+                }
                 currentCartDetail.setQuantity(cartDetail.getQuantity());
                 this.cartDetailRepository.save(currentCartDetail);
             }
         }
     }
 
-    public void handlePlaceOrder(
+    public Order handlePlaceOrder(
             User user, HttpSession session,
-            String receiverName, String receiverAddress, String receiverPhone) {
+            String receiverName, String receiverAddress, String receiverPhone,
+            String paymentMethod) {
 
         // step 1: get cart
         Cart cart = null;
@@ -365,6 +385,17 @@ public class ProductService {
 
             if (cartDetails != null && !cartDetails.isEmpty()) {
 
+                // check product quantity first
+                for (CartDetail cd : cartDetails) {
+                    Product product = cd.getProduct();
+                    if (product != null) {
+                        long currentQuantity = product.getQuantity() != null ? product.getQuantity() : 0;
+                        if (cd.getQuantity() > currentQuantity) {
+                            throw new RuntimeException("Insufficient quantity of products");
+                        }
+                    }
+                }
+
                 // create order
                 Order order = new Order();
                 order.setUser(user != null && user.getId() != 0 ? user : null);
@@ -372,6 +403,9 @@ public class ProductService {
                 order.setReceiverAddress(receiverAddress);
                 order.setReceiverPhone(receiverPhone);
                 order.setStatus("PENDING");
+                order.setPaymentMethod(paymentMethod);
+                order.setPaymentStatus("COD".equals(paymentMethod) ? "PENDING" : "UNPAID");
+                order.setTrackingCode("CW" + java.util.UUID.randomUUID().toString().substring(0, 8).toUpperCase());
 
                 double sum = 0;
                 for (CartDetail cd : cartDetails) {
@@ -391,22 +425,60 @@ public class ProductService {
                     orderDetail.setQuantity(cd.getQuantity());
 
                     this.orderDetailRepository.save(orderDetail);
-                }
 
-                // step 2: delete cart_detail and cart
-                if (user != null && user.getId() != 0) {
-                    for (CartDetail cd : cartDetails) {
-                        this.cartDetailRepository.deleteById(cd.getId());
+                    // Update product quantity and sold count
+                    Product product = cd.getProduct();
+                    if (product != null) {
+                        long currentQuantity = product.getQuantity() != null ? product.getQuantity() : 0;
+                        long remainingQuantity = currentQuantity - cd.getQuantity();
+                        product.setQuantity(remainingQuantity < 0 ? 0 : remainingQuantity);
+
+                        long currentSold = product.getSold() != null ? product.getSold() : 0;
+                        product.setSold(currentSold + cd.getQuantity());
+
+                        this.productRepository.save(product);
                     }
-                    this.cartRepository.deleteById(cart.getId());
-                } else {
-                    session.removeAttribute("guestCart");
                 }
 
-                // step 3 : update session
-                session.setAttribute("sum", 0);
+                // step 2: delete cart_detail and cart only if COD. For online payments, delete upon successful callback.
+                if ("COD".equals(paymentMethod)) {
+                    if (user != null && user.getId() != 0) {
+                        for (CartDetail cd : cartDetails) {
+                            this.cartDetailRepository.deleteById(cd.getId());
+                        }
+                        this.cartRepository.deleteById(cart.getId());
+                    } else {
+                        session.removeAttribute("guestCart");
+                    }
+
+                    // step 3 : update session
+                    session.setAttribute("sum", 0);
+                }
+
+                return order;
             }
         }
 
+        return null;
+    }
+
+    public void handleClearCart(User user, HttpSession session) {
+        if (user != null && user.getId() != 0) {
+            Cart cart = this.cartRepository.findByUser(user);
+            if (cart != null) {
+                List<CartDetail> cartDetails = cart.getCartDetails();
+                if (cartDetails != null) {
+                    for (CartDetail cd : cartDetails) {
+                        this.cartDetailRepository.deleteById(cd.getId());
+                    }
+                }
+                this.cartRepository.deleteById(cart.getId());
+            }
+        } else if (session != null) {
+            session.removeAttribute("guestCart");
+        }
+        if (session != null) {
+            session.setAttribute("sum", 0);
+        }
     }
 }

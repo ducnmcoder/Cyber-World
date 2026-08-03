@@ -69,9 +69,10 @@ public class SecurityConfiguration {
                         .requestMatchers("/", "/login", "/product/**", "/register", "/products/**",
                                 "/client/**", "/css/**", "/js/**", "/images/**",
                                 "/about", "/contact", "/api/contact/footer", "/api/chatbot", "/blogs", "/blog", "/blog/**", "/error",
-                                "/add-product-to-cart/**", "/add-product-from-view-detail",
+                                "/add-product-to-cart/**", "/add-product-from-view-detail", "/api/add-product-to-cart", "/buy-now",
                                 "/cart", "/checkout", "/place-order", "/delete-cart-product/**",
-                                "/confirm-checkout", "/thanks")
+                                "/confirm-checkout", "/thanks", "/payment-failed",
+                                "/api/payment/**", "/feedback")
                         .permitAll()
 
                         .requestMatchers("/admin").hasRole("OWNER")
