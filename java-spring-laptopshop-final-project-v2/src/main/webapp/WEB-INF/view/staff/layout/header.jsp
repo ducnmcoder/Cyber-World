@@ -48,10 +48,15 @@
                     class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <span style="color: white;">Welcome,
-                    <%=request.getUserPrincipal().getName().toString()%>
-
-                </span>
+                <c:if test="${sessionScope.user != null}">
+                    <a href="/account/manage" style="color: white; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                        <img src="/images/avatar/${not empty sessionScope.user.avatar ? sessionScope.user.avatar : 'default-avatar.png'}" alt="Avatar" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">
+                        <span>${sessionScope.user.fullName}</span>
+                    </a>
+                </c:if>
+                <c:if test="${sessionScope.user == null}">
+                    <span style="color: white;">Welcome, <%=request.getUserPrincipal().getName().toString()%></span>
+                </c:if>
             </form>
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
@@ -59,20 +64,7 @@
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li>
-                            <c:choose>
-                                <c:when test="${pageContext.request.isUserInRole('ROLE_OWNER')}">
-                                    <a class="dropdown-item" href="/admin">Manage Account</a>
-                                </c:when>
-                                <c:otherwise>
-                                    <a class="dropdown-item" href="/account/manage">Manage Account</a>
-                                </c:otherwise>
-                            </c:choose>
-                        </li>
 
-                        <li>
-                            <hr class="dropdown-divider" />
-                        </li>
                         <li>
                             <form method="post" action="/logout">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
