@@ -149,6 +149,41 @@ public class ItemController {
         }
 
         List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
+        if (cartDetails == null) {
+            cartDetails = new ArrayList<>();
+        }
+
+        boolean cartChanged = false;
+        List<CartDetail> validDetails = new ArrayList<>();
+        List<CartDetail> invalidDetails = new ArrayList<>();
+        for (CartDetail cd : cartDetails) {
+            if (cd.getProduct() != null && this.productService.fetchProductById(cd.getProduct().getId()).isPresent()) {
+                validDetails.add(cd);
+            } else {
+                cartChanged = true;
+                invalidDetails.add(cd);
+            }
+        }
+        
+        // Clean up invalid CartDetails from DB and update cart sum
+        if (cartChanged && email != null && cart != null) {
+            for (CartDetail cd : invalidDetails) {
+                this.productService.handleRemoveCartDetail(cd.getId(), session);
+            }
+            // Refresh session sum to match valid items
+            session.setAttribute("sum", validDetails.size());
+        } else if (cartChanged && email == null && cart != null) {
+            cart.setCartDetails(validDetails);
+            cart.setSum(validDetails.size());
+            session.setAttribute("guestCart", cart);
+            session.setAttribute("sum", validDetails.size());
+        }
+        
+        cartDetails = validDetails;
+        
+        if (cartChanged) {
+            model.addAttribute("errorMessage", "Một số sản phẩm trong giỏ hàng không còn tồn tại và đã được tự động loại bỏ.");
+        }
 
         double totalPrice = 0;
         for (CartDetail cd : cartDetails) {
@@ -205,6 +240,40 @@ public class ItemController {
         }
 
         List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
+        if (cartDetails == null) {
+            cartDetails = new ArrayList<>();
+        }
+
+        boolean cartChanged = false;
+        List<CartDetail> validDetails = new ArrayList<>();
+        List<CartDetail> invalidDetails = new ArrayList<>();
+        for (CartDetail cd : cartDetails) {
+            if (cd.getProduct() != null && this.productService.fetchProductById(cd.getProduct().getId()).isPresent()) {
+                validDetails.add(cd);
+            } else {
+                cartChanged = true;
+                invalidDetails.add(cd);
+            }
+        }
+        
+        // Clean up invalid CartDetails from DB and update cart sum
+        if (cartChanged && email != null && cart != null) {
+            for (CartDetail cd : invalidDetails) {
+                this.productService.handleRemoveCartDetail(cd.getId(), session);
+            }
+            session.setAttribute("sum", validDetails.size());
+        } else if (cartChanged && email == null && cart != null) {
+            cart.setCartDetails(validDetails);
+            cart.setSum(validDetails.size());
+            session.setAttribute("guestCart", cart);
+            session.setAttribute("sum", validDetails.size());
+        }
+        
+        cartDetails = validDetails;
+        
+        if (cartChanged) {
+            model.addAttribute("errorMessage", "Một số sản phẩm trong giỏ hàng không còn tồn tại và đã được tự động loại bỏ.");
+        }
 
         double totalPrice = 0;
         for (CartDetail cd : cartDetails) {
