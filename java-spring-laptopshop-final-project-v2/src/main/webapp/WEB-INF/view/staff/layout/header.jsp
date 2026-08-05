@@ -6,7 +6,9 @@
         <style>
             .cyber-logo-text {
                 display: flex;
-                flex-direction: column;
+                flex-direction: row;
+                gap: 8px;
+                align-items: center;
                 justify-content: center;
             }
             .cyber-logo-title {
