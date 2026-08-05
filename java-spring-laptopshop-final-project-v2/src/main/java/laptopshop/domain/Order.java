@@ -1,4 +1,4 @@
-package laptopshop.domain;
+﻿package laptopshop.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -46,6 +46,9 @@ public class Order implements Serializable {
     @Column(name = "tracking_code")
     private String trackingCode;
 
+    @Column(name = "shipping_provider")
+    private String shippingProvider;
+
     // user id
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -75,6 +78,11 @@ public class Order implements Serializable {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public String getFormattedCreatedAt() {
+        if (this.createdAt == null) return "";
+        return java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm").format(this.createdAt);
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
@@ -151,6 +159,14 @@ public class Order implements Serializable {
 
     public void setTrackingCode(String trackingCode) {
         this.trackingCode = trackingCode;
+    }
+
+    public String getShippingProvider() {
+        return shippingProvider;
+    }
+
+    public void setShippingProvider(String shippingProvider) {
+        this.shippingProvider = shippingProvider;
     }
 
     public List<Payment> getPayments() {

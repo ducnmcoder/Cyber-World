@@ -1,4 +1,4 @@
-package laptopshop.service;
+﻿package laptopshop.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -78,6 +78,8 @@ public class OrderService {
             Order currentOrder = orderOptional.get();
             currentOrder.setStatus(order.getStatus());
             currentOrder.setPaymentStatus(order.getPaymentStatus());
+            currentOrder.setTrackingCode(order.getTrackingCode());
+              currentOrder.setShippingProvider(order.getShippingProvider());
             this.orderRepository.save(currentOrder);
         }
     }
