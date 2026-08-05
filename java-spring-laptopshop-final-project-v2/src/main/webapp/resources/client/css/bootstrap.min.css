@@ -84,7 +84,7 @@ h1,
     font-family: "Open Sans", sans-serif;
     font-weight: 600;
     line-height: 1.2;
-    color: #d0e119;
+    color: #000000
 }
 
 h1,
@@ -234,12 +234,12 @@ sup {
 }
 
 a {
-    color: #81c408;
+    color: #c4080e;
     text-decoration: none
 }
 
 a:hover {
-    color: #679d06
+    color: #c4080e
 }
 
 a:not([href]):not([class]),

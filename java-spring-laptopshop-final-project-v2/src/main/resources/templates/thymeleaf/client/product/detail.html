@@ -933,148 +933,143 @@
                 style="background: #f8d7da; color: #721c24; padding: 10px 15px; border-radius: 5px; margin-bottom: 15px;"
                 th:text="${error}"></div>
 
-            <div style="display: flex; gap: 40px; margin-bottom: 30px; align-items: center;">
-                <div style="text-align: center; min-width: 180px;">
-                    <div style="font-size: 56px; font-weight: bold; line-height: 1;" th:text="${product.averageRating}">
-                        0.0</div>
-                    <div style="color: #666; font-size: 14px; margin-bottom: 5px;"><span
-                            th:text="${product.reviewCount}">0</span> reviews</div>
-                    <div style="color: #f39c12; font-size: 16px; margin-bottom: 15px; letter-spacing: 2px;">
-                        <i class="fa-solid fa-star"
-                            th:classappend="${product.averageRating >= 1 ? '' : (product.averageRating >= 0.5 ? 'fa-star-half-stroke' : 'fa-regular fa-star')}"></i>
-                        <i class="fa-solid fa-star"
-                            th:classappend="${product.averageRating >= 2 ? '' : (product.averageRating >= 1.5 ? 'fa-star-half-stroke' : 'fa-regular fa-star')}"></i>
-                        <i class="fa-solid fa-star"
-                            th:classappend="${product.averageRating >= 3 ? '' : (product.averageRating >= 2.5 ? 'fa-star-half-stroke' : 'fa-regular fa-star')}"></i>
-                        <i class="fa-solid fa-star"
-                            th:classappend="${product.averageRating >= 4 ? '' : (product.averageRating >= 3.5 ? 'fa-star-half-stroke' : 'fa-regular fa-star')}"></i>
-                        <i class="fa-solid fa-star"
-                            th:classappend="${product.averageRating >= 5 ? '' : (product.averageRating >= 4.5 ? 'fa-star-half-stroke' : 'fa-regular fa-star')}"></i>
-                    </div>
-                </div>
-                <div style="flex-grow: 1; max-width: 500px;" th:if="${!canReview}">
-                    <p style="color: #666; font-size: 14px;">Only customers who have purchased and completed their
-                        orders can submit a review. Log in and buy this product to leave a review!</p>
+            <div style="text-align: center; min-width: 180px;">
+                <div style="font-size: 56px; font-weight: bold; line-height: 1;" th:text="${product.averageRating}">
+                    0.0</div>
+                <div style="color: #666; font-size: 14px; margin-bottom: 5px;"><span
+                        th:text="${product.reviewCount}">0</span> reviews</div>
+                <div style="color: #f39c12; font-size: 16px; margin-bottom: 15px; letter-spacing: 2px;">
+                    <i class="fa-solid fa-star"
+                        th:classappend="${product.averageRating >= 1 ? '' : (product.averageRating >= 0.5 ? 'fa-star-half-stroke' : 'fa-regular fa-star')}"></i>
+                    <i class="fa-solid fa-star"
+                        th:classappend="${product.averageRating >= 2 ? '' : (product.averageRating >= 1.5 ? 'fa-star-half-stroke' : 'fa-regular fa-star')}"></i>
+                    <i class="fa-solid fa-star"
+                        th:classappend="${product.averageRating >= 3 ? '' : (product.averageRating >= 2.5 ? 'fa-star-half-stroke' : 'fa-regular fa-star')}"></i>
+                    <i class="fa-solid fa-star"
+                        th:classappend="${product.averageRating >= 4 ? '' : (product.averageRating >= 3.5 ? 'fa-star-half-stroke' : 'fa-regular fa-star')}"></i>
+                    <i class="fa-solid fa-star"
+                        th:classappend="${product.averageRating >= 5 ? '' : (product.averageRating >= 4.5 ? 'fa-star-half-stroke' : 'fa-regular fa-star')}"></i>
                 </div>
             </div>
-
-            <!-- Reviews List -->
-            <div style="margin-bottom: 30px;">
-                <div th:if="${reviews == null or #lists.isEmpty(reviews)}" style="color: #777; font-style: italic;">No
-                    reviews yet.</div>
-
-                <div th:each="r : ${reviews}"
-                    style="border-bottom: 1px solid #eee; padding: 15px 0; margin-bottom: 15px;">
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
-                        <img src="/images/avatar/default-avatar.png"
-                            style="width: 30px; height: 30px; border-radius: 50%;">
-                        <strong th:text="${r.user.fullName}">User</strong>
-                        <span style="color: #999; font-size: 12px;"
-                            th:text="${#temporals.format(r.createdAt, 'dd/MM/yyyy HH:mm')}">Date</span>
-                    </div>
-                    <div style="color: #f39c12; font-size: 12px; margin-bottom: 10px;">
-                        <i th:each="i : ${#numbers.sequence(1, 5)}" class="fa-solid"
-                            th:classappend="${r.rating >= i ? 'fa-star' : 'fa-regular fa-star'}"></i>
-                    </div>
-                    <p style="margin: 0; font-size: 14px; color: #333;" th:text="${r.content}"></p>
-
-                    <!-- Admin Reply -->
-                    <div th:if="${r.reply != null and r.reply != ''}"
-                        style="margin-top: 10px; background: #f8f9fa; padding: 10px; border-radius: 5px; border-left: 3px solid #cd1818;">
-                        <strong style="color: #cd1818; font-size: 13px;"><i class="fa-solid fa-user-shield"></i> Shop
-                            Reply:</strong>
-                        <p style="margin: 5px 0 0 0; font-size: 13px; color: #555;" th:text="${r.reply}"></p>
-                    </div>
-                </div>
+            <div style="flex-grow: 1; max-width: 500px;" th:if="${!canReview}">
+                <p style="color: #666; font-size: 14px;">Only customers who have purchased and completed their
+                    orders can submit a review. Log in and buy this product to leave a review!</p>
             </div>
+        </div>
 
-            <!-- Review Form -->
-            <div th:if="${canReview}" style="position: relative; border-top: 1px solid #eee; padding-top: 20px;">
-                <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 15px;"
-                    th:text="${userReview != null ? 'Edit your review' : 'Write a review'}"></h4>
-                <div th:if="${userReview != null and userReview.status == 'PENDING'}"
-                    style="background: #fff3cd; color: #856404; padding: 10px 15px; border-radius: 5px; margin-bottom: 15px; font-size: 13px;">
-                    Your review is currently pending approval from the shop owner. You can edit it below.
-                </div>
-                <form th:action="@{/product/review}" method="post">
-                    <input type="hidden" name="productId" th:value="${product.id}" />
+        <!-- Reviews List -->
 
-                    <div style="margin-bottom: 15px; display: flex; flex-direction: column; gap: 8px;">
-                        <input type="hidden" name="rating" id="review-rating-input"
-                            th:value="${userReview != null ? userReview.rating : 5}">
-                        <div id="review-stars-container"
-                            style="display: flex; gap: 8px; font-size: 28px; color: #f39c12; cursor: pointer;">
-                            <i class="fa-solid fa-star" data-rating="1"></i>
-                            <i class="fa-solid fa-star" data-rating="2"></i>
-                            <i class="fa-solid fa-star" data-rating="3"></i>
-                            <i class="fa-solid fa-star" data-rating="4"></i>
-                            <i class="fa-solid fa-star" data-rating="5"></i>
-                        </div>
-                        <div id="review-rating-text" style="font-size: 14px; font-weight: 600; color: #cd1818;">5 Stars
-                            (Excellent)</div>
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function () {
-                                const starsContainer = document.getElementById('review-stars-container');
-                                if (starsContainer) {
-                                    const stars = starsContainer.querySelectorAll('i');
-                                    const ratingInput = document.getElementById('review-rating-input');
-                                    const ratingText = document.getElementById('review-rating-text');
 
-                                    const ratingLabels = {
-                                        1: '1 Star (Terrible)',
-                                        2: '2 Stars (Poor)',
-                                        3: '3 Stars (Average)',
-                                        4: '4 Stars (Good)',
-                                        5: '5 Stars (Excellent)'
-                                    };
+        <div th:each="r : ${reviews}" style="border-bottom: 1px solid #eee; padding: 15px 0; margin-bottom: 15px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                <img src="/images/avatar/avatar.png" style="width: 30px; height: 30px; border-radius: 50%;">
+                <strong th:text="${r.user.fullName}">User</strong>
+                <span style="color: #999; font-size: 12px;"
+                    th:text="${#temporals.format(r.createdAt, 'dd/MM/yyyy HH:mm')}">Date</span>
+            </div>
+            <div style="color: #f39c12; font-size: 12px; margin-bottom: 10px;">
+                <i th:each="i : ${#numbers.sequence(1, 5)}" class="fa-solid"
+                    th:classappend="${r.rating >= i ? 'fa-star' : 'fa-regular fa-star'}"></i>
+            </div>
+            <p style="margin: 0; font-size: 14px; color: #333;" th:text="${r.content}"></p>
 
-                                    function updateStars(rating) {
-                                        stars.forEach(star => {
-                                            const starRating = parseInt(star.getAttribute('data-rating'));
-                                            if (starRating <= rating) {
-                                                star.classList.remove('fa-regular');
-                                                star.classList.add('fa-solid');
-                                            } else {
-                                                star.classList.remove('fa-solid');
-                                                star.classList.add('fa-regular');
-                                            }
-                                        });
-                                        ratingText.textContent = ratingLabels[rating];
-                                    }
+            <!-- Admin Reply -->
+            <div th:if="${r.reply != null and r.reply != ''}"
+                style="margin-top: 10px; background: #f8f9fa; padding: 10px; border-radius: 5px; border-left: 3px solid #cd1818;">
+                <strong style="color: #cd1818; font-size: 13px;"><i class="fa-solid fa-user-shield"></i> Shop
+                    Reply:</strong>
+                <p style="margin: 5px 0 0 0; font-size: 13px; color: #555;" th:text="${r.reply}"></p>
+            </div>
+        </div>
+        </div>
 
-                                    // Initialize
-                                    updateStars(parseInt(ratingInput.value));
+        <!-- Review Form -->
+        <div th:if="${canReview}" style="position: relative; border-top: 1px solid #eee; padding-top: 20px;">
+            <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 15px;"
+                th:text="${userReview != null ? 'Edit your review' : 'Write a review'}"></h4>
+            <div th:if="${userReview != null and userReview.status == 'PENDING'}"
+                style="background: #fff3cd; color: #856404; padding: 10px 15px; border-radius: 5px; margin-bottom: 15px; font-size: 13px;">
+                Your review is currently pending approval from the shop owner. You can edit it below.
+            </div>
+            <form th:action="@{/product/review}" method="post">
+                <input type="hidden" name="productId" th:value="${product.id}" />
 
-                                    // Hover and Click events
+                <div style="margin-bottom: 15px; display: flex; flex-direction: column; gap: 8px;">
+                    <input type="hidden" name="rating" id="review-rating-input"
+                        th:value="${userReview != null ? userReview.rating : 5}">
+                    <div id="review-stars-container"
+                        style="display: flex; gap: 8px; font-size: 28px; color: #f39c12; cursor: pointer;">
+                        <i class="fa-solid fa-star" data-rating="1"></i>
+                        <i class="fa-solid fa-star" data-rating="2"></i>
+                        <i class="fa-solid fa-star" data-rating="3"></i>
+                        <i class="fa-solid fa-star" data-rating="4"></i>
+                        <i class="fa-solid fa-star" data-rating="5"></i>
+                    </div>
+                    <div id="review-rating-text" style="font-size: 14px; font-weight: 600; color: #cd1818;">5 Stars
+                        (Excellent)</div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const starsContainer = document.getElementById('review-stars-container');
+                            if (starsContainer) {
+                                const stars = starsContainer.querySelectorAll('i');
+                                const ratingInput = document.getElementById('review-rating-input');
+                                const ratingText = document.getElementById('review-rating-text');
+
+                                const ratingLabels = {
+                                    1: '1 Star (Terrible)',
+                                    2: '2 Stars (Poor)',
+                                    3: '3 Stars (Average)',
+                                    4: '4 Stars (Good)',
+                                    5: '5 Stars (Excellent)'
+                                };
+
+                                function updateStars(rating) {
                                     stars.forEach(star => {
-                                        star.addEventListener('mouseover', function () {
-                                            updateStars(parseInt(this.getAttribute('data-rating')));
-                                        });
-
-                                        star.addEventListener('click', function () {
-                                            ratingInput.value = this.getAttribute('data-rating');
-                                        });
+                                        const starRating = parseInt(star.getAttribute('data-rating'));
+                                        if (starRating <= rating) {
+                                            star.classList.remove('fa-regular');
+                                            star.classList.add('fa-solid');
+                                        } else {
+                                            star.classList.remove('fa-solid');
+                                            star.classList.add('fa-regular');
+                                        }
                                     });
-
-                                    starsContainer.addEventListener('mouseleave', function () {
-                                        updateStars(parseInt(ratingInput.value));
-                                    });
+                                    ratingText.textContent = ratingLabels[rating];
                                 }
-                            });
-                        </script>
-                    </div>
 
-                    <textarea name="content" placeholder="Enter your comment..." required
-                        style="width: 100%; height: 110px; border: 1px solid #ddd; border-radius: 10px; padding: 15px; resize: none; font-family: inherit; font-size: 14px; outline: none; background: #fafafa;"
-                        th:text="${userReview != null ? userReview.content : ''}"></textarea>
+                                // Initialize
+                                updateStars(parseInt(ratingInput.value));
 
-                    <div style="display: flex; justify-content: flex-end; margin-top: 15px;">
-                        <button type="submit"
-                            style="background: #111; color: white; border: none; padding: 8px 20px; border-radius: 20px; font-weight: bold; font-size: 14px; cursor: pointer;">Submit
-                            Review</button>
-                    </div>
-                </form>
-            </div>
+                                // Hover and Click events
+                                stars.forEach(star => {
+                                    star.addEventListener('mouseover', function () {
+                                        updateStars(parseInt(this.getAttribute('data-rating')));
+                                    });
+
+                                    star.addEventListener('click', function () {
+                                        ratingInput.value = this.getAttribute('data-rating');
+                                    });
+                                });
+
+                                starsContainer.addEventListener('mouseleave', function () {
+                                    updateStars(parseInt(ratingInput.value));
+                                });
+                            }
+                        });
+                    </script>
+                </div>
+
+                <textarea name="content" placeholder="Enter your comment..." required
+                    style="width: 100%; height: 110px; border: 1px solid #ddd; border-radius: 10px; padding: 15px; resize: none; font-family: inherit; font-size: 14px; outline: none; background: #fafafa;"
+                    th:text="${userReview != null ? userReview.content : ''}"></textarea>
+
+                <div style="display: flex; justify-content: flex-end; margin-top: 15px;">
+                    <button type="submit"
+                        style="background: #111; color: white; border: none; padding: 8px 20px; border-radius: 20px; font-weight: bold; font-size: 14px; cursor: pointer;">Submit
+                        Review</button>
+                </div>
+            </form>
+        </div>
         </div>
     </main>
 

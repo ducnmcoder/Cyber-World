@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
             <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -10,7 +10,7 @@
                     <meta charset="utf-8" />
                     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-                    <meta name="description" content="Cyber World - Dự án cyberworld" />
+                    <meta name="description" content="Cyber World - Dá»± Ã¡n cyberworld" />
                     <meta name="author" content="Cyber World" />
                     <title>Update Order - Cyber World</title>
                     <link href="/css/styles.css" rel="stylesheet" />
@@ -81,6 +81,19 @@
                                                             <form:option value="PAID">PAID</form:option>
                                                             <form:option value="FAILED">FAILED</form:option>
                                                         </form:select>
+                                                    </div>
+
+                                                    <div class="mb-3 col-12 col-md-6">
+                                                        <label class="form-label">Shipping Provider:</label>
+                                                        <form:select class="form-select" path="shippingProvider">
+                                                            <form:option value="">Select Provider</form:option>
+                                                            <form:option value="GHN">Giao Hàng Nhanh (GHN)</form:option>
+                                                            <form:option value="VTP">Viettel Post</form:option>
+                                                        </form:select>
+                                                    </div>
+                                                    <div class="mb-3 col-12 col-md-6">
+                                                        <label class="form-label">Tracking Code:</label>
+                                                        <form:input class="form-control" path="trackingCode" placeholder="Enter tracking code (optional)" />
                                                     </div>
                                                     <div class="col-12 mb-5">
                                                         <button type="submit" class="btn btn-warning">Update</button>

@@ -48,7 +48,8 @@ public class ReviewController {
         }
 
         if (!this.reviewService.canUserReview(user, product)) {
-            redirectAttributes.addFlashAttribute("error", "You can only review products you have purchased and completed the order.");
+            redirectAttributes.addFlashAttribute("error",
+                    "You can only review products you have purchased and completed the order.");
             return "redirect:/product/" + productId;
         }
 
@@ -68,7 +69,8 @@ public class ReviewController {
             newReview.setContent(content);
             newReview.setStatus("PENDING");
             this.reviewService.saveReview(newReview);
-            redirectAttributes.addFlashAttribute("success", "Your review has been submitted and is pending approval.");
+            redirectAttributes.addFlashAttribute("success",
+                    "Your review is currently awaiting approval from the store owner. You can only edit it before it is approved.");
         }
 
         return "redirect:/product/" + productId;
