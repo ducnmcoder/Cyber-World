@@ -73,7 +73,7 @@ public class ItemController {
         }
         model.addAttribute("product", pr);
         model.addAttribute("id", id);
-        
+
         // Reviews pagination
         Pageable pageable = PageRequest.of(0, 50, Sort.by("createdAt").descending());
         Page<Review> reviews = this.reviewService.getApprovedReviewsByProduct(pr, pageable);
@@ -94,7 +94,7 @@ public class ItemController {
                 }
             }
         }
-        
+
         model.addAttribute("canReview", canReview);
         model.addAttribute("userReview", userReview);
 
@@ -164,7 +164,7 @@ public class ItemController {
                 invalidDetails.add(cd);
             }
         }
-        
+
         // Clean up invalid CartDetails from DB and update cart sum
         if (cartChanged && email != null && cart != null) {
             for (CartDetail cd : invalidDetails) {
@@ -178,11 +178,12 @@ public class ItemController {
             session.setAttribute("guestCart", cart);
             session.setAttribute("sum", validDetails.size());
         }
-        
+
         cartDetails = validDetails;
-        
+
         if (cartChanged) {
-            model.addAttribute("errorMessage", "Một số sản phẩm trong giỏ hàng không còn tồn tại và đã được tự động loại bỏ.");
+            model.addAttribute("errorMessage",
+                    "Some items in your cart are no longer available and have been automatically removed.");
         }
 
         double totalPrice = 0;
@@ -255,7 +256,7 @@ public class ItemController {
                 invalidDetails.add(cd);
             }
         }
-        
+
         // Clean up invalid CartDetails from DB and update cart sum
         if (cartChanged && email != null && cart != null) {
             for (CartDetail cd : invalidDetails) {
@@ -268,11 +269,12 @@ public class ItemController {
             session.setAttribute("guestCart", cart);
             session.setAttribute("sum", validDetails.size());
         }
-        
+
         cartDetails = validDetails;
-        
+
         if (cartChanged) {
-            model.addAttribute("errorMessage", "Một số sản phẩm trong giỏ hàng không còn tồn tại và đã được tự động loại bỏ.");
+            model.addAttribute("errorMessage",
+                    "Some items in your cart are no longer available and have been automatically removed.");
         }
 
         double totalPrice = 0;
@@ -336,7 +338,7 @@ public class ItemController {
             @RequestParam("receiverPhone") String receiverPhone,
             @RequestParam(value = "paymentMethod", defaultValue = "COD") String paymentMethod,
             org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
-        
+
         HttpSession session = request.getSession(true);
         if (isManager(session)) {
             return "redirect:/";
