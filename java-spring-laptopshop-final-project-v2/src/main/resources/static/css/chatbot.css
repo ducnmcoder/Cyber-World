@@ -409,7 +409,7 @@
 /* ============================================
    Responsive
    ============================================ */
-@media (max-width: 992px) {
+@media (max-width: 480px) {
     .chatbot-window {
         width: calc(100vw - 16px);
         height: calc(100vh - 100px);

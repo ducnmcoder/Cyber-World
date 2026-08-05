@@ -73,7 +73,7 @@ public class ItemController {
         }
         model.addAttribute("product", pr);
         model.addAttribute("id", id);
-
+        
         // Reviews pagination
         Pageable pageable = PageRequest.of(0, 50, Sort.by("createdAt").descending());
         Page<Review> reviews = this.reviewService.getApprovedReviewsByProduct(pr, pageable);
@@ -94,7 +94,7 @@ public class ItemController {
                 }
             }
         }
-
+        
         model.addAttribute("canReview", canReview);
         model.addAttribute("userReview", userReview);
 
@@ -267,7 +267,7 @@ public class ItemController {
             @RequestParam("receiverPhone") String receiverPhone,
             @RequestParam(value = "paymentMethod", defaultValue = "COD") String paymentMethod,
             org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
-
+        
         HttpSession session = request.getSession(true);
         if (isManager(session)) {
             return "redirect:/";

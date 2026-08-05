@@ -187,4 +187,7 @@ public class OrderService {
         return this.orderDetailRepository.findTopProductsByYearMonthDayAndHour(year, month, day, hour, limit);
     }
 
+    public List<Object[]> fetchRevenueByBrand(int year) {
+        return this.orderDetailRepository.findRevenueByBrandByYear(year);
+    }
 }
