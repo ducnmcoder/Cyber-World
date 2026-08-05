@@ -199,17 +199,12 @@ public class ProductService {
         if (pOptional.isPresent()) {
             Product product = pOptional.get();
 
-            // Delete associated CartDetails
+            // Nullify product reference on associated CartDetails (don't delete them)
+            // so that the cart page can detect the removed product and notify the user.
             java.util.List<laptopshop.domain.CartDetail> cartDetails = this.cartDetailRepository.findByProduct(product);
             for (laptopshop.domain.CartDetail cd : cartDetails) {
-                laptopshop.domain.Cart cart = cd.getCart();
-                this.cartDetailRepository.deleteById(cd.getId());
-                if (cart.getSum() > 1) {
-                    cart.setSum(cart.getSum() - 1);
-                    this.cartRepository.save(cart);
-                } else {
-                    this.cartRepository.deleteById(cart.getId());
-                }
+                cd.setProduct(null);
+                this.cartDetailRepository.save(cd);
             }
 
             // Delete associated OrderDetails
@@ -392,10 +387,16 @@ public class ProductService {
                 for (CartDetail cd : cartDetails) {
                     Product product = cd.getProduct();
                     if (product != null) {
-                        long currentQuantity = product.getQuantity() != null ? product.getQuantity() : 0;
-                        if (cd.getQuantity() > currentQuantity) {
-                            throw new RuntimeException("Insufficient quantity of products");
+                        Optional<Product> dbProductOpt = this.productRepository.findById(product.getId());
+                        if (dbProductOpt.isEmpty()) {
+                            throw new RuntimeException("Sản phẩm " + product.getName() + " không còn tồn tại. Vui lòng kiểm tra lại giỏ hàng.");
                         }
+                        Product dbProduct = dbProductOpt.get();
+                        long currentQuantity = dbProduct.getQuantity() != null ? dbProduct.getQuantity() : 0;
+                        if (cd.getQuantity() > currentQuantity) {
+                            throw new RuntimeException("Số lượng sản phẩm " + dbProduct.getName() + " không đủ.");
+                        }
+                        cd.setProduct(dbProduct); // ensure fresh DB data is used
                     }
                 }
 
