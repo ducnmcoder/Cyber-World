@@ -116,6 +116,8 @@ public class AccountController {
         // Refresh session avatar and name 
         request.getSession().setAttribute("fullName", currentUser.getFullName());
         request.getSession().setAttribute("avatar", currentUser.getAvatar());
+        // Update the session user object so header reflects changes immediately
+        request.getSession().setAttribute("user", currentUser);
 
         return "redirect:/account/manage?success=info";
     }
@@ -128,8 +130,16 @@ public class AccountController {
             return "redirect:/account/manage?error=password_mismatch";
         }
 
+        if (newPassword.length() < 8 || !newPassword.matches(".*[a-zA-Z].*") || !newPassword.matches(".*[0-9].*")) {
+            return "redirect:/account/manage?error=password_format";
+        }
+
         String email = getEmailFromPrincipal(request);
         User currentUser = this.userService.getUserByEmail(email);
+
+        if (this.passwordEncoder.matches(newPassword, currentUser.getPassword())) {
+            return "redirect:/account/manage?error=password_same";
+        }
 
         String encodedPassword = this.passwordEncoder.encode(newPassword);
         currentUser.setPassword(encodedPassword);

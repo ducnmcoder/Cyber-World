@@ -122,6 +122,7 @@ public class HomePageController {
             userRole = this.userService.handleSaveRole(userRole);
         }
         user.setRole(userRole);
+        user.setAvatar("avatar.jpg");
         // save
         this.userService.handleSaveUser(user);
         return "redirect:/login";
