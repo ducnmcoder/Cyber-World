@@ -107,8 +107,14 @@ public class OrderController {
         Optional<Order> currentOrder = this.orderService.fetchOrderById(orderId);
         if (currentOrder.isPresent()) {
             Order order = currentOrder.get();
-            order.setStatus("RETURNED"); // Or REFUNDED
+            order.setStatus("RETURNED"); // Mark as returned/approved
             this.orderService.updateOrder(order);
+            
+            // Send email
+            String email = order.getUser() != null ? order.getUser().getEmail() : null;
+            if (email != null && !email.isEmpty()) {
+                this.emailService.sendRefundApprovalEmail(email, order);
+            }
         }
         String redirectUrl = "/admin/order/" + orderId + "?page=" + page;
         if (source != null && !source.isEmpty()) {

@@ -179,6 +179,14 @@ public class EmailService {
 
             String htmlContent = "<div style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f7f6; padding: 40px 0; margin: 0;\">" +
                 "<div style=\"max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);\">" +
+                "    <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color: #cd1818;\">" +
+                "      <tr><td align=\"center\" style=\"padding: 25px 30px;\">" +
+                "        <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>" +
+                "          <td valign=\"middle\"><img src=\"cid:logoImage\" alt=\"Cyber World Logo\" style=\"height: 70px; display: block; border: 0;\"></td>" +
+                "          <td valign=\"middle\" style=\"padding-left: 0;\"><h1 style=\"margin: 0; margin-left: -35px; position: relative; z-index: 10; color: #ffffff; font-size: 32px; font-weight: 800; letter-spacing: 2px; font-family: 'Arial Black', Impact, sans-serif;\">CYBER WORLD</h1></td>" +
+                "        </tr></table>" +
+                "      </td></tr>" +
+                "    </table>" +
                 "<div style=\"padding: 30px; color: #333333; line-height: 1.6; font-size: 16px;\">" +
                 "<p>Dear <strong>" + customerName + "</strong>,</p>" +
                 "<p>Thank you for shopping at <strong>CYBER WORLD</strong> and for submitting your return/refund request.</p>" +
@@ -205,9 +213,74 @@ public class EmailService {
                 "</div>";
 
             helper.setText(htmlContent, true);
+            
+            // Add inline logo image
+            ClassPathResource logo = new ClassPathResource("static/images/logo.png");
+            helper.addInline("logoImage", logo);
+
             javaMailSender.send(message);
         } catch (Exception e) {
             System.err.println("Failed to send refund rejection email: " + e.getMessage());
+        }
+    }
+
+    public void sendRefundApprovalEmail(String toEmail, laptopshop.domain.Order order) {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(senderEmail, "Cyber World");
+            helper.setTo(toEmail);
+            helper.setSubject("Refund Request Approved - Order CW-" + order.getId() + " - Cyber World");
+
+            String productName = "Products from Order CW-" + order.getId();
+            if (order.getOrderDetails() != null && !order.getOrderDetails().isEmpty()) {
+                productName = order.getOrderDetails().get(0).getProduct().getName();
+                if (order.getOrderDetails().size() > 1) {
+                    productName += " and " + (order.getOrderDetails().size() - 1) + " other item(s)";
+                }
+            }
+
+            String customerName = order.getRefundName() != null ? order.getRefundName() : order.getReceiverName();
+
+            String htmlContent = "<div style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f7f6; padding: 40px 0; margin: 0;\">" +
+                "<div style=\"max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);\">" +
+                "    <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color: #cd1818;\">" +
+                "      <tr><td align=\"center\" style=\"padding: 25px 30px;\">" +
+                "        <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>" +
+                "          <td valign=\"middle\"><img src=\"cid:logoImage\" alt=\"Cyber World Logo\" style=\"height: 70px; display: block; border: 0;\"></td>" +
+                "          <td valign=\"middle\" style=\"padding-left: 0;\"><h1 style=\"margin: 0; margin-left: -35px; position: relative; z-index: 10; color: #ffffff; font-size: 32px; font-weight: 800; letter-spacing: 2px; font-family: 'Arial Black', Impact, sans-serif;\">CYBER WORLD</h1></td>" +
+                "        </tr></table>" +
+                "      </td></tr>" +
+                "    </table>" +
+                "<div style=\"padding: 30px; color: #333333; line-height: 1.6; font-size: 16px;\">" +
+                "<p>Dear <strong>" + customerName + "</strong>,</p>" +
+                "<p>Thank you for shopping at <strong>CYBER WORLD</strong> and for your patience during the return/refund process.</p>" +
+                "<p>We are pleased to inform you that <strong>your return/refund request has been successfully approved</strong>.</p>" +
+                "<h3>Order Information</h3>" +
+                "<ul>" +
+                "<li><strong>Customer:</strong> " + customerName + "</li>" +
+                "<li><strong>Order ID:</strong> CW-" + order.getId() + "</li>" +
+                "<li><strong>Product:</strong> " + productName + "</li>" +
+                "</ul>" +
+                "<h3>Refund Details</h3>" +
+                "<p>Your refund is currently being processed. The amount will be credited to your provided bank account (<strong>" + (order.getRefundBankName() != null ? order.getRefundBankName() : "N/A") + "</strong>) within <strong>3-7 business days</strong>, depending on your bank's processing time.</p>" +
+                "<p>If you do not receive your refund after 7 business days, please reply to this email or contact our Customer Care department for further assistance.</p>" +
+                "<p>We appreciate your understanding and look forward to serving you again soon.</p>" +
+                "<p>Best regards,<br><strong>CYBER WORLD</strong><br>Customer Care Department<br>Email: <a href=\"mailto:support@cyberworld.com\">support@cyberworld.com</a><br>Hotline: 1900-XXXX</p>" +
+                "</div>" +
+                "</div>" +
+                "</div>";
+
+            helper.setText(htmlContent, true);
+
+            // Add inline logo image
+            ClassPathResource logo = new ClassPathResource("static/images/logo.png");
+            helper.addInline("logoImage", logo);
+
+            javaMailSender.send(message);
+        } catch (Exception e) {
+            System.err.println("Failed to send refund approval email: " + e.getMessage());
         }
     }
 }
