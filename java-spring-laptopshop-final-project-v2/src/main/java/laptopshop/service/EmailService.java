@@ -157,4 +157,57 @@ public class EmailService {
             System.err.println("Failed to send order confirmation email: " + e.getMessage());
         }
     }
+
+    public void sendRefundRejectionEmail(String toEmail, laptopshop.domain.Order order, String rejectReason) {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(senderEmail, "Cyber World");
+            helper.setTo(toEmail);
+            helper.setSubject("Refund Request Rejected - Order CW-" + order.getId() + " - Cyber World");
+
+            String productName = "Products from Order CW-" + order.getId();
+            if (order.getOrderDetails() != null && !order.getOrderDetails().isEmpty()) {
+                productName = order.getOrderDetails().get(0).getProduct().getName();
+                if (order.getOrderDetails().size() > 1) {
+                    productName += " and " + (order.getOrderDetails().size() - 1) + " other item(s)";
+                }
+            }
+
+            String customerName = order.getRefundName() != null ? order.getRefundName() : order.getReceiverName();
+
+            String htmlContent = "<div style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f7f6; padding: 40px 0; margin: 0;\">" +
+                "<div style=\"max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);\">" +
+                "<div style=\"padding: 30px; color: #333333; line-height: 1.6; font-size: 16px;\">" +
+                "<p>Dear <strong>" + customerName + "</strong>,</p>" +
+                "<p>Thank you for shopping at <strong>CYBER WORLD</strong> and for submitting your return/refund request.</p>" +
+                "<p>After reviewing your request, we would like to inform you of the outcome:</p>" +
+                "<h3>Order Information</h3>" +
+                "<ul>" +
+                "<li><strong>Customer:</strong> " + customerName + "</li>" +
+                "<li><strong>Order ID:</strong> CW-" + order.getId() + "</li>" +
+                "<li><strong>Product:</strong> " + productName + "</li>" +
+                "</ul>" +
+                "<p>We regret to inform you that <strong>your return/refund request has not been approved</strong>.</p>" +
+                "<h3>Reason for rejection may include one of the following:</h3>" +
+                "<ul>" +
+                "<li>The product is not in its original condition or shows signs of use.</li>" +
+                "<li>The product is missing accessories, gifts, or the original packaging.</li>" +
+                "<li>The request was submitted after the permitted return period.</li>" +
+                "<li>The product does not qualify for a return/refund under the store's policy.</li>" +
+                "</ul>" +
+                "<p>If you have additional information, photos, or evidence to support your request, please reply to this email or contact our Customer Care department within <strong>07 days</strong> of receiving this notification so we can re-evaluate your case.</p>" +
+                "<p>We sincerely apologize for any inconvenience this may cause and look forward to serving you again in the future.</p>" +
+                "<p>Best regards,<br><strong>CYBER WORLD</strong><br>Customer Care Department<br>Email: <a href=\"mailto:support@cyberworld.com\">support@cyberworld.com</a><br>Hotline: 1900-XXXX</p>" +
+                "</div>" +
+                "</div>" +
+                "</div>";
+
+            helper.setText(htmlContent, true);
+            javaMailSender.send(message);
+        } catch (Exception e) {
+            System.err.println("Failed to send refund rejection email: " + e.getMessage());
+        }
+    }
 }

@@ -30,6 +30,11 @@
                                 Order
                             </a>
 
+                            <a class="nav-link" href="/admin/refund">
+                                <div class="sb-nav-link-icon"><i class="fas fa-undo"></i></div>
+                                Refund
+                            </a>
+
 
                             <a class="nav-link" href="/admin/blog">
                                 <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>

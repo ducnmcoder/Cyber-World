@@ -1,4 +1,4 @@
-﻿package laptopshop.service;
+package laptopshop.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +41,10 @@ public class OrderService {
 
     public List<Order> fetchOrdersByStatus(String status) {
         return this.orderRepository.findByStatus(status);
+    }
+
+    public Page<Order> fetchOrdersByStatuses(List<String> statuses, Pageable pageable) {
+        return this.orderRepository.findByStatusIn(statuses, pageable);
     }
 
     public Optional<Order> fetchOrderById(long id) {

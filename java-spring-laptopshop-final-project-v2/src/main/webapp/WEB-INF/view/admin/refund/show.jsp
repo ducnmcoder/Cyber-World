@@ -11,7 +11,7 @@
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
                 <meta name="description" content="Cyber World - Dự án cyberworld" />
                 <meta name="author" content="Cyber World" />
-                <title>Manager Orders - Cyber World</title>
+                <title>Manage Refunds - Cyber World</title>
                 <link href="/css/styles.css" rel="stylesheet" />
                 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
             </head>
@@ -23,16 +23,16 @@
                     <div id="layoutSidenav_content">
                         <main>
                             <div class="container-fluid px-4">
-                                <h1 class="mt-4">Manage Orders</h1>
+                                <h1 class="mt-4">Manage Refunds</h1>
                                 <ol class="breadcrumb mb-4">
                                     <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                                    <li class="breadcrumb-item active">Order</li>
+                                    <li class="breadcrumb-item active">Refund</li>
                                 </ol>
                                 <div class="mt-5">
                                     <div class="row">
                                         <div class="col-12 mx-auto">
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <h3>Table Orders</h3>
+                                                <h3>Refund Requests Table</h3>
                                             </div>
 
                                             <hr />
@@ -60,21 +60,20 @@
                                                                     <c:when test="${order.status == 'REFUND_REQUESTED'}">
                                                                         <span class="badge bg-warning text-dark">${order.status}</span>
                                                                     </c:when>
+                                                                    <c:when test="${order.status == 'RETURNED'}">
+                                                                        <span class="badge bg-success">${order.status}</span>
+                                                                    </c:when>
+                                                                    <c:when test="${order.status == 'REFUND_REJECTED'}">
+                                                                        <span class="badge bg-danger">REJECTED</span>
+                                                                    </c:when>
                                                                     <c:otherwise>
                                                                         ${order.status}
                                                                     </c:otherwise>
                                                                 </c:choose>
                                                             </td>
                                                             <td>
-                                                                <a href="/admin/order/${order.id}?page=${currentPage}"
+                                                                <a href="/admin/order/${order.id}?page=${currentPage}&source=refund"
                                                                     class="btn btn-success">View</a>
-                                                                <a href="/admin/order/update/${order.id}?page=${currentPage}"
-                                                                    class="btn btn-warning  mx-2">Update</a>
-                                                                <form action="/admin/order/delete?page=${currentPage}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this order?');">
-                                                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                                                                    <input type="hidden" name="id" value="${order.id}" />
-                                                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                                                </form>
                                                             </td>
                                                         </tr>
 
@@ -86,7 +85,7 @@
                                                 <ul class="pagination justify-content-center">
                                                     <li class="page-item">
                                                         <a class="${1 eq currentPage ? 'disabled page-link' : 'page-link'}"
-                                                            href="/admin/order?page=${currentPage - 1}"
+                                                            href="/admin/refund?page=${currentPage - 1}"
                                                             aria-label="Previous">
                                                             <span aria-hidden="true">&laquo;</span>
                                                         </a>
@@ -95,7 +94,7 @@
                                                         <c:forEach begin="0" end="${totalPages - 1}" varStatus="loop">
                                                             <li class="page-item">
                                                                 <a class="${(loop.index + 1) eq currentPage ? 'active page-link' : 'page-link'}"
-                                                                    href="/admin/order?page=${loop.index + 1}">
+                                                                    href="/admin/refund?page=${loop.index + 1}">
                                                                     ${loop.index + 1}
                                                                 </a>
                                                             </li>
@@ -103,7 +102,7 @@
                                                     </c:if>
                                                     <li class="page-item">
                                                         <a class="${(totalPages == 0) or (totalPages eq currentPage) ? 'disabled page-link' : 'page-link'}"
-                                                            href="/admin/order?page=${currentPage + 1}"
+                                                            href="/admin/refund?page=${currentPage + 1}"
                                                             aria-label="Next">
                                                             <span aria-hidden="true">&raquo;</span>
                                                         </a>
@@ -124,5 +123,3 @@
             </body>
 
             </html>
-
-

@@ -1,4 +1,4 @@
-﻿package laptopshop.domain;
+package laptopshop.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -59,6 +59,24 @@ public class Order implements Serializable {
 
     @OneToMany(mappedBy = "order")
     private List<Payment> payments;
+
+    @Column(name = "refund_name")
+    private String refundName;
+
+    @Column(name = "refund_phone")
+    private String refundPhone;
+
+    @Column(name = "refund_bank_account")
+    private String refundBankAccount;
+
+    @Column(name = "refund_bank_name")
+    private String refundBankName;
+
+    @Column(name = "refund_reason", columnDefinition = "TEXT")
+    private String refundReason;
+
+    @Column(name = "refund_proofs", columnDefinition = "TEXT")
+    private String refundProofs;
 
     public long getId() {
         return id;
@@ -175,6 +193,54 @@ public class Order implements Serializable {
 
     public void setPayments(List<Payment> payments) {
         this.payments = payments;
+    }
+
+    public String getRefundName() {
+        return refundName;
+    }
+
+    public void setRefundName(String refundName) {
+        this.refundName = refundName;
+    }
+
+    public String getRefundPhone() {
+        return refundPhone;
+    }
+
+    public void setRefundPhone(String refundPhone) {
+        this.refundPhone = refundPhone;
+    }
+
+    public String getRefundBankAccount() {
+        return refundBankAccount;
+    }
+
+    public void setRefundBankAccount(String refundBankAccount) {
+        this.refundBankAccount = refundBankAccount;
+    }
+
+    public String getRefundBankName() {
+        return refundBankName;
+    }
+
+    public void setRefundBankName(String refundBankName) {
+        this.refundBankName = refundBankName;
+    }
+
+    public String getRefundReason() {
+        return refundReason;
+    }
+
+    public void setRefundReason(String refundReason) {
+        this.refundReason = refundReason;
+    }
+
+    public String getRefundProofs() {
+        return refundProofs;
+    }
+
+    public void setRefundProofs(String refundProofs) {
+        this.refundProofs = refundProofs;
     }
 
     @Override

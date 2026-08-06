@@ -104,7 +104,12 @@
                                                             'COD'}</small>
                                                     </div>
                                                 </div>
-                                                <div class="mt-2 mt-md-0">
+                                                <div class="mt-2 mt-md-0 d-flex gap-2 align-items-center">
+                                                    <c:if test="${order.status == 'COMPLETE'}">
+                                                        <button class="btn btn-sm btn-outline-danger rounded-pill fw-bold px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#refundModal-${order.id}">
+                                                            REFUND
+                                                        </button>
+                                                    </c:if>
                                                     <c:choose>
                                                         <c:when
                                                             test="${order.status == 'SUCCESS' || order.status == 'DELIVERED'}">
@@ -115,12 +120,22 @@
                                                                 ${order.status}</span>
                                                         </c:when>
                                                         <c:when
-                                                            test="${order.status == 'CANCELLED' || order.status == 'FAILED'}">
+                                                            test="${order.status == 'CANCELLED' || order.status == 'FAILED' || order.status == 'REFUND_REJECTED'}">
                                                             <span
                                                                 class="badge rounded-pill fs-6 fw-bold px-3 py-2 shadow-sm"
                                                                 style="background: #ffebee; color: #c62828; border: 1px solid #ffcdd2;"><i
                                                                     class="bi bi-x-circle-fill me-1"></i>
                                                                 ${order.status}</span>
+                                                        </c:when>
+                                                        <c:when test="${order.status == 'REFUND_REQUESTED'}">
+                                                            <span class="badge rounded-pill fs-6 fw-bold px-3 py-2 shadow-sm" style="background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb;">
+                                                                <i class="bi bi-arrow-return-left me-1"></i> REFUND_REQUESTED
+                                                            </span>
+                                                        </c:when>
+                                                        <c:when test="${order.status == 'RETURNED'}">
+                                                            <span class="badge rounded-pill fs-6 fw-bold px-3 py-2 shadow-sm" style="background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9;">
+                                                                <i class="bi bi-check-circle-fill me-1"></i> RETURNED
+                                                            </span>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <span
@@ -492,6 +507,64 @@
                                             </div>
                                         </div>
 
+                                        <!-- Refund Modal -->
+                                        <div class="modal fade" id="refundModal-${order.id}" tabindex="-1" aria-labelledby="refundModalLabel-${order.id}" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content border-0 shadow">
+                                                    <div class="modal-header border-bottom-0 pb-0">
+                                                        <h5 class="modal-title fw-bold text-dark" id="refundModalLabel-${order.id}">Refund Request</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body pb-4 pt-3">
+                                                        <form action="/order/refund" method="POST" enctype="multipart/form-data" id="refundForm-${order.id}">
+                                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                                            <input type="hidden" name="orderId" value="${order.id}">
+                                                            <div class="mb-3">
+                                                                <label class="form-label fw-bold">Order Code</label>
+                                                                <input type="text" class="form-control bg-light" value="CW-${order.id}" readonly>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label fw-bold">Waybill Code</label>
+                                                                <input type="text" class="form-control bg-light" name="trackingCode" value="${order.trackingCode}" readonly>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label fw-bold">Name</label>
+                                                                <input type="text" class="form-control" name="name" required placeholder="Enter your name">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label fw-bold">Phone Number</label>
+                                                                <input type="text" class="form-control" name="phone" required placeholder="Enter your phone number">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label fw-bold">Bank Name</label>
+                                                                <input type="text" class="form-control" name="bankName" required placeholder="Enter your bank name (e.g. Vietcombank)">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label fw-bold">Bank Account Number (to receive refund)</label>
+                                                                <input type="text" class="form-control" name="bankAccount" required placeholder="Enter your bank account number">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label fw-bold">Reason for Refund</label>
+                                                                <textarea class="form-control" name="reason" rows="3" required placeholder="Please provide the reason for your refund request"></textarea>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label fw-bold">Proof (Images/Videos, max 5, up to 200MB)</label>
+                                                                <div class="input-group">
+                                                                    <label class="input-group-text btn btn-outline-secondary" for="proofsInput-${order.id}" style="cursor: pointer;">Choose Files</label>
+                                                                    <input type="file" class="form-control d-none" id="proofsInput-${order.id}" name="proofs" accept="image/*,video/*" multiple onchange="updateFileLabel(this, '${order.id}'); validateFiles(this);">
+                                                                    <input type="text" class="form-control bg-white" id="proofsText-${order.id}" placeholder="No file chosen" readonly onclick="document.getElementById('proofsInput-${order.id}').click();" style="cursor: pointer;">
+                                                                </div>
+                                                                <div class="form-text text-danger" id="fileError-${order.id}" style="display: none;"></div>
+                                                            </div>
+                                                            <div class="d-grid mt-4">
+                                                                <button type="submit" class="btn btn-danger py-2 fw-bold" style="background-color: #cd1818;">Send Request</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </c:forEach>
                                 </c:otherwise>
                             </c:choose>
@@ -531,7 +604,61 @@
                             document.body.style.paddingRight = '';
                             document.body.style.overflow = '';
                         });
+
+                        function validateFiles(input) {
+                            var errorDiv = input.nextElementSibling;
+                            if (input.files.length > 5) {
+                                errorDiv.textContent = 'You can only upload a maximum of 5 files.';
+                                errorDiv.style.display = 'block';
+                                input.value = ''; // clear
+                                updateFileLabel(input, input.id.split('-')[1]);
+                                return;
+                            }
+                            
+                            var maxSize = 200 * 1024 * 1024; // 200MB
+                            for (var i = 0; i < input.files.length; i++) {
+                                if (input.files[i].size > maxSize) {
+                                    errorDiv.textContent = 'Each file must not exceed 200MB.';
+                                    errorDiv.style.display = 'block';
+                                    input.value = ''; // clear
+                                    updateFileLabel(input, input.id.split('-')[1]);
+                                    return;
+                                }
+                            }
+                            errorDiv.style.display = 'none';
+                        }
+                        function updateFileLabel(input, orderId) {
+                            var textInput = document.getElementById('proofsText-' + orderId);
+                            if (input.files && input.files.length > 0) {
+                                textInput.value = input.files.length + " file(s) selected";
+                            } else {
+                                textInput.value = "";
+                            }
+                        }
                     </script>
+
+                    <!-- Success Popup -->
+                    <c:if test="${not empty successMessage}">
+                        <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-sm">
+                                <div class="modal-content text-center py-4 rounded-3 border-0 shadow">
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <i class="fa fa-check-circle text-danger" style="font-size: 4rem;"></i>
+                                        </div>
+                                        <h5 class="mb-3 fw-bold">${successMessage}</h5>
+                                        <button type="button" class="btn btn-danger px-4" data-bs-dismiss="modal">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                                successModal.show();
+                            });
+                        </script>
+                    </c:if>
                 </body>
 
                 </html>
