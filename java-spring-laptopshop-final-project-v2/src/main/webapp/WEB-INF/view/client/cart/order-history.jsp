@@ -219,6 +219,14 @@
                                                         successfully</small>
                                                 </div>
                                                 <div class="text-end">
+                                                    <c:if test="${order.discountAmount != null and order.discountAmount > 0}">
+                                                        <div class="mb-1">
+                                                            <span class="text-muted me-3" style="font-size: 0.9rem;">Discount (${order.appliedVouchers})</span>
+                                                            <span class="text-success fw-bold" style="font-size: 1rem;">
+                                                                - <fmt:formatNumber type="number" value="${order.discountAmount}" /> VND
+                                                            </span>
+                                                        </div>
+                                                    </c:if>
                                                     <span class="text-muted me-3 text-uppercase fw-semibold"
                                                         style="letter-spacing: 1px;">Order Total</span>
                                                     <span class="fw-bold" style="font-size: 1.5rem; color: #cd1818;">

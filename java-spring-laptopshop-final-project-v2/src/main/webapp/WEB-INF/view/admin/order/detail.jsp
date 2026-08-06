@@ -109,6 +109,32 @@
                                                     </table>
                                                 </div>
                                                 
+                                                <div class="row mt-3 mb-4">
+                                                    <div class="col-md-6 offset-md-6">
+                                                        <div class="card bg-light">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title">Order Summary</h5>
+                                                                <hr/>
+                                                                <div class="d-flex justify-content-between mb-2">
+                                                                    <span>Subtotal (estimated):</span>
+                                                                    <strong><fmt:formatNumber type="number" value="${order.totalPrice + (order.discountAmount != null ? order.discountAmount : 0)}" /> VND</strong>
+                                                                </div>
+                                                                <c:if test="${order.discountAmount != null and order.discountAmount > 0}">
+                                                                    <div class="d-flex justify-content-between mb-2 text-success">
+                                                                        <span>Discount (${order.appliedVouchers}):</span>
+                                                                        <strong>- <fmt:formatNumber type="number" value="${order.discountAmount}" /> VND</strong>
+                                                                    </div>
+                                                                </c:if>
+                                                                <hr/>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <span class="fw-bold">Total Paid/COD:</span>
+                                                                    <strong class="text-danger" style="font-size: 1.25rem;"><fmt:formatNumber type="number" value="${order.totalPrice}" /> VND</strong>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                                 <c:if test="${order.status == 'REFUND_REQUESTED'}">
                                                     <div class="mt-5 card border-warning mb-3">
                                                         <div class="card-header bg-warning text-dark fw-bold">

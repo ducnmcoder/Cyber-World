@@ -26,6 +26,10 @@
     <link href="/client/css/style.css" rel="stylesheet">
 
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: #f4f6f8;
             font-family: 'Open Sans', sans-serif;
@@ -344,6 +348,55 @@
             margin-top: 3px;
         }
 
+        /* Voucher Options */
+        .voucher-option {
+            border: 1px dashed #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: #fff;
+        }
+
+        .voucher-option:hover {
+            border-color: #cd1818;
+            background: #fff9f9;
+        }
+
+        .voucher-option input[type="checkbox"] {
+            margin-top: 4px;
+            cursor: pointer;
+            accent-color: #cd1818;
+            width: 16px;
+            height: 16px;
+        }
+
+        .voucher-option.selected {
+            border: 1px solid #cd1818;
+            background: #fffafa;
+        }
+
+        .voucher-content {
+            flex-grow: 1;
+        }
+
+        .voucher-title {
+            font-weight: bold;
+            font-size: 14px;
+            color: #cd1818;
+            margin-bottom: 4px;
+        }
+
+        .voucher-desc {
+            font-size: 12px;
+            color: #555;
+            line-height: 1.4;
+        }
+
         /* Sticky Bottom Bar */
         .sticky-bottom-bar {
             position: fixed;
@@ -600,8 +653,10 @@
                 </a>
 
                 <!-- Avatar and Name for logged in users -->
-                <a th:if="${session.user != null}" href="/account/manage" style="color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; margin-right: 15px;">
-                    <img th:src="${session.user.avatar != null and !session.user.avatar.isEmpty() ? '/images/avatar/' + session.user.avatar : '/images/avatar/default-avatar.png'}" alt="Avatar" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;" />
+                <a th:if="${session.user != null}" href="/account/manage"
+                    style="color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; margin-right: 15px;">
+                    <img th:src="${session.user.avatar != null and !session.user.avatar.isEmpty() ? '/images/avatar/' + session.user.avatar : '/images/avatar/default-avatar.png'}"
+                        alt="Avatar" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;" />
                     <span th:text="${session.user.fullName}" style="font-weight: 500;"></span>
                 </a>
 
@@ -635,10 +690,8 @@
                 class="fa-solid fa-arrow-left"></i></a>
         <a href="#" class="active"><i class="fa-solid fa-star" style="color: #cd1818; margin-right: 5px;"></i> Product
             Information</a>
-        <a href="#">Description - News</a>
-        <a href="#">Reviews - Comments</a>
-        <a href="#">You may also like</a>
-        <a href="#">FAQ</a>
+        <a href="#description-section">Description - News</a>
+        <a href="#reviews-section">Reviews - Comments</a>
     </div>
 
     <main class="detail-page-wrapper">
@@ -729,26 +782,21 @@
                 <h1 class="product-title" th:text="${product.name}">Laptop Acer Aspire Lite 14 AI AL14-53P-5387 Ultra5
                     115U/16GB/512GB/14" FHD+/Win 11</h1>
 
-                <div class="product-meta" style="display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <span>No.<span th:text="${product.id}">00928035</span></span>
-                    </div>
+                <div class="product-meta" style="display: flex; justify-content: flex-end; align-items: center;">
                     <div style="display: flex; gap: 15px; align-items: center;">
-                        <span style="color: #f39c12; font-weight: bold;"><i class="fa-solid fa-star"></i> 5 <span
-                                style="color: #666; font-weight: normal;">(24 reviews)</span></span>
+                        <span style="color: #f39c12; font-weight: bold;">
+                            <i class="fa-solid fa-star"></i> <span th:text="${product.averageRating}">5</span>
+                            <span style="color: #666; font-weight: normal;">(<span
+                                    th:text="${product.reviewCount}">24</span> reviews)</span>
+                        </span>
                     </div>
                 </div>
-                <div style="display: flex; gap: 15px; margin-bottom: 15px; font-size: 13px; color: #007bff;">
-                    <a href="#" style="text-decoration: none; color: inherit;"><i class="fa-solid fa-list"></i>
-                        Specs</a> |
-                    <a href="#" style="text-decoration: none; color: inherit;"><i class="fa-solid fa-plus-circle"></i>
-                        Compare</a>
-                </div>
+
 
                 <div class="price-box"
                     style="display: flex; justify-content: space-between; align-items: stretch; background: white; border: 1px solid #f1f1f1; border-radius: 10px; overflow: hidden; margin-bottom: 15px;">
                     <div class="price-info" style="padding: 15px;">
-                        <div class="price-main"
+                        <div class="price-main dynamic-detail-price"
                             th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + ' VND'">
                             22.490.000 VND</div>
                         <div class="price-old-wrapper" th:if="${product.price > 10000000}" style="margin-top: 5px;">
@@ -765,47 +813,48 @@
                         </div>
                     </div>
                     <div class="flash-sale-box"
+                        th:if="${product.promoEndDate != null and !product.promoEndDate.isEmpty()}"
                         style="background: linear-gradient(to right, #d32f2f, #b71c1c); color: white; padding: 15px; border-radius: 0 10px 10px 0; display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 180px;">
                         <div style="font-size: 16px; font-weight: bold; margin-bottom: 5px; color: #ffeb3b;"><i
                                 class="fa-solid fa-clock"></i> SHOCK PRICE</div>
-                        <div style="font-size: 12px; display: flex; align-items: center; gap: 5px;">Ends in: <span
-                                style="background: #000; color: white; padding: 3px 6px; border-radius: 4px; font-weight: bold; letter-spacing: 1px;">03
-                                : 11 : 48</span></div>
+                        <div style="font-size: 12px; display: flex; align-items: center; gap: 5px;">End Date: <span
+                                style="background: #000; color: white; padding: 3px 6px; border-radius: 4px; font-weight: bold; letter-spacing: 1px;"
+                                th:text="${product.promoEndDate}">03 : 11 : 48</span></div>
                     </div>
                 </div>
 
-                <div class="trade-in-box">
-                    <span>Trade-in - Extra discount up to <b>2.000.000 VND</b></span>
-                    <a href="#" style="color: #007bff; text-decoration: none;">Get quote now</a>
-                </div>
 
-                <div class="color-options" style="margin-bottom: 15px;">
+
+                <div class="color-options" style="margin-bottom: 15px;"
+                    th:if="${product.color != null and !product.color.isEmpty()}">
                     <div class="color-title" style="margin-bottom: 10px; font-size: 14px; color: #555;">Color</div>
-                    <div class="color-btn" style="position: relative; border-color: #cd1818;">
-                        <img th:src="@{${product.firstImage}}"
-                            style="width: 25px; height: 25px; object-fit: contain; margin-right: 5px;">
-                        <span th:text="${product.color != null ? product.color : 'Grey'}">Grey</span>
-                        <div
-                            style="position: absolute; top: 0; right: 0; background: #cd1818; color: white; font-size: 8px; padding: 1px 3px; border-radius: 0 4px 0 4px;">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                    </div>
-                </div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <label th:each="c, iter : ${#strings.listSplit(product.color, ',')}" class="color-label-item"
+                            style="display: flex; align-items: center; gap: 8px; border: 1px solid #ddd; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 13px; position: relative; transition: all 0.2s; background: white;"
+                            th:classappend="${iter.index == 0 ? 'selected-color' : ''}"
+                            onclick="document.querySelectorAll('.color-label-item').forEach(l => {l.style.borderColor = '#ddd'; l.style.background = 'white'; l.querySelector('.check-icon').style.display='none';}); this.style.borderColor = '#cd1818'; this.style.background = '#fffafa'; this.querySelector('.check-icon').style.display='flex';">
+                            <input type="checkbox" name="selectedColor" th:value="${#strings.trim(c)}"
+                                th:checked="${iter.index == 0}" style="display: none;">
 
-                <div
-                    style="margin-bottom: 20px; border: 1px dashed #cd1818; border-radius: 5px; padding: 10px; display: flex; align-items: center; justify-content: space-between;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <img src="/images/avatar/redeem_point.png"
-                            style="width: 40px; height: 40px; border-radius: 50%;">
-                        <div style="font-size: 14px; font-weight: bold; color: #cd1818;">Redeem points <br><span
-                                style="background: #cd1818; color: #fff; font-size: 11px; padding: 2px 5px; border-radius: 10px;">CHECK
-                                NOW</span></div>
-                    </div>
-                    <div style="text-align: right; color: #cd1818; font-weight: bold; font-size: 18px;">
-                        <div style="font-size: 11px; font-weight: normal; color: #555;">Extra discount up to 10%</div>
-                        2.499.000 VND
+                            <img th:src="@{${product.firstImage}}"
+                                style="width: 25px; height: 25px; object-fit: contain;">
+                            <span th:text="${#strings.trim(c)}">Color Name</span>
+
+                            <div class="check-icon"
+                                th:style="${iter.index == 0 ? 'display: flex; position: absolute; top: -1px; right: -1px; background: #cd1818; color: white; font-size: 8px; padding: 2px 4px; border-radius: 0 4px 0 4px; justify-content: center; align-items: center;' : 'display: none; position: absolute; top: -1px; right: -1px; background: #cd1818; color: white; font-size: 8px; padding: 2px 4px; border-radius: 0 4px 0 4px; justify-content: center; align-items: center;'}">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                        </label>
                     </div>
                 </div>
+                <style>
+                    .selected-color {
+                        border-color: #cd1818 !important;
+                        background: #fffafa !important;
+                    }
+                </style>
+
+
 
                 <div class="promo-box">
                     <div class="promo-box-header">
@@ -823,52 +872,55 @@
                             </div>
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <div>
-                                    <div style="font-size: 20px; font-weight: bold; color: #cd1818;"
+                                    <div style="font-size: 20px; font-weight: bold; color: #cd1818;" class="dynamic-detail-price"
                                         th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + ' VND'">
                                         22.490.000 VND</div>
                                     <div style="font-size: 12px; color: #999; text-decoration: line-through;"
                                         th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + ' VND'">
                                         24.990.000 VND</div>
                                 </div>
-                                <div style="font-size: 13px; color: #555;"><i class="fa-regular fa-clock"></i> 03:37:04
+                                <div style="font-size: 13px; color: #555;"><i class="fa-regular fa-clock"></i> <span
+                                        th:text="${product.promoEndDate != null ? product.promoEndDate : '03:37:04'}">03:37:04</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div style="font-weight: bold; margin-bottom: 10px;">Available offers:</div>
-                        <div class="promo-item">
-                            <i class="fa-solid fa-check"></i>
-                            <span>Instant 2,500,000 VND off valid until 20/07</span>
+                        <div style="font-weight: bold; margin-bottom: 12px; font-size: 14px;">Vouchers:</div>
+
+                        <div class="voucher-list">
+                            <label th:each="v, iter : ${vouchers}" 
+                                   th:class="${iter.index < 3 ? 'voucher-option' : 'voucher-option extra-voucher'}" 
+                                   th:style="${iter.index < 3 ? '' : 'display: none;'}">
+                                <input type="checkbox" class="product-voucher-checkbox" th:value="${v.id}" th:data-discount-type="${v.discountType}" th:data-discount-amount="${v.discountAmount}" onchange="this.parentElement.classList.toggle('selected', this.checked); calculateDetailPrice();">
+                                <div class="voucher-content">
+                                    <div class="voucher-title" th:text="${v.title}">Title</div>
+                                    <div class="voucher-desc" th:text="${v.description}">Description</div>
+                                </div>
+                            </label>
+                            <div th:if="${vouchers == null or vouchers.isEmpty()}" style="font-size: 13px; color: #777; margin-bottom: 10px;">
+                                No active vouchers available.
+                            </div>
                         </div>
-                        <div class="promo-item">
-                            <i class="fa-solid fa-check"></i>
-                            <span>0% Installment</span>
-                        </div>
-                        <div class="promo-item">
-                            <i class="fa-solid fa-check"></i>
-                            <span>Free comprehensive warranty combo: 1 year warranty + 400,000 VND voucher for 1-to-1
-                                exchange warranty</span>
-                        </div>
-                        <a href="#"
-                            style="color: #007bff; text-decoration: none; display: block; margin-top: 10px;">View 10
-                            more offers ˅</a>
+
+                        <a href="#" id="view-more-vouchers-btn"
+                            th:if="${vouchers != null and vouchers.size() > 3}"
+                            style="color: #007bff; text-decoration: none; display: block; margin-top: 10px; font-size: 13px;"
+                            onclick="event.preventDefault(); 
+                                     const extras = document.querySelectorAll('.extra-voucher');
+                                     if(extras.length === 0) return;
+                                     const isHidden = extras[0].style.display === 'none';
+                                     extras.forEach(el => el.style.display = isHidden ? 'flex' : 'none');
+                                     this.innerHTML = isHidden ? 'View less ˄' : 'View more ˅';">View more ˅</a>
                     </div>
                 </div>
 
-                <div class="promo-box">
-                    <div class="promo-box-header"
-                        style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-                        <span>Verify - get extra discount</span>
-                        <a href="#"
-                            style="color: #007bff; text-decoration: none; font-size: 13px; font-weight: normal;">View
-                            all</a>
-                    </div>
-                </div>
+
 
             </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-top: 20px;">
+        <div id="description-section"
+            style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-top: 20px;">
             <div
                 style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
                 <h3 style="margin-bottom: 15px; font-size: 20px; font-weight: bold;">Product Description</h3>
@@ -1430,7 +1482,7 @@
                     <i class="fa-solid fa-coins"></i> +8.822
                 </div>
                 <div style="text-align: right; line-height: 1.2;">
-                    <div class="sticky-price"
+                    <div class="sticky-price dynamic-detail-price"
                         th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + ' VND'">35.290.000
                         VND</div>
                     <div style="font-size: 13px; color: #999; text-decoration: line-through;"
@@ -1442,8 +1494,22 @@
                     </div>
                 </div>
                 <form th:if="${session.user == null or session.user?.role?.name == 'USER'}"
-                    th:action="@{/add-product-from-view-detail}" method="post"
-                    style="margin: 0; display: flex; gap: 15px; align-items: center;">
+                    th:action="@{/add-product-from-view-detail}" method="post" id="productActionForm"
+                    style="margin: 0; display: flex; gap: 15px; align-items: center;"
+                    onsubmit="appendVouchersToForm(this)">
+                    <script>
+                        function appendVouchersToForm(form) {
+                            form.querySelectorAll('.appended-voucher').forEach(el => el.remove());
+                            document.querySelectorAll('.product-voucher-checkbox:checked').forEach(cb => {
+                                const input = document.createElement('input');
+                                input.type = 'hidden';
+                                input.name = 'selectedVouchers';
+                                input.value = cb.value;
+                                input.className = 'appended-voucher';
+                                form.appendChild(input);
+                            });
+                        }
+                    </script>
                     <input type="hidden" name="id" th:value="${product.id}" />
                     <input type="hidden" name="quantity" value="1" />
                     <button class="btn-cart-sticky" type="submit" title="Add to cart"
@@ -1460,6 +1526,41 @@
             </div>
         </div>
     </div>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const baseProductPrice = /*[[${product.price}]]*/ 0;
+        
+        function calculateDetailPrice() {
+            let discountAmount = 0;
+            let percentDiscount = 0;
+            
+            document.querySelectorAll('.product-voucher-checkbox:checked').forEach(function(cb) {
+                const type = cb.getAttribute('data-discount-type');
+                const amount = parseFloat(cb.getAttribute('data-discount-amount'));
+                
+                if (type === 'FIXED') {
+                    discountAmount += amount;
+                } else if (type === 'PERCENT') {
+                    percentDiscount += amount;
+                }
+            });
+            
+            let newTotal = baseProductPrice;
+            if (percentDiscount > 0) {
+                newTotal = newTotal - (newTotal * percentDiscount / 100);
+            }
+            if (discountAmount > 0) {
+                newTotal = newTotal - discountAmount;
+            }
+            if (newTotal < 0) newTotal = 0;
+            
+            const formatted = newTotal.toLocaleString('de-DE', {maximumFractionDigits: 0}) + ' VND';
+            document.querySelectorAll('.dynamic-detail-price').forEach(el => {
+                el.innerText = formatted;
+            });
+        }
+        /*]]>*/
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <script src="/js/chatbot.js" defer></script>

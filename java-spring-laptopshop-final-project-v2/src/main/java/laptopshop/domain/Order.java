@@ -25,6 +25,12 @@ public class Order implements Serializable {
 
     private double totalPrice;
 
+    @Column(name = "discount_amount")
+    private Double discountAmount = 0.0;
+
+    @Column(name = "applied_vouchers", columnDefinition = "TEXT")
+    private String appliedVouchers;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -248,4 +254,19 @@ public class Order implements Serializable {
         return "Order [id=" + id + ", totalPrice=" + totalPrice + ", paymentMethod=" + paymentMethod + "]";
     }
 
+    public Double getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(Double discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
+    public String getAppliedVouchers() {
+        return appliedVouchers;
+    }
+
+    public void setAppliedVouchers(String appliedVouchers) {
+        this.appliedVouchers = appliedVouchers;
+    }
 }

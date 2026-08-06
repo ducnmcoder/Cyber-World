@@ -16,6 +16,7 @@ import laptopshop.domain.CartDetail;
 import laptopshop.domain.Order;
 import laptopshop.domain.OrderDetail;
 import laptopshop.domain.Product;
+import laptopshop.domain.Voucher;
 import laptopshop.domain.User;
 import laptopshop.domain.dto.ProductCriteriaDTO;
 import laptopshop.repository.CartDetailRepository;
@@ -23,6 +24,7 @@ import laptopshop.repository.CartRepository;
 import laptopshop.repository.OrderDetailRepository;
 import laptopshop.repository.OrderRepository;
 import laptopshop.repository.ProductRepository;
+import laptopshop.repository.VoucherRepository;
 import laptopshop.service.specification.ProductSpecs;
 
 @Service
@@ -33,6 +35,7 @@ public class ProductService {
     private final UserService userService;
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
+    private final VoucherRepository voucherRepository;
 
     public ProductService(
             ProductRepository productRepository,
@@ -40,13 +43,15 @@ public class ProductService {
             CartDetailRepository cartDetailRepository,
             UserService userService,
             OrderRepository orderRepository,
-            OrderDetailRepository orderDetailRepository) {
+            OrderDetailRepository orderDetailRepository,
+            VoucherRepository voucherRepository) {
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
         this.cartDetailRepository = cartDetailRepository;
         this.userService = userService;
         this.orderRepository = orderRepository;
         this.orderDetailRepository = orderDetailRepository;
+        this.voucherRepository = voucherRepository;
     }
 
     public Product createProduct(Product pr) {
@@ -368,7 +373,7 @@ public class ProductService {
     public Order handlePlaceOrder(
             User user, HttpSession session,
             String receiverName, String receiverAddress, String receiverPhone,
-            String paymentMethod) {
+            String paymentMethod, List<Long> selectedVouchers) {
 
         // step 1: get cart
         Cart cart = null;
@@ -415,7 +420,54 @@ public class ProductService {
                 for (CartDetail cd : cartDetails) {
                     sum += cd.getPrice() * cd.getQuantity();
                 }
+
+                // Calculate Discounts
+                double totalDiscount = 0.0;
+                StringBuilder appliedVoucherNames = new StringBuilder();
+                if (selectedVouchers != null && !selectedVouchers.isEmpty()) {
+                    List<Voucher> vouchers = this.voucherRepository.findAllById(selectedVouchers);
+                    for (Voucher v : vouchers) {
+                        if ("ACTIVE".equals(v.getStatus())) {
+                            // verify condition
+                            boolean applicable = false;
+                            if (v.getAppliesTo() == null || v.getAppliesTo().equals("ALL")) {
+                                applicable = true;
+                            } else {
+                                for (CartDetail cd : cartDetails) {
+                                    Product p = cd.getProduct();
+                                    if (p != null) {
+                                        if (v.getAppliesTo().equals("FACTORY") && p.getFactory() != null && v.getApplyValue() != null && p.getFactory().equalsIgnoreCase(v.getApplyValue())) {
+                                            applicable = true; break;
+                                        }
+                                        if (v.getAppliesTo().equals("TARGET") && p.getTarget() != null && v.getApplyValue() != null && p.getTarget().equalsIgnoreCase(v.getApplyValue())) {
+                                            applicable = true; break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (applicable) {
+                                if ("FIXED".equals(v.getDiscountType())) {
+                                    totalDiscount += v.getDiscountAmount();
+                                } else if ("PERCENT".equals(v.getDiscountType())) {
+                                    totalDiscount += (sum * v.getDiscountAmount() / 100);
+                                }
+                                if (appliedVoucherNames.length() > 0) {
+                                    appliedVoucherNames.append(", ");
+                                }
+                                appliedVoucherNames.append(v.getTitle());
+                            }
+                        }
+                    }
+                }
+                
+                sum = sum - totalDiscount;
+                if (sum < 0) sum = 0;
+                
                 order.setTotalPrice(sum);
+                order.setDiscountAmount(totalDiscount);
+                order.setAppliedVouchers(appliedVoucherNames.toString());
+                
                 order.setCreatedAt(LocalDateTime.now());
                 order = this.orderRepository.save(order);
 

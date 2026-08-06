@@ -55,6 +55,11 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
                                 Review
                             </a>
+
+                            <a class="nav-link" href="/admin/voucher">
+                                <div class="sb-nav-link-icon"><i class="fas fa-ticket-alt"></i></div>
+                                Voucher
+                            </a>
                         </c:if>
                     </div>
                 </div>
