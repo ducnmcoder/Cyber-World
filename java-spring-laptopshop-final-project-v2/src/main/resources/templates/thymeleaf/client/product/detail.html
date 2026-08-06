@@ -686,7 +686,7 @@
         </div>
     </header>
     <div class="product-nav-tabs">
-        <a href="javascript:history.back()" style="border:none; color: #555; font-size: 18px; margin-right: 10px;"><i
+        <a href="javascript:history.back()" style="border:none; color: #e41010; font-size: 18px; margin-right: 10px;"><i
                 class="fa-solid fa-arrow-left"></i></a>
         <a href="#" class="active"><i class="fa-solid fa-star" style="color: #cd1818; margin-right: 5px;"></i> Product
             Information</a>
@@ -803,7 +803,7 @@
                             <div class="price-old"
                                 th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + ' VND'">
                                 24.990.000 VND</div>
-                            <div class="discount-percent">10%</div>
+                            <div class="discount-percent dynamic-discount-percent">-10%</div>
                         </div>
                         <div class="quantity-info" style="margin-top: 10px; font-size: 14px; color: #555;">
                             <span th:if="${product.quantity > 0}">Stock: <strong style="color: #333;"
@@ -872,7 +872,8 @@
                             </div>
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <div>
-                                    <div style="font-size: 20px; font-weight: bold; color: #cd1818;" class="dynamic-detail-price"
+                                    <div style="font-size: 20px; font-weight: bold; color: #cd1818;"
+                                        class="dynamic-detail-price"
                                         th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + ' VND'">
                                         22.490.000 VND</div>
                                     <div style="font-size: 12px; color: #999; text-decoration: line-through;"
@@ -888,22 +889,29 @@
                         <div style="font-weight: bold; margin-bottom: 12px; font-size: 14px;">Vouchers:</div>
 
                         <div class="voucher-list">
-                            <label th:each="v, iter : ${vouchers}" 
-                                   th:class="${iter.index < 3 ? 'voucher-option' : 'voucher-option extra-voucher'}" 
-                                   th:style="${iter.index < 3 ? '' : 'display: none;'}">
-                                <input type="checkbox" class="product-voucher-checkbox" th:value="${v.id}" th:data-discount-type="${v.discountType}" th:data-discount-amount="${v.discountAmount}" onchange="this.parentElement.classList.toggle('selected', this.checked); calculateDetailPrice();">
+                            <label th:each="v, iter : ${vouchers}"
+                                th:class="${iter.index < 3 ? 'voucher-option' : 'voucher-option extra-voucher'}"
+                                th:style="${iter.index < 3 ? '' : 'display: none;'}">
+                                <input type="checkbox" class="product-voucher-checkbox" th:value="${v.id}"
+                                    th:data-discount-type="${v.discountType}"
+                                    th:data-discount-amount="${v.discountAmount}"
+                                    onchange="this.parentElement.classList.toggle('selected', this.checked); calculateDetailPrice();">
                                 <div class="voucher-content">
-                                    <div class="voucher-title" th:text="${v.title}">Title</div>
+                                    <div class="voucher-title" style="display: flex; align-items: center; flex-wrap: wrap; gap: 5px;">
+                                        <span th:text="${v.title}">Title</span>
+                                        <span th:if="${v.discountType == 'PERCENT'}" style="background: #cd1818; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;" th:text="'- ' + ${#numbers.formatDecimal(v.discountAmount, 1, 'POINT', 0, 'COMMA')} + '%'"></span>
+                                        <span th:if="${v.discountType == 'FIXED'}" style="background: #cd1818; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;" th:text="'- ' + ${#numbers.formatDecimal(v.discountAmount, 1, 'POINT', 0, 'COMMA')} + ' VND'"></span>
+                                    </div>
                                     <div class="voucher-desc" th:text="${v.description}">Description</div>
                                 </div>
                             </label>
-                            <div th:if="${vouchers == null or vouchers.isEmpty()}" style="font-size: 13px; color: #777; margin-bottom: 10px;">
+                            <div th:if="${vouchers == null or vouchers.isEmpty()}"
+                                style="font-size: 13px; color: #777; margin-bottom: 10px;">
                                 No active vouchers available.
                             </div>
                         </div>
 
-                        <a href="#" id="view-more-vouchers-btn"
-                            th:if="${vouchers != null and vouchers.size() > 3}"
+                        <a href="#" id="view-more-vouchers-btn" th:if="${vouchers != null and vouchers.size() > 3}"
                             style="color: #007bff; text-decoration: none; display: block; margin-top: 10px; font-size: 13px;"
                             onclick="event.preventDefault(); 
                                      const extras = document.querySelectorAll('.extra-voucher');
@@ -1477,10 +1485,7 @@
                 </div>
             </div>
             <div class="sticky-right" style="display: flex; align-items: center; gap: 20px;">
-                <div
-                    style="background: #fff9eb; color: #f39c12; font-size: 12px; padding: 4px 10px; border-radius: 20px; border: 1px solid #ffe6b3; display: flex; align-items: center; gap: 5px; font-weight: bold;">
-                    <i class="fa-solid fa-coins"></i> +8.822
-                </div>
+
                 <div style="text-align: right; line-height: 1.2;">
                     <div class="sticky-price dynamic-detail-price"
                         th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + ' VND'">35.290.000
@@ -1489,7 +1494,7 @@
                         th:if="${product.price > 10000000}">
                         <span
                             th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + ' VND'">35.990.000
-                            VND</span> <span
+                            VND</span> <span class="dynamic-discount-percent"
                             style="color: #cd1818; text-decoration: none; font-weight: bold; margin-left: 5px;">-10%</span>
                     </div>
                 </div>
@@ -1529,22 +1534,23 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
         const baseProductPrice = /*[[${product.price}]]*/ 0;
-        
+        const oldPrice = baseProductPrice * 1.1;
+
         function calculateDetailPrice() {
             let discountAmount = 0;
             let percentDiscount = 0;
-            
-            document.querySelectorAll('.product-voucher-checkbox:checked').forEach(function(cb) {
+
+            document.querySelectorAll('.product-voucher-checkbox:checked').forEach(function (cb) {
                 const type = cb.getAttribute('data-discount-type');
                 const amount = parseFloat(cb.getAttribute('data-discount-amount'));
-                
+
                 if (type === 'FIXED') {
                     discountAmount += amount;
                 } else if (type === 'PERCENT') {
                     percentDiscount += amount;
                 }
             });
-            
+
             let newTotal = baseProductPrice;
             if (percentDiscount > 0) {
                 newTotal = newTotal - (newTotal * percentDiscount / 100);
@@ -1554,9 +1560,16 @@
             }
             if (newTotal < 0) newTotal = 0;
             
-            const formatted = newTotal.toLocaleString('de-DE', {maximumFractionDigits: 0}) + ' VND';
+            let totalDiscountPercent = Math.round(((oldPrice - newTotal) / oldPrice) * 100);
+            if (totalDiscountPercent > 100) totalDiscountPercent = 100;
+
+            const formatted = newTotal.toLocaleString('de-DE', { maximumFractionDigits: 0 }) + ' VND';
             document.querySelectorAll('.dynamic-detail-price').forEach(el => {
                 el.innerText = formatted;
+            });
+            
+            document.querySelectorAll('.dynamic-discount-percent').forEach(el => {
+                el.innerText = '-' + totalDiscountPercent + '%';
             });
         }
         /*]]>*/
