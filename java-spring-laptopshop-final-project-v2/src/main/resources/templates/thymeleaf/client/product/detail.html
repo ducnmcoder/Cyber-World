@@ -26,8 +26,9 @@
     <link href="/client/css/style.css" rel="stylesheet">
 
     <style>
-        html {
-            scroll-behavior: smooth;
+        html, body {
+            overflow-x: clip;
+            width: 100%;
         }
 
         body {
@@ -348,55 +349,6 @@
             margin-top: 3px;
         }
 
-        /* Voucher Options */
-        .voucher-option {
-            border: 1px dashed #ddd;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            background: #fff;
-        }
-
-        .voucher-option:hover {
-            border-color: #cd1818;
-            background: #fff9f9;
-        }
-
-        .voucher-option input[type="checkbox"] {
-            margin-top: 4px;
-            cursor: pointer;
-            accent-color: #cd1818;
-            width: 16px;
-            height: 16px;
-        }
-
-        .voucher-option.selected {
-            border: 1px solid #cd1818;
-            background: #fffafa;
-        }
-
-        .voucher-content {
-            flex-grow: 1;
-        }
-
-        .voucher-title {
-            font-weight: bold;
-            font-size: 14px;
-            color: #cd1818;
-            margin-bottom: 4px;
-        }
-
-        .voucher-desc {
-            font-size: 12px;
-            color: #555;
-            line-height: 1.4;
-        }
-
         /* Sticky Bottom Bar */
         .sticky-bottom-bar {
             position: fixed;
@@ -493,9 +445,101 @@
             cursor: pointer;
         }
 
+        /* Responsive CSS */
         @media (max-width: 991px) {
             .product-detail-container {
                 grid-template-columns: 1fr;
+            }
+            .content-grid {
+                grid-template-columns: 1fr !important;
+            }
+            #description-section {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+        @media (max-width: 767px) {
+            /* Header */
+            .cyber-header .container {
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+            .cyber-search {
+                order: 3;
+                width: 100%;
+                max-width: 100%;
+                margin: 10px 0 0 0;
+            }
+            .cyber-header-actions {
+                order: 2;
+                margin-left: auto;
+            }
+
+            /* Nav Tabs */
+            .product-nav-tabs {
+                position: static;
+                overflow-x: auto;
+                white-space: nowrap;
+                justify-content: flex-start;
+                padding-left: 15px;
+                padding-right: 15px;
+                margin-bottom: 10px;
+                -webkit-overflow-scrolling: touch;
+            }
+            .product-nav-tabs::-webkit-scrollbar {
+                height: 4px;
+                display: none; /* Hide scrollbar for cleaner look */
+            }
+
+            /* Main Layout */
+            .detail-page-wrapper {
+                margin-bottom: 80px; /* Make room for sticky bar */
+            }
+
+            /* Specs */
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* Price Box */
+            .price-box {
+                flex-direction: column;
+            }
+            .flash-sale-box {
+                border-radius: 0 0 10px 10px;
+                min-width: unset;
+                width: 100%;
+                padding: 10px;
+            }
+
+            /* Promo Tags */
+            .promo-tags {
+                justify-content: flex-start;
+            }
+
+            /* Sticky Bottom Bar */
+            .sticky-left {
+                display: none; /* Hide product info on mobile to save space */
+            }
+            .sticky-content {
+                justify-content: center;
+                padding: 0 10px;
+            }
+            .sticky-right {
+                width: 100%;
+                justify-content: space-between;
+                gap: 5px;
+            }
+            .btn-buy-now, .btn-installment {
+                flex: 1;
+                padding: 10px 5px !important;
+                font-size: 13px !important;
+                height: 44px !important;
+            }
+            .btn-cart-sticky {
+                padding: 0 15px !important;
+                flex-shrink: 0 !important;
+                height: 44px !important;
             }
         }
 
