@@ -39,6 +39,7 @@
             color: #64748b;
             font-family: 'Inter', sans-serif;
         }
+
         .auth-slogan p {
             margin: 4px 0;
             font-size: 14px;
@@ -158,6 +159,92 @@
             color: #007bff;
             text-decoration: none;
         }
+
+        /* Terms Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+
+        .modal-body {
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 15px;
+            font-size: 14.5px;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .modal-body p {
+            margin-bottom: 15px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .btn-agree,
+        .btn-decline {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+            transition: background 0.2s;
+        }
+
+        .btn-agree {
+            background: #cd1818;
+            color: white;
+        }
+
+        .btn-decline {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-agree:hover {
+            background: #b51515;
+        }
+
+        .btn-decline:hover {
+            background: #5a6268;
+        }
     </style>
 </head>
 
@@ -172,56 +259,57 @@
                 <div style="margin: auto 0; width: 100%;">
                     <h2>Create an Account</h2>
 
-                <form method="post" th:action="@{/register}" th:object="${registerUser}">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>First Name</label>
-                            <input type="text" th:field="*{firstName}" placeholder="First Name"
-                                th:classappend="${#fields.hasErrors('firstName')} ? 'is-invalid' : ''" />
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('firstName')}"
-                                th:errors="*{firstName}"></div>
+                    <form id="registerForm" method="post" th:action="@{/register}" th:object="${registerUser}">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>First Name</label>
+                                <input type="text" th:field="*{firstName}" placeholder="First Name"
+                                    th:classappend="${#fields.hasErrors('firstName')} ? 'is-invalid' : ''" />
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('firstName')}"
+                                    th:errors="*{firstName}"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name</label>
+                                <input type="text" th:field="*{lastName}" placeholder="Last Name" />
+                            </div>
                         </div>
+
                         <div class="form-group">
-                            <label>Last Name</label>
-                            <input type="text" th:field="*{lastName}" placeholder="Last Name" />
+                            <label>Email Address</label>
+                            <input type="email" th:field="*{email}" placeholder="example@gmail.com"
+                                th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''" required />
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                            </div>
                         </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" th:field="*{password}" placeholder="Create Password"
+                                    th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid' : ''"
+                                    required pattern="(?=.*[A-Za-z])(?=.*\d).{8,}"
+                                    title="The password must be at least 8 characters and include both letters and numbers." />
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input type="password" th:field="*{confirmPassword}" placeholder="Confirm Password"
+                                    th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid' : ''"
+                                    required pattern="(?=.*[A-Za-z])(?=.*\d).{8,}"
+                                    title="The password must be at least 8 characters and include both letters and numbers." />
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('confirmPassword')}"
+                                    th:errors="*{confirmPassword}"></div>
+                            </div>
+                        </div>
+
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                        <button type="submit" class="btn-submit">Register</button>
+                    </form>
+
+                    <div class="auth-links">
+                        <p>Already have an account? <a href="/login">Login now</a></p>
                     </div>
-
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" th:field="*{email}" placeholder="example@gmail.com"
-                            th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''" required />
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Password</label>
-                            <input type="password" th:field="*{password}" placeholder="Create Password"
-                                th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid' : ''" required
-                                pattern="(?=.*[A-Za-z])(?=.*\d).{8,}"
-                                title="The password must be at least 8 characters and include both letters and numbers." />
-                        </div>
-                        <div class="form-group">
-                            <label>Confirm Password</label>
-                            <input type="password" th:field="*{confirmPassword}" placeholder="Confirm Password"
-                                th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid' : ''" required
-                                pattern="(?=.*[A-Za-z])(?=.*\d).{8,}"
-                                title="The password must be at least 8 characters and include both letters and numbers." />
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('confirmPassword')}"
-                                th:errors="*{confirmPassword}"></div>
-                        </div>
-                    </div>
-
-                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-
-                    <button type="submit" class="btn-submit">Register</button>
-                </form>
-
-                <div class="auth-links">
-                    <p>Already have an account? <a href="/login">Login now</a></p>
                 </div>
-            </div>
 
                 <div class="auth-slogan">
                     <p>"Empower your digital life. Join Cyber World today."</p>
@@ -232,6 +320,107 @@
     </main>
 
     <div th:replace="~{thymeleaf/client/layout/footer :: footer}"></div>
+
+    <!-- Terms Modal -->
+    <div id="termsModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Terms and Conditions</h3>
+            <div class="modal-body">
+                <p><strong>1. Account Registration Requirements</strong><br>
+                    Age: Users must be 18 years of age or older, or have parental/legal guardian supervision to conduct
+                    transactions.<br><br>
+                    Information Accuracy: Users commit to providing accurate, complete, and up-to-date personal
+                    information (full name, phone number, email, delivery address).<br><br>
+                    Right to Refuse: The website has the right to refuse registration or lock an account if it detects
+                    fraudulent information or policy violations.</p>
+
+                <p><strong>2. Account and Password Security</strong><br>
+                    Security Responsibility: Users are responsible for protecting their password, login information, and
+                    all activities performed under their account.<br><br>
+                    Incident Reporting: Users must immediately notify the website administrators if they detect
+                    unauthorized access or security vulnerabilities.<br><br>
+                    Disclaimer: The website is not responsible for any damages arising from users disclosing their login
+                    information.</p>
+
+                <p><strong>3. Ordering and Transaction Regulations</strong><br>
+                    Prices and Product Availability: Product prices, specifications (RAM, CPU, GPU, etc.), and
+                    promotions may change without prior notice. Orders are only confirmed after the system sends an
+                    order confirmation notification.<br><br>
+                    Transaction Confirmation: Account registration does not guarantee product reservation. Products are
+                    only reserved once the order is fully paid or the COD (Cash on Delivery) is successfully
+                    confirmed.<br><br>
+                    Order Cancellation: The website reserves the right to cancel orders if there are system pricing
+                    errors, suspected fraud, or out-of-stock items.</p>
+
+                <p><strong>4. Warranty and Return Policy Regulations</strong><br>
+                    Policy Link: By registering, users agree to abide by the Warranty Policy (for new/used laptops) and
+                    the Return Policy publicly available on the website.<br><br>
+                    Warranty Conditions: Warranty only applies to the account holder who purchased the product or has a
+                    valid invoice/order information stored in the system.</p>
+
+                <p><strong>5. Use of Personal Information (Privacy Rights)</strong><br>
+                    Data Collection: You agree to allow the website to collect and use your personal information for the
+                    purpose of processing orders, providing customer service, and sending promotional notifications (you
+                    can unsubscribe from receiving messages/emails at any time).<br><br>
+                    Confidentiality Commitment: The website commits not to sell or share personal information with third
+                    parties, except for shipping/payment service providers or when required by law enforcement agencies.
+                </p>
+
+                <p><strong>6. Prohibited Actions</strong><br>
+                    Creating multiple fake accounts to profit from promotions and discount codes (vouchers).<br><br>
+                    Using bots or automated tools to interfere with the system or collect website data.<br><br>
+                    Posting false, offensive, or illegal reviews or comments on product pages.</p>
+
+                <p><strong>7. Suspension or Termination of Account</strong><br>
+                    The website reserves the right to temporarily suspend or permanently delete an account without prior
+                    notice if the user seriously violates the terms of service or shows signs of commercial fraud.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-decline" id="btnDecline">Decline</button>
+                <button class="btn-agree" id="btnAgree">Agree</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const registerForm = document.getElementById('registerForm');
+            const termsModal = document.getElementById('termsModal');
+            const btnDecline = document.getElementById('btnDecline');
+            const btnAgree = document.getElementById('btnAgree');
+            let formIsValid = false;
+
+            if (registerForm) {
+                registerForm.addEventListener('submit', function (e) {
+                    if (!formIsValid) {
+                        e.preventDefault();
+                        // Basic HTML5 validation check
+                        if (registerForm.checkValidity()) {
+                            termsModal.classList.add('active');
+                        } else {
+                            registerForm.reportValidity();
+                        }
+                    }
+                });
+            }
+
+            if (btnDecline) {
+                btnDecline.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    termsModal.classList.remove('active');
+                });
+            }
+
+            if (btnAgree) {
+                btnAgree.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    termsModal.classList.remove('active');
+                    formIsValid = true;
+                    registerForm.submit();
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>
