@@ -187,7 +187,21 @@
                                                                <c:if test="${isChecked}">checked</c:if>
                                                                onchange="this.parentElement.style.borderColor = this.checked ? '#cd1818' : '#ddd'; this.parentElement.style.backgroundColor = this.checked ? '#fff5f5' : '#fff'; calculateTotal();">
                                                         <div>
-                                                            <div style="font-weight: bold; color: #cd1818; font-size: 14px; margin-bottom: 5px; line-height: 1.2;">${v.title}</div>
+                                                            <div style="font-weight: bold; color: #cd1818; font-size: 14px; margin-bottom: 5px; line-height: 1.2; display: flex; align-items: center; flex-wrap: wrap; gap: 5px;">
+                                                                ${v.title}
+                                                                <c:choose>
+                                                                    <c:when test="${v.discountType == 'PERCENT'}">
+                                                                        <span style="background: #cd1818; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;">
+                                                                            - <fmt:formatNumber type="number" value="${v.discountAmount}" />%
+                                                                        </span>
+                                                                    </c:when>
+                                                                    <c:when test="${v.discountType == 'FIXED'}">
+                                                                        <span style="background: #cd1818; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;">
+                                                                            - <fmt:formatNumber type="number" value="${v.discountAmount}" /> VND
+                                                                        </span>
+                                                                    </c:when>
+                                                                </c:choose>
+                                                            </div>
                                                             <div style="font-size: 12px; color: #666; line-height: 1.4;">${v.description}</div>
                                                         </div>
                                                     </label>

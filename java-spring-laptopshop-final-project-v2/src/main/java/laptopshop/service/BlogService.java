@@ -26,6 +26,10 @@ public class BlogService {
         return this.blogRepository.findAll(pageable);
     }
 
+    public Page<Blog> fetchBlogsByType(String type, Pageable pageable) {
+        return this.blogRepository.findBlogsByType(type, pageable);
+    }
+
     public Optional<Blog> fetchBlogById(long id) {
         return this.blogRepository.findById(id);
     }

@@ -38,6 +38,10 @@ public class Blog implements Serializable {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+    
+    private String type; // "ARTICLE" or "VIDEO"
+    
+    private String videoUrl;
 
     @PrePersist
     public void prePersist() {
@@ -96,6 +100,22 @@ public class Blog implements Serializable {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
     }
 
     @Override

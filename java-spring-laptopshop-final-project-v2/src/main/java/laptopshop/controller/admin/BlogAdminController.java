@@ -61,9 +61,16 @@ public class BlogAdminController {
 
     @PostMapping("/admin/blog/create")
     public String handleCreateBlog(@ModelAttribute("newBlog") Blog blog,
-            @RequestParam("blogFile") MultipartFile file) {
+            @RequestParam("blogFile") MultipartFile file,
+            @RequestParam(value = "videoFile", required = false) MultipartFile videoFile) {
         String image = this.uploadService.handleSaveUploadFile(file, "blog");
         blog.setImage(image);
+
+        if ("VIDEO".equals(blog.getType()) && videoFile != null && !videoFile.isEmpty()) {
+            String videoName = this.uploadService.handleSaveUploadFile(videoFile, "blog");
+            blog.setVideoUrl("/images/blog/" + videoName);
+        }
+
         this.blogService.handleSaveBlog(blog);
         return "redirect:/admin/blog";
     }
@@ -89,7 +96,8 @@ public class BlogAdminController {
 
     @PostMapping("/admin/blog/update")
     public String handleUpdateBlog(@ModelAttribute("newBlog") Blog blog,
-            @RequestParam("blogFile") MultipartFile file) {
+            @RequestParam("blogFile") MultipartFile file,
+            @RequestParam(value = "videoFile", required = false) MultipartFile videoFile) {
         Optional<Blog> blogOptional = this.blogService.fetchBlogById(blog.getId());
         if (blogOptional.isPresent()) {
             Blog currentBlog = blogOptional.get();
@@ -97,8 +105,15 @@ public class BlogAdminController {
                 String image = this.uploadService.handleSaveUploadFile(file, "blog");
                 currentBlog.setImage(image);
             }
+            if ("VIDEO".equals(blog.getType()) && videoFile != null && !videoFile.isEmpty()) {
+                String videoName = this.uploadService.handleSaveUploadFile(videoFile, "blog");
+                currentBlog.setVideoUrl("/images/blog/" + videoName);
+            } else if (blog.getVideoUrl() != null && !blog.getVideoUrl().isEmpty()) {
+                currentBlog.setVideoUrl(blog.getVideoUrl());
+            }
             currentBlog.setTitle(blog.getTitle());
             currentBlog.setContent(blog.getContent());
+            currentBlog.setType(blog.getType());
             this.blogService.handleSaveBlog(currentBlog);
         }
         return "redirect:/admin/blog";
