@@ -38,6 +38,55 @@
             padding: 0;
         }
 
+        /* Voucher Options */
+        .voucher-option {
+            border: 1px dashed #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: #fff;
+        }
+
+        .voucher-option:hover {
+            border-color: #cd1818;
+            background: #fff9f9;
+        }
+
+        .voucher-option input[type="checkbox"] {
+            margin-top: 4px;
+            cursor: pointer;
+            accent-color: #cd1818;
+            width: 16px;
+            height: 16px;
+        }
+
+        .voucher-option.selected {
+            border: 1px solid #cd1818;
+            background: #fffafa;
+        }
+
+        .voucher-content {
+            flex-grow: 1;
+        }
+
+        .voucher-title {
+            font-weight: bold;
+            font-size: 14px;
+            color: #cd1818;
+            margin-bottom: 4px;
+        }
+
+        .voucher-desc {
+            font-size: 12px;
+            color: #555;
+            line-height: 1.4;
+        }
+        
         /* Detail page layout to match mockup */
         .detail-page-wrapper {
             max-width: 1200px;
