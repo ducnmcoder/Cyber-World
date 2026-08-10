@@ -51,7 +51,8 @@ public class HomePageController {
     }
 
     @GetMapping("/")
-    public String getHomePage(Model model, @RequestParam(value = "page", defaultValue = "1") int page, HttpServletRequest request) {
+    public String getHomePage(Model model, @RequestParam(value = "page", defaultValue = "1") int page,
+            HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
             User user = (User) session.getAttribute("user");
@@ -61,7 +62,8 @@ public class HomePageController {
         }
 
         // Ensure page is at least 1
-        if (page < 1) page = 1;
+        if (page < 1)
+            page = 1;
 
         Pageable pageable = PageRequest.of(page - 1, 8, Sort.by("id").ascending());
         Page<Product> prs = this.productService.fetchProducts(pageable);
@@ -80,11 +82,12 @@ public class HomePageController {
 
     @GetMapping("/blog")
     public String getBlogPage(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
-        if (page < 1) page = 1;
+        if (page < 1)
+            page = 1;
 
         Pageable pageable = PageRequest.of(page - 1, 6);
         Page<Blog> blogPage = this.blogService.fetchAllBlogs(pageable);
-        
+
         model.addAttribute("blogs", blogPage.getContent());
         model.addAttribute("totalPages", blogPage.getTotalPages());
         model.addAttribute("currentPage", page);
@@ -113,7 +116,7 @@ public class HomePageController {
         String hashPassword = this.passwordEncoder.encode(user.getPassword());
 
         user.setPassword(hashPassword);
-        
+
         laptopshop.domain.Role userRole = this.userService.getRoleByName("USER");
         if (userRole == null) {
             userRole = new laptopshop.domain.Role();
@@ -125,7 +128,7 @@ public class HomePageController {
         user.setAvatar("avatar.jpg");
         // save
         this.userService.handleSaveUser(user);
-        return "redirect:/login";
+        return "redirect:/login?registered";
 
     }
 
