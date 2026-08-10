@@ -98,7 +98,31 @@ public class OrderController {
 
     @PostMapping("/admin/order/update")
     public String handleUpdateOrder(@ModelAttribute("newOrder") Order order, @RequestParam(value = "page", defaultValue = "1") String page) {
-        this.orderService.updateOrder(order);
+        Optional<Order> currentOrderOpt = this.orderService.fetchOrderById(order.getId());
+        if(currentOrderOpt.isPresent()) {
+            Order currentOrder = currentOrderOpt.get();
+            boolean statusChangedToShipping = !"SHIPPING".equals(currentOrder.getStatus()) && "SHIPPING".equals(order.getStatus());
+            boolean statusChangedToComplete = !"COMPLETE".equals(currentOrder.getStatus()) && "COMPLETE".equals(order.getStatus());
+            
+            this.orderService.updateOrder(order);
+            
+            if (statusChangedToShipping || statusChangedToComplete) {
+                String email = currentOrder.getReceiverEmail() != null && !currentOrder.getReceiverEmail().isEmpty() 
+                                    ? currentOrder.getReceiverEmail() 
+                                    : (currentOrder.getUser() != null ? currentOrder.getUser().getEmail() : null);
+                if (email != null && !email.isEmpty()) {
+                    // Fetch full updated order
+                    Order updatedOrder = this.orderService.fetchOrderById(order.getId()).get();
+                    if (statusChangedToShipping) {
+                        this.emailService.sendShippingEmail(email, updatedOrder);
+                    } else if (statusChangedToComplete) {
+                        this.emailService.sendCompleteEmail(email, updatedOrder);
+                    }
+                }
+            }
+        } else {
+            this.orderService.updateOrder(order);
+        }
         return "redirect:/admin/order?page=" + page;
     }
 
@@ -111,7 +135,9 @@ public class OrderController {
             this.orderService.updateOrder(order);
             
             // Send email
-            String email = order.getUser() != null ? order.getUser().getEmail() : null;
+            String email = order.getReceiverEmail() != null && !order.getReceiverEmail().isEmpty() 
+                                    ? order.getReceiverEmail() 
+                                    : (order.getUser() != null ? order.getUser().getEmail() : null);
             if (email != null && !email.isEmpty()) {
                 this.emailService.sendRefundApprovalEmail(email, order);
             }
@@ -132,7 +158,9 @@ public class OrderController {
             this.orderService.updateOrder(order);
             
             // Send email
-            String email = order.getUser() != null ? order.getUser().getEmail() : null;
+            String email = order.getReceiverEmail() != null && !order.getReceiverEmail().isEmpty() 
+                                    ? order.getReceiverEmail() 
+                                    : (order.getUser() != null ? order.getUser().getEmail() : null);
             if (email != null && !email.isEmpty()) {
                 this.emailService.sendRefundRejectionEmail(email, order, null);
             }

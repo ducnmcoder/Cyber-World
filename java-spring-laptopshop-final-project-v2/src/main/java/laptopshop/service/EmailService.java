@@ -95,9 +95,16 @@ public class EmailService {
 
             // Build order items table
             StringBuilder itemsHtml = new StringBuilder();
+            StringBuilder productNames = new StringBuilder();
             if (order.getOrderDetails() != null) {
                 for (laptopshop.domain.OrderDetail od : order.getOrderDetails()) {
                     String productName = od.getProduct() != null ? od.getProduct().getName() : "Product";
+                    
+                    if (productNames.length() > 0) {
+                        productNames.append(", ");
+                    }
+                    productNames.append(productName);
+
                     String formattedPrice = nf.format(od.getPrice());
                     String formattedSubtotal = nf.format(od.getPrice() * od.getQuantity());
                     itemsHtml.append("<tr>")
@@ -123,7 +130,7 @@ public class EmailService {
                 "<p>Thank you for your purchase at <strong>Cyber World</strong>. Your order has been successfully placed.</p>" +
                 "<div style=\"background-color: #f9f9f9; border-radius: 8px; padding: 20px; margin: 25px 0;\">" +
                 "<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"font-size: 15px;\">" +
-                "<tr><td style=\"padding: 8px 0; color: #888;\">Order ID:</td><td style=\"padding: 8px 0; text-align: right; font-weight: 700; color: #cd1818;\">#" + order.getId() + "</td></tr>" +
+                "<tr><td style=\"padding: 8px 0; color: #888;\">Product Name:</td><td style=\"padding: 8px 0; text-align: right; font-weight: 700; color: #cd1818;\">" + productNames.toString() + "</td></tr>" +
                 "<tr><td style=\"padding: 8px 0; color: #888;\">Receiver:</td><td style=\"padding: 8px 0; text-align: right; font-weight: 600;\">" + order.getReceiverName() + "</td></tr>" +
                 "<tr><td style=\"padding: 8px 0; color: #888;\">Phone:</td><td style=\"padding: 8px 0; text-align: right;\">" + order.getReceiverPhone() + "</td></tr>" +
                 "<tr><td style=\"padding: 8px 0; color: #888;\">Address:</td><td style=\"padding: 8px 0; text-align: right;\">" + order.getReceiverAddress() + "</td></tr>" +
@@ -293,7 +300,102 @@ public class EmailService {
             helper.setTo(toEmail);
             helper.setSubject("Order Cancelled - Order CW-" + order.getId() + " - Cyber World");
 
-            String customerName = order.getReceiverName();
+            String productName = "Products from Order CW-" + order.getId();
+            if (order.getOrderDetails() != null && !order.getOrderDetails().isEmpty()) {
+                productName = order.getOrderDetails().get(0).getProduct().getName();
+                if (order.getOrderDetails().size() > 1) {
+                    productName += " and " + (order.getOrderDetails().size() - 1) + " other item(s)";
+                }
+            }
+
+            String customerName = order.getReceiverName() != null ? order.getReceiverName() : "Customer";
+            String trackingCode = order.getTrackingCode() != null && !order.getTrackingCode().isEmpty() ? order.getTrackingCode() : "N/A";
+            
+            java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            String cancelDate = java.time.LocalDateTime.now().format(formatter);
+
+            // Handle guest user reason
+            if (order.getUser() == null && (reason == null || reason.isEmpty())) {
+                reason = "Refused to receive goods"; // "Từ chối nhận hàng"
+            } else if (reason == null || reason.isEmpty()) {
+                reason = "Requested by customer";
+            }
+
+            String htmlContent = "<div style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f7f6; padding: 40px 0; margin: 0;\">" +
+                "<div style=\"max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);\">" +
+                "    <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color: #cd1818;\">" +
+                "      <tr><td align=\"center\" style=\"padding: 25px 30px;\">" +
+                "        <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>" +
+                "          <td valign=\"middle\"><img src=\"cid:logoImage\" alt=\"Cyber World Logo\" style=\"height: 70px; display: block; border: 0;\"></td>" +
+                "          <td valign=\"middle\" style=\"padding-left: 0;\"><h1 style=\"margin: 0; margin-left: -35px; position: relative; z-index: 10; color: #ffffff; font-size: 32px; font-weight: 800; letter-spacing: 2px; font-family: 'Arial Black', Impact, sans-serif;\">CYBER WORLD</h1></td>" +
+                "        </tr></table>" +
+                "      </td></tr>" +
+                "    </table>" +
+                "<div style=\"padding: 30px; color: #333333; line-height: 1.6; font-size: 16px;\">" +
+                "<p><strong>CYBER WORLD</strong> would like to inform you that your order has been <strong>cancelled</strong>.</p>" +
+                "<h3>Order Information</h3>" +
+                "<ul>" +
+                "<li><strong>Customer:</strong> " + customerName + "</li>" +
+                "<li><strong>Product:</strong> " + productName + "</li>" +
+                "<li><strong>Tracking Code:</strong> " + trackingCode + "</li>" +
+                "<li><strong>Order Status:</strong> Cancelled</li>" +
+                "<li><strong>Cancellation Time:</strong> " + cancelDate + "</li>" +
+                "</ul>" +
+                "<h3>Cancellation Reason:</h3>" +
+                "<p>" + reason + "</p>" +
+                "<p>If the order has been paid in advance, <strong>CYBER WORLD</strong> will process a refund according to the store's refund policy.</p>" +
+                "<p>If you need support or have questions regarding the order cancellation, please contact Customer Service.</p>" +
+                "<p>We apologize for this inconvenience and look forward to serving you in future purchases.</p>" +
+                "<p>Best regards,<br><strong>CYBER WORLD</strong><br>Customer Service Department</p>" +
+                "</div>" +
+                "</div>" +
+                "</div>";
+
+            helper.setText(htmlContent, true);
+
+            // Add inline logo image
+            org.springframework.core.io.ClassPathResource logo = new org.springframework.core.io.ClassPathResource("static/images/logo.png");
+            helper.addInline("logoImage", logo);
+
+            javaMailSender.send(message);
+        } catch (Exception e) {
+            System.err.println("Failed to send order cancellation email: " + e.getMessage());
+        }
+    }
+
+    public void sendShippingEmail(String toEmail, laptopshop.domain.Order order) {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(senderEmail, "Cyber World");
+            helper.setTo(toEmail);
+            helper.setSubject("Your Order is Shipping - CW-" + order.getId() + " - Cyber World");
+
+            String productName = "Products from Order CW-" + order.getId();
+            if (order.getOrderDetails() != null && !order.getOrderDetails().isEmpty()) {
+                productName = order.getOrderDetails().get(0).getProduct().getName();
+                if (order.getOrderDetails().size() > 1) {
+                    productName += " and " + (order.getOrderDetails().size() - 1) + " other item(s)";
+                }
+            }
+
+            String customerName = order.getReceiverName() != null ? order.getReceiverName() : "Customer";
+            String shippingProvider = order.getShippingProvider() != null && !order.getShippingProvider().isEmpty() ? order.getShippingProvider() : "Standard Shipping";
+            String trackingCode = order.getTrackingCode() != null && !order.getTrackingCode().isEmpty() ? order.getTrackingCode() : "N/A";
+            String orderTrackingUrl = "http://localhost:8080/order-history"; // Default
+            
+            if (order.getShippingProvider() != null) {
+                switch (order.getShippingProvider()) {
+                    case "GHN": orderTrackingUrl = "https://ghn.vn/"; break;
+                    case "GHTK": orderTrackingUrl = "https://giaohangtietkiem.vn/"; break;
+                    case "VIETTEL": orderTrackingUrl = "https://viettelpost.com.vn/"; break;
+                    case "VNPOST": orderTrackingUrl = "http://www.vnpost.vn/"; break;
+                    case "JNT": orderTrackingUrl = "https://jtexpress.vn/"; break;
+                    case "NINJAVAN": orderTrackingUrl = "https://www.ninjavan.co/"; break;
+                    case "SHOPEXPRESS": orderTrackingUrl = "https://spx.vn/"; break;
+                }
+            }
 
             String htmlContent = "<div style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f7f6; padding: 40px 0; margin: 0;\">" +
                 "<div style=\"max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);\">" +
@@ -307,33 +409,97 @@ public class EmailService {
                 "    </table>" +
                 "<div style=\"padding: 30px; color: #333333; line-height: 1.6; font-size: 16px;\">" +
                 "<p>Dear <strong>" + customerName + "</strong>,</p>" +
-                "<p>We have successfully processed your request to cancel order <strong>CW-" + order.getId() + "</strong>.</p>" +
-                "<div style=\"background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px 20px; margin: 25px 0;\">" +
-                "<strong style=\"color: #856404; display: block; margin-bottom: 5px;\">Cancellation Reason:</strong>" +
-                "<span style=\"color: #533f03;\">" + (reason != null && !reason.isEmpty() ? reason : "Requested by customer") + "</span>" +
-                "</div>";
-                
-            if (!"COD".equals(order.getPaymentMethod())) {
-                htmlContent += "<p>Since your order was paid via <strong>" + order.getPaymentMethod() + "</strong>, our finance department has been notified to process your refund. The refund amount will be credited to the bank account you provided within <strong>3-7 business days</strong>.</p>";
-            } else {
-                htmlContent += "<p>Since this was a Cash on Delivery (COD) order, no further action regarding refunds is required.</p>";
-            }
-
-            htmlContent += "<p>We sincerely apologize if your shopping experience was less than perfect. We hope to have the opportunity to serve you again in the future.</p>" +
-                "<p>Best regards,<br><strong>CYBER WORLD</strong><br>Customer Care Department<br>Email: <a href=\"mailto:support@cyberworld.com\">support@cyberworld.com</a><br>Hotline: 1900-XXXX</p>" +
+                "<p>Thank you for shopping at <strong>CYBER WORLD</strong>.</p>" +
+                "<p>We would like to inform you that your order has been changed to <strong>Shipping</strong> status.</p>" +
+                "<h3>Order Information</h3>" +
+                "<ul>" +
+                "<li><strong>Customer:</strong> " + customerName + "</li>" +
+                "<li><strong>Product:</strong> " + productName + "</li>" +
+                "<li><strong>Order Status:</strong> Shipping</li>" +
+                "<li><strong>Shipping Provider:</strong> " + shippingProvider + "</li>" +
+                "<li><strong>Tracking Code:</strong> " + trackingCode + "</li>" +
+                "</ul>" +
+                "<p>Your order is currently being shipped to your registered address. Please keep your phone available so the delivery staff can contact you upon delivery.</p>" +
+                "<p>You can track your order status at:<br><a href=\"" + orderTrackingUrl + "\" style=\"color: #cd1818; text-decoration: none; font-weight: bold;\">Track Order Here</a></p>" +
+                "<p>Thank you for trusting and choosing <strong>CYBER WORLD</strong>.</p>" +
+                "<p>Best regards,<br><strong>CYBER WORLD</strong><br>Customer Service Department</p>" +
                 "</div>" +
                 "</div>" +
                 "</div>";
 
             helper.setText(htmlContent, true);
-
+            
             // Add inline logo image
             ClassPathResource logo = new ClassPathResource("static/images/logo.png");
             helper.addInline("logoImage", logo);
 
             javaMailSender.send(message);
         } catch (Exception e) {
-            System.err.println("Failed to send order cancellation email: " + e.getMessage());
+            System.err.println("Failed to send shipping email: " + e.getMessage());
+        }
+    }
+
+    public void sendCompleteEmail(String toEmail, laptopshop.domain.Order order) {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(senderEmail, "Cyber World");
+            helper.setTo(toEmail);
+            helper.setSubject("Your Order is Complete - CW-" + order.getId() + " - Cyber World");
+
+            String productName = "Products from Order CW-" + order.getId();
+            if (order.getOrderDetails() != null && !order.getOrderDetails().isEmpty()) {
+                productName = order.getOrderDetails().get(0).getProduct().getName();
+                if (order.getOrderDetails().size() > 1) {
+                    productName += " and " + (order.getOrderDetails().size() - 1) + " other item(s)";
+                }
+            }
+
+            String customerName = order.getReceiverName() != null ? order.getReceiverName() : "Customer";
+            String trackingCode = order.getTrackingCode() != null && !order.getTrackingCode().isEmpty() ? order.getTrackingCode() : "N/A";
+            
+            java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String completedDate = java.time.LocalDate.now().format(formatter);
+
+            String htmlContent = "<div style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f7f6; padding: 40px 0; margin: 0;\">" +
+                "<div style=\"max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);\">" +
+                "    <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color: #cd1818;\">" +
+                "      <tr><td align=\"center\" style=\"padding: 25px 30px;\">" +
+                "        <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>" +
+                "          <td valign=\"middle\"><img src=\"cid:logoImage\" alt=\"Cyber World Logo\" style=\"height: 70px; display: block; border: 0;\"></td>" +
+                "          <td valign=\"middle\" style=\"padding-left: 0;\"><h1 style=\"margin: 0; margin-left: -35px; position: relative; z-index: 10; color: #ffffff; font-size: 32px; font-weight: 800; letter-spacing: 2px; font-family: 'Arial Black', Impact, sans-serif;\">CYBER WORLD</h1></td>" +
+                "        </tr></table>" +
+                "      </td></tr>" +
+                "    </table>" +
+                "<div style=\"padding: 30px; color: #333333; line-height: 1.6; font-size: 16px;\">" +
+                "<p>Dear <strong>" + customerName + "</strong>,</p>" +
+                "<p><strong>CYBER WORLD</strong> would like to inform you that your order has been successfully delivered.</p>" +
+                "<h3>Order Information</h3>" +
+                "<ul>" +
+                "<li><strong>Customer:</strong> " + customerName + "</li>" +
+                "<li><strong>Product:</strong> " + productName + "</li>" +
+                "<li><strong>Tracking Code:</strong> " + trackingCode + "</li>" +
+                "<li><strong>Order Status:</strong> Complete</li>" +
+                "<li><strong>Completed Date:</strong> " + completedDate + "</li>" +
+                "</ul>" +
+                "<p>Thank you for choosing <strong>CYBER WORLD</strong>.</p>" +
+                "<p>If the product meets your needs, you can leave a review to help other customers with their reference.</p>" +
+                "<p>In case the product encounters issues during the warranty period or you need technical support, please contact our customer care department.</p>" +
+                "<p>Best regards,<br><strong>CYBER WORLD</strong><br>Customer Care Department</p>" +
+                "</div>" +
+                "</div>" +
+                "</div>";
+
+            helper.setText(htmlContent, true);
+            
+            // Add inline logo image
+            org.springframework.core.io.ClassPathResource logo = new org.springframework.core.io.ClassPathResource("static/images/logo.png");
+            helper.addInline("logoImage", logo);
+
+            javaMailSender.send(message);
+        } catch (Exception e) {
+            System.err.println("Failed to send complete email: " + e.getMessage());
         }
     }
 }

@@ -216,6 +216,17 @@
                                                 <div class="cyber-box-title">Delivery Information</div>
                                                 <div class="row">
                                                     <div class="col-12 form-group mb-4">
+                                                        <label class="cyber-form-label">Email</label>
+                                                        <c:choose>
+                                                            <c:when test="${not empty sessionScope.email}">
+                                                                <input type="email" class="cyber-form-control" name="receiverEmail" value="${sessionScope.email}" readonly style="background-color: #f8f9fa;" />
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <input type="email" class="cyber-form-control" name="receiverEmail" placeholder="Enter your email" required oninvalid="this.setCustomValidity('Please fill out this field.')" oninput="this.setCustomValidity('')" />
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </div>
+                                                    <div class="col-12 form-group mb-4">
                                                         <label class="cyber-form-label">Full Name</label>
                                                         <input class="cyber-form-control" name="receiverName" placeholder="Enter receiver's full name" required oninvalid="this.setCustomValidity('Please fill out this field.')" oninput="this.setCustomValidity('')" />
                                                     </div>

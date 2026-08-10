@@ -372,7 +372,7 @@ public class ProductService {
 
     public Order handlePlaceOrder(
             User user, HttpSession session,
-            String receiverName, String receiverAddress, String receiverPhone,
+            String receiverName, String receiverAddress, String receiverPhone, String receiverEmail,
             String paymentMethod, List<Long> selectedVouchers) {
 
         // step 1: get cart
@@ -411,6 +411,7 @@ public class ProductService {
                 order.setReceiverName(receiverName);
                 order.setReceiverAddress(receiverAddress);
                 order.setReceiverPhone(receiverPhone);
+                order.setReceiverEmail(receiverEmail);
                 order.setStatus("PENDING");
                 order.setPaymentMethod(paymentMethod);
                 order.setPaymentStatus("COD".equals(paymentMethod) ? "PENDING" : "UNPAID");

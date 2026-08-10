@@ -156,7 +156,13 @@ public class HomePageController {
         currentUser.setId(id);
 
         List<Order> orders = this.orderService.fetchOrderByUser(currentUser);
-        model.addAttribute("orders", orders);
+        
+        // Exclude cancelled orders from the history
+        List<Order> activeOrders = orders.stream()
+                .filter(order -> !"CANCELLED".equals(order.getStatus()))
+                .collect(java.util.stream.Collectors.toList());
+                
+        model.addAttribute("orders", activeOrders);
 
         return "client/cart/order-history";
     }

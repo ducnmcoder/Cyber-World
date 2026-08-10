@@ -69,8 +69,11 @@ public class PaymentController {
             this.productService.handleClearCart(order.getUser(), request.getSession(false));
 
             // Send confirmation email
-            if (order.getUser() != null && order.getUser().getEmail() != null) {
-                this.emailService.sendOrderConfirmationEmail(order.getUser().getEmail(), order);
+            String emailToSend = order.getReceiverEmail() != null && !order.getReceiverEmail().isEmpty() 
+                                    ? order.getReceiverEmail() 
+                                    : (order.getUser() != null ? order.getUser().getEmail() : null);
+            if (emailToSend != null) {
+                this.emailService.sendOrderConfirmationEmail(emailToSend, order);
             }
 
             return "redirect:/thanks";
@@ -105,8 +108,11 @@ public class PaymentController {
             this.productService.handleClearCart(order.getUser(), request.getSession(false));
 
             // Send confirmation email
-            if (order.getUser() != null && order.getUser().getEmail() != null) {
-                this.emailService.sendOrderConfirmationEmail(order.getUser().getEmail(), order);
+            String emailToSend = order.getReceiverEmail() != null && !order.getReceiverEmail().isEmpty() 
+                                    ? order.getReceiverEmail() 
+                                    : (order.getUser() != null ? order.getUser().getEmail() : null);
+            if (emailToSend != null) {
+                this.emailService.sendOrderConfirmationEmail(emailToSend, order);
             }
 
             return "redirect:/thanks";
@@ -143,8 +149,11 @@ public class PaymentController {
             this.productService.handleClearCart(order.getUser(), request.getSession(false));
 
             // Send confirmation email
-            if (order.getUser() != null && order.getUser().getEmail() != null) {
-                this.emailService.sendOrderConfirmationEmail(order.getUser().getEmail(), order);
+            String emailToSend = order.getReceiverEmail() != null && !order.getReceiverEmail().isEmpty() 
+                                    ? order.getReceiverEmail() 
+                                    : (order.getUser() != null ? order.getUser().getEmail() : null);
+            if (emailToSend != null) {
+                this.emailService.sendOrderConfirmationEmail(emailToSend, order);
             }
 
             return "redirect:/thanks";

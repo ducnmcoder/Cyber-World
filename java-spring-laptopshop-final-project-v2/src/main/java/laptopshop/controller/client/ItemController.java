@@ -381,6 +381,7 @@ public class ItemController {
             @RequestParam("receiverName") String receiverName,
             @RequestParam("receiverAddress") String receiverAddress,
             @RequestParam("receiverPhone") String receiverPhone,
+            @RequestParam(value = "receiverEmail", required = false) String receiverEmail,
             @RequestParam(value = "paymentMethod", defaultValue = "COD") String paymentMethod,
             @RequestParam(value = "selectedVouchers", required = false) java.util.List<Long> selectedVouchers,
             org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
@@ -402,7 +403,7 @@ public class ItemController {
         try {
             // Create order with payment method
             order = this.productService.handlePlaceOrder(
-                    currentUser, session, receiverName, receiverAddress, receiverPhone, paymentMethod, selectedVouchers);
+                    currentUser, session, receiverName, receiverAddress, receiverPhone, receiverEmail, paymentMethod, selectedVouchers);
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/checkout";
@@ -448,8 +449,9 @@ public class ItemController {
             default:
                 // COD: mark payment as pending, send email
                 order.setPaymentStatus("PENDING");
-                if (email != null) {
-                    this.emailService.sendOrderConfirmationEmail(email, order);
+                String emailToSend = receiverEmail != null && !receiverEmail.isEmpty() ? receiverEmail : email;
+                if (emailToSend != null && !emailToSend.isEmpty()) {
+                    this.emailService.sendOrderConfirmationEmail(emailToSend, order);
                 }
                 return "redirect:/thanks";
         }

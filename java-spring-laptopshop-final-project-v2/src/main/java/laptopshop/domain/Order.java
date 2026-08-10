@@ -40,6 +40,9 @@ public class Order implements Serializable {
 
     private String receiverPhone;
 
+    @Column(name = "receiver_email")
+    private String receiverEmail;
+
     private String status;
 
     // COD, VNPAY, MOMO, ZALOPAY
@@ -247,6 +250,14 @@ public class Order implements Serializable {
 
     public void setRefundProofs(String refundProofs) {
         this.refundProofs = refundProofs;
+    }
+
+    public String getReceiverEmail() {
+        return receiverEmail;
+    }
+
+    public void setReceiverEmail(String receiverEmail) {
+        this.receiverEmail = receiverEmail;
     }
 
     @Override
