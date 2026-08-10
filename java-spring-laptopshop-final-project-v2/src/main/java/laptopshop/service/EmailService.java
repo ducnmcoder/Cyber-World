@@ -157,4 +157,183 @@ public class EmailService {
             System.err.println("Failed to send order confirmation email: " + e.getMessage());
         }
     }
+
+    public void sendRefundRejectionEmail(String toEmail, laptopshop.domain.Order order, String rejectReason) {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(senderEmail, "Cyber World");
+            helper.setTo(toEmail);
+            helper.setSubject("Refund Request Rejected - Order CW-" + order.getId() + " - Cyber World");
+
+            String productName = "Products from Order CW-" + order.getId();
+            if (order.getOrderDetails() != null && !order.getOrderDetails().isEmpty()) {
+                productName = order.getOrderDetails().get(0).getProduct().getName();
+                if (order.getOrderDetails().size() > 1) {
+                    productName += " and " + (order.getOrderDetails().size() - 1) + " other item(s)";
+                }
+            }
+
+            String customerName = order.getRefundName() != null ? order.getRefundName() : order.getReceiverName();
+
+            String htmlContent = "<div style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f7f6; padding: 40px 0; margin: 0;\">" +
+                "<div style=\"max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);\">" +
+                "    <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color: #cd1818;\">" +
+                "      <tr><td align=\"center\" style=\"padding: 25px 30px;\">" +
+                "        <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>" +
+                "          <td valign=\"middle\"><img src=\"cid:logoImage\" alt=\"Cyber World Logo\" style=\"height: 70px; display: block; border: 0;\"></td>" +
+                "          <td valign=\"middle\" style=\"padding-left: 0;\"><h1 style=\"margin: 0; margin-left: -35px; position: relative; z-index: 10; color: #ffffff; font-size: 32px; font-weight: 800; letter-spacing: 2px; font-family: 'Arial Black', Impact, sans-serif;\">CYBER WORLD</h1></td>" +
+                "        </tr></table>" +
+                "      </td></tr>" +
+                "    </table>" +
+                "<div style=\"padding: 30px; color: #333333; line-height: 1.6; font-size: 16px;\">" +
+                "<p>Dear <strong>" + customerName + "</strong>,</p>" +
+                "<p>Thank you for shopping at <strong>CYBER WORLD</strong> and for submitting your return/refund request.</p>" +
+                "<p>After reviewing your request, we would like to inform you of the outcome:</p>" +
+                "<h3>Order Information</h3>" +
+                "<ul>" +
+                "<li><strong>Customer:</strong> " + customerName + "</li>" +
+                "<li><strong>Order ID:</strong> CW-" + order.getId() + "</li>" +
+                "<li><strong>Product:</strong> " + productName + "</li>" +
+                "</ul>" +
+                "<p>We regret to inform you that <strong>your return/refund request has not been approved</strong>.</p>" +
+                "<h3>Reason for rejection may include one of the following:</h3>" +
+                "<ul>" +
+                "<li>The product is not in its original condition or shows signs of use.</li>" +
+                "<li>The product is missing accessories, gifts, or the original packaging.</li>" +
+                "<li>The request was submitted after the permitted return period.</li>" +
+                "<li>The product does not qualify for a return/refund under the store's policy.</li>" +
+                "</ul>" +
+                "<p>If you have additional information, photos, or evidence to support your request, please reply to this email or contact our Customer Care department within <strong>07 days</strong> of receiving this notification so we can re-evaluate your case.</p>" +
+                "<p>We sincerely apologize for any inconvenience this may cause and look forward to serving you again in the future.</p>" +
+                "<p>Best regards,<br><strong>CYBER WORLD</strong><br>Customer Care Department<br>Email: <a href=\"mailto:support@cyberworld.com\">support@cyberworld.com</a><br>Hotline: 1900-XXXX</p>" +
+                "</div>" +
+                "</div>" +
+                "</div>";
+
+            helper.setText(htmlContent, true);
+            
+            // Add inline logo image
+            ClassPathResource logo = new ClassPathResource("static/images/logo.png");
+            helper.addInline("logoImage", logo);
+
+            javaMailSender.send(message);
+        } catch (Exception e) {
+            System.err.println("Failed to send refund rejection email: " + e.getMessage());
+        }
+    }
+
+    public void sendRefundApprovalEmail(String toEmail, laptopshop.domain.Order order) {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(senderEmail, "Cyber World");
+            helper.setTo(toEmail);
+            helper.setSubject("Refund Request Approved - Order CW-" + order.getId() + " - Cyber World");
+
+            String productName = "Products from Order CW-" + order.getId();
+            if (order.getOrderDetails() != null && !order.getOrderDetails().isEmpty()) {
+                productName = order.getOrderDetails().get(0).getProduct().getName();
+                if (order.getOrderDetails().size() > 1) {
+                    productName += " and " + (order.getOrderDetails().size() - 1) + " other item(s)";
+                }
+            }
+
+            String customerName = order.getRefundName() != null ? order.getRefundName() : order.getReceiverName();
+
+            String htmlContent = "<div style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f7f6; padding: 40px 0; margin: 0;\">" +
+                "<div style=\"max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);\">" +
+                "    <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color: #cd1818;\">" +
+                "      <tr><td align=\"center\" style=\"padding: 25px 30px;\">" +
+                "        <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>" +
+                "          <td valign=\"middle\"><img src=\"cid:logoImage\" alt=\"Cyber World Logo\" style=\"height: 70px; display: block; border: 0;\"></td>" +
+                "          <td valign=\"middle\" style=\"padding-left: 0;\"><h1 style=\"margin: 0; margin-left: -35px; position: relative; z-index: 10; color: #ffffff; font-size: 32px; font-weight: 800; letter-spacing: 2px; font-family: 'Arial Black', Impact, sans-serif;\">CYBER WORLD</h1></td>" +
+                "        </tr></table>" +
+                "      </td></tr>" +
+                "    </table>" +
+                "<div style=\"padding: 30px; color: #333333; line-height: 1.6; font-size: 16px;\">" +
+                "<p>Dear <strong>" + customerName + "</strong>,</p>" +
+                "<p>Thank you for shopping at <strong>CYBER WORLD</strong> and for your patience during the return/refund process.</p>" +
+                "<p>We are pleased to inform you that <strong>your return/refund request has been successfully approved</strong>.</p>" +
+                "<h3>Order Information</h3>" +
+                "<ul>" +
+                "<li><strong>Customer:</strong> " + customerName + "</li>" +
+                "<li><strong>Order ID:</strong> CW-" + order.getId() + "</li>" +
+                "<li><strong>Product:</strong> " + productName + "</li>" +
+                "</ul>" +
+                "<h3>Refund Details</h3>" +
+                "<p>Your refund is currently being processed. The amount will be credited to your provided bank account (<strong>" + (order.getRefundBankName() != null ? order.getRefundBankName() : "N/A") + "</strong>) within <strong>3-7 business days</strong>, depending on your bank's processing time.</p>" +
+                "<p>If you do not receive your refund after 7 business days, please reply to this email or contact our Customer Care department for further assistance.</p>" +
+                "<p>We appreciate your understanding and look forward to serving you again soon.</p>" +
+                "<p>Best regards,<br><strong>CYBER WORLD</strong><br>Customer Care Department<br>Email: <a href=\"mailto:support@cyberworld.com\">support@cyberworld.com</a><br>Hotline: 1900-XXXX</p>" +
+                "</div>" +
+                "</div>" +
+                "</div>";
+
+            helper.setText(htmlContent, true);
+
+            // Add inline logo image
+            ClassPathResource logo = new ClassPathResource("static/images/logo.png");
+            helper.addInline("logoImage", logo);
+
+            javaMailSender.send(message);
+        } catch (Exception e) {
+            System.err.println("Failed to send refund approval email: " + e.getMessage());
+        }
+    }
+
+    public void sendOrderCancellationEmail(String toEmail, laptopshop.domain.Order order, String reason) {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(senderEmail, "Cyber World");
+            helper.setTo(toEmail);
+            helper.setSubject("Order Cancelled - Order CW-" + order.getId() + " - Cyber World");
+
+            String customerName = order.getReceiverName();
+
+            String htmlContent = "<div style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f7f6; padding: 40px 0; margin: 0;\">" +
+                "<div style=\"max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);\">" +
+                "    <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color: #cd1818;\">" +
+                "      <tr><td align=\"center\" style=\"padding: 25px 30px;\">" +
+                "        <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>" +
+                "          <td valign=\"middle\"><img src=\"cid:logoImage\" alt=\"Cyber World Logo\" style=\"height: 70px; display: block; border: 0;\"></td>" +
+                "          <td valign=\"middle\" style=\"padding-left: 0;\"><h1 style=\"margin: 0; margin-left: -35px; position: relative; z-index: 10; color: #ffffff; font-size: 32px; font-weight: 800; letter-spacing: 2px; font-family: 'Arial Black', Impact, sans-serif;\">CYBER WORLD</h1></td>" +
+                "        </tr></table>" +
+                "      </td></tr>" +
+                "    </table>" +
+                "<div style=\"padding: 30px; color: #333333; line-height: 1.6; font-size: 16px;\">" +
+                "<p>Dear <strong>" + customerName + "</strong>,</p>" +
+                "<p>We have successfully processed your request to cancel order <strong>CW-" + order.getId() + "</strong>.</p>" +
+                "<div style=\"background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px 20px; margin: 25px 0;\">" +
+                "<strong style=\"color: #856404; display: block; margin-bottom: 5px;\">Cancellation Reason:</strong>" +
+                "<span style=\"color: #533f03;\">" + (reason != null && !reason.isEmpty() ? reason : "Requested by customer") + "</span>" +
+                "</div>";
+                
+            if (!"COD".equals(order.getPaymentMethod())) {
+                htmlContent += "<p>Since your order was paid via <strong>" + order.getPaymentMethod() + "</strong>, our finance department has been notified to process your refund. The refund amount will be credited to the bank account you provided within <strong>3-7 business days</strong>.</p>";
+            } else {
+                htmlContent += "<p>Since this was a Cash on Delivery (COD) order, no further action regarding refunds is required.</p>";
+            }
+
+            htmlContent += "<p>We sincerely apologize if your shopping experience was less than perfect. We hope to have the opportunity to serve you again in the future.</p>" +
+                "<p>Best regards,<br><strong>CYBER WORLD</strong><br>Customer Care Department<br>Email: <a href=\"mailto:support@cyberworld.com\">support@cyberworld.com</a><br>Hotline: 1900-XXXX</p>" +
+                "</div>" +
+                "</div>" +
+                "</div>";
+
+            helper.setText(htmlContent, true);
+
+            // Add inline logo image
+            ClassPathResource logo = new ClassPathResource("static/images/logo.png");
+            helper.addInline("logoImage", logo);
+
+            javaMailSender.send(message);
+        } catch (Exception e) {
+            System.err.println("Failed to send order cancellation email: " + e.getMessage());
+        }
+    }
 }
