@@ -283,4 +283,57 @@ public class EmailService {
             System.err.println("Failed to send refund approval email: " + e.getMessage());
         }
     }
+
+    public void sendOrderCancellationEmail(String toEmail, laptopshop.domain.Order order, String reason) {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(senderEmail, "Cyber World");
+            helper.setTo(toEmail);
+            helper.setSubject("Order Cancelled - Order CW-" + order.getId() + " - Cyber World");
+
+            String customerName = order.getReceiverName();
+
+            String htmlContent = "<div style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f7f6; padding: 40px 0; margin: 0;\">" +
+                "<div style=\"max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);\">" +
+                "    <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color: #cd1818;\">" +
+                "      <tr><td align=\"center\" style=\"padding: 25px 30px;\">" +
+                "        <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>" +
+                "          <td valign=\"middle\"><img src=\"cid:logoImage\" alt=\"Cyber World Logo\" style=\"height: 70px; display: block; border: 0;\"></td>" +
+                "          <td valign=\"middle\" style=\"padding-left: 0;\"><h1 style=\"margin: 0; margin-left: -35px; position: relative; z-index: 10; color: #ffffff; font-size: 32px; font-weight: 800; letter-spacing: 2px; font-family: 'Arial Black', Impact, sans-serif;\">CYBER WORLD</h1></td>" +
+                "        </tr></table>" +
+                "      </td></tr>" +
+                "    </table>" +
+                "<div style=\"padding: 30px; color: #333333; line-height: 1.6; font-size: 16px;\">" +
+                "<p>Dear <strong>" + customerName + "</strong>,</p>" +
+                "<p>We have successfully processed your request to cancel order <strong>CW-" + order.getId() + "</strong>.</p>" +
+                "<div style=\"background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px 20px; margin: 25px 0;\">" +
+                "<strong style=\"color: #856404; display: block; margin-bottom: 5px;\">Cancellation Reason:</strong>" +
+                "<span style=\"color: #533f03;\">" + (reason != null && !reason.isEmpty() ? reason : "Requested by customer") + "</span>" +
+                "</div>";
+                
+            if (!"COD".equals(order.getPaymentMethod())) {
+                htmlContent += "<p>Since your order was paid via <strong>" + order.getPaymentMethod() + "</strong>, our finance department has been notified to process your refund. The refund amount will be credited to the bank account you provided within <strong>3-7 business days</strong>.</p>";
+            } else {
+                htmlContent += "<p>Since this was a Cash on Delivery (COD) order, no further action regarding refunds is required.</p>";
+            }
+
+            htmlContent += "<p>We sincerely apologize if your shopping experience was less than perfect. We hope to have the opportunity to serve you again in the future.</p>" +
+                "<p>Best regards,<br><strong>CYBER WORLD</strong><br>Customer Care Department<br>Email: <a href=\"mailto:support@cyberworld.com\">support@cyberworld.com</a><br>Hotline: 1900-XXXX</p>" +
+                "</div>" +
+                "</div>" +
+                "</div>";
+
+            helper.setText(htmlContent, true);
+
+            // Add inline logo image
+            ClassPathResource logo = new ClassPathResource("static/images/logo.png");
+            helper.addInline("logoImage", logo);
+
+            javaMailSender.send(message);
+        } catch (Exception e) {
+            System.err.println("Failed to send order cancellation email: " + e.getMessage());
+        }
+    }
 }
