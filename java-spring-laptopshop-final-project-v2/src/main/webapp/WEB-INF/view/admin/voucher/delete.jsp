@@ -38,6 +38,7 @@
                                     Are you sure you want to delete this voucher?
                                 </div>
                                 <form:form method="post" action="/admin/voucher/delete" modelAttribute="newVoucher">
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                     <div class="mb-3" style="display: none;">
                                         <label class="form-label">Id:</label>
                                         <form:input type="text" class="form-control" path="id" />

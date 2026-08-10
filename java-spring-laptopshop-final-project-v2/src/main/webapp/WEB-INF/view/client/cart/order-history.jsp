@@ -88,7 +88,7 @@
                                                                 style="letter-spacing: 0.5px;">
                                                                 CW-${order.id}
                                                             </h5>
-                                                            <c:if test="${not empty order.trackingCode}">
+                                                            <c:if test="${order.status != 'PENDING'}">
                                                                 <button
                                                                     class="btn btn-sm btn-danger px-2 py-0 fw-bold d-flex align-items-center"
                                                                     style="font-size: 0.7rem; letter-spacing: 0.5px;"
@@ -98,6 +98,8 @@
                                                                 </button>
                                                             </c:if>
                                                         </div>
+                                                        <small class="text-muted d-block mb-1"><i
+                                                                class="bi bi-calendar-check me-1"></i>Date: ${order.getFormattedCreatedAt()}</small>
                                                         <small class="text-muted d-block"><i
                                                                 class="bi bi-credit-card me-1"></i>Payment:
                                                             ${order.paymentMethod != null ? order.paymentMethod :
@@ -108,6 +110,11 @@
                                                     <c:if test="${order.status == 'COMPLETE'}">
                                                         <button class="btn btn-sm btn-outline-danger rounded-pill fw-bold px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#refundModal-${order.id}">
                                                             REFUND
+                                                        </button>
+                                                    </c:if>
+                                                    <c:if test="${order.status == 'PENDING'}">
+                                                        <button class="btn btn-sm btn-outline-danger rounded-pill fw-bold px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#cancelModal-${order.id}">
+                                                            CANCEL ORDER
                                                         </button>
                                                     </c:if>
                                                     <c:choose>
@@ -397,9 +404,18 @@
                                                         </div>
 
                                                         <!-- Delivery Information -->
-                                                        <div class="bg-white rounded-3 p-3 mb-3 shadow-sm">
-                                                            <h6 class="fw-bold mb-3" style="color: #000000;">Delivery
-                                                                Information</h6>
+                                                        <div class="bg-white rounded-3 p-3 mb-3 shadow-sm position-relative">
+                                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                                <h6 class="fw-bold mb-0" style="color: #000000;">Delivery Information</h6>
+                                                                <c:if test="${order.status == 'PENDING'}">
+                                                                    <div class="d-flex flex-column align-items-end">
+                                                                        <button type="button" class="btn btn-sm btn-outline-primary edit-delivery-btn mb-1" data-bs-toggle="modal" data-bs-target="#editDeliveryModal-${order.id}">
+                                                                            <i class="bi bi-pencil me-1"></i> Edit
+                                                                        </button>
+                                                                        <span class="text-danger small fw-bold countdown-timer" id="countdown-${order.id}" data-created-at="${order.formattedCreatedAt}"></span>
+                                                                    </div>
+                                                                </c:if>
+                                                            </div>
                                                             <div class="d-flex">
                                                                 <i class="bi bi-geo-alt fs-4 text-muted me-3 mt-1"></i>
                                                                 <div>
@@ -481,6 +497,10 @@
                                                                 <span>Order ID</span>
                                                                 <span class="text-dark fw-bold">CW-${order.id}</span>
                                                             </div>
+                                                            <div class="d-flex justify-content-between mb-2">
+                                                                <span>Date</span>
+                                                                <span class="text-dark">${order.getFormattedCreatedAt()}</span>
+                                                            </div>
                                                             <div class="d-flex justify-content-between">
                                                                 <span>Payment Method</span>
                                                                 <span class="text-dark">${order.paymentMethod != null ?
@@ -498,6 +518,12 @@
                                                                         style="color: rgb(8, 7, 6) !important; border-color: black !important;"
                                                                         onclick="$('#orderDetailModal-${order.id}').modal('hide');">Reviews</a>
                                                                 </c:when>
+                                                                <c:when test="${order.status == 'PENDING'}">
+                                                                    <button
+                                                                        class="btn btn-outline-danger rounded-pill w-100 me-2 py-2 fw-bold"
+                                                                        style="color: #cd1818 !important; border-color: #cd1818 !important;"
+                                                                        data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#cancelModal-${order.id}">Cancel Order</button>
+                                                                </c:when>
                                                                 <c:otherwise>
                                                                     <button
                                                                         class="btn btn-outline-dark rounded-pill w-100 me-2 py-2 fw-bold"
@@ -511,6 +537,41 @@
                                                                 onclick="$('#orderDetailModal-${order.id}').modal('hide');">Buy Again</a>
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Edit Delivery Modal -->
+                                        <div class="modal fade" id="editDeliveryModal-${order.id}" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content border-0 shadow">
+                                                    <div class="modal-header border-bottom-0 pb-0">
+                                                        <h5 class="modal-title fw-bold text-dark">Edit Delivery Information</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form action="/update-delivery-info" method="POST">
+                                                        <div class="modal-body pb-4 pt-3">
+                                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                                            <input type="hidden" name="orderId" value="${order.id}" />
+                                                            
+                                                            <div class="mb-3">
+                                                                <label class="form-label fw-bold">Receiver Name</label>
+                                                                <input type="text" class="form-control" name="receiverName" value="${order.receiverName}" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label fw-bold">Receiver Phone</label>
+                                                                <input type="text" class="form-control" name="receiverPhone" value="${order.receiverPhone}" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label fw-bold">Receiver Address</label>
+                                                                <textarea class="form-control" name="receiverAddress" rows="3" required>${order.receiverAddress}</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer border-top-0 pt-0">
+                                                            <button type="button" class="btn btn-light rounded-pill px-4 fw-bold" data-bs-dismiss="modal">Cancel</button>
+                                                            <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">Save Changes</button>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
@@ -569,6 +630,63 @@
                                                             </div>
                                                         </form>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Cancel Modal -->
+                                        <div class="modal fade" id="cancelModal-${order.id}" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content border-0 shadow">
+                                                    <div class="modal-header border-bottom-0 pb-0">
+                                                        <h5 class="modal-title fw-bold text-dark">Cancel Order</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form action="/order/cancel" method="POST">
+                                                        <div class="modal-body pb-4 pt-3">
+                                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                                            <input type="hidden" name="orderId" value="${order.id}" />
+                                                            
+                                                            <div class="alert alert-warning rounded-3 mb-4">
+                                                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                                                <strong>Warning:</strong> Are you sure you want to cancel this order? This action cannot be undone.
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label class="form-label fw-bold">Cancellation Reason <span class="text-danger">*</span></label>
+                                                                <textarea class="form-control" name="reason" rows="3" required placeholder="Please let us know why you are cancelling..."></textarea>
+                                                            </div>
+                                                            
+                                                            <c:if test="${order.paymentMethod != 'COD'}">
+                                                                <div class="alert alert-info rounded-3 mt-3">
+                                                                    <i class="bi bi-info-circle-fill me-2"></i>
+                                                                    Since you paid online via <strong>${order.paymentMethod}</strong>, please provide your bank details below for the refund process.
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label fw-bold">Bank Name <span class="text-danger">*</span></label>
+                                                                    <input type="text" class="form-control" name="refundBankName" required placeholder="e.g. Vietcombank, Techcombank...">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label fw-bold">Bank Account Number <span class="text-danger">*</span></label>
+                                                                    <input type="text" class="form-control" name="refundBankAccount" required placeholder="Enter your account number">
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-6 mb-3">
+                                                                        <label class="form-label fw-bold">Account Holder Name <span class="text-danger">*</span></label>
+                                                                        <input type="text" class="form-control" name="refundName" required value="${order.receiverName}">
+                                                                    </div>
+                                                                    <div class="col-md-6 mb-3">
+                                                                        <label class="form-label fw-bold">Phone Number <span class="text-danger">*</span></label>
+                                                                        <input type="text" class="form-control" name="refundPhone" required value="${order.receiverPhone}">
+                                                                    </div>
+                                                                </div>
+                                                            </c:if>
+                                                        </div>
+                                                        <div class="modal-footer border-top-0 pt-0">
+                                                            <button type="button" class="btn btn-light rounded-pill px-4 fw-bold" data-bs-dismiss="modal">Keep Order</button>
+                                                            <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold">Confirm Cancel</button>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
@@ -643,6 +761,51 @@
                                 textInput.value = "";
                             }
                         }
+
+                        // Countdown logic for Delivery Info Edit
+                        const timers = document.querySelectorAll('.countdown-timer');
+                        timers.forEach(timer => {
+                            const createdAtStr = timer.getAttribute('data-created-at');
+                            if (!createdAtStr) return;
+                            
+                            // Parse 'dd-MM-yyyy HH:mm'
+                            const parts = createdAtStr.split(/[\s-:]+/);
+                            if (parts.length < 5) return;
+                            
+                            const day = parseInt(parts[0], 10);
+                            const month = parseInt(parts[1], 10) - 1;
+                            const year = parseInt(parts[2], 10);
+                            const hour = parseInt(parts[3], 10);
+                            const minute = parseInt(parts[4], 10);
+                            
+                            const createdAt = new Date(year, month, day, hour, minute);
+                            const deadline = new Date(createdAt.getTime() + 6 * 60 * 60 * 1000); // + 6 hours
+
+                            function updateCountdown() {
+                                const now = new Date();
+                                const diff = deadline - now;
+                                
+                                if (diff <= 0 || isNaN(diff)) {
+                                    timer.innerHTML = "Expired";
+                                    // Disable the edit button
+                                    const btn = timer.previousElementSibling;
+                                    if(btn && btn.classList.contains('edit-delivery-btn')) {
+                                        btn.disabled = true;
+                                        btn.classList.add('disabled');
+                                    }
+                                    return;
+                                }
+
+                                const hours = Math.floor(diff / (1000 * 60 * 60));
+                                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                                const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+                                timer.innerHTML = '<i class="bi bi-clock me-1"></i>' + hours + 'h ' + mins + 'm ' + secs + 's';
+                            }
+                            
+                            updateCountdown();
+                            setInterval(updateCountdown, 1000);
+                        });
                     </script>
 
                     <!-- Success Popup -->

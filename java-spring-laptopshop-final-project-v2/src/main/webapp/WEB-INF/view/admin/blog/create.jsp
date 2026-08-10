@@ -49,16 +49,41 @@
                                                     <form:input type="text" class="form-control" path="title" />
                                                 </div>
                                                 <div class="mb-3">
+                                                    <label class="form-label">Type:</label>
+                                                    <form:select class="form-control" path="type" id="blogType">
+                                                        <form:option value="ARTICLE">Article</form:option>
+                                                        <form:option value="VIDEO">Video</form:option>
+                                                    </form:select>
+                                                </div>
+                                                <div class="mb-3" id="videoUrlContainer" style="display: none;">
+                                                    <label class="form-label">Video URL (optional, if you have a link):</label>
+                                                    <form:input type="text" class="form-control" path="videoUrl" placeholder="Enter video link (e.g., YouTube URL)" />
+                                                    
+                                                    <label class="form-label mt-2">Or Upload Video File (max 200MB):</label>
+                                                    <input class="form-control" type="file" name="videoFile" accept=".mp4, .avi, .mkv, .webm" />
+                                                </div>
+                                                <script>
+                                                    $(document).ready(function() {
+                                                        $('#blogType').change(function() {
+                                                            if ($(this).val() === 'VIDEO') {
+                                                                $('#videoUrlContainer').show();
+                                                                $('#imageContainer').hide();
+                                                            } else {
+                                                                $('#videoUrlContainer').hide();
+                                                                $('#imageContainer').show();
+                                                            }
+                                                        });
+                                                    });
+                                                </script>
+                                                <div class="mb-3">
                                                     <label class="form-label">Content:</label>
                                                     <form:textarea class="form-control" path="content" rows="8" />
                                                 </div>
-                                                <div class="mb-3">
+                                                <div class="mb-3" id="imageContainer">
                                                     <label for="blogFile" class="form-label">Image:</label>
                                                     <input class="form-control" type="file" id="blogFile"
                                                         name="blogFile" accept=".png, .jpg, .jpeg" />
-                                                </div>
-                                                <div class="mb-3">
-                                                    <img style="max-height: 250px; display: none;" alt="Blog preview"
+                                                    <img style="max-height: 250px; display: none; margin-top: 10px;" alt="Blog preview"
                                                         id="blogPreview" />
                                                 </div>
                                                 <button type="submit" class="btn btn-primary">Create</button>

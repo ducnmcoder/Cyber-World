@@ -38,6 +38,55 @@
             padding: 0;
         }
 
+        /* Voucher Options */
+        .voucher-option {
+            border: 1px dashed #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: #fff;
+        }
+
+        .voucher-option:hover {
+            border-color: #cd1818;
+            background: #fff9f9;
+        }
+
+        .voucher-option input[type="checkbox"] {
+            margin-top: 4px;
+            cursor: pointer;
+            accent-color: #cd1818;
+            width: 16px;
+            height: 16px;
+        }
+
+        .voucher-option.selected {
+            border: 1px solid #cd1818;
+            background: #fffafa;
+        }
+
+        .voucher-content {
+            flex-grow: 1;
+        }
+
+        .voucher-title {
+            font-weight: bold;
+            font-size: 14px;
+            color: #cd1818;
+            margin-bottom: 4px;
+        }
+
+        .voucher-desc {
+            font-size: 12px;
+            color: #555;
+            line-height: 1.4;
+        }
+        
         /* Detail page layout to match mockup */
         .detail-page-wrapper {
             max-width: 1200px;
@@ -142,7 +191,7 @@
         .promo-tag.black {
             background: #f8f9fa;
             border-color: #eee;
-            color: #333;
+            color: #f92323;
         }
 
         .specs-highlight {
@@ -730,7 +779,7 @@
         </div>
     </header>
     <div class="product-nav-tabs">
-        <a href="javascript:history.back()" style="border:none; color: #555; font-size: 18px; margin-right: 10px;"><i
+        <a href="javascript:history.back()" style="border:none; color: #e41010; font-size: 18px; margin-right: 10px;"><i
                 class="fa-solid fa-arrow-left"></i></a>
         <a href="#" class="active"><i class="fa-solid fa-star" style="color: #cd1818; margin-right: 5px;"></i> Product
             Information</a>
@@ -847,7 +896,7 @@
                             <div class="price-old"
                                 th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + ' VND'">
                                 24.990.000 VND</div>
-                            <div class="discount-percent">10%</div>
+                            <div class="discount-percent dynamic-discount-percent">-10%</div>
                         </div>
                         <div class="quantity-info" style="margin-top: 10px; font-size: 14px; color: #555;">
                             <span th:if="${product.quantity > 0}">Stock: <strong style="color: #333;"
@@ -916,7 +965,8 @@
                             </div>
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <div>
-                                    <div style="font-size: 20px; font-weight: bold; color: #cd1818;" class="dynamic-detail-price"
+                                    <div style="font-size: 20px; font-weight: bold; color: #cd1818;"
+                                        class="dynamic-detail-price"
                                         th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + ' VND'">
                                         22.490.000 VND</div>
                                     <div style="font-size: 12px; color: #999; text-decoration: line-through;"
@@ -932,22 +982,34 @@
                         <div style="font-weight: bold; margin-bottom: 12px; font-size: 14px;">Vouchers:</div>
 
                         <div class="voucher-list">
-                            <label th:each="v, iter : ${vouchers}" 
-                                   th:class="${iter.index < 3 ? 'voucher-option' : 'voucher-option extra-voucher'}" 
-                                   th:style="${iter.index < 3 ? '' : 'display: none;'}">
-                                <input type="checkbox" class="product-voucher-checkbox" th:value="${v.id}" th:data-discount-type="${v.discountType}" th:data-discount-amount="${v.discountAmount}" onchange="this.parentElement.classList.toggle('selected', this.checked); calculateDetailPrice();">
+                            <label th:each="v, iter : ${vouchers}"
+                                th:class="${iter.index < 3 ? 'voucher-option' : 'voucher-option extra-voucher'}"
+                                th:style="${iter.index < 3 ? '' : 'display: none;'}">
+                                <input type="checkbox" class="product-voucher-checkbox" th:value="${v.id}"
+                                    th:data-discount-type="${v.discountType}"
+                                    th:data-discount-amount="${v.discountAmount}"
+                                    onchange="this.parentElement.classList.toggle('selected', this.checked); calculateDetailPrice();">
                                 <div class="voucher-content">
-                                    <div class="voucher-title" th:text="${v.title}">Title</div>
+                                    <div class="voucher-title"
+                                        style="display: flex; align-items: center; flex-wrap: wrap; gap: 5px;">
+                                        <span th:text="${v.title}">Title</span>
+                                        <span th:if="${v.discountType == 'PERCENT'}"
+                                            style="background: #cd1818; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;"
+                                            th:text="'- ' + ${#numbers.formatDecimal(v.discountAmount, 1, 'POINT', 0, 'COMMA')} + '%'"></span>
+                                        <span th:if="${v.discountType == 'FIXED'}"
+                                            style="background: #cd1818; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;"
+                                            th:text="'- ' + ${#numbers.formatDecimal(v.discountAmount, 1, 'POINT', 0, 'COMMA')} + ' VND'"></span>
+                                    </div>
                                     <div class="voucher-desc" th:text="${v.description}">Description</div>
                                 </div>
                             </label>
-                            <div th:if="${vouchers == null or vouchers.isEmpty()}" style="font-size: 13px; color: #777; margin-bottom: 10px;">
+                            <div th:if="${vouchers == null or vouchers.isEmpty()}"
+                                style="font-size: 13px; color: #777; margin-bottom: 10px;">
                                 No active vouchers available.
                             </div>
                         </div>
 
-                        <a href="#" id="view-more-vouchers-btn"
-                            th:if="${vouchers != null and vouchers.size() > 3}"
+                        <a href="#" id="view-more-vouchers-btn" th:if="${vouchers != null and vouchers.size() > 3}"
                             style="color: #007bff; text-decoration: none; display: block; margin-top: 10px; font-size: 13px;"
                             onclick="event.preventDefault(); 
                                      const extras = document.querySelectorAll('.extra-voucher');
@@ -975,45 +1037,118 @@
             <div
                 style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <h3 style="margin: 0; font-size: 18px; font-weight: bold;">News</h3>
+                    <h3 style="margin: 0; font-size: 18px; font-weight: bold;">LATEST NEWS</h3>
                 </div>
                 <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <button
+                    <button id="btn-videos" onclick="switchNewsTab('videos')"
                         style="border: 1px solid #cd1818; color: #cd1818; background: white; padding: 5px 10px; border-radius: 15px; font-size: 13px; font-weight: 600;">Videos</button>
-                    <button
-                        style="border: 1px solid #ddd; color: #555; background: white; padding: 5px 10px; border-radius: 15px; font-size: 13px;">Related
-                        articles</button>
+                    <button id="btn-articles" onclick="switchNewsTab('articles')"
+                        style="border: 1px solid #ddd; color: #555; background: white; padding: 5px 10px; border-radius: 15px; font-size: 13px;">
+                        Articles</button>
                 </div>
-                <div style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px;">
-                    <div
-                        style="min-width: 160px; height: 280px; background: #333; border-radius: 10px; position: relative; overflow: hidden;">
-                        <img src="https://surfaceviet.vn/wp-content/uploads/2024/05/Surface-Laptop-7-Black-13.8-inch.jpg"
-                            style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6;">
-                        <i class="fa-solid fa-play"
-                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255,255,255,0.8); font-size: 30px;"></i>
-                        <div
-                            style="position: absolute; top: 10px; left: 10px; color: white; font-weight: bold; font-size: 18px; line-height: 1.1; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">
-                            FREE<br>GAME</div>
-                        <div
-                            style="position: absolute; bottom: 10px; left: 10px; right: 10px; color: white; font-size: 12px; font-weight: bold;">
-                            How to download free games on laptop</div>
-                    </div>
-                    <div
-                        style="min-width: 160px; height: 280px; background: #222; border-radius: 10px; position: relative; overflow: hidden;">
-                        <img src="https://surfaceviet.vn/wp-content/uploads/2024/05/Surface-Laptop-7-Black-13.8-inch.jpg"
-                            style="width: 100%; height: 100%; object-fit: cover; opacity: 0.5;">
-                        <i class="fa-solid fa-play"
-                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255,255,255,0.8); font-size: 30px;"></i>
-                        <div
-                            style="position: absolute; top: 40px; right: 10px; color: white; font-size: 10px; text-align: right;">
-                            <div>1:39 AM</div>
-                            <div>Game capturing</div>
+                
+                <!-- Videos Container -->
+                <div id="container-videos" style="display: flex; align-items: center; gap: 10px;">
+                    <div id="wrapper-videos" style="display: flex; gap: 10px; overflow: hidden; width: 500px; max-width: 100%;">
+                        <div th:each="video : ${latestVideos}" class="video-item" style="min-width: 160px; max-width: 160px; height: 280px; background: #333; border-radius: 10px; position: relative; overflow: hidden; transition: 0.3s;"
+                             onmouseover="this.style.transform='translateY(-5px)';" onmouseout="this.style.transform='none';">
+                            <th:block th:if="${video.videoUrl != null and video.videoUrl != ''}">
+                                <video th:if="${video.videoUrl.startsWith('/images/')}" th:src="${video.videoUrl}" controls
+                                    style="width: 100%; height: 100%; object-fit: cover;"></video>
+                                <iframe th:unless="${video.videoUrl.startsWith('/images/')}" th:src="${#strings.replace(#strings.replace(video.videoUrl, 'watch?v=', 'embed/'), 'youtu.be/', 'youtube.com/embed/')}" 
+                                    style="width: 100%; height: 100%; object-fit: cover; border: none;"></iframe>
+                            </th:block>
+                            <th:block th:unless="${video.videoUrl != null and video.videoUrl != ''}">
+                                <a th:href="@{/blog/{id}(id=${video.id})}" style="text-decoration: none; display: block; width: 100%; height: 100%;">
+                                    <img th:if="${not #strings.isEmpty(video.image)}" th:src="@{'/images/blog/' + ${video.image}}"
+                                        style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6;">
+                                    <img th:unless="${not #strings.isEmpty(video.image)}" th:src="@{/images/logo.png}"
+                                        style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6; background: white;">
+                                    <i class="fa-solid fa-play" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255,255,255,0.8); font-size: 30px;"></i>
+                                </a>
+                            </th:block>
+                            <a th:href="@{/blog/{id}(id=${video.id})}" style="text-decoration: none;">
+                                <div
+                                    style="position: absolute; bottom: 10px; left: 10px; right: 10px; color: white; font-size: 13px; font-weight: bold; line-height: 1.3; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);" th:text="${video.title}">
+                                    Title</div>
+                            </a>
+                            <div style="position: absolute; top: 10px; right: 10px; background: #cd1818; color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold; pointer-events: none;">VIDEO</div>
                         </div>
-                        <div
-                            style="position: absolute; bottom: 10px; left: 10px; right: 10px; color: white; font-size: 12px; font-weight: bold;">
-                            How to record laptop screen</div>
+                        <div th:if="${latestVideos == null or latestVideos.isEmpty()}" style="font-size: 13px; color: #777; padding: 10px;">
+                            No videos available yet.
+                        </div>
                     </div>
+                    <button th:if="${latestVideos != null and latestVideos.size() > 3}" onclick="rotateItems('wrapper-videos')" style="border: none; background: #eee; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
                 </div>
+
+                <!-- Articles Container -->
+                <div id="container-articles" style="display: none; align-items: center; gap: 10px;">
+                    <div id="wrapper-articles" style="display: flex; gap: 10px; overflow: hidden; width: 500px; max-width: 100%;">
+                        <a th:each="article : ${latestArticles}" class="article-item" th:href="@{/blog/{id}(id=${article.id})}" style="text-decoration: none;">
+                            <div
+                                style="min-width: 160px; max-width: 160px; height: 280px; background: #333; border-radius: 10px; position: relative; overflow: hidden; transition: 0.3s;"
+                                onmouseover="this.style.transform='translateY(-5px)';" onmouseout="this.style.transform='none';">
+                                <img th:if="${not #strings.isEmpty(article.image)}" th:src="@{'/images/blog/' + ${article.image}}"
+                                    style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
+                                <img th:unless="${not #strings.isEmpty(article.image)}" th:src="@{/images/logo.png}"
+                                    style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; background: white;">
+                                <div
+                                    style="position: absolute; bottom: 10px; left: 10px; right: 10px; color: white; font-size: 13px; font-weight: bold; line-height: 1.3; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);" th:text="${article.title}">
+                                    Title</div>
+                                <div style="position: absolute; top: 10px; right: 10px; background: #cd1818; color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">ARTICLE</div>
+                            </div>
+                        </a>
+                        <div th:if="${latestArticles == null or latestArticles.isEmpty()}" style="font-size: 13px; color: #777; padding: 10px;">
+                            No articles available yet.
+                        </div>
+                    </div>
+                    <button th:if="${latestArticles != null and latestArticles.size() > 3}" onclick="rotateItems('wrapper-articles')" style="border: none; background: #eee; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <script>
+                    function rotateItems(wrapperId) {
+                        const wrapper = document.getElementById(wrapperId);
+                        const firstChild = wrapper.firstElementChild;
+                        if (firstChild) {
+                            wrapper.appendChild(firstChild);
+                        }
+                    }
+
+                    function switchNewsTab(tab) {
+                        const btnVideos = document.getElementById('btn-videos');
+                        const btnArticles = document.getElementById('btn-articles');
+                        const containerVideos = document.getElementById('container-videos');
+                        const containerArticles = document.getElementById('container-articles');
+
+                        if (tab === 'videos') {
+                            btnVideos.style.border = '1px solid #cd1818';
+                            btnVideos.style.color = '#cd1818';
+                            btnVideos.style.fontWeight = '600';
+                            
+                            btnArticles.style.border = '1px solid #ddd';
+                            btnArticles.style.color = '#555';
+                            btnArticles.style.fontWeight = 'normal';
+
+                            containerVideos.style.display = 'flex';
+                            containerArticles.style.display = 'none';
+                        } else {
+                            btnArticles.style.border = '1px solid #cd1818';
+                            btnArticles.style.color = '#cd1818';
+                            btnArticles.style.fontWeight = '600';
+                            
+                            btnVideos.style.border = '1px solid #ddd';
+                            btnVideos.style.color = '#555';
+                            btnVideos.style.fontWeight = 'normal';
+
+                            containerArticles.style.display = 'flex';
+                            containerVideos.style.display = 'none';
+                        }
+                    }
+                </script>
             </div>
         </div>
 
@@ -1521,10 +1656,7 @@
                 </div>
             </div>
             <div class="sticky-right" style="display: flex; align-items: center; gap: 20px;">
-                <div
-                    style="background: #fff9eb; color: #f39c12; font-size: 12px; padding: 4px 10px; border-radius: 20px; border: 1px solid #ffe6b3; display: flex; align-items: center; gap: 5px; font-weight: bold;">
-                    <i class="fa-solid fa-coins"></i> +8.822
-                </div>
+
                 <div style="text-align: right; line-height: 1.2;">
                     <div class="sticky-price dynamic-detail-price"
                         th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 0, 'COMMA')} + ' VND'">35.290.000
@@ -1533,7 +1665,7 @@
                         th:if="${product.price > 10000000}">
                         <span
                             th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + ' VND'">35.990.000
-                            VND</span> <span
+                            VND</span> <span class="dynamic-discount-percent"
                             style="color: #cd1818; text-decoration: none; font-weight: bold; margin-left: 5px;">-10%</span>
                     </div>
                 </div>
@@ -1573,22 +1705,23 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
         const baseProductPrice = /*[[${product.price}]]*/ 0;
-        
+        const oldPrice = baseProductPrice * 1.1;
+
         function calculateDetailPrice() {
             let discountAmount = 0;
             let percentDiscount = 0;
-            
-            document.querySelectorAll('.product-voucher-checkbox:checked').forEach(function(cb) {
+
+            document.querySelectorAll('.product-voucher-checkbox:checked').forEach(function (cb) {
                 const type = cb.getAttribute('data-discount-type');
                 const amount = parseFloat(cb.getAttribute('data-discount-amount'));
-                
+
                 if (type === 'FIXED') {
                     discountAmount += amount;
                 } else if (type === 'PERCENT') {
                     percentDiscount += amount;
                 }
             });
-            
+
             let newTotal = baseProductPrice;
             if (percentDiscount > 0) {
                 newTotal = newTotal - (newTotal * percentDiscount / 100);
@@ -1597,10 +1730,17 @@
                 newTotal = newTotal - discountAmount;
             }
             if (newTotal < 0) newTotal = 0;
-            
-            const formatted = newTotal.toLocaleString('de-DE', {maximumFractionDigits: 0}) + ' VND';
+
+            let totalDiscountPercent = Math.round(((oldPrice - newTotal) / oldPrice) * 100);
+            if (totalDiscountPercent > 100) totalDiscountPercent = 100;
+
+            const formatted = newTotal.toLocaleString('de-DE', { maximumFractionDigits: 0 }) + ' VND';
             document.querySelectorAll('.dynamic-detail-price').forEach(el => {
                 el.innerText = formatted;
+            });
+
+            document.querySelectorAll('.dynamic-discount-percent').forEach(el => {
+                el.innerText = '-' + totalDiscountPercent + '%';
             });
         }
         /*]]>*/
