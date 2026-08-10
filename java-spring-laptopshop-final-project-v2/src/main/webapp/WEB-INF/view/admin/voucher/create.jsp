@@ -35,6 +35,7 @@
                                 <h3>Create a voucher</h3>
                                 <hr />
                                 <form:form method="post" action="/admin/voucher/create" modelAttribute="newVoucher">
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                     <div class="mb-3">
                                         <label class="form-label">Code:</label>
                                         <form:input type="text" class="form-control" path="code" />
