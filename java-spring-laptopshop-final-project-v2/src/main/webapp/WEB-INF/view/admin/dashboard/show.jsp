@@ -28,30 +28,7 @@
                                     <i class="fas fa-file-excel me-1"></i> Export to Excel
                                 </a>
                             </div>
-                            <div class="row">
-                                <div class="col-xl-8">
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <i class="fas fa-chart-bar me-1"></i>
-                                            Revenue by Brand
-                                        </div>
-                                        <div class="card-body" style="min-height: 320px;">
-                                            <canvas id="brandRevenueChart" style="width: 100%; height: 100%;"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4">
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <i class="fas fa-chart-pie me-1"></i>
-                                            Revenue Share (%)
-                                        </div>
-                                        <div class="card-body" style="min-height: 320px;">
-                                            <canvas id="brandRevenuePieChart" style="width: 100%; height: 100%;"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <h1 class="mt-4">Dashboard</h1>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="card mb-4">
@@ -103,7 +80,6 @@
                                                 <tr>
                                                     <th>Product ID</th>
                                                     <th>Product Name</th>
-                                                    <th>Brand</th>
                                                     <th>Quantity Sold</th>
                                                     <th>Revenue</th>
                                                 </tr>
@@ -132,50 +108,11 @@
                 let currentHour = null;
 
                 let monthlyChart, dailyChart, hourlyChart;
-                let brandChart, brandPieChart;
 
                 function initCharts() {
                     monthlyChart = createRevenueChart('monthlyRevenueChart', [], [], 'Monthly Revenue', handleMonthlyClick);
                     dailyChart = createRevenueChart('dailyRevenueChart', [], [], 'Daily Revenue', handleDailyClick);
                     hourlyChart = createRevenueChart('hourlyRevenueChart', [], [], 'Hourly Revenue', handleHourlyClick);
-                }
-
-                function initBrandCharts() {
-                    const ctxBar = document.getElementById('brandRevenueChart').getContext('2d');
-                    brandChart = new Chart(ctxBar, {
-                        type: 'bar',
-                        data: { labels: [], datasets: [{ label: 'Revenue', data: [], backgroundColor: 'rgba(205, 24, 24, 0.75)', borderColor: 'rgba(205, 24, 24, 1)', borderWidth: 1 }] },
-                        options: {
-                            responsive: true, maintainAspectRatio: false,
-                            scales: {
-                                yAxes: [{ ticks: { beginAtZero: true, callback: function (value) { return value.toLocaleString() + ' VND'; } } }]
-                            },
-                            legend: { display: false },
-                            tooltips: { callbacks: { label: function (tooltipItem, data) { return tooltipItem.yLabel.toLocaleString() + ' VND'; } } }
-                        }
-                    });
-
-                    const ctxPie = document.getElementById('brandRevenuePieChart').getContext('2d');
-                    brandPieChart = new Chart(ctxPie, {
-                        type: 'pie',
-                        data: { labels: [], datasets: [{ data: [], backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745', '#17a2b8', '#6c757d'] }] },
-                        options: {
-                            responsive: true, maintainAspectRatio: false,
-                            tooltips: {
-                                callbacks: {
-                                    label: function(tooltipItem, data) {
-                                        var dataset = data.datasets[tooltipItem.datasetIndex];
-                                        var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
-                                            return previousValue + currentValue;
-                                        });
-                                        var currentValue = dataset.data[tooltipItem.index];
-                                        var percentage = Math.floor(((currentValue/total) * 100)+0.5);
-                                        return data.labels[tooltipItem.index] + ': ' + percentage + '%';
-                                    }
-                                }
-                            }
-                        }
-                    });
                 }
 
                 function handleMonthlyClick(evt, item) {
@@ -249,23 +186,6 @@
                         });
                 }
 
-                function loadBrandRevenue(year) {
-                    fetch('/admin/api/dashboard/revenue/brand?year=' + year)
-                        .then(res => res.json())
-                        .then(data => {
-                            const labels = data.map(d => d[0].charAt(0).toUpperCase() + d[0].slice(1));
-                            const values = data.map(d => d[1]);
-                            
-                            brandChart.data.labels = labels;
-                            brandChart.data.datasets[0].data = values;
-                            brandChart.update();
-                            
-                            brandPieChart.data.labels = labels;
-                            brandPieChart.data.datasets[0].data = values;
-                            brandPieChart.update();
-                        });
-                }
-
                 function loadTopProducts(year, month = null, day = null, hour = null) {
                     let url = '/admin/api/dashboard/top-products?year=' + year;
                     if (month) url += '&month=' + month;
@@ -281,9 +201,8 @@
                                 const tr = document.createElement('tr');
                                 tr.innerHTML = '<td>' + product[0] + '</td>' +
                                     '<td>' + product[1] + '</td>' +
-                                    '<td><span class="badge bg-secondary">' + (product[2] ? product[2].toUpperCase() : 'OTHER') + '</span></td>' +
-                                    '<td>' + product[3] + '</td>' +
-                                    '<td>' + Number(product[4]).toLocaleString() + ' VND</td>';
+                                    '<td>' + product[2] + '</td>' +
+                                    '<td>' + product[3] + '</td>';
                                 tbody.appendChild(tr);
                             });
                         });
@@ -320,7 +239,7 @@
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true,
-                                        callback: function (value) { return value.toLocaleString() + ' VND'; }
+                                        callback: function (value) { return '$' + value.toLocaleString(); }
                                     },
                                     gridLines: { color: 'rgba(200, 200, 200, 0.2)' }
                                 }]
@@ -329,7 +248,7 @@
                             legend: { display: false },
                             tooltips: {
                                 callbacks: {
-                                    label: function (tooltipItem, data) { return tooltipItem.yLabel.toLocaleString() + ' VND'; }
+                                    label: function (tooltipItem, data) { return '$' + tooltipItem.yLabel.toLocaleString(); }
                                 }
                             }
                         }
@@ -338,10 +257,8 @@
 
                 // Initialize
                 initCharts();
-                initBrandCharts();
                 loadMonthlyData(currentYear);
                 loadTopProducts(currentYear);
-                loadBrandRevenue(currentYear);
             </script>
 
             <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"

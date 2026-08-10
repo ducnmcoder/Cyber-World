@@ -17,11 +17,6 @@
         <link rel="stylesheet" href="/css/chatbot.css" />
         <style>
             /* Base styles */
-            * {
-                box-sizing: border-box;
-            }
-
-            html,
             body {
                 font-family: "Inter", sans-serif;
                 background-color: #f1f2f6;
@@ -29,49 +24,7 @@
                 margin: 0;
                 padding: 0;
                 color: #333;
-                max-width: 100vw;
-                overflow-x: clip;
-            }
-
-            /* Top Banner Styles */
-            .cyber-top-banner {
-                color: white;
-                padding: 6px 0;
-                overflow: hidden;
-                white-space: nowrap;
-                position: relative;
-                font-size: 13px;
-                font-weight: 500;
-            }
-
-            .cyber-marquee {
-                display: inline-block;
-                animation: marquee 20s linear infinite;
-            }
-
-            .cyber-marquee:hover {
-                animation-play-state: paused;
-            }
-
-            .cyber-marquee span {
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .cyber-marquee .separator {
-                margin: 0 15px;
-                font-size: 10px;
-                opacity: 0.7;
-            }
-
-            @keyframes marquee {
-                0% {
-                    transform: translateX(0);
-                }
-                100% {
-                    transform: translateX(-50%);
-                }
+                overflow-x: hidden; /* Prevent horizontal scroll */
             }
 
             /* Header styles preserved from original */
@@ -101,9 +54,7 @@
 
             .cyber-logo-text {
                 display: flex;
-                flex-direction: row;
-                gap: 8px;
-                align-items: center;
+                flex-direction: column;
                 justify-content: center;
             }
 
@@ -1041,13 +992,15 @@
                 gap: 15px;
                 margin-bottom: 20px;
             }
-
             @media (max-width: 992px) {
                 .hero-section {
                     grid-template-columns: 1fr;
                 }
+                .hero-sidebar,
+                .hero-right-banners {
+                    display: none;
+                }
             }
-
             .hero-sidebar {
                 background: white;
                 border-radius: 8px;
@@ -1056,7 +1009,6 @@
                 flex-direction: column;
                 overflow: hidden;
             }
-
             .hero-sidebar-header {
                 background: #cd1818;
                 color: white;
@@ -1068,12 +1020,10 @@
                 align-items: center;
                 gap: 10px;
             }
-
             .hero-sidebar-list {
                 padding: 10px 0;
                 flex-grow: 1;
             }
-
             .hero-sidebar-item {
                 padding: 10px 15px;
                 color: #333;
@@ -1085,36 +1035,29 @@
                 gap: 12px;
                 transition: 0.2s;
             }
-
             .hero-sidebar-item:hover {
                 background: #f1f2f6;
                 color: #cd1818;
             }
-
             .hero-sidebar-item i {
                 width: 24px;
                 text-align: center;
                 color: #666;
             }
-
             .hero-sidebar-item:hover i {
                 color: #cd1818;
             }
-
             .hero-carousel {
                 position: relative;
                 border-radius: 8px;
                 overflow: hidden;
-                aspect-ratio: 16 / 9;
-                height: auto;
+                height: 350px;
             }
-
             .carousel-slides {
                 width: 100%;
                 height: 100%;
                 position: relative;
             }
-
             .carousel-slide {
                 position: absolute;
                 top: 0;
@@ -1126,12 +1069,10 @@
                 object-fit: cover;
                 z-index: 1;
             }
-
             .carousel-slide.active {
                 opacity: 1;
                 z-index: 2;
             }
-
             .carousel-control {
                 position: absolute;
                 top: 50%;
@@ -1149,19 +1090,15 @@
                 z-index: 10;
                 transition: background 0.3s;
             }
-
             .carousel-control:hover {
                 background: rgba(0, 0, 0, 0.6);
             }
-
             .carousel-control.prev {
                 left: 10px;
             }
-
             .carousel-control.next {
                 right: 10px;
             }
-
             .carousel-indicators {
                 position: absolute;
                 bottom: 15px;
@@ -1171,7 +1108,6 @@
                 gap: 8px;
                 z-index: 10;
             }
-
             .carousel-indicator {
                 width: 10px;
                 height: 10px;
@@ -1182,11 +1118,9 @@
                 padding: 0;
                 transition: background 0.3s;
             }
-
             .carousel-indicator.active {
                 background: white;
             }
-
             .hero-right-banners {
                 background: white;
                 border-radius: 8px;
@@ -1196,7 +1130,6 @@
                 height: 350px;
                 overflow: hidden;
             }
-
             .hero-news-header {
                 padding: 12px 15px;
                 font-weight: 800;
@@ -1205,22 +1138,18 @@
                 text-transform: uppercase;
                 border-bottom: 1px solid #f0f0f0;
             }
-
             .hero-news-list {
                 flex-grow: 1;
                 overflow-y: auto;
                 padding: 0 10px;
             }
-
             .hero-news-list::-webkit-scrollbar {
                 width: 4px;
             }
-
             .hero-news-list::-webkit-scrollbar-thumb {
                 background: #ccc;
                 border-radius: 4px;
             }
-
             .hero-news-item {
                 display: flex;
                 gap: 12px;
@@ -1229,16 +1158,13 @@
                 text-decoration: none;
                 transition: 0.2s;
             }
-
             .hero-news-item:last-child {
                 border-bottom: none;
             }
-
             .hero-news-item:hover {
                 background: #f9f9f9;
                 border-radius: 6px;
             }
-
             .hero-news-thumb {
                 width: 70px;
                 height: 50px;
@@ -1246,13 +1172,11 @@
                 object-fit: cover;
                 flex-shrink: 0;
             }
-
             .hero-news-content {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
             }
-
             .hero-news-title {
                 font-size: 13px;
                 font-weight: 600;
@@ -1264,43 +1188,35 @@
                 overflow: hidden;
                 margin-bottom: 4px;
             }
-
             .hero-news-item:hover .hero-news-title {
                 color: #cd1818;
             }
-
             .hero-news-date {
                 font-size: 11px;
                 color: #888;
             }
-
             .hero-news-footer {
                 padding: 10px 15px;
                 text-align: left;
                 border-top: 1px solid #f0f0f0;
             }
-
             .hero-news-footer a {
                 color: #cd1818;
                 font-size: 13px;
                 font-weight: 600;
                 text-decoration: none;
             }
-
             /* Responsive Utilities */
             @media (max-width: 992px) {
                 .layout-grid {
                     grid-template-columns: 1fr;
                 }
-
                 .products-grid {
                     grid-template-columns: repeat(3, 1fr);
                 }
-
                 .hero-carousel {
-                    /* height controlled by aspect-ratio */
+                    height: 250px;
                 }
-
                 .sidebar {
                     position: static;
                     max-height: none;
@@ -1313,16 +1229,12 @@
                     gap: 10px;
                     justify-content: space-between;
                 }
-
                 .cyber-logo {
                     order: 1;
                 }
-
                 .cyber-header-actions {
                     order: 2;
-                    margin-left: auto;
                 }
-
                 .cyber-search {
                     order: 3;
                     margin: 0;
@@ -1331,61 +1243,33 @@
                     flex: 1 1 100%;
                     box-sizing: border-box;
                 }
-
                 .cyber-action-btn span {
                     display: none !important;
                 }
-
                 .cyber-action-btn {
                     padding: 8px 12px;
                 }
-
                 .products-grid {
                     grid-template-columns: repeat(2, 1fr);
                 }
-
                 .needs-grid {
                     grid-template-columns: repeat(2, 1fr);
                 }
-
                 .brand-pills {
                     flex-wrap: wrap;
                 }
-
                 .products-header {
                     flex-direction: column;
                     align-items: flex-start;
                 }
-
                 .hero-carousel {
-                    /* height controlled by aspect-ratio */
+                    height: 200px;
                 }
             }
 
-            @media (max-width: 992px) {
-                .hero-sidebar,
-                .hero-right-banners {
-                    display: none !important;
-                }
-            }
-
-            @media (max-width: 768px) {
-                .cyber-footer .container {
-                    grid-template-columns: repeat(2, 1fr) !important;
-                }
-            }
-
-            @media (max-width: 576px) {
-                .cyber-footer .container {
-                    grid-template-columns: 1fr !important;
-                }
-
-                .blog-carousel-section {
-                    padding: 0 15px !important;
-                }
-
-                .blog-card {
-                    min-width: calc(50% - 10px) !important;
+            @media (max-width: 480px) {
+                .products-grid {
+                    grid-template-columns: 1fr;
                 }
             }
         </style>
@@ -1394,41 +1278,6 @@
     <body>
         <!-- Header -->
         <header class="cyber-header">
-            <!-- Top Scrolling Banner -->
-            <div class="cyber-top-banner">
-                <div class="cyber-marquee">
-                    <span>
-                        <i class="fa-solid fa-gem"></i> Genuine product, full
-                        VAT invoice provided.
-                        <span class="separator">&bull;</span>
-                        <i class="fa-solid fa-truck-fast"></i> Fast delivery,
-                        free shipping.
-                        <span class="separator">&bull;</span>
-                        <i class="fa-solid fa-arrows-rotate"></i> Great trade-in
-                        deals.
-                        <span class="separator">&bull;</span>
-                        <i class="fa-solid fa-piggy-bank"></i> Save money when
-                        upgrading.
-                        <span class="separator">&bull;</span>
-                    </span>
-                    <!-- Duplicate for infinite smooth scroll effect -->
-                    <span>
-                        <i class="fa-solid fa-gem"></i> Genuine product, full
-                        VAT invoice provided.
-                        <span class="separator">&bull;</span>
-                        <i class="fa-solid fa-truck-fast"></i> Fast delivery,
-                        free shipping.
-                        <span class="separator">&bull;</span>
-                        <i class="fa-solid fa-arrows-rotate"></i> Great trade-in
-                        deals.
-                        <span class="separator">&bull;</span>
-                        <i class="fa-solid fa-piggy-bank"></i> Save money when
-                        upgrading.
-                        <span class="separator">&bull;</span>
-                    </span>
-                </div>
-            </div>
-
             <div class="container">
                 <a
                     th:href="${session.user != null and session.user?.role?.name == 'ADMIN' ? '#' : '/'}"
@@ -1490,32 +1339,6 @@
                         title="Dashboard"
                     >
                         <i class="fa-solid fa-table-columns"></i>
-                    </a>
-
-                    <!-- Avatar and Name for logged in users -->
-                    <a
-                        th:if="${session.user != null}"
-                        href="/account/manage"
-                        style="
-                            color: white;
-                            text-decoration: none;
-                            display: flex;
-                            align-items: center;
-                            gap: 10px;
-                            margin-right: 15px;
-                        "
-                    >
-                        <img
-                            th:src="${session.user.avatar != null and !session.user.avatar.isEmpty() ? '/images/avatar/' + session.user.avatar : '/images/avatar/default-avatar.png'}"
-                            alt="Avatar"
-                            style="
-                                width: 30px;
-                                height: 30px;
-                                border-radius: 50%;
-                                object-fit: cover;
-                            "
-                        />
-                        <span th:text="${session.user.fullName}"></span>
                     </a>
 
                     <!-- Role / Logout Button for ADMIN, OWNER, STAFF -->
@@ -1593,7 +1416,12 @@
                                 ><i class="fa-solid fa-circle-info"></i> About
                                 Us</a
                             >
-
+                            <a
+                                th:if="${session.user != null and session.user?.role?.name == 'USER'}"
+                                href="/account/manage"
+                                ><i class="fa-solid fa-user-gear"></i> Manage
+                                Account</a
+                            >
                             <a
                                 th:if="${session.user != null and session.user?.role?.name == 'USER'}"
                                 href="/feedback"
@@ -3108,14 +2936,14 @@
                                     </button>
                                 </form>
                             </div>
-                            <!-- <a
+                            <a
                                 href="#"
                                 class="compare-link"
                                 onclick="event.stopPropagation()"
                                 style="margin-top: 10px"
                                 ><i class="fa-regular fa-circle-plus"></i> Add
                                 to Compare</a
-                            > -->
+                            >
                         </div>
                     </div>
 

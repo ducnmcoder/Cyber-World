@@ -61,6 +61,9 @@ public class ExcelExportService {
         int totalOrders = orders.size();
 
         Map<String, BrandStat> brandStats = new HashMap<>();
+        String[] brands = {"Dell", "ASUS", "Apple", "Lenovo", "HP", "MSI"};
+        for (String b : brands) brandStats.put(b.toLowerCase(), new BrandStat(b));
+        BrandStat otherStat = new BrandStat("Other");
 
         for (Order o : orders) {
             for (OrderDetail od : o.getOrderDetails()) {
@@ -74,14 +77,18 @@ public class ExcelExportService {
                 totalRevenue += price * qty;
                 totalCost += cost * qty;
 
-                String factory = (p != null && p.getFactory() != null && !p.getFactory().trim().isEmpty()) ? p.getFactory().trim() : "Other";
-                BrandStat stat = brandStats.computeIfAbsent(factory.toLowerCase(), k -> new BrandStat(factory));
+                String factory = (p != null && p.getFactory() != null) ? p.getFactory().toLowerCase() : "other";
+                BrandStat stat = brandStats.getOrDefault(factory, otherStat);
                 stat.qty += qty;
                 stat.revenue += price * qty;
                 stat.profit += (price - cost) * qty;
             }
         }
         
+        if (otherStat.qty > 0) {
+            brandStats.put("other", otherStat);
+        }
+
         // Write KPIs
         XSSFRow row0 = sheet.createRow(0);
         XSSFCell cell0 = row0.createCell(0);
@@ -132,80 +139,6 @@ public class ExcelExportService {
 
         // Add Charts
         drawCharts(sheet, rowIndex);
-
-        // Draw Monthly Table
-        List<BrandStat> activeBrands = new java.util.ArrayList<>();
-        for (BrandStat stat : brandStats.values()) {
-            if (stat.qty > 0) activeBrands.add(stat);
-        }
-        drawMonthlyTable(sheet, orders, headerStyle, z1, z2, c1, c2, activeBrands, Math.max(17, rowIndex + 2));
-    }
-
-    private void drawMonthlyTable(XSSFSheet sheet, List<Order> orders, XSSFCellStyle headerStyle, XSSFCellStyle z1, XSSFCellStyle z2, XSSFCellStyle c1, XSSFCellStyle c2, List<BrandStat> activeBrands, int startRow) {
-        int startCol = 6; // Col G is index 6
-        int currentYear = java.time.Year.now().getValue();
-        
-        // Data structures for 12 months
-        Map<Integer, Map<String, Long>> monthlyBrandQty = new java.util.HashMap<>();
-        Map<Integer, Double> monthlyRevenue = new java.util.HashMap<>();
-        for (int i = 1; i <= 12; i++) {
-            monthlyBrandQty.put(i, new java.util.HashMap<>());
-            for (BrandStat b : activeBrands) {
-                monthlyBrandQty.get(i).put(b.name.toLowerCase(), 0L);
-            }
-            monthlyRevenue.put(i, 0.0);
-        }
-
-        // Aggregate data for current year
-        for (Order o : orders) {
-            if (o.getCreatedAt() != null && o.getCreatedAt().getYear() == currentYear) {
-                int month = o.getCreatedAt().getMonthValue();
-                for (OrderDetail od : o.getOrderDetails()) {
-                    Product p = od.getProduct();
-                    long qty = od.getQuantity();
-                    double price = od.getPrice();
-                    
-                    String factory = (p != null && p.getFactory() != null && !p.getFactory().trim().isEmpty()) ? p.getFactory().trim().toLowerCase() : "other";
-                    Map<String, Long> brandQty = monthlyBrandQty.get(month);
-                    if (brandQty != null && brandQty.containsKey(factory)) {
-                        brandQty.put(factory, brandQty.get(factory) + qty);
-                    }
-                    
-                    monthlyRevenue.put(month, monthlyRevenue.get(month) + (price * qty));
-                }
-            }
-        }
-
-        // Draw Header
-        XSSFRow headerRow = sheet.getRow(startRow);
-        if (headerRow == null) headerRow = sheet.createRow(startRow);
-        createCell(headerRow, startCol, "", headerStyle);
-        int col = startCol + 1;
-        for (BrandStat b : activeBrands) {
-            createCell(headerRow, col++, b.name, headerStyle);
-        }
-        createCell(headerRow, col, "Total Revenue", headerStyle);
-
-        // Draw Rows
-        for (int i = 1; i <= 12; i++) {
-            XSSFRow row = sheet.getRow(startRow + i);
-            if (row == null) row = sheet.createRow(startRow + i);
-            boolean isAlt = (i % 2 == 0);
-            XSSFCellStyle zStyle = isAlt ? z2 : z1;
-            XSSFCellStyle cStyle = isAlt ? c2 : c1;
-
-            createCell(row, startCol, "Month " + i, zStyle);
-            int cIndex = startCol + 1;
-            for (BrandStat b : activeBrands) {
-                createCell(row, cIndex++, (double) monthlyBrandQty.get(i).get(b.name.toLowerCase()), zStyle);
-            }
-            createCell(row, cIndex, monthlyRevenue.get(i), cStyle);
-        }
-
-        // AutoSize
-        for (int i = startCol; i <= col; i++) {
-            sheet.autoSizeColumn(i);
-        }
     }
 
     private void drawCharts(XSSFSheet sheet, int lastRowIndex) {

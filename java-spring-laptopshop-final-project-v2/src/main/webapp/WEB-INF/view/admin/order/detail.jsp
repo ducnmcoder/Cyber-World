@@ -2,7 +2,6 @@
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
             <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-            <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
                 <!DOCTYPE html>
                 <html lang="en">
@@ -109,103 +108,6 @@
                                                     </table>
                                                 </div>
                                                 
-                                                <div class="row mt-3 mb-4">
-                                                    <div class="col-md-6 offset-md-6">
-                                                        <div class="card bg-light">
-                                                            <div class="card-body">
-                                                                <h5 class="card-title">Order Summary</h5>
-                                                                <hr/>
-                                                                <div class="d-flex justify-content-between mb-2">
-                                                                    <span>Subtotal (estimated):</span>
-                                                                    <strong><fmt:formatNumber type="number" value="${order.totalPrice + (order.discountAmount != null ? order.discountAmount : 0)}" /> VND</strong>
-                                                                </div>
-                                                                <c:if test="${order.discountAmount != null and order.discountAmount > 0}">
-                                                                    <div class="d-flex justify-content-between mb-2 text-success">
-                                                                        <span>Discount (${order.appliedVouchers}):</span>
-                                                                        <strong>- <fmt:formatNumber type="number" value="${order.discountAmount}" /> VND</strong>
-                                                                    </div>
-                                                                </c:if>
-                                                                <hr/>
-                                                                <div class="d-flex justify-content-between">
-                                                                    <span class="fw-bold">Total Paid/COD:</span>
-                                                                    <strong class="text-danger" style="font-size: 1.25rem;"><fmt:formatNumber type="number" value="${order.totalPrice}" /> VND</strong>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <c:if test="${order.status == 'REFUND_REQUESTED'}">
-                                                    <div class="mt-5 card border-warning mb-3">
-                                                        <div class="card-header bg-warning text-dark fw-bold">
-                                                            Refund Request Information
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <div class="row mb-2">
-                                                                <div class="col-md-3 fw-bold">Customer Name:</div>
-                                                                <div class="col-md-9">${order.refundName}</div>
-                                                            </div>
-                                                            <div class="row mb-2">
-                                                                <div class="col-md-3 fw-bold">Phone Number:</div>
-                                                                <div class="col-md-9">${order.refundPhone}</div>
-                                                            </div>
-                                                            <div class="row mb-2">
-                                                                <div class="col-md-3 fw-bold">Bank Name:</div>
-                                                                <div class="col-md-9">${order.refundBankName}</div>
-                                                            </div>
-                                                            <div class="row mb-2">
-                                                                <div class="col-md-3 fw-bold">Bank Account:</div>
-                                                                <div class="col-md-9">${order.refundBankAccount}</div>
-                                                            </div>
-                                                            <div class="row mb-3">
-                                                                <div class="col-md-3 fw-bold">Reason for Refund:</div>
-                                                                <div class="col-md-9">${order.refundReason}</div>
-                                                            </div>
-                                                            <c:if test="${not empty order.refundProofs}">
-                                                                <div class="row mb-3">
-                                                                    <div class="col-md-3 fw-bold">Evidence (Proofs):</div>
-                                                                    <div class="col-md-9 d-flex flex-wrap gap-2">
-                                                                        <c:set var="proofs" value="${fn:split(order.refundProofs, ',')}"/>
-                                                                        <c:forEach var="proof" items="${proofs}">
-                                                                            <c:set var="ext" value="${fn:toLowerCase(fn:substringAfter(proof, '.'))}"/>
-                                                                            <a href="/images/refunds/${proof}" target="_blank" class="border rounded p-1 d-inline-block text-center text-decoration-none" style="width: 120px; background: #f8f9fa;">
-                                                                                <c:choose>
-                                                                                    <c:when test="${ext == 'mp4' || ext == 'webm' || ext == 'ogg' || ext == 'mov'}">
-                                                                                        <div style="height:80px; display:flex; align-items:center; justify-content:center; background:#000;">
-                                                                                            <i class="fa fa-play-circle text-white fa-2x"></i>
-                                                                                        </div>
-                                                                                        <div class="small text-truncate mt-1 text-dark" title="${proof}">${proof}</div>
-                                                                                    </c:when>
-                                                                                    <c:otherwise>
-                                                                                        <img src="/images/refunds/${proof}" alt="Proof" style="width: 100%; height: 80px; object-fit: cover;">
-                                                                                        <div class="small text-truncate mt-1 text-dark" title="${proof}">${proof}</div>
-                                                                                    </c:otherwise>
-                                                                                </c:choose>
-                                                                            </a>
-                                                                        </c:forEach>
-                                                                    </div>
-                                                                </div>
-                                                            </c:if>
-                                                            <div class="d-flex gap-2">
-                                                                <form action="/admin/order/refund/approve" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to approve this refund? Status will be changed to RETURNED.');">
-                                                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                                                                    <input type="hidden" name="orderId" value="${order.id}">
-                                                                    <input type="hidden" name="page" value="${page}">
-                                                                    <input type="hidden" name="source" value="${source}">
-                                                                    <button type="submit" class="btn btn-success me-2">Approve Refund</button>
-                                                                </form>
-                                                                <form action="/admin/order/refund/reject" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to reject this refund? An email will be sent automatically.');">
-                                                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                                                                    <input type="hidden" name="orderId" value="${order.id}">
-                                                                    <input type="hidden" name="page" value="${page}">
-                                                                    <input type="hidden" name="source" value="${source}">
-                                                                    <button type="submit" class="btn btn-danger">Reject Refund</button>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </c:if>
-
                                                 <div class="mt-5">
                                                     <h4>Payment History</h4>
                                                     <hr/>
@@ -254,14 +156,7 @@
                                                     </table>
                                                 </div>
 
-                                                <c:choose>
-                                                    <c:when test="${source == 'refund'}">
-                                                        <a href="/admin/refund?page=${page}" class="btn btn-secondary mt-3">Back</a>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <a href="/admin/order?page=${page}" class="btn btn-secondary mt-3">Back</a>
-                                                    </c:otherwise>
-                                                </c:choose>
+                                                <a href="/admin/order?page=${page}" class="btn btn-success mt-3">Back</a>
 
                                             </div>
 

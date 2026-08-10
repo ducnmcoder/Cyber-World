@@ -63,8 +63,8 @@
                             <div class="col-lg-4">
                                 <div class="bg-light rounded p-4 mb-4">
                                     <div class="d-flex align-items-center mb-4">
-                                        <div class="btn-square rounded-circle me-3"
-                                            style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; background-color: #cd1818;">
+                                        <div class="btn-square rounded-circle bg-secondary me-3"
+                                            style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
                                             <i class="fas fa-map-marker-alt text-white"></i>
                                         </div>
                                         <div>
@@ -73,8 +73,8 @@
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center mb-4">
-                                        <div class="btn-square rounded-circle me-3"
-                                            style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; background-color: #cd1818;">
+                                        <div class="btn-square rounded-circle bg-secondary me-3"
+                                            style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
                                             <i class="fas fa-envelope text-white"></i>
                                         </div>
                                         <div>
@@ -83,8 +83,8 @@
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center mb-4">
-                                        <div class="btn-square rounded-circle me-3"
-                                            style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; background-color: #cd1818;">
+                                        <div class="btn-square rounded-circle bg-secondary me-3"
+                                            style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
                                             <i class="fas fa-phone-alt text-white"></i>
                                         </div>
                                         <div>
@@ -93,8 +93,8 @@
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center">
-                                        <div class="btn-square rounded-circle me-3"
-                                            style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; background-color: #cd1818;">
+                                        <div class="btn-square rounded-circle bg-secondary me-3"
+                                            style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
                                             <i class="fas fa-clock text-white"></i>
                                         </div>
                                         <div>
@@ -107,7 +107,7 @@
 
                             <!-- Contact Form -->
                             <div class="col-lg-8">
-                                <h2 class="mb-4" style="color: #cd1818;">Send Us a Message</h2>
+                                <h2 class="text-primary mb-4">Send Us a Message</h2>
 
                                 <c:if test="${not empty success}">
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -155,7 +155,7 @@
                                         </div>
                                         <div class="col-12">
                                             <button type="submit"
-                                                class="btn rounded-pill px-4 py-3 text-white fw-bold shadow-sm" style="background-color: #cd1818; border: none;">
+                                                class="btn border border-secondary rounded-pill px-4 py-3 text-primary fw-bold">
                                                 <i class="fas fa-paper-plane me-2"></i>Send Message
                                             </button>
                                         </div>

@@ -32,9 +32,7 @@
     }
     .cyber-logo-text {
         display: flex;
-        flex-direction: row;
-        gap: 8px;
-        align-items: center;
+        flex-direction: column;
         justify-content: center;
     }
     .cyber-logo-title {
@@ -198,14 +196,6 @@
                 </a>
             </c:if>
 
-            <!-- Avatar and Name for logged in users -->
-            <c:if test="${sessionScope.user != null}">
-                <a href="/account/manage" style="color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; margin-right: 15px;">
-                    <img src="/images/avatar/${not empty sessionScope.user.avatar ? sessionScope.user.avatar : 'default-avatar.png'}" alt="Avatar" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">
-                    <span>${sessionScope.user.fullName}</span>
-                </a>
-            </c:if>
-
             <!-- Role / Logout Button for ADMIN, OWNER, STAFF -->
             <c:if test="${sessionScope.user != null and sessionScope.user.role.name != 'USER'}">
                 <form method="post" action="/logout" style="margin: 0;">
@@ -243,7 +233,7 @@
                     <a href="#footer" onclick="document.getElementById('footer').scrollIntoView({behavior: 'smooth'})"><i class="fa-solid fa-envelope"></i> Contact</a>
                     <a href="#footer" onclick="document.getElementById('footer').scrollIntoView({behavior: 'smooth'})"><i class="fa-solid fa-circle-info"></i> About Us</a>
                     <c:if test="${sessionScope.user != null and sessionScope.user.role.name == 'USER'}">
-
+                        <a href="/account/manage"><i class="fa-solid fa-user-gear"></i> Manage Account</a>
                         <a href="/feedback"><i class="fa-solid fa-comment-dots"></i> Feedback</a>
                     </c:if>
                 </div>

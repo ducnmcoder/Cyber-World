@@ -45,12 +45,6 @@
                     <c:if test="${param.error == 'password_mismatch'}">
                         <div class="alert alert-danger">Passwords do not match. Please try again.</div>
                     </c:if>
-                    <c:if test="${param.error == 'password_format'}">
-                        <div class="alert alert-danger">The password must be at least 8 characters, and contain both letters and numbers.</div>
-                    </c:if>
-                    <c:if test="${param.error == 'password_same'}">
-                        <div class="alert alert-danger">New password must be different from current password.</div>
-                    </c:if>
                     <c:if test="${param.error == 'email_exists'}">
                         <div class="alert alert-danger">Email already exists. Please choose another one.</div>
                     </c:if>
@@ -103,29 +97,12 @@
                                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                         <div class="mb-3">
                                             <label class="form-label">New Password:</label>
-                                            <input type="password" class="form-control" name="newPassword" id="adminNewPassword" required />
+                                            <input type="password" class="form-control" name="newPassword" required />
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Confirm Password:</label>
-                                            <input type="password" class="form-control" name="confirmPassword" id="adminConfirmPassword" required />
+                                            <input type="password" class="form-control" name="confirmPassword" required />
                                         </div>
-                                        <div class="mb-3 form-check">
-                                            <input type="checkbox" class="form-check-input" id="adminShowPassword" onclick="toggleAdminPassword()">
-                                            <label class="form-check-label" for="adminShowPassword">Show passwords</label>
-                                        </div>
-                                        <script>
-                                            function toggleAdminPassword() {
-                                                var newPass = document.getElementById("adminNewPassword");
-                                                var confirmPass = document.getElementById("adminConfirmPassword");
-                                                if (newPass.type === "password") {
-                                                    newPass.type = "text";
-                                                    confirmPass.type = "text";
-                                                } else {
-                                                    newPass.type = "password";
-                                                    confirmPass.type = "password";
-                                                }
-                                            }
-                                        </script>
                                         <button type="submit" class="btn btn-warning">Change Password</button>
                                     </form>
                                 </div>

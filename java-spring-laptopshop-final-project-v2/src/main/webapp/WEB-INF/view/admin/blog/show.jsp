@@ -37,7 +37,6 @@
                                                 <tr>
                                                     <th>ID</th>
                                                     <th>Title</th>
-                                                    <th>Type</th>
                                                     <th>Image</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -47,7 +46,6 @@
                                                     <tr>
                                                         <th>${blog.id}</th>
                                                         <td>${blog.title}</td>
-                                                        <td>${blog.type == 'VIDEO' ? 'Video' : 'Article'}</td>
                                                         <td>
                                                             <img src="/images/blog/${blog.image}"
                                                                 style="width: 80px; height: 60px; object-fit: cover;"

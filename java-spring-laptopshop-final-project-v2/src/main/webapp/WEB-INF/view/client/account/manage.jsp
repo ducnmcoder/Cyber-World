@@ -74,12 +74,6 @@
             <c:if test="${param.error == 'password_mismatch'}">
                 <div class="alert alert-danger">Passwords do not match. Please try again.</div>
             </c:if>
-            <c:if test="${param.error == 'password_format'}">
-                <div class="alert alert-danger">The password must be at least 8 characters, and contain both letters and numbers.</div>
-            </c:if>
-            <c:if test="${param.error == 'password_same'}">
-                <div class="alert alert-danger">New password must be different from current password.</div>
-            </c:if>
             <c:if test="${param.error == 'email_exists'}">
                 <div class="alert alert-danger">Email already exists. Please choose another one.</div>
             </c:if>
@@ -132,29 +126,12 @@
                             <div class="row gx-3">
                                 <div class="col-12 mb-3">
                                     <label class="form-label">New Password</label>
-                                    <input type="password" class="form-control" name="newPassword" id="clientNewPassword" required />
+                                    <input type="password" class="form-control" name="newPassword" required />
                                 </div>
-                                <div class="col-12 mb-3">
+                                <div class="col-12 mb-4">
                                     <label class="form-label">Confirm Password</label>
-                                    <input type="password" class="form-control" name="confirmPassword" id="clientConfirmPassword" required />
+                                    <input type="password" class="form-control" name="confirmPassword" required />
                                 </div>
-                                <div class="col-12 mb-4 form-check ps-4">
-                                    <input type="checkbox" class="form-check-input" id="clientShowPassword" onclick="toggleClientPassword()">
-                                    <label class="form-check-label ms-2" for="clientShowPassword">Show passwords</label>
-                                </div>
-                                <script>
-                                    function toggleClientPassword() {
-                                        var newPass = document.getElementById("clientNewPassword");
-                                        var confirmPass = document.getElementById("clientConfirmPassword");
-                                        if (newPass.type === "password") {
-                                            newPass.type = "text";
-                                            confirmPass.type = "text";
-                                        } else {
-                                            newPass.type = "password";
-                                            confirmPass.type = "password";
-                                        }
-                                    }
-                                </script>
                             </div>
                             <button type="submit" class="btn border-secondary rounded-pill px-4 py-3 text-primary w-100">Change Password</button>
                         </form>

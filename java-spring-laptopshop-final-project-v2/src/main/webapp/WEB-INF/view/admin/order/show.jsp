@@ -55,16 +55,7 @@
                                                                     value="${order.totalPrice}" /> VND
                                                             </td>
                                                             <td>${order.user != null ? order.user.email : order.receiverName}</td>
-                                                            <td>
-                                                                <c:choose>
-                                                                    <c:when test="${order.status == 'REFUND_REQUESTED'}">
-                                                                        <span class="badge bg-warning text-dark">${order.status}</span>
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        ${order.status}
-                                                                    </c:otherwise>
-                                                                </c:choose>
-                                                            </td>
+                                                            <td>${order.status}</td>
                                                             <td>
                                                                 <a href="/admin/order/${order.id}?page=${currentPage}"
                                                                     class="btn btn-success">View</a>

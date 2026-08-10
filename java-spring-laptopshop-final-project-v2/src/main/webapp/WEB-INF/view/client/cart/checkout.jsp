@@ -164,52 +164,6 @@
                             <c:if test="${not empty cartDetails}">
                                 <form:form action="/place-order" method="post" modelAttribute="cart">
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                                    
-                                    <c:if test="${not empty vouchers}">
-                                        <div class="cyber-checkout-box mt-4 mb-0" style="padding: 20px 30px;">
-                                            <div class="cyber-box-title" style="font-size: 18px; margin-bottom: 15px; padding-bottom: 0; border: none;"><i class="fa-solid fa-ticket" style="color: #cd1818; margin-right: 8px;"></i> Available Vouchers</div>
-                                            <div class="d-flex flex-wrap" style="gap: 15px;">
-                                                <c:forEach var="v" items="${vouchers}">
-                                                    <c:set var="isChecked" value="false" />
-                                                    <c:if test="${preselectedVouchers != null}">
-                                                        <c:forEach var="pid" items="${preselectedVouchers}">
-                                                            <c:if test="${pid == v.id}">
-                                                                <c:set var="isChecked" value="true" />
-                                                            </c:if>
-                                                        </c:forEach>
-                                                    </c:if>
-                                                    
-                                                    <label style="background: ${isChecked ? '#fff5f5' : '#fff'}; border: 1px solid ${isChecked ? '#cd1818' : '#ddd'}; border-radius: 8px; padding: 12px; cursor: pointer; flex: 1 1 250px; max-width: 320px; display: flex; align-items: flex-start; gap: 10px; transition: 0.3s;" 
-                                                           onmouseover="if(!this.querySelector('input').checked) this.style.borderColor='#cd1818';" 
-                                                           onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='#ddd';">
-                                                        <input type="checkbox" name="selectedVouchers" value="${v.id}" class="voucher-checkbox" style="accent-color: #cd1818; margin-top: 4px; width: 16px; height: 16px;"
-                                                               data-discount-type="${v.discountType}" data-discount-amount="${v.discountAmount}"
-                                                               <c:if test="${isChecked}">checked</c:if>
-                                                               onchange="this.parentElement.style.borderColor = this.checked ? '#cd1818' : '#ddd'; this.parentElement.style.backgroundColor = this.checked ? '#fff5f5' : '#fff'; calculateTotal();">
-                                                        <div>
-                                                            <div style="font-weight: bold; color: #cd1818; font-size: 14px; margin-bottom: 5px; line-height: 1.2; display: flex; align-items: center; flex-wrap: wrap; gap: 5px;">
-                                                                ${v.title}
-                                                                <c:choose>
-                                                                    <c:when test="${v.discountType == 'PERCENT'}">
-                                                                        <span style="background: #cd1818; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;">
-                                                                            - <fmt:formatNumber type="number" value="${v.discountAmount}" />%
-                                                                        </span>
-                                                                    </c:when>
-                                                                    <c:when test="${v.discountType == 'FIXED'}">
-                                                                        <span style="background: #cd1818; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;">
-                                                                            - <fmt:formatNumber type="number" value="${v.discountAmount}" /> VND
-                                                                        </span>
-                                                                    </c:when>
-                                                                </c:choose>
-                                                            </div>
-                                                            <div style="font-size: 12px; color: #666; line-height: 1.4;">${v.description}</div>
-                                                        </div>
-                                                    </label>
-                                                </c:forEach>
-                                            </div>
-                                        </div>
-                                    </c:if>
-
                                     <div class="mt-4 row g-4">
                                         <div class="col-12 col-md-7">
                                             <div class="cyber-checkout-box">
@@ -296,7 +250,7 @@
                                                 
                                                 <div class="cyber-summary-total">
                                                     <span>Total:</span>
-                                                    <span id="display-total-price">
+                                                    <span>
                                                         <fmt:formatNumber type="number" value="${totalPrice}" /> VND
                                                     </span>
                                                 </div>
@@ -335,41 +289,6 @@
                     <script src="/client/js/main.js"></script>
 
                     <script>
-                        const baseTotal = ${totalPrice};
-                        
-                        function calculateTotal() {
-                            let discountAmount = 0;
-                            let percentDiscount = 0;
-                            
-                            document.querySelectorAll('.voucher-checkbox:checked').forEach(function(cb) {
-                                const type = cb.getAttribute('data-discount-type');
-                                const amount = parseFloat(cb.getAttribute('data-discount-amount'));
-                                
-                                if (type === 'FIXED') {
-                                    discountAmount += amount;
-                                } else if (type === 'PERCENT') {
-                                    percentDiscount += amount;
-                                }
-                            });
-                            
-                            let newTotal = baseTotal;
-                            if (percentDiscount > 0) {
-                                newTotal = newTotal - (newTotal * percentDiscount / 100);
-                            }
-                            if (discountAmount > 0) {
-                                newTotal = newTotal - discountAmount;
-                            }
-                            if (newTotal < 0) newTotal = 0;
-                            
-                            // Format to locale string mimicking JSTL formatNumber (e.g., 35.290.000)
-                            const formatted = newTotal.toLocaleString('de-DE', {maximumFractionDigits: 0}) + ' VND';
-                            document.getElementById('display-total-price').innerText = formatted;
-                        }
-
-                        document.addEventListener("DOMContentLoaded", function() {
-                            calculateTotal();
-                        });
-
                         // Payment method radio button interaction
                         document.querySelectorAll('input[name="paymentMethod"]').forEach(function(radio) {
                             radio.addEventListener('change', function() {

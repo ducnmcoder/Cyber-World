@@ -58,9 +58,4 @@ public class DashboardApiController {
         
         return ResponseEntity.ok(topProducts);
     }
-
-    @GetMapping("/revenue/brand")
-    public ResponseEntity<List<Object[]>> getBrandRevenue(@RequestParam int year) {
-        return ResponseEntity.ok(this.orderService.fetchRevenueByBrand(year));
-    }
 }

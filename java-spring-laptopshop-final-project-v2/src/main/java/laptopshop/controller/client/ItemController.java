@@ -36,7 +36,6 @@ import laptopshop.domain.Blog;
 import laptopshop.domain.Payment;
 import laptopshop.service.ReviewService;
 import laptopshop.service.UserService;
-import laptopshop.service.VoucherService;
 
 @Controller
 public class ItemController {
@@ -50,12 +49,11 @@ public class ItemController {
     private final EmailService emailService;
     private final ReviewService reviewService;
     private final UserService userService;
-    private final VoucherService voucherService;
 
     public ItemController(ProductService productService, BlogService blogService,
             PaymentService paymentService, VNPayService vnPayService,
             MoMoService moMoService, ZaloPayService zaloPayService,
-            EmailService emailService, ReviewService reviewService, UserService userService, VoucherService voucherService) {
+            EmailService emailService, ReviewService reviewService, UserService userService) {
         this.productService = productService;
         this.blogService = blogService;
         this.paymentService = paymentService;
@@ -65,7 +63,6 @@ public class ItemController {
         this.emailService = emailService;
         this.reviewService = reviewService;
         this.userService = userService;
-        this.voucherService = voucherService;
     }
 
     @GetMapping("/product/{id}")
@@ -76,24 +73,11 @@ public class ItemController {
         }
         model.addAttribute("product", pr);
         model.addAttribute("id", id);
-        java.util.List<laptopshop.domain.Voucher> activeVouchers = this.voucherService.getActiveVouchers();
-        java.util.List<laptopshop.domain.Voucher> applicableVouchers = activeVouchers.stream().filter(v -> {
-            if (v.getAppliesTo() == null || v.getAppliesTo().equals("ALL")) return true;
-            if (v.getAppliesTo().equals("FACTORY") && pr.getFactory() != null && v.getApplyValue() != null && pr.getFactory().equalsIgnoreCase(v.getApplyValue())) return true;
-            if (v.getAppliesTo().equals("TARGET") && pr.getTarget() != null && v.getApplyValue() != null && pr.getTarget().equalsIgnoreCase(v.getApplyValue())) return true;
-            return false;
-        }).collect(java.util.stream.Collectors.toList());
-        model.addAttribute("vouchers", applicableVouchers);
 
         // Reviews pagination
         Pageable pageable = PageRequest.of(0, 50, Sort.by("createdAt").descending());
         Page<Review> reviews = this.reviewService.getApprovedReviewsByProduct(pr, pageable);
         model.addAttribute("reviews", reviews.getContent());
-        
-        // Latest Videos & Articles
-        Pageable newsPageable = PageRequest.of(0, 10, Sort.by("createdAt").descending());
-        model.addAttribute("latestVideos", this.blogService.fetchBlogsByType("VIDEO", newsPageable).getContent());
-        model.addAttribute("latestArticles", this.blogService.fetchBlogsByType("ARTICLE", newsPageable).getContent());
 
         // Check if user is logged in and can review
         HttpSession session = request.getSession(false);
@@ -165,42 +149,6 @@ public class ItemController {
         }
 
         List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
-        if (cartDetails == null) {
-            cartDetails = new ArrayList<>();
-        }
-
-        boolean cartChanged = false;
-        List<CartDetail> validDetails = new ArrayList<>();
-        List<CartDetail> invalidDetails = new ArrayList<>();
-        for (CartDetail cd : cartDetails) {
-            if (cd.getProduct() != null && this.productService.fetchProductById(cd.getProduct().getId()).isPresent()) {
-                validDetails.add(cd);
-            } else {
-                cartChanged = true;
-                invalidDetails.add(cd);
-            }
-        }
-
-        // Clean up invalid CartDetails from DB and update cart sum
-        if (cartChanged && email != null && cart != null) {
-            for (CartDetail cd : invalidDetails) {
-                this.productService.handleRemoveCartDetail(cd.getId(), session);
-            }
-            // Refresh session sum to match valid items
-            session.setAttribute("sum", validDetails.size());
-        } else if (cartChanged && email == null && cart != null) {
-            cart.setCartDetails(validDetails);
-            cart.setSum(validDetails.size());
-            session.setAttribute("guestCart", cart);
-            session.setAttribute("sum", validDetails.size());
-        }
-
-        cartDetails = validDetails;
-
-        if (cartChanged) {
-            model.addAttribute("errorMessage",
-                    "Some items in your cart are no longer available and have been automatically removed.");
-        }
 
         double totalPrice = 0;
         for (CartDetail cd : cartDetails) {
@@ -257,41 +205,6 @@ public class ItemController {
         }
 
         List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
-        if (cartDetails == null) {
-            cartDetails = new ArrayList<>();
-        }
-
-        boolean cartChanged = false;
-        List<CartDetail> validDetails = new ArrayList<>();
-        List<CartDetail> invalidDetails = new ArrayList<>();
-        for (CartDetail cd : cartDetails) {
-            if (cd.getProduct() != null && this.productService.fetchProductById(cd.getProduct().getId()).isPresent()) {
-                validDetails.add(cd);
-            } else {
-                cartChanged = true;
-                invalidDetails.add(cd);
-            }
-        }
-
-        // Clean up invalid CartDetails from DB and update cart sum
-        if (cartChanged && email != null && cart != null) {
-            for (CartDetail cd : invalidDetails) {
-                this.productService.handleRemoveCartDetail(cd.getId(), session);
-            }
-            session.setAttribute("sum", validDetails.size());
-        } else if (cartChanged && email == null && cart != null) {
-            cart.setCartDetails(validDetails);
-            cart.setSum(validDetails.size());
-            session.setAttribute("guestCart", cart);
-            session.setAttribute("sum", validDetails.size());
-        }
-
-        cartDetails = validDetails;
-
-        if (cartChanged) {
-            model.addAttribute("errorMessage",
-                    "Some items in your cart are no longer available and have been automatically removed.");
-        }
 
         double totalPrice = 0;
         for (CartDetail cd : cartDetails) {
@@ -301,35 +214,6 @@ public class ItemController {
         model.addAttribute("cartDetails", cartDetails);
         model.addAttribute("totalPrice", totalPrice);
         model.addAttribute("cart", cart != null ? cart : new Cart());
-
-        java.util.List<laptopshop.domain.Voucher> activeVouchers = this.voucherService.getActiveVouchers();
-        java.util.List<laptopshop.domain.Voucher> applicableVouchers = new java.util.ArrayList<>();
-        for (laptopshop.domain.Voucher v : activeVouchers) {
-            if (v.getAppliesTo() == null || v.getAppliesTo().equals("ALL")) {
-                applicableVouchers.add(v);
-            } else {
-                for (laptopshop.domain.CartDetail cd : cartDetails) {
-                    laptopshop.domain.Product p = cd.getProduct();
-                    if (p != null) {
-                        if (v.getAppliesTo().equals("FACTORY") && p.getFactory() != null && v.getApplyValue() != null && p.getFactory().equalsIgnoreCase(v.getApplyValue())) {
-                            applicableVouchers.add(v);
-                            break;
-                        }
-                        if (v.getAppliesTo().equals("TARGET") && p.getTarget() != null && v.getApplyValue() != null && p.getTarget().equalsIgnoreCase(v.getApplyValue())) {
-                            applicableVouchers.add(v);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        model.addAttribute("vouchers", applicableVouchers);
-
-        java.util.List<Long> preselectedVouchers = (java.util.List<Long>) session.getAttribute("preselectedVouchers");
-        if (preselectedVouchers != null) {
-            model.addAttribute("preselectedVouchers", preselectedVouchers);
-            session.removeAttribute("preselectedVouchers");
-        }
 
         return "client/cart/checkout";
     }
@@ -382,7 +266,6 @@ public class ItemController {
             @RequestParam("receiverAddress") String receiverAddress,
             @RequestParam("receiverPhone") String receiverPhone,
             @RequestParam(value = "paymentMethod", defaultValue = "COD") String paymentMethod,
-            @RequestParam(value = "selectedVouchers", required = false) java.util.List<Long> selectedVouchers,
             org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
 
         HttpSession session = request.getSession(true);
@@ -402,7 +285,7 @@ public class ItemController {
         try {
             // Create order with payment method
             order = this.productService.handlePlaceOrder(
-                    currentUser, session, receiverName, receiverAddress, receiverPhone, paymentMethod, selectedVouchers);
+                    currentUser, session, receiverName, receiverAddress, receiverPhone, paymentMethod);
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/checkout";
@@ -470,16 +353,11 @@ public class ItemController {
     public String handleAddProductFromViewDetail(
             @RequestParam("id") long id,
             @RequestParam("quantity") long quantity,
-            @RequestParam(value = "selectedVouchers", required = false) java.util.List<Long> selectedVouchers,
             HttpServletRequest request,
             org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
         HttpSession session = request.getSession(true);
         if (isManager(session)) {
             return "redirect:/product/" + id;
-        }
-
-        if (selectedVouchers != null && !selectedVouchers.isEmpty()) {
-            session.setAttribute("preselectedVouchers", selectedVouchers);
         }
 
         String email = (String) session.getAttribute("email");
@@ -496,16 +374,11 @@ public class ItemController {
     public String handleBuyNow(
             @RequestParam("id") long id,
             @RequestParam("quantity") long quantity,
-            @RequestParam(value = "selectedVouchers", required = false) java.util.List<Long> selectedVouchers,
             HttpServletRequest request,
             org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
         HttpSession session = request.getSession(true);
         if (isManager(session)) {
             return "redirect:/product/" + id;
-        }
-
-        if (selectedVouchers != null && !selectedVouchers.isEmpty()) {
-            session.setAttribute("preselectedVouchers", selectedVouchers);
         }
 
         String email = (String) session.getAttribute("email");

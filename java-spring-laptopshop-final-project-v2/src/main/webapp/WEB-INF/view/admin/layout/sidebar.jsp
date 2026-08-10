@@ -30,12 +30,6 @@
                                 Order
                             </a>
 
-                            <a class="nav-link" href="/admin/refund">
-                                <div class="sb-nav-link-icon"><i class="fas fa-undo"></i></div>
-                                Refund
-                            </a>
-
-
                             <a class="nav-link" href="/admin/blog">
                                 <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
                                 Blog
@@ -54,11 +48,6 @@
                             <a class="nav-link" href="/admin/review">
                                 <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
                                 Review
-                            </a>
-
-                            <a class="nav-link" href="/admin/voucher">
-                                <div class="sb-nav-link-icon"><i class="fas fa-ticket-alt"></i></div>
-                                Voucher
                             </a>
                         </c:if>
                     </div>
