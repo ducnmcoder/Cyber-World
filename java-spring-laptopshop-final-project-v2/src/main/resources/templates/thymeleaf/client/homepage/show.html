@@ -256,7 +256,8 @@
                 overflow: hidden;
             }
 
-            .cyber-dropdown-content a, .cyber-dropdown-content button {
+            .cyber-dropdown-content a,
+            .cyber-dropdown-content button {
                 color: #333;
                 padding: 12px 16px;
                 text-decoration: none;
@@ -272,13 +273,15 @@
                 font-family: inherit;
             }
 
-            .cyber-dropdown-content a i, .cyber-dropdown-content button i {
+            .cyber-dropdown-content a i,
+            .cyber-dropdown-content button i {
                 margin-right: 8px;
                 width: 16px;
                 text-align: center;
             }
 
-            .cyber-dropdown-content a:hover, .cyber-dropdown-content button:hover {
+            .cyber-dropdown-content a:hover,
+            .cyber-dropdown-content button:hover {
                 background-color: #f1f2f6;
                 color: #cd1818;
             }
@@ -1590,17 +1593,29 @@
                         <div
                             th:if="${session.user != null}"
                             class="cyber-action-btn"
-                            style="cursor: pointer; padding: 5px 10px;"
+                            style="cursor: pointer; padding: 5px 10px"
                         >
                             <img
                                 th:src="${session.user.avatar != null and !session.user.avatar.isEmpty() ? '/images/avatar/' + session.user.avatar : '/images/avatar/default-avatar.png'}"
                                 alt="Avatar"
-                                style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;"
+                                style="
+                                    width: 30px;
+                                    height: 30px;
+                                    border-radius: 50%;
+                                    object-fit: cover;
+                                "
                             />
-                            <span class="user-fullname" style="margin-left: 2px;" th:text="${session.user.fullName}"></span>
-                            <i class="fa-solid fa-caret-down" style="font-size: 14px;"></i>
+                            <span
+                                class="user-fullname"
+                                style="margin-left: 2px"
+                                th:text="${session.user.fullName}"
+                            ></span>
+                            <i
+                                class="fa-solid fa-caret-down"
+                                style="font-size: 14px"
+                            ></i>
                         </div>
-                        
+
                         <!-- Guest User Button -->
                         <a
                             th:if="${session.user == null}"
@@ -1609,31 +1624,66 @@
                             title="Account"
                         >
                             <i class="fa-solid fa-user"></i>
-                            <span class="user-fullname" style="margin-left: 2px;">Login</span>
+                            <span class="user-fullname" style="margin-left: 2px"
+                                >Login</span
+                            >
                         </a>
 
                         <!-- Dropdown Content (Only for logged in users) -->
-                        <div class="cyber-dropdown-content" th:if="${session.user != null}" style="min-width: 200px; right: 0;">
+                        <div
+                            class="cyber-dropdown-content"
+                            th:if="${session.user != null}"
+                            style="min-width: 200px; right: 0"
+                        >
                             <!-- Manage Account -->
                             <a href="/account/manage">
-                                <i class="fa-solid fa-user-gear"></i> Manage Account
+                                <i class="fa-solid fa-user-gear"></i> Manage
+                                Account
                             </a>
-                            
+
                             <!-- Order history for USER only -->
-                            <a th:if="${session.user?.role?.name == 'USER'}" href="/order-history">
-                                <i class="fa-solid fa-clock-rotate-left"></i> Order History
+                            <a
+                                th:if="${session.user?.role?.name == 'USER'}"
+                                href="/order-history"
+                            >
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                                Order History
                             </a>
-                            
+
                             <!-- Role Info for ADMIN, OWNER, STAFF -->
-                            <div th:if="${session.user?.role?.name != 'USER'}" style="padding: 12px 16px; font-size: 14px; font-weight: 500; color: #666; border-bottom: 1px solid #eee;">
-                                <i class="fa-solid fa-user-shield" style="width: 16px; margin-right: 8px; text-align: center;"></i>
-                                Role: <span th:text="${session.user?.role?.name}"></span>
+                            <div
+                                th:if="${session.user?.role?.name != 'USER'}"
+                                style="
+                                    padding: 12px 16px;
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    color: #666;
+                                    border-bottom: 1px solid #eee;
+                                "
+                            >
+                                <i
+                                    class="fa-solid fa-user-shield"
+                                    style="
+                                        width: 16px;
+                                        margin-right: 8px;
+                                        text-align: center;
+                                    "
+                                ></i>
+                                Role:
+                                <span
+                                    th:text="${session.user?.role?.name}"
+                                ></span>
                             </div>
 
                             <!-- Logout -->
-                            <form method="post" th:action="@{/logout}" style="margin: 0;">
+                            <form
+                                method="post"
+                                th:action="@{/logout}"
+                                style="margin: 0"
+                            >
                                 <button type="submit">
-                                    <i class="fa-solid fa-sign-out-alt"></i> Logout
+                                    <i class="fa-solid fa-sign-out-alt"></i>
+                                    Logout
                                 </button>
                             </form>
                         </div>
