@@ -162,6 +162,7 @@
 
             .cyber-header-actions {
                 display: flex;
+                align-items: center;
                 gap: 15px;
             }
 
@@ -170,17 +171,39 @@
                 align-items: center;
                 color: white;
                 text-decoration: none;
-                font-size: 16px;
+                font-size: 20px;
                 gap: 8px;
-                background: #000000;
-                padding: 10px 18px;
+                background: transparent;
+                padding: 10px;
                 border-radius: 8px;
-                transition: background 0.2s;
+                transition: opacity 0.2s;
                 border: none;
+                cursor: pointer;
+                position: relative;
+            }
+
+            .cart-badge {
+                position: absolute;
+                top: 2px;
+                right: 2px;
+                background-color: #000000;
+                color: white;
+                font-size: 11px;
+                padding: 1px 5px;
+                border-radius: 10px;
+                min-width: 16px;
+                height: 16px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: bold;
+                transform: translate(25%, -25%);
+                line-height: 1;
             }
 
             .cyber-action-btn:hover {
-                background: #333333;
+                background: transparent;
+                opacity: 0.2;
                 color: white;
             }
 
@@ -195,7 +218,7 @@
             }
 
             .cyber-menu-btn:hover {
-                opacity: 0.8;
+                opacity: 0.2;
             }
 
             /* Utilities */
@@ -233,7 +256,8 @@
                 overflow: hidden;
             }
 
-            .cyber-dropdown-content a {
+            .cyber-dropdown-content a,
+            .cyber-dropdown-content button {
                 color: #333;
                 padding: 12px 16px;
                 text-decoration: none;
@@ -242,15 +266,22 @@
                 font-weight: 500;
                 transition: background 0.2s;
                 text-align: left;
+                width: 100%;
+                background: none;
+                border: none;
+                cursor: pointer;
+                font-family: inherit;
             }
 
-            .cyber-dropdown-content a i {
+            .cyber-dropdown-content a i,
+            .cyber-dropdown-content button i {
                 margin-right: 8px;
                 width: 16px;
                 text-align: center;
             }
 
-            .cyber-dropdown-content a:hover {
+            .cyber-dropdown-content a:hover,
+            .cyber-dropdown-content button:hover {
                 background-color: #f1f2f6;
                 color: #cd1818;
             }
@@ -592,6 +623,7 @@
                 align-items: center;
                 gap: 15px;
                 font-size: 14px;
+                flex-wrap: wrap;
             }
 
             .result-count {
@@ -1310,34 +1342,65 @@
             @media (max-width: 768px) {
                 .cyber-header .container {
                     flex-wrap: wrap;
-                    gap: 10px;
+                    row-gap: 16px;
+                    column-gap: 8px;
                     justify-content: space-between;
+                    align-items: center;
+                    margin-top: 10px;
                 }
 
                 .cyber-logo {
                     order: 1;
+                    width: 100%;
+                    justify-content: center;
+                    margin-bottom: 0;
                 }
 
-                .cyber-header-actions {
-                    order: 2;
-                    margin-left: auto;
+                .cyber-logo img {
+                    display: none !important;
                 }
 
                 .cyber-search {
-                    order: 3;
+                    order: 2;
                     margin: 0;
-                    width: 100%;
-                    max-width: 100%;
-                    flex: 1 1 100%;
-                    box-sizing: border-box;
+                    flex: 1;
+                    min-width: 0;
+                    max-width: none;
                 }
 
-                .cyber-action-btn span {
+                .cyber-search input {
+                    min-width: 0;
+                    padding: 8px 10px;
+                }
+
+                .cyber-search button {
+                    flex-shrink: 0 !important;
+                }
+
+                .cyber-header-actions {
+                    order: 3;
+                    margin-left: 0;
+                    gap: 8px;
+                }
+
+                .cyber-header-actions a[href="/account/manage"] span {
+                    display: none !important;
+                }
+
+                .cyber-header-actions a[href="/account/manage"] {
+                    margin-right: 0 !important;
+                }
+
+                .cyber-dropdown {
+                    margin-left: 0 !important;
+                }
+
+                .cyber-action-btn span:not(.cart-badge) {
                     display: none !important;
                 }
 
                 .cyber-action-btn {
-                    padding: 8px 12px;
+                    padding: 8px 10px;
                 }
 
                 .products-grid {
@@ -1386,6 +1449,48 @@
 
                 .blog-card {
                     min-width: calc(50% - 10px) !important;
+                }
+
+                .products-grid {
+                    gap: 8px;
+                }
+
+                .product-card {
+                    padding: 10px;
+                }
+
+                .current-price {
+                    font-size: 15px;
+                }
+
+                .old-price {
+                    font-size: 11px;
+                }
+
+                .discount-percent {
+                    font-size: 10px;
+                    padding: 2px 4px;
+                }
+
+                .discount-amount {
+                    font-size: 11px;
+                }
+
+                .product-name {
+                    font-size: 12px;
+                }
+
+                .btn-add-cart {
+                    font-size: 12px;
+                    padding: 6px;
+                }
+
+                .quantity-row {
+                    font-size: 11px !important;
+                }
+
+                .filter-radio-item {
+                    white-space: normal;
                 }
             }
         </style>
@@ -1457,16 +1562,6 @@
                 </form>
 
                 <div class="cyber-header-actions">
-                    <!-- Order history for USER only -->
-                    <a
-                        th:if="${session.user != null and session.user?.role?.name == 'USER'}"
-                        href="/order-history"
-                        class="cyber-action-btn"
-                        title="Order History"
-                    >
-                        <i class="fa-solid fa-clock-rotate-left"></i>
-                    </a>
-
                     <!-- Cart for USER and Guest -->
                     <a
                         th:if="${session.user == null or session.user?.role?.name == 'USER'}"
@@ -1476,7 +1571,7 @@
                     >
                         <i class="fa-solid fa-cart-shopping"></i>
                         <span
-                            style="margin-left: 5px; font-weight: bold"
+                            class="cart-badge"
                             th:text="${session.sum != null ? session.sum : 0}"
                             >0</span
                         >
@@ -1492,78 +1587,107 @@
                         <i class="fa-solid fa-table-columns"></i>
                     </a>
 
-                    <!-- Avatar and Name for logged in users -->
-                    <a
-                        th:if="${session.user != null}"
-                        href="/account/manage"
-                        style="
-                            color: white;
-                            text-decoration: none;
-                            display: flex;
-                            align-items: center;
-                            gap: 10px;
-                            margin-right: 15px;
-                        "
-                    >
-                        <img
-                            th:src="${session.user.avatar != null and !session.user.avatar.isEmpty() ? '/images/avatar/' + session.user.avatar : '/images/avatar/default-avatar.png'}"
-                            alt="Avatar"
-                            style="
-                                width: 30px;
-                                height: 30px;
-                                border-radius: 50%;
-                                object-fit: cover;
-                            "
-                        />
-                        <span th:text="${session.user.fullName}"></span>
-                    </a>
-
-                    <!-- Role / Logout Button for ADMIN, OWNER, STAFF -->
-                    <form
-                        th:if="${session.user != null and session.user?.role?.name != 'USER'}"
-                        method="post"
-                        th:action="@{/logout}"
-                        style="margin: 0"
-                    >
-                        <button
-                            type="submit"
+                    <!-- User Account Dropdown -->
+                    <div class="cyber-dropdown">
+                        <!-- Logged In User Button -->
+                        <div
+                            th:if="${session.user != null}"
                             class="cyber-action-btn"
-                            title="Logout"
-                            style="cursor: pointer; font-family: inherit"
+                            style="cursor: pointer; padding: 5px 10px"
                         >
-                            <i class="fa-solid fa-user-shield"></i>
+                            <img
+                                th:src="${session.user.avatar != null and !session.user.avatar.isEmpty() ? '/images/avatar/' + session.user.avatar : '/images/avatar/default-avatar.png'}"
+                                alt="Avatar"
+                                style="
+                                    width: 30px;
+                                    height: 30px;
+                                    border-radius: 50%;
+                                    object-fit: cover;
+                                "
+                            />
                             <span
-                                style="margin: 0 5px; color: white"
-                                th:text="${session.user?.role?.name}"
+                                class="user-fullname"
+                                style="margin-left: 2px"
+                                th:text="${session.user.fullName}"
                             ></span>
-                            <i class="fa-solid fa-sign-out-alt"></i>
-                        </button>
-                    </form>
+                            <i
+                                class="fa-solid fa-caret-down"
+                                style="font-size: 14px"
+                            ></i>
+                        </div>
 
-                    <!-- Account / Logout Button for USER and Guest -->
-                    <a
-                        th:if="${session.user == null}"
-                        href="/login"
-                        class="cyber-action-btn"
-                        title="Account"
-                    >
-                        <i class="fa-solid fa-user"></i>
-                    </a>
-                    <form
-                        th:if="${session.user != null and session.user?.role?.name == 'USER'}"
-                        method="post"
-                        th:action="@{/logout}"
-                        style="margin: 0"
-                    >
-                        <button
-                            type="submit"
+                        <!-- Guest User Button -->
+                        <a
+                            th:if="${session.user == null}"
+                            href="/login"
                             class="cyber-action-btn"
-                            title="Logout"
-                            style="cursor: pointer; font-family: inherit"
+                            title="Account"
                         >
-                            <i class="fa-solid fa-sign-out-alt"></i>
-                        </button>
-                    </form>
+                            <i class="fa-solid fa-user"></i>
+                            <span class="user-fullname" style="margin-left: 2px"
+                                >Login</span
+                            >
+                        </a>
+
+                        <!-- Dropdown Content (Only for logged in users) -->
+                        <div
+                            class="cyber-dropdown-content"
+                            th:if="${session.user != null}"
+                            style="min-width: 200px; right: 0"
+                        >
+                            <!-- Manage Account -->
+                            <a href="/account/manage">
+                                <i class="fa-solid fa-user-gear"></i> Manage
+                                Account
+                            </a>
+
+                            <!-- Order history for USER only -->
+                            <a
+                                th:if="${session.user?.role?.name == 'USER'}"
+                                href="/order-history"
+                            >
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                                Order History
+                            </a>
+
+                            <!-- Role Info for ADMIN, OWNER, STAFF -->
+                            <div
+                                th:if="${session.user?.role?.name != 'USER'}"
+                                style="
+                                    padding: 12px 16px;
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    color: #666;
+                                    border-bottom: 1px solid #eee;
+                                "
+                            >
+                                <i
+                                    class="fa-solid fa-user-shield"
+                                    style="
+                                        width: 16px;
+                                        margin-right: 8px;
+                                        text-align: center;
+                                    "
+                                ></i>
+                                Role:
+                                <span
+                                    th:text="${session.user?.role?.name}"
+                                ></span>
+                            </div>
+
+                            <!-- Logout -->
+                            <form
+                                method="post"
+                                th:action="@{/logout}"
+                                style="margin: 0"
+                            >
+                                <button type="submit">
+                                    <i class="fa-solid fa-sign-out-alt"></i>
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
 
                     <!-- Hamburger Menu -->
                     <div class="cyber-dropdown" style="margin-left: 10px">
@@ -1701,7 +1825,7 @@
                             style="background-color: #82b527"
                         />
                         <img
-                            th:src="@{https://trungtran.vn/images/slideshow/2026/06/15/original/thong-tin-ve-goi-bao-hanh-mo-rong-asus_1781491956.webp}"
+                            th:src="@{https://trungtran.vn/images/slideshow/2026/07/30/original/chuong-trinh-khuyen-mai-gigabyte-back-to-school-2026-thumb_1785386871.webp}"
                             alt="Promo 5"
                             class="carousel-slide"
                             style="background-color: #0076ce"
