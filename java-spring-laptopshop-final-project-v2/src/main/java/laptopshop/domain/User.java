@@ -45,6 +45,9 @@ public class User implements Serializable {
 
     private String provider = "LOCAL";
 
+    private String resetPasswordCode;
+    private java.time.LocalDateTime resetPasswordExpiry;
+
     // roleId
     // User many -> to one -> role
     @ManyToOne
@@ -149,6 +152,22 @@ public class User implements Serializable {
 
     public void setCart(Cart cart) {
         this.cart = cart;
+    }
+
+    public String getResetPasswordCode() {
+        return resetPasswordCode;
+    }
+
+    public void setResetPasswordCode(String resetPasswordCode) {
+        this.resetPasswordCode = resetPasswordCode;
+    }
+
+    public java.time.LocalDateTime getResetPasswordExpiry() {
+        return resetPasswordExpiry;
+    }
+
+    public void setResetPasswordExpiry(java.time.LocalDateTime resetPasswordExpiry) {
+        this.resetPasswordExpiry = resetPasswordExpiry;
     }
 
 }

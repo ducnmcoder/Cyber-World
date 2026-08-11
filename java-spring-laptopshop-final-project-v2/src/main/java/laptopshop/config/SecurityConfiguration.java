@@ -72,7 +72,8 @@ public class SecurityConfiguration {
                                 "/add-product-to-cart/**", "/add-product-from-view-detail", "/api/add-product-to-cart", "/buy-now",
                                 "/cart", "/checkout", "/place-order", "/delete-cart-product/**",
                                 "/confirm-checkout", "/thanks", "/payment-failed",
-                                "/api/payment/**", "/feedback")
+                                "/api/payment/**", "/feedback",
+                                "/forgot-password", "/verify-code", "/reset-password")
                         .permitAll()
 
                         .requestMatchers("/admin").hasRole("OWNER")
