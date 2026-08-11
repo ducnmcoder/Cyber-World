@@ -109,9 +109,41 @@
                                                     </table>
                                                 </div>
                                                 
-                                                <div class="row mt-3 mb-4">
-                                                    <div class="col-md-6 offset-md-6">
-                                                        <div class="card bg-light">
+                                                <div class="row mt-3 mb-4 align-items-stretch">
+                                                    <div class="col-md-6 mb-3 mb-md-0">
+                                                        <div class="card bg-light h-100">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title">Delivery Information</h5>
+                                                                <hr/>
+                                                                <div class="mb-2">
+                                                                    <span class="text-muted">Receiver Name:</span> <strong class="ms-1">${order.receiverName}</strong>
+                                                                </div>
+                                                                <div class="mb-2">
+                                                                    <span class="text-muted">Phone Number:</span> <strong class="ms-1">${order.receiverPhone}</strong>
+                                                                </div>
+                                                                <c:if test="${not empty order.receiverEmail}">
+                                                                <div class="mb-2">
+                                                                    <span class="text-muted">Email:</span> <strong class="ms-1">${order.receiverEmail}</strong>
+                                                                </div>
+                                                                </c:if>
+                                                                <div class="mb-2">
+                                                                    <span class="text-muted">Address:</span> <strong class="ms-1">${order.receiverAddress}</strong>
+                                                                </div>
+                                                                <div class="mt-3">
+                                                                    <c:choose>
+                                                                        <c:when test="${order.user != null}">
+                                                                            <span class="badge bg-primary">Registered Member</span>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <span class="badge bg-secondary">Guest User</span>
+                                                                        </c:otherwise>
+                                                                    </c:choose>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="card bg-light h-100">
                                                             <div class="card-body">
                                                                 <h5 class="card-title">Order Summary</h5>
                                                                 <hr/>

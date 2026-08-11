@@ -79,24 +79,18 @@ public class HomePageController {
         model.addAttribute("totalElements", prs.getTotalElements());
         model.addAttribute("currentPage", page);
 
-        List<Blog> blogs = this.blogService.fetchAllBlogs(PageRequest.of(0, 5)).getContent();
-        model.addAttribute("blogs", blogs);
+        List<Blog> latestNews = this.blogService.fetchLatestNews(PageRequest.of(0, 5, Sort.by("createdAt").descending())).getContent();
+        model.addAttribute("latestNews", latestNews);
+
+        List<Blog> latestBlogs = this.blogService.fetchLatestBlogs(PageRequest.of(0, 5, Sort.by("createdAt").descending())).getContent();
+        model.addAttribute("blogs", latestBlogs); // keep 'blogs' variable name for backward compatibility on Latest Blogs section
 
         return "thymeleaf/client/homepage/show";
     }
 
     @GetMapping("/blog")
-    public String getBlogPage(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
-        if (page < 1) page = 1;
-
-        Pageable pageable = PageRequest.of(page - 1, 6);
-        Page<Blog> blogPage = this.blogService.fetchAllBlogs(pageable);
-        
-        model.addAttribute("blogs", blogPage.getContent());
-        model.addAttribute("totalPages", blogPage.getTotalPages());
-        model.addAttribute("currentPage", page);
-
-        return "thymeleaf/client/blog/show";
+    public String getBlogPageRedirect() {
+        return "redirect:/blogs";
     }
 
     @GetMapping("/register")

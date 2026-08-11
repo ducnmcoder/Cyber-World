@@ -9,7 +9,7 @@
                 <meta charset="utf-8" />
                 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-                <title>Blog Detail - Cyber World</title>
+                <title>News Detail - Cyber World</title>
                 <link href="/css/styles.css" rel="stylesheet" />
                 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
             </head>
@@ -21,10 +21,10 @@
                     <div id="layoutSidenav_content">
                         <main>
                             <div class="container-fluid px-4">
-                                <h1 class="mt-4">Blog Detail</h1>
+                                <h1 class="mt-4">News Detail</h1>
                                 <ol class="breadcrumb mb-4">
-                                    <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="/admin/blog">Blog</a></li>
+                                    <li class="breadcrumb-item"><a href="/staff">Dashboard</a></li>
+                                    <li class="breadcrumb-item"><a href="/staff/news">News</a></li>
                                     <li class="breadcrumb-item active">View Detail</li>
                                 </ol>
                                 <div class="mt-5">
@@ -32,7 +32,7 @@
                                         <div class="col-12 mx-auto">
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <h3>Blog ID: ${id}</h3>
+                                                    <h3>News ID: ${id}</h3>
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="row">
@@ -84,7 +84,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <a href="/admin/blog" class="btn btn-success mt-3">Back</a>
+                                            <a href="/staff/news" class="btn btn-success mt-3">Back</a>
                                         </div>
                                     </div>
                                 </div>

@@ -92,8 +92,8 @@ public class ItemController {
         
         // Latest Videos & Articles
         Pageable newsPageable = PageRequest.of(0, 10, Sort.by("createdAt").descending());
-        model.addAttribute("latestVideos", this.blogService.fetchBlogsByType("VIDEO", newsPageable).getContent());
-        model.addAttribute("latestArticles", this.blogService.fetchBlogsByType("ARTICLE", newsPageable).getContent());
+        model.addAttribute("latestVideos", this.blogService.fetchBlogsByCategoryAndHasVideo("NEWS", newsPageable).getContent());
+        model.addAttribute("latestArticles", this.blogService.fetchBlogsByCategoryAndNoVideo("NEWS", newsPageable).getContent());
 
         // Check if user is logged in and can review
         HttpSession session = request.getSession(false);

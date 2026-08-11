@@ -7,7 +7,7 @@
             <meta charset="utf-8" />
             <meta http-equiv="X-UA-Compatible" content="IE=edge" />
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-            <title>Manage Blogs - Cyber World</title>
+            <title>Manage News - Cyber World</title>
             <link href="/css/styles.css" rel="stylesheet" />
             <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         </head>
@@ -19,17 +19,17 @@
                 <div id="layoutSidenav_content">
                     <main>
                         <div class="container-fluid px-4">
-                            <h1 class="mt-4">Manage Blogs</h1>
+                            <h1 class="mt-4">Manage News</h1>
                             <ol class="breadcrumb mb-4">
                                 <li class="breadcrumb-item"><a href="/staff">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Blog</li>
+                                <li class="breadcrumb-item active">News</li>
                             </ol>
                             <div class="mt-5">
                                 <div class="row">
                                     <div class="col-12 mx-auto">
                                         <div class="d-flex justify-content-between">
-                                            <h3>Table Blogs</h3>
-                                            <a href="/staff/blog/create" class="btn btn-primary">Create New Blog</a>
+                                            <h3>Table News</h3>
+                                            <a href="/staff/news/create" class="btn btn-primary">Create New News</a>
                                         </div>
                                         <hr />
                                         <table class="table table-bordered table-hover">
@@ -63,11 +63,11 @@
                                                             </c:choose>
                                                         </td>
                                                         <td>
-                                                            <a href="/staff/blog/${blog.id}"
+                                                            <a href="/staff/news/${blog.id}"
                                                                 class="btn btn-success">View</a>
-                                                            <a href="/staff/blog/update/${blog.id}"
+                                                            <a href="/staff/news/update/${blog.id}"
                                                                 class="btn btn-warning mx-2">Update</a>
-                                                            <a href="/staff/blog/delete/${blog.id}"
+                                                            <a href="/staff/news/delete/${blog.id}"
                                                                 class="btn btn-danger">Delete</a>
                                                         </td>
                                                     </tr>
@@ -79,21 +79,21 @@
                                                 <ul class="pagination justify-content-center">
                                                     <li class="page-item">
                                                         <a class="${1 eq currentPage ? 'disabled page-link' : 'page-link'}"
-                                                            href="/staff/blog?page=${currentPage - 1}">
+                                                            href="/staff/news?page=${currentPage - 1}">
                                                             <span aria-hidden="true">&laquo;</span>
                                                         </a>
                                                     </li>
                                                     <c:forEach begin="0" end="${totalPages - 1}" varStatus="loop">
                                                         <li class="page-item">
                                                             <a class="${(loop.index + 1) eq currentPage ? 'active page-link' : 'page-link'}"
-                                                                href="/staff/blog?page=${loop.index + 1}">
+                                                                href="/staff/news?page=${loop.index + 1}">
                                                                 ${loop.index + 1}
                                                             </a>
                                                         </li>
                                                     </c:forEach>
                                                     <li class="page-item">
                                                         <a class="${totalPages eq currentPage ? 'disabled page-link' : 'page-link'}"
-                                                            href="/staff/blog?page=${currentPage + 1}">
+                                                            href="/staff/news?page=${currentPage + 1}">
                                                             <span aria-hidden="true">&raquo;</span>
                                                         </a>
                                                     </li>
