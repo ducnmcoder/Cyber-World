@@ -132,7 +132,7 @@ public class HomePageController {
         user.setAvatar("avatar.jpg");
         // save
         this.userService.handleSaveUser(user);
-        return "redirect:/login";
+        return "redirect:/login?registered";
 
     }
 

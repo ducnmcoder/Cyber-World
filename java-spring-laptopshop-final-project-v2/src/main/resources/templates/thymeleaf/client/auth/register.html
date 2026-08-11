@@ -158,6 +158,185 @@
             color: #007bff;
             text-decoration: none;
         }
+
+        /* ===== Terms of Service Modal ===== */
+        .tos-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 100000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .tos-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        .tos-modal {
+            background: #ffffff;
+            border-radius: 16px;
+            max-width: 680px;
+            width: 100%;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255,255,255,0.1);
+            transform: translateY(30px) scale(0.95);
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+        }
+        .tos-overlay.active .tos-modal {
+            transform: translateY(0) scale(1);
+        }
+        .tos-header {
+            background: linear-gradient(135deg, #cb1c22 0%, #8b0000 100%);
+            padding: 24px 30px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .tos-header-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            flex-shrink: 0;
+        }
+        .tos-header h3 {
+            margin: 0;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+        .tos-header p {
+            margin: 4px 0 0;
+            color: rgba(255,255,255,0.8);
+            font-size: 13px;
+            font-weight: 400;
+        }
+        .tos-body {
+            padding: 24px 30px;
+            overflow-y: auto;
+            flex: 1;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            line-height: 1.7;
+            color: #374151;
+        }
+        .tos-body::-webkit-scrollbar {
+            width: 6px;
+        }
+        .tos-body::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+        .tos-body::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .tos-body::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .tos-section {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .tos-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        .tos-section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .tos-section-number {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #cb1c22, #e53935);
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .tos-section-title h4 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .tos-section ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+        .tos-section ul li {
+            margin-bottom: 8px;
+            color: #475569;
+        }
+        .tos-section ul li strong {
+            color: #1e293b;
+        }
+        .tos-footer {
+            padding: 20px 30px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            background: #f8fafc;
+        }
+        .tos-btn {
+            padding: 11px 28px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            letter-spacing: 0.2px;
+        }
+        .tos-btn-decline {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+        .tos-btn-decline:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+        .tos-btn-agree {
+            background: linear-gradient(135deg, #cb1c22 0%, #a81519 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(203, 28, 34, 0.35);
+        }
+        .tos-btn-agree:hover {
+            background: linear-gradient(135deg, #e53935 0%, #cb1c22 100%);
+            box-shadow: 0 6px 16px rgba(203, 28, 34, 0.45);
+            transform: translateY(-1px);
+        }
+        .tos-btn-agree:active {
+            transform: translateY(0);
+        }
     </style>
 </head>
 
@@ -215,7 +394,7 @@
 
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-                    <button type="submit" class="btn-submit">Register</button>
+                    <button type="button" id="btnShowTos" class="btn-submit">Register</button>
                 </form>
 
                 <div class="auth-links">
@@ -231,7 +410,156 @@
         </div>
     </main>
 
+    <!-- ===== Terms of Service Modal ===== -->
+    <div class="tos-overlay" id="tosOverlay">
+        <div class="tos-modal">
+            <div class="tos-header">
+                <div class="tos-header-icon">
+                    <i class="fas fa-file-contract"></i>
+                </div>
+                <div>
+                    <h3>Terms of Service</h3>
+                    <p>Please read carefully before proceeding</p>
+                </div>
+            </div>
+            <div class="tos-body">
+                <div class="tos-section">
+                    <div class="tos-section-title">
+                        <span class="tos-section-number">1</span>
+                        <h4>Account Registration Requirements</h4>
+                    </div>
+                    <ul>
+                        <li><strong>Age:</strong> Users must be 18 years of age or older, or have parental/legal guardian supervision to conduct transactions.</li>
+                        <li><strong>Information Accuracy:</strong> Users commit to providing accurate, complete, and up-to-date personal information (full name, phone number, email, delivery address).</li>
+                        <li><strong>Right to Refuse:</strong> The website has the right to refuse registration or lock an account if it detects fraudulent information or policy violations.</li>
+                    </ul>
+                </div>
+                <div class="tos-section">
+                    <div class="tos-section-title">
+                        <span class="tos-section-number">2</span>
+                        <h4>Account and Password Security</h4>
+                    </div>
+                    <ul>
+                        <li><strong>Security Responsibility:</strong> Users are responsible for protecting their password, login information, and all activities performed under their account.</li>
+                        <li><strong>Incident Reporting:</strong> Users must immediately notify the website administrators if they detect unauthorized access or security vulnerabilities.</li>
+                        <li><strong>Disclaimer:</strong> The website is not responsible for any damages arising from users disclosing their login information.</li>
+                    </ul>
+                </div>
+                <div class="tos-section">
+                    <div class="tos-section-title">
+                        <span class="tos-section-number">3</span>
+                        <h4>Ordering and Transaction Regulations</h4>
+                    </div>
+                    <ul>
+                        <li><strong>Prices and Product Availability:</strong> Product prices, specifications (RAM, CPU, GPU, etc.), and promotions may change without prior notice. Orders are only confirmed after the system sends an order confirmation notification.</li>
+                        <li><strong>Transaction Confirmation:</strong> Account registration does not guarantee product reservation. Products are only reserved once the order is fully paid or the COD (Cash on Delivery) is successfully confirmed.</li>
+                        <li><strong>Order Cancellation:</strong> The website reserves the right to cancel orders if there are system pricing errors, suspected fraud, or out-of-stock items.</li>
+                    </ul>
+                </div>
+                <div class="tos-section">
+                    <div class="tos-section-title">
+                        <span class="tos-section-number">4</span>
+                        <h4>Warranty and Return Policy Regulations</h4>
+                    </div>
+                    <ul>
+                        <li><strong>Policy Link:</strong> By registering, users agree to abide by the Warranty Policy (for new/used laptops) and the Return Policy publicly available on the website.</li>
+                        <li><strong>Warranty Conditions:</strong> Warranty only applies to the account holder who purchased the product or has a valid invoice/order information stored in the system.</li>
+                    </ul>
+                </div>
+                <div class="tos-section">
+                    <div class="tos-section-title">
+                        <span class="tos-section-number">5</span>
+                        <h4>Use of Personal Information (Privacy Rights)</h4>
+                    </div>
+                    <ul>
+                        <li><strong>Data Collection:</strong> You agree to allow the website to collect and use your personal information for the purpose of processing orders, providing customer service, and sending promotional notifications (you can unsubscribe from receiving messages/emails at any time).</li>
+                        <li><strong>Confidentiality Commitment:</strong> The website commits not to sell or share personal information with third parties, except for shipping/payment service providers or when required by law enforcement agencies.</li>
+                    </ul>
+                </div>
+                <div class="tos-section">
+                    <div class="tos-section-title">
+                        <span class="tos-section-number">6</span>
+                        <h4>Prohibited Actions</h4>
+                    </div>
+                    <ul>
+                        <li>Creating multiple fake accounts to profit from promotions and discount codes (vouchers).</li>
+                        <li>Using bots or automated tools to interfere with the system or collect website data.</li>
+                        <li>Posting false, offensive, or illegal reviews or comments on product pages.</li>
+                    </ul>
+                </div>
+                <div class="tos-section">
+                    <div class="tos-section-title">
+                        <span class="tos-section-number">7</span>
+                        <h4>Suspension or Termination of Account</h4>
+                    </div>
+                    <ul>
+                        <li>The website reserves the right to temporarily suspend or permanently delete an account without prior notice if the user seriously violates the terms of service or shows signs of commercial fraud.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tos-footer">
+                <button type="button" class="tos-btn tos-btn-decline" id="btnDecline">
+                    <i class="fas fa-times" style="margin-right: 6px;"></i>Decline
+                </button>
+                <button type="button" class="tos-btn tos-btn-agree" id="btnAgree">
+                    <i class="fas fa-check" style="margin-right: 6px;"></i>Agree
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div th:replace="~{thymeleaf/client/layout/footer :: footer}"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form[th\\:action]') || document.querySelector('form[action]');
+            const btnShowTos = document.getElementById('btnShowTos');
+            const tosOverlay = document.getElementById('tosOverlay');
+            const btnAgree = document.getElementById('btnAgree');
+            const btnDecline = document.getElementById('btnDecline');
+
+            // Intercept register button click — validate first, then show TOS
+            btnShowTos.addEventListener('click', function() {
+                // Trigger HTML5 validation
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+                // Show the TOS modal
+                tosOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+
+            // Agree — submit the form
+            btnAgree.addEventListener('click', function() {
+                // Change the button back to submit type and submit
+                btnShowTos.type = 'submit';
+                form.submit();
+            });
+
+            // Decline — close modal, user stays on form
+            btnDecline.addEventListener('click', function() {
+                tosOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+
+            // Close modal when clicking outside
+            tosOverlay.addEventListener('click', function(e) {
+                if (e.target === tosOverlay) {
+                    tosOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // Close modal on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && tosOverlay.classList.contains('active')) {
+                    tosOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

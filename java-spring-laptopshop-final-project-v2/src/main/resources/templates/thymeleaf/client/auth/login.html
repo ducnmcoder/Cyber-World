@@ -198,6 +198,9 @@
             <div th:if="${param.logout}" class="alert alert-success">
                 Logout successful.
             </div>
+            <div th:if="${param.registered}" class="alert alert-success">
+                Account registration successful.
+            </div>
 
             <form method="post" th:action="@{/login}">
                 <div class="form-group">
