@@ -144,6 +144,44 @@
     .cyber-dropdown:hover .cyber-dropdown-content {
         display: block;
     }
+
+    /* Responsive Header Styles */
+    @media (max-width: 991px) {
+        .cyber-header .container {
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 8px 15px;
+        }
+        .cyber-logo {
+            order: 1;
+        }
+        .cyber-header-actions {
+            order: 2;
+            gap: 8px !important;
+        }
+        .cyber-search {
+            order: 3;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 5px 0 0 0 !important;
+        }
+        .cyber-header-actions a span {
+            display: none !important;
+        }
+        .cyber-action-btn {
+            padding: 8px 12px !important;
+            font-size: 14px !important;
+        }
+    }
+    @media (max-width: 576px) {
+        .cyber-logo-title {
+            font-size: 20px !important;
+        }
+        .cyber-logo img {
+            height: 35px !important;
+            margin-right: 8px !important;
+        }
+    }
 </style>
 
 <header class="cyber-header">
