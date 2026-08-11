@@ -99,35 +99,44 @@
                                     <i class="fas fa-lock me-1"></i> Change Password
                                 </div>
                                 <div class="card-body">
-                                    <form method="post" action="/account/manage/password">
-                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                                        <div class="mb-3">
-                                            <label class="form-label">New Password:</label>
-                                            <input type="password" class="form-control" name="newPassword" id="adminNewPassword" required />
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Confirm Password:</label>
-                                            <input type="password" class="form-control" name="confirmPassword" id="adminConfirmPassword" required />
-                                        </div>
-                                        <div class="mb-3 form-check">
-                                            <input type="checkbox" class="form-check-input" id="adminShowPassword" onclick="toggleAdminPassword()">
-                                            <label class="form-check-label" for="adminShowPassword">Show passwords</label>
-                                        </div>
-                                        <script>
-                                            function toggleAdminPassword() {
-                                                var newPass = document.getElementById("adminNewPassword");
-                                                var confirmPass = document.getElementById("adminConfirmPassword");
-                                                if (newPass.type === "password") {
-                                                    newPass.type = "text";
-                                                    confirmPass.type = "text";
-                                                } else {
-                                                    newPass.type = "password";
-                                                    confirmPass.type = "password";
-                                                }
-                                            }
-                                        </script>
-                                        <button type="submit" class="btn btn-warning">Change Password</button>
-                                    </form>
+                                    <c:choose>
+                                        <c:when test="${currentUser.provider eq 'GOOGLE' or currentUser.provider eq 'FACEBOOK'}">
+                                            <div class="alert alert-warning" role="alert">
+                                                This account uses Google/Facebook login. Password changes must be managed through your Google/Facebook account.
+                                            </div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <form method="post" action="/account/manage/password">
+                                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                                <div class="mb-3">
+                                                    <label class="form-label">New Password:</label>
+                                                    <input type="password" class="form-control" name="newPassword" id="adminNewPassword" required />
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Confirm Password:</label>
+                                                    <input type="password" class="form-control" name="confirmPassword" id="adminConfirmPassword" required />
+                                                </div>
+                                                <div class="mb-3 form-check">
+                                                    <input type="checkbox" class="form-check-input" id="adminShowPassword" onclick="toggleAdminPassword()">
+                                                    <label class="form-check-label" for="adminShowPassword">Show passwords</label>
+                                                </div>
+                                                <script>
+                                                    function toggleAdminPassword() {
+                                                        var newPass = document.getElementById("adminNewPassword");
+                                                        var confirmPass = document.getElementById("adminConfirmPassword");
+                                                        if (newPass.type === "password") {
+                                                            newPass.type = "text";
+                                                            confirmPass.type = "text";
+                                                        } else {
+                                                            newPass.type = "password";
+                                                            confirmPass.type = "password";
+                                                        }
+                                                    }
+                                                </script>
+                                                <button type="submit" class="btn btn-warning">Change Password</button>
+                                            </form>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
                         </div>

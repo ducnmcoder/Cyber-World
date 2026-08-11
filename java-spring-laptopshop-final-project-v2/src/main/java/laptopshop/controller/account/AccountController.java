@@ -59,6 +59,7 @@ public class AccountController {
         dto.setAddress(currentUser.getAddress());
         dto.setAvatar(currentUser.getAvatar());
         dto.setEmail(currentUser.getEmail());
+        dto.setProvider(currentUser.getProvider());
 
         model.addAttribute("currentUser", dto);
 
