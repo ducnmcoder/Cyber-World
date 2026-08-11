@@ -592,6 +592,7 @@
                 align-items: center;
                 gap: 15px;
                 font-size: 14px;
+                flex-wrap: wrap;
             }
 
             .result-count {
@@ -1310,26 +1311,57 @@
             @media (max-width: 768px) {
                 .cyber-header .container {
                     flex-wrap: wrap;
-                    gap: 10px;
+                    row-gap: 16px;
+                    column-gap: 8px;
                     justify-content: space-between;
+                    align-items: center;
+                    margin-top: 10px;
                 }
 
                 .cyber-logo {
                     order: 1;
+                    width: 100%;
+                    justify-content: center;
+                    margin-bottom: 0;
                 }
 
-                .cyber-header-actions {
-                    order: 2;
-                    margin-left: auto;
+                .cyber-logo img {
+                    display: none !important;
                 }
 
                 .cyber-search {
-                    order: 3;
+                    order: 2;
                     margin: 0;
-                    width: 100%;
-                    max-width: 100%;
-                    flex: 1 1 100%;
-                    box-sizing: border-box;
+                    flex: 1;
+                    min-width: 0;
+                    max-width: none;
+                }
+
+                .cyber-search input {
+                    min-width: 0;
+                    padding: 8px 10px;
+                }
+
+                .cyber-search button {
+                    flex-shrink: 0 !important;
+                }
+
+                .cyber-header-actions {
+                    order: 3;
+                    margin-left: 0;
+                    gap: 8px;
+                }
+
+                .cyber-header-actions a[href="/account/manage"] span {
+                    display: none !important;
+                }
+
+                .cyber-header-actions a[href="/account/manage"] {
+                    margin-right: 0 !important;
+                }
+
+                .cyber-dropdown {
+                    margin-left: 0 !important;
                 }
 
                 .cyber-action-btn span {
@@ -1337,7 +1369,7 @@
                 }
 
                 .cyber-action-btn {
-                    padding: 8px 12px;
+                    padding: 8px 10px;
                 }
 
                 .products-grid {
@@ -1386,6 +1418,48 @@
 
                 .blog-card {
                     min-width: calc(50% - 10px) !important;
+                }
+
+                .products-grid {
+                    gap: 8px;
+                }
+
+                .product-card {
+                    padding: 10px;
+                }
+
+                .current-price {
+                    font-size: 15px;
+                }
+
+                .old-price {
+                    font-size: 11px;
+                }
+
+                .discount-percent {
+                    font-size: 10px;
+                    padding: 2px 4px;
+                }
+
+                .discount-amount {
+                    font-size: 11px;
+                }
+
+                .product-name {
+                    font-size: 12px;
+                }
+
+                .btn-add-cart {
+                    font-size: 12px;
+                    padding: 6px;
+                }
+
+                .quantity-row {
+                    font-size: 11px !important;
+                }
+
+                .filter-radio-item {
+                    white-space: normal;
                 }
             }
         </style>
@@ -1701,7 +1775,7 @@
                             style="background-color: #82b527"
                         />
                         <img
-                            th:src="@{https://trungtran.vn/images/slideshow/2026/06/15/original/thong-tin-ve-goi-bao-hanh-mo-rong-asus_1781491956.webp}"
+                            th:src="@{https://trungtran.vn/images/slideshow/2026/07/30/original/chuong-trinh-khuyen-mai-gigabyte-back-to-school-2026-thumb_1785386871.webp}"
                             alt="Promo 5"
                             class="carousel-slide"
                             style="background-color: #0076ce"
