@@ -239,7 +239,7 @@
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <div class="cyber-dropdown-content">
-                    <a href="/blog"><i class="fa-solid fa-blog"></i> Blog</a>
+                    <a href="/blogs"><i class="fa-solid fa-blog"></i> Blog</a>
                     <a href="#footer" onclick="document.getElementById('footer').scrollIntoView({behavior: 'smooth'})"><i class="fa-solid fa-envelope"></i> Contact</a>
                     <a href="#footer" onclick="document.getElementById('footer').scrollIntoView({behavior: 'smooth'})"><i class="fa-solid fa-circle-info"></i> About Us</a>
                     <c:if test="${sessionScope.user != null and sessionScope.user.role.name == 'USER'}">

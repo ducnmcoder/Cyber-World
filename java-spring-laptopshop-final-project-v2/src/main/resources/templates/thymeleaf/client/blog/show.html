@@ -594,7 +594,7 @@
                             <i class="fa-solid fa-bars"></i>
                         </button>
                         <div class="cyber-dropdown-content">
-                            <a href="/blog"
+                            <a href="/blogs"
                                 ><i class="fa-solid fa-blog"></i> Blog</a
                             >
                             <a
@@ -650,7 +650,7 @@
                             th:src="@{'/images/blog/' + ${blog.image}}"
                             onerror="
                                 this.onerror = null;
-                                this.src = '/images/logo.png';
+                                this.src = '/client/img/hero-img-2.png';
                             "
                             alt="Blog Image"
                             style="
@@ -661,12 +661,12 @@
                         />
                         <img
                             th:if="${#strings.isEmpty(blog.image)}"
-                            th:src="@{/images/logo.png}"
+                            th:src="@{/client/img/hero-img-2.png}"
                             alt="Default Blog Image"
                             style="
-                                max-width: 80%;
-                                max-height: 80%;
-                                object-fit: contain;
+                                max-width: 100%;
+                                max-height: 100%;
+                                object-fit: cover;
                             "
                         />
                     </div>

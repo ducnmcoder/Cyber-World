@@ -39,7 +39,7 @@ public class BlogController {
         }
 
         Pageable pageable = PageRequest.of(page - 1, 6, Sort.by(Sort.Direction.DESC, "createdAt"));
-        Page<Blog> blogsPage = this.blogService.fetchAllBlogs(pageable);
+        Page<Blog> blogsPage = this.blogService.fetchLatestBlogs(pageable);
         List<Blog> blogs = blogsPage.getContent();
 
         model.addAttribute("blogs", blogs);
@@ -57,4 +57,27 @@ public class BlogController {
         return "client/blog/detail";
     }
 
+    @GetMapping("/news")
+    public String getNewsListPage(Model model,
+            @RequestParam("page") Optional<String> pageOptional) {
+
+        int page = 1;
+        try {
+            if (pageOptional.isPresent()) {
+                page = Integer.parseInt(pageOptional.get());
+            }
+        } catch (Exception e) {
+            // page = 1
+        }
+
+        Pageable pageable = PageRequest.of(page - 1, 6, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<Blog> blogsPage = this.blogService.fetchLatestNews(pageable);
+        List<Blog> blogs = blogsPage.getContent();
+
+        model.addAttribute("blogs", blogs);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", blogsPage.getTotalPages());
+        model.addAttribute("isNewsPage", true);
+        return "client/blog/show";
+    }
 }

@@ -1571,7 +1571,7 @@
                             <i class="fa-solid fa-bars"></i>
                         </button>
                         <div class="cyber-dropdown-content">
-                            <a href="/blog"
+                            <a href="/blogs"
                                 ><i class="fa-solid fa-blog"></i> Blog</a
                             >
                             <a
@@ -1695,13 +1695,13 @@
                             style="background-color: #e2231a"
                         />
                         <img
-                            th:src="@{https://trungtran.vn/images/slideshow/2026/06/19/original/kv-pre-order_1781856065.webp}"
+                            th:src="@{/client/img/hero-img-1.png}"
                             alt="Promo 4"
                             class="carousel-slide"
                             style="background-color: #82b527"
                         />
                         <img
-                            th:src="@{https://trungtran.vn/images/slideshow/2026/06/15/original/thong-tin-ve-goi-bao-hanh-mo-rong-asus_1781491956.webp}"
+                            th:src="@{/client/img/hero-img-2.png}"
                             alt="Promo 5"
                             class="carousel-slide"
                             style="background-color: #0076ce"
@@ -1747,7 +1747,7 @@
                     <div class="hero-news-header">LATEST NEWS</div>
                     <div class="hero-news-list">
                         <th:block
-                            th:each="blog, iterStat : ${blogs}"
+                            th:each="blog, iterStat : ${latestNews}"
                             th:if="${iterStat.index < 4}"
                         >
                             <a
@@ -1755,7 +1755,7 @@
                                 class="hero-news-item"
                             >
                                 <img
-                                    th:src="@{/images/blog/{image}(image=${blog.image})}"
+                                    th:src="@{${blog.displayImage}}"
                                     alt="Blog Image"
                                     class="hero-news-thumb"
                                     onerror="
@@ -1776,7 +1776,7 @@
                                 </div>
                             </a>
                         </th:block>
-                        <th:block th:if="${blogs == null or blogs.isEmpty()}">
+                        <th:block th:if="${latestNews == null or latestNews.isEmpty()}">
                             <div
                                 style="
                                     padding: 15px;
@@ -1789,7 +1789,7 @@
                         </th:block>
                     </div>
                     <div class="hero-news-footer">
-                        <a href="/blog">View all news ></a>
+                        <a href="/news">View all news ></a>
                     </div>
                 </div>
             </div>
@@ -3198,27 +3198,16 @@
                             "
                         >
                             <img
-                                th:if="${not #strings.isEmpty(blog.image)}"
-                                th:src="@{'/images/blog/' + ${blog.image}}"
+                                th:src="@{${blog.displayImage}}"
                                 alt="Blog Image"
                                 style="
                                     max-width: 100%;
                                     max-height: 100%;
-                                    object-fit: contain;
+                                    object-fit: cover;
                                 "
                                 onerror="
                                     this.onerror = null;
-                                    this.src = '/images/logo.png';
-                                "
-                            />
-                            <img
-                                th:unless="${not #strings.isEmpty(blog.image)}"
-                                th:src="@{/images/logo.png}"
-                                alt="Blog Image"
-                                style="
-                                    max-width: 100%;
-                                    max-height: 100%;
-                                    object-fit: contain;
+                                    this.src = '/client/img/hero-img-2.png';
                                 "
                             />
                         </div>
@@ -3258,7 +3247,7 @@
                             class="btn-view-detail"
                             th:data-title="${blog.title}"
                             th:data-content="${blog.content}"
-                            th:data-image="${not #strings.isEmpty(blog.image) ? '/images/blog/' + blog.image : '/images/logo.png'}"
+                            th:data-image="${blog.displayImage}"
                             onclick="openBlogModal(this)"
                             style="
                                 background: transparent;
