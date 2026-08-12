@@ -49,18 +49,9 @@
                                                         <td>${blog.title}</td>
                                                         <td>${blog.type == 'VIDEO' ? 'Video' : 'Article'}</td>
                                                         <td>
-                                                            <c:choose>
-                                                                <c:when test="${not empty blog.image}">
-                                                                    <img src="${blog.displayImage}"
-                                                                        style="width: 80px; height: 60px; object-fit: cover;"
-                                                                        alt="${blog.title}" onerror="this.onerror=null;this.src='/images/logo.png';" />
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <img src="/images/logo.png"
-                                                                        style="width: 80px; height: 60px; object-fit: contain; background-color: #f8f9fa;"
-                                                                        alt="${blog.title}" />
-                                                                </c:otherwise>
-                                                            </c:choose>
+                                                            <img src="/images/blog/${blog.image}"
+                                                                style="width: 80px; height: 60px; object-fit: cover;"
+                                                                alt="${blog.title}" />
                                                         </td>
                                                         <td>
                                                             <a href="/admin/blog/${blog.id}"

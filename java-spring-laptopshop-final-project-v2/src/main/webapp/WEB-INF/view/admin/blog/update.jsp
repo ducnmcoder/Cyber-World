@@ -49,7 +49,6 @@
                                                     <label class="form-label">Title:</label>
                                                     <form:input type="text" class="form-control" path="title" />
                                                 </div>
-
                                                 <div class="mb-3">
                                                     <label class="form-label">Type:</label>
                                                     <form:select class="form-control" path="type" id="blogType">
@@ -69,10 +68,10 @@
                                                         $('#blogType').change(function() {
                                                             if ($(this).val() === 'VIDEO') {
                                                                 $('#videoUrlContainer').show();
-                                                                
+                                                                $('#imageContainer').hide();
                                                             } else {
                                                                 $('#videoUrlContainer').hide();
-                                                                
+                                                                $('#imageContainer').show();
                                                             }
                                                         });
                                                     });
@@ -81,12 +80,12 @@
                                                     <label class="form-label">Content:</label>
                                                     <form:textarea class="form-control" path="content" rows="8" />
                                                 </div>
-                                                <div class="mb-3" id="imageContainer" >
-                                                    <label class="form-label">Image URL (optional, if you have a link):</label><input class="form-control" type="text" name="imageUrl" placeholder="Enter image link (e.g., https://...)" value="${(not empty newBlog.image and newBlog.image.startsWith('http')) ? newBlog.image : ''}" /><label for="blogFile" class="form-label mt-2">Or Upload Image File:</label>
+                                                <div class="mb-3" id="imageContainer" style="${newBlog.type == 'VIDEO' ? 'display: none;' : ''}">
+                                                    <label for="blogFile" class="form-label">Image:</label>
                                                     <input class="form-control" type="file" id="blogFile"
                                                         name="blogFile" accept=".png, .jpg, .jpeg" />
                                                     <img style="max-height: 250px; margin-top: 10px;" alt="Blog preview" id="blogPreview"
-                                                        src="${newBlog.displayImage}" />
+                                                        src="/images/blog/${newBlog.image}" />
                                                 </div>
                                                 <button type="submit" class="btn btn-warning">Update</button>
                                                 <a href="/admin/blog" class="btn btn-secondary ms-2">Cancel</a>
@@ -105,4 +104,3 @@
             </body>
 
             </html>
-

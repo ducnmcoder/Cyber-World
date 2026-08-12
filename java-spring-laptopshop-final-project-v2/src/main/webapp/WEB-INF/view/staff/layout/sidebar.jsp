@@ -10,19 +10,10 @@
                             Orders
                         </a>
 
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                            data-bs-target="#collapseContent" aria-expanded="false" aria-controls="collapseContent">
-                            <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
-                            Content
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        <a class="nav-link" href="/staff/blog">
+                            <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                            Blog
                         </a>
-                        <div class="collapse" id="collapseContent" aria-labelledby="headingOne"
-                            data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="/staff/blog">Manage Blogs</a>
-                                <a class="nav-link" href="/staff/news">Manage News</a>
-                            </nav>
-                        </div>
 
                         <a class="nav-link" href="/staff/contact">
                             <div class="sb-nav-link-icon"><i class="fas fa-envelope"></i></div>

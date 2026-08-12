@@ -91,9 +91,6 @@ public class OrderController {
     @GetMapping("/admin/order/update/{id}")
     public String getUpdateOrderPage(Model model, @PathVariable long id, @RequestParam(value = "page", defaultValue = "1") String page) {
         Optional<Order> currentOrder = this.orderService.fetchOrderById(id);
-        if (currentOrder.isPresent() && "CANCELLED".equals(currentOrder.get().getStatus())) {
-            return "redirect:/admin/order?page=" + page;
-        }
         model.addAttribute("newOrder", currentOrder.get());
         model.addAttribute("page", page);
         return "admin/order/update";
@@ -104,9 +101,6 @@ public class OrderController {
         Optional<Order> currentOrderOpt = this.orderService.fetchOrderById(order.getId());
         if(currentOrderOpt.isPresent()) {
             Order currentOrder = currentOrderOpt.get();
-            if ("CANCELLED".equals(currentOrder.getStatus())) {
-                return "redirect:/admin/order?page=" + page;
-            }
             boolean statusChangedToShipping = !"SHIPPING".equals(currentOrder.getStatus()) && "SHIPPING".equals(order.getStatus());
             boolean statusChangedToComplete = !"COMPLETE".equals(currentOrder.getStatus()) && "COMPLETE".equals(order.getStatus());
             

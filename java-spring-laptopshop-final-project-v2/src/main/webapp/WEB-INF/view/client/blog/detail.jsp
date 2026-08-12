@@ -1,7 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+        <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
             <html lang="en">
 
@@ -52,14 +51,7 @@
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="/">Home</a></li>
-                                        <c:choose>
-                                            <c:when test="${blog.category == 'NEWS'}">
-                                                <li class="breadcrumb-item"><a href="/news">News</a></li>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <li class="breadcrumb-item"><a href="/blogs">Blog</a></li>
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <li class="breadcrumb-item"><a href="/blogs">Blog</a></li>
                                         <li class="breadcrumb-item active" aria-current="page">${blog.title}</li>
                                     </ol>
                                 </nav>
@@ -73,54 +65,16 @@
                                         var="parsedDate" type="both" />
                                     <fmt:formatDate value="${parsedDate}" pattern="MMMM dd, yyyy" />
                                 </div>
-                                <c:if test="${blog.type == 'ARTICLE'}">
-                                    <img src="${blog.displayImage}" class="img-fluid rounded mb-4 w-100"
-                                        alt="${blog.title}" 
-                                        onerror="this.style.display='none'"
-                                        style="max-height: 450px; object-fit: cover;">
-                                </c:if>
-                                
-                                <c:if test="${blog.type == 'VIDEO' and not empty blog.videoUrl}">
-                                    <div class="mb-4">
-                                        <c:choose>
-                                            <c:when test="${fn:contains(blog.videoUrl, 'youtube.com') or fn:contains(blog.videoUrl, 'youtu.be')}">
-                                                <c:set var="videoId" value="" />
-                                                <c:if test="${fn:contains(blog.videoUrl, 'v=')}">
-                                                    <c:set var="videoId" value="${fn:substringAfter(blog.videoUrl, 'v=')}" />
-                                                    <c:if test="${fn:contains(videoId, '&')}">
-                                                        <c:set var="videoId" value="${fn:substringBefore(videoId, '&')}" />
-                                                    </c:if>
-                                                </c:if>
-                                                <c:if test="${fn:contains(blog.videoUrl, 'youtu.be/')}">
-                                                    <c:set var="videoId" value="${fn:substringAfter(blog.videoUrl, 'youtu.be/')}" />
-                                                    <c:if test="${fn:contains(videoId, '?')}">
-                                                        <c:set var="videoId" value="${fn:substringBefore(videoId, '?')}" />
-                                                    </c:if>
-                                                </c:if>
-                                                <c:if test="${fn:contains(blog.videoUrl, '/shorts/')}">
-                                                    <c:set var="videoId" value="${fn:substringAfter(blog.videoUrl, '/shorts/')}" />
-                                                    <c:if test="${fn:contains(videoId, '?')}">
-                                                        <c:set var="videoId" value="${fn:substringBefore(videoId, '?')}" />
-                                                    </c:if>
-                                                </c:if>
-                                                <iframe width="100%" height="450" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <video width="100%" height="450" controls>
-                                                    <source src="${blog.videoUrl}" type="video/mp4">
-                                                    Your browser does not support the video tag.
-                                                </video>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </div>
-                                </c:if>
-                                    
+                                <img src="/images/blog/${blog.image}" class="img-fluid rounded mb-4 w-100"
+                                    alt="${blog.title}" 
+                                    onerror="this.onerror=null;this.src='/images/logo.png';"
+                                    style="max-height: 450px; object-fit: cover;">
                                 <div class="blog-content" style="font-size: 16px; line-height: 1.8;">
                                     <p>${blog.content}</p>
                                 </div>
                                 <hr class="my-4">
-                                <a href="/" class="btn btn-outline-primary rounded-pill px-4">
-                                    <i class="fas fa-arrow-left me-2"></i> Back to Home
+                                <a href="/blogs" class="btn btn-outline-primary rounded-pill px-4">
+                                    <i class="fas fa-arrow-left me-2"></i> Back to Blog
                                 </a>
                             </div>
                         </div>

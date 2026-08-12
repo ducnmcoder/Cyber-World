@@ -1,8 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-    <!DOCTYPE html>
+        <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+            <!DOCTYPE html>
             <html lang="en">
 
             <head>
@@ -36,47 +35,11 @@
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="row">
-                                                        <div class="col-md-12 mb-4">
-                                                            <c:if test="${not empty blog.image}">
-                                                                <img src="${blog.displayImage}"
-                                                                    class="img-fluid rounded mb-3" alt="${blog.title}" onerror="this.style.display='none'" style="max-height: 400px; object-fit: cover;" />
-                                                            </c:if>
-                                                            <c:if test="${blog.type == 'VIDEO' and not empty blog.videoUrl}">
-                                                                <div class="mb-4">
-                                                                    <c:choose>
-                                                                        <c:when test="${fn:contains(blog.videoUrl, 'youtube.com') or fn:contains(blog.videoUrl, 'youtu.be')}">
-                                                                            <c:set var="videoId" value="" />
-                                                                            <c:if test="${fn:contains(blog.videoUrl, 'v=')}">
-                                                                                <c:set var="videoId" value="${fn:substringAfter(blog.videoUrl, 'v=')}" />
-                                                                                <c:if test="${fn:contains(videoId, '&')}">
-                                                                                    <c:set var="videoId" value="${fn:substringBefore(videoId, '&')}" />
-                                                                                </c:if>
-                                                                            </c:if>
-                                                                            <c:if test="${fn:contains(blog.videoUrl, 'youtu.be/')}">
-                                                                                <c:set var="videoId" value="${fn:substringAfter(blog.videoUrl, 'youtu.be/')}" />
-                                                                                <c:if test="${fn:contains(videoId, '?')}">
-                                                                                    <c:set var="videoId" value="${fn:substringBefore(videoId, '?')}" />
-                                                                                </c:if>
-                                                                            </c:if>
-                                                                            <c:if test="${fn:contains(blog.videoUrl, '/shorts/')}">
-                                                                                <c:set var="videoId" value="${fn:substringAfter(blog.videoUrl, '/shorts/')}" />
-                                                                                <c:if test="${fn:contains(videoId, '?')}">
-                                                                                    <c:set var="videoId" value="${fn:substringBefore(videoId, '?')}" />
-                                                                                </c:if>
-                                                                            </c:if>
-                                                                            <iframe width="100%" height="450" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                                                        </c:when>
-                                                                        <c:otherwise>
-                                                                            <video width="100%" height="450" controls>
-                                                                                <source src="${blog.videoUrl}" type="video/mp4">
-                                                                                Your browser does not support the video tag.
-                                                                            </video>
-                                                                        </c:otherwise>
-                                                                    </c:choose>
-                                                                </div>
-                                                            </c:if>
+                                                        <div class="col-md-4">
+                                                            <img src="/images/blog/${blog.image}"
+                                                                class="img-fluid rounded" alt="${blog.title}" />
                                                         </div>
-                                                        <div class="col-md-12">
+                                                        <div class="col-md-8">
                                                             <h4>${blog.title}</h4>
                                                             <hr />
                                                             <p>${blog.content}</p>

@@ -35,19 +35,11 @@
                                 Refund
                             </a>
 
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                data-bs-target="#collapseContent" aria-expanded="false" aria-controls="collapseContent">
-                                <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
-                                Content
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+
+                            <a class="nav-link" href="/admin/blog">
+                                <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                                Blog
                             </a>
-                            <div class="collapse" id="collapseContent" aria-labelledby="headingOne"
-                                data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="/admin/blog">Manage Blogs</a>
-                                    <a class="nav-link" href="/admin/news">Manage News</a>
-                                </nav>
-                            </div>
 
                             <a class="nav-link" href="/admin/payment">
                                 <div class="sb-nav-link-icon"><i class="fas fa-money-bill"></i></div>

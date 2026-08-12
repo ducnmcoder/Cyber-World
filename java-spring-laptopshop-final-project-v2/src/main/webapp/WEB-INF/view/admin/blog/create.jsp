@@ -48,7 +48,6 @@
                                                     <label class="form-label">Title:</label>
                                                     <form:input type="text" class="form-control" path="title" />
                                                 </div>
-
                                                 <div class="mb-3">
                                                     <label class="form-label">Type:</label>
                                                     <form:select class="form-control" path="type" id="blogType">
@@ -68,10 +67,10 @@
                                                         $('#blogType').change(function() {
                                                             if ($(this).val() === 'VIDEO') {
                                                                 $('#videoUrlContainer').show();
-                                                                
+                                                                $('#imageContainer').hide();
                                                             } else {
                                                                 $('#videoUrlContainer').hide();
-                                                                
+                                                                $('#imageContainer').show();
                                                             }
                                                         });
                                                     });
@@ -81,7 +80,7 @@
                                                     <form:textarea class="form-control" path="content" rows="8" />
                                                 </div>
                                                 <div class="mb-3" id="imageContainer">
-                                                    <label class="form-label">Image URL (optional, if you have a link):</label><input class="form-control" type="text" name="imageUrl" placeholder="Enter image link (e.g., https://...)" /><label for="blogFile" class="form-label mt-2">Or Upload Image File:</label>
+                                                    <label for="blogFile" class="form-label">Image:</label>
                                                     <input class="form-control" type="file" id="blogFile"
                                                         name="blogFile" accept=".png, .jpg, .jpeg" />
                                                     <img style="max-height: 250px; display: none; margin-top: 10px;" alt="Blog preview"
@@ -104,4 +103,3 @@
             </body>
 
             </html>
-
