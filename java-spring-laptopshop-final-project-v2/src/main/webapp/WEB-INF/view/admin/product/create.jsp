@@ -38,7 +38,11 @@
                         }
 
                         function appendImage(src) {
-                            const img = $("<img>").attr("src", src).css({
+                            let imgSrc = src;
+                            if (src && !src.startsWith("blob:") && !src.startsWith("http://") && !src.startsWith("https://")) {
+                                imgSrc = "/images/product/" + src;
+                            }
+                            const img = $("<img>").attr("src", imgSrc).css({
                                 "max-height": "250px",
                                 "margin-right": "10px",
                                 "margin-bottom": "10px",

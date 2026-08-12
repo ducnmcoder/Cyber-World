@@ -19,7 +19,11 @@
                 <script>
                     $(document).ready(() => {
                         function appendImage(src) {
-                            const img = $("<img>").attr("src", src).css({
+                            let imgSrc = src;
+                            if (src && !src.startsWith("blob:") && !src.startsWith("http://") && !src.startsWith("https://")) {
+                                imgSrc = "/images/product/" + src;
+                            }
+                            const img = $("<img>").attr("src", imgSrc).css({
                                 "max-height": "250px",
                                 "margin-right": "10px",
                                 "margin-bottom": "10px",
@@ -213,7 +217,7 @@
                                                          </div>
                                                          <div class="mb-3 col-12 col-md-6">
                                                              <label class="form-label">Or Image URL:</label>
-                                                             <textarea class="form-control" name="imageUrl" id="imageUrl" rows="3" placeholder="Paste image URLs here, each on a new line (press Enter to separate)..."></textarea>
+                                                             <textarea class="form-control" name="imageUrl" id="imageUrl" rows="3" placeholder="Paste image URLs here, each on a new line (press Enter to separate)..."><c:if test="${not empty newProduct.images}"><c:forEach items="${newProduct.images}" var="img">${img}&#13;&#10;</c:forEach></c:if></textarea>
                                                          </div>
                                                         <div class="col-12 mb-3" id="previewContainer">
                                                         </div>

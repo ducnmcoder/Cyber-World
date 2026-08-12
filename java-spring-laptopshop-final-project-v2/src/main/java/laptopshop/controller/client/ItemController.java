@@ -342,12 +342,15 @@ public class ItemController {
         }
 
         double totalPrice = 0;
+        int totalQuantity = 0;
         for (CartDetail cd : cartDetails) {
             totalPrice += cd.getPrice() * cd.getQuantity();
+            totalQuantity += (int) cd.getQuantity();
         }
 
         model.addAttribute("cartDetails", cartDetails);
         model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("totalQuantity", totalQuantity);
         model.addAttribute("cart", cart != null ? cart : new Cart());
 
         java.util.List<laptopshop.domain.Voucher> activeVouchers = this.voucherService.getActiveVouchers();
@@ -391,7 +394,7 @@ public class ItemController {
                 discountVouchers.add(v);
                 double currentDiscount = 0;
                 if ("FIXED".equals(v.getDiscountType())) {
-                    currentDiscount = v.getDiscountAmount();
+                    currentDiscount = v.getDiscountAmount() * totalQuantity;
                 } else if ("PERCENT".equals(v.getDiscountType())) {
                     currentDiscount = totalPrice * v.getDiscountAmount() / 100.0;
                 }
@@ -654,8 +657,11 @@ public class ItemController {
         model.addAttribute("totalElements", prs.getTotalElements());
         model.addAttribute("queryString", qs);
 
-        List<Blog> blogs = this.blogService.fetchAllBlogs(PageRequest.of(0, 5)).getContent();
-        model.addAttribute("blogs", blogs);
+        List<Blog> latestNews = this.blogService.fetchLatestNews(PageRequest.of(0, 5, Sort.by("createdAt").descending())).getContent();
+        model.addAttribute("latestNews", latestNews);
+
+        List<Blog> latestBlogs = this.blogService.fetchLatestBlogs(PageRequest.of(0, 5, Sort.by("createdAt").descending())).getContent();
+        model.addAttribute("blogs", latestBlogs);
 
         return "thymeleaf/client/homepage/show";
     }

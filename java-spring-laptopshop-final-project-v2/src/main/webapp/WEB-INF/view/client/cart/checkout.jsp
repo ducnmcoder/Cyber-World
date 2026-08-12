@@ -594,6 +594,7 @@
 
                     <script>
                         const baseTotal = ${ totalPrice };
+                        const totalQuantity = ${ totalQuantity != null ? totalQuantity : 0 };
                         let currentShippingFee = 100000;
                         let provincesData = [];
                         
@@ -738,7 +739,7 @@
                                 if (type === 'FREESHIP') {
                                     shippingDiscount += amount;
                                 } else if (type === 'FIXED') {
-                                    discountAmount += amount;
+                                    discountAmount += amount * totalQuantity;
                                 } else if (type === 'PERCENT') {
                                     percentDiscount += amount;
                                 }

@@ -1283,7 +1283,7 @@
                         style="background: linear-gradient(to right, #d32f2f, #b71c1c); color: white; padding: 15px; border-radius: 0 10px 10px 0; display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 180px;">
                         <div style="font-size: 16px; font-weight: bold; margin-bottom: 5px; color: #ffeb3b;"><i
                                 class="fa-solid fa-clock"></i> SHOCK PRICE</div>
-                        <div style="font-size: 12px; display: flex; align-items: center; gap: 5px;">End Date: <span
+                        <div style="font-size: 12px; display: flex; align-items: center; gap: 5px;">End Date: <span class="countdown-timer" th:data-endtime="${product.promoEndDate}"
                                 style="background: #000; color: white; padding: 3px 6px; border-radius: 4px; font-weight: bold; letter-spacing: 1px;"
                                 th:text="${product.promoEndDate}">03 : 11 : 48</span></div>
                     </div>
@@ -1298,8 +1298,9 @@
                         <label th:each="c, iter : ${#strings.listSplit(product.color, ',')}" class="color-label-item"
                             style="display: flex; align-items: center; gap: 8px; border: 1px solid #ddd; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 13px; position: relative; transition: all 0.2s; background: white;"
                             th:classappend="${iter.index == 0 ? 'selected-color' : ''}"
-                            onclick="document.querySelectorAll('.color-label-item').forEach(l => {l.style.borderColor = '#ddd'; l.style.background = 'white'; l.querySelector('.check-icon').style.display='none';}); this.style.borderColor = '#cd1818'; this.style.background = '#fffafa'; this.querySelector('.check-icon').style.display='flex';">
-                            <input type="checkbox" name="selectedColor" th:value="${#strings.trim(c)}"
+                            th:data-color="${#strings.trim(c)}"
+                            onclick="selectColor(this, this.getAttribute('data-color'))">
+                            <input type="radio" name="selectedColor" th:value="${#strings.trim(c)}"
                                 th:checked="${iter.index == 0}" style="display: none;">
 
                             <img th:src="@{${product.firstImage}}"
@@ -1319,6 +1320,26 @@
                         background: #fffafa !important;
                     }
                 </style>
+                <script>
+                    function selectColor(label, colorName) {
+                        document.querySelectorAll('.color-label-item').forEach(l => {
+                            l.style.borderColor = '#ddd';
+                            l.style.background = 'white';
+                            l.querySelector('.check-icon').style.display='none';
+                            l.classList.remove('selected-color');
+                        });
+                        label.style.borderColor = '#cd1818';
+                        label.style.background = '#fffafa';
+                        label.querySelector('.check-icon').style.display='flex';
+                        label.classList.add('selected-color');
+
+                        // Update sticky footer text
+                        const stickySpan = document.getElementById('sticky-color-text');
+                        if (stickySpan) {
+                            stickySpan.innerText = colorName;
+                        }
+                    }
+                </script>
 
 
 
@@ -1346,7 +1367,7 @@
                                         th:text="${#numbers.formatDecimal(product.price * 1.1, 1, 'POINT', 0, 'COMMA')} + ' VND'">
                                         24.990.000 VND</div>
                                 </div>
-                                <div style="font-size: 13px; color: #555;"><i class="fa-regular fa-clock"></i> <span
+                                <div style="font-size: 13px; color: #555;"><i class="fa-regular fa-clock"></i> <span class="countdown-timer" th:data-endtime="${product.promoEndDate != null ? product.promoEndDate : '2027-01-01T00:00:00'}"
                                         th:text="${product.promoEndDate != null ? product.promoEndDate : '03:37:04'}">03:37:04</span>
                                 </div>
                             </div>
@@ -2067,8 +2088,8 @@
                     <div class="sticky-name" th:text="${product.name}"
                         style="font-weight: 600; font-size: 15px; color: #333;">MacBook Air 13 M5 2026
                         10CPU/8GPU/16GB/512GB/30W (00926589)</div>
-                    <div class="sticky-category" style="font-size: 13px; color: #666; margin-top: 2px;">Color: <span
-                            th:text="${product.color != null ? product.color : 'Starlight'}">Starlight</span></div>
+                    <div class="sticky-category" style="font-size: 13px; color: #666; margin-top: 2px;">Color: <span id="sticky-color-text"
+                            th:text="${not #strings.isEmpty(product.color) ? #strings.listSplit(product.color, ',')[0].trim() : 'Starlight'}">Starlight</span></div>
                 </div>
             </div>
             <div class="sticky-right" style="display: flex; align-items: center; gap: 20px;">
@@ -2234,6 +2255,37 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <script src="/js/chatbot.js" defer></script>
+    <script>
+        function updateCountdowns() {
+            document.querySelectorAll('.countdown-timer').forEach(function(el) {
+                var endTimeStr = el.getAttribute('data-endtime');
+                if (!endTimeStr) return;
+                var endTime = new Date(endTimeStr).getTime();
+                var now = new Date().getTime();
+                var distance = endTime - now;
+                
+                if (distance < 0) {
+                    el.innerHTML = "EXPIRED";
+                    return;
+                }
+                
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                var display = "";
+                if (days > 0) display += days + "d ";
+                display += (hours < 10 ? "0" : "") + hours + " : ";
+                display += (minutes < 10 ? "0" : "") + minutes + " : ";
+                display += (seconds < 10 ? "0" : "") + seconds;
+                
+                el.innerHTML = display;
+            });
+        }
+        setInterval(updateCountdowns, 1000);
+        updateCountdowns();
+    </script>
 </body>
 
 </html>

@@ -418,8 +418,10 @@ public class ProductService {
                 order.setTrackingCode("CW" + java.util.UUID.randomUUID().toString().substring(0, 8).toUpperCase());
 
                 double sum = 0;
+                int totalQuantity = 0;
                 for (CartDetail cd : cartDetails) {
                     sum += cd.getPrice() * cd.getQuantity();
+                    totalQuantity += (int) cd.getQuantity();
                 }
 
                 // Calculate Discounts
@@ -460,7 +462,7 @@ public class ProductService {
                                 if ("FREESHIP".equals(v.getDiscountType())) {
                                     shippingDiscount += v.getDiscountAmount();
                                 } else if ("FIXED".equals(v.getDiscountType())) {
-                                    totalDiscount += v.getDiscountAmount();
+                                    totalDiscount += v.getDiscountAmount() * totalQuantity;
                                 } else if ("PERCENT".equals(v.getDiscountType())) {
                                     totalDiscount += (sum * v.getDiscountAmount() / 100.0);
                                 }
