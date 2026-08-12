@@ -1377,6 +1377,7 @@
 
                         <div class="voucher-list">
                             <label th:each="v, iter : ${vouchers}"
+                                th:if="${session.user != null or v.discountType == 'FREESHIP'}"
                                 th:class="${iter.index < 3 ? 'voucher-option' : 'voucher-option extra-voucher'} + (${preselectedVouchers != null and #lists.contains(preselectedVouchers, v.id)} ? ' selected' : '')"
                                 th:style="${iter.index < 3 ? '' : 'display: none;'}">
                                 <input type="checkbox" class="product-voucher-checkbox" th:value="${v.id}"
@@ -1384,22 +1385,6 @@
                                     th:data-discount-amount="${v.discountAmount}"
                                     th:checked="${preselectedVouchers != null and #lists.contains(preselectedVouchers, v.id)}"
                                     onchange="handleVoucherSelectionThymeleaf(this); this.parentElement.classList.toggle('selected', this.checked); calculateDetailPrice();">
-                                <script th:if="${iter.index == 0}">
-                                    function handleVoucherSelectionThymeleaf(checkbox) {
-                                        const isFreeship = checkbox.getAttribute('data-discount-type') === 'FREESHIP';
-                                        if (checkbox.checked) {
-                                            document.querySelectorAll('.product-voucher-checkbox').forEach(cb => {
-                                                if (cb !== checkbox) {
-                                                    const cbIsFreeship = cb.getAttribute('data-discount-type') === 'FREESHIP';
-                                                    if (cbIsFreeship === isFreeship) {
-                                                        cb.checked = false;
-                                                        cb.parentElement.classList.remove('selected');
-                                                    }
-                                                }
-                                            });
-                                        }
-                                    }
-                                </script>
                                 <div class="voucher-content">
                                     <div class="voucher-title"
                                         style="display: flex; align-items: center; flex-wrap: wrap; gap: 5px;">
@@ -1421,8 +1406,28 @@
                                 style="font-size: 13px; color: #777; margin-bottom: 10px;">
                                 No active vouchers available.
                             </div>
+                            <div th:if="${session.user == null}" style="font-size: 13px; color: #666; font-style: italic; background: #f9f9f9; padding: 10px; border-radius: 8px; margin-top: 10px;">
+                                Please login to use more vouchers
+                            </div>
                         </div>
 
+                        <script>
+                            function handleVoucherSelectionThymeleaf(checkbox) {
+                                const isFreeship = checkbox.getAttribute('data-discount-type') === 'FREESHIP';
+                                if (checkbox.checked) {
+                                    document.querySelectorAll('.product-voucher-checkbox').forEach(cb => {
+                                        if (cb !== checkbox) {
+                                            const cbIsFreeship = cb.getAttribute('data-discount-type') === 'FREESHIP';
+                                            if (cbIsFreeship === isFreeship) {
+                                                cb.checked = false;
+                                                cb.parentElement.classList.remove('selected');
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        </script>
+                        
                         <a href="#" id="view-more-vouchers-btn" th:if="${vouchers != null and vouchers.size() > 3}"
                             style="color: #007bff; text-decoration: none; display: block; margin-top: 10px; font-size: 13px;"
                             onclick="event.preventDefault(); 

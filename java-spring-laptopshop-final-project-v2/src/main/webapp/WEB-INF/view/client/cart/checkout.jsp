@@ -314,59 +314,69 @@
                                                 <i class="fa-solid fa-ticket"
                                                     style="color: #cd1818; margin-right: 8px;"></i> Discount Vouchers
                                             </div>
-                                            <div class="d-flex flex-wrap" style="gap: 15px;">
-                                                <c:forEach var="v" items="${discountVouchers}">
-                                                    <c:set var="isChecked" value="false" />
-                                                    <c:if test="${preselectedVouchers != null}">
-                                                        <c:forEach var="pid" items="${preselectedVouchers}">
-                                                            <c:if test="${pid == v.id}">
-                                                                <c:set var="isChecked" value="true" />
-                                                            </c:if>
-                                                        </c:forEach>
-                                                    </c:if>
-
-                                                    <label
-                                                        style="background: ${isChecked ? '#fff5f5' : '#fff'}; border: 1px solid ${isChecked ? '#cd1818' : '#ddd'}; border-radius: 8px; padding: 12px; cursor: pointer; flex: 1 1 250px; max-width: 320px; display: flex; align-items: flex-start; gap: 10px; transition: 0.3s;"
-                                                        onmouseover="if(!this.querySelector('input').checked) this.style.borderColor='#cd1818';"
-                                                        onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='#ddd';">
-                                                        <input type="checkbox" name="selectedVouchers" value="${v.id}"
-                                                            class="voucher-checkbox discount-voucher"
-                                                            style="accent-color: #cd1818; margin-top: 4px; width: 16px; height: 16px;"
-                                                            data-discount-type="${v.discountType}"
-                                                            data-discount-amount="${v.discountAmount}" <c:if
-                                                            test="${isChecked}">checked
-                                    </c:if>
-                                    onchange="handleVoucherSelection(this, 'discount-voucher')">
-                                    <div>
-                                        <div
-                                            style="font-weight: bold; color: #cd1818; font-size: 14px; margin-bottom: 5px; line-height: 1.2; display: flex; align-items: center; flex-wrap: wrap; gap: 5px;">
-                                            ${v.title}
+                                            
                                             <c:choose>
-                                                <c:when test="${v.discountType == 'PERCENT'}">
-                                                    <span
-                                                        style="background: #cd1818; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;">
-                                                        -
-                                                        <fmt:formatNumber type="number" value="${v.discountAmount}" />%
-                                                    </span>
+                                                <c:when test="${empty sessionScope.email}">
+                                                    <div style="font-size: 14px; color: #666; font-style: italic; background: #f9f9f9; padding: 10px; border-radius: 8px;">
+                                                        Please login to use more vouchers
+                                                    </div>
                                                 </c:when>
-                                                <c:when test="${v.discountType == 'FIXED'}">
-                                                    <span
-                                                        style="background: #cd1818; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;">
-                                                        -
-                                                        <fmt:formatNumber type="number" value="${v.discountAmount}" />
-                                                        VND
-                                                    </span>
-                                                </c:when>
+                                                <c:otherwise>
+                                                    <div class="d-flex flex-wrap" style="gap: 15px;">
+                                                        <c:forEach var="v" items="${discountVouchers}">
+                                                            <c:set var="isChecked" value="false" />
+                                                            <c:if test="${preselectedVouchers != null}">
+                                                                <c:forEach var="pid" items="${preselectedVouchers}">
+                                                                    <c:if test="${pid == v.id}">
+                                                                        <c:set var="isChecked" value="true" />
+                                                                    </c:if>
+                                                                </c:forEach>
+                                                            </c:if>
+
+                                                            <label
+                                                                style="background: ${isChecked ? '#fff5f5' : '#fff'}; border: 1px solid ${isChecked ? '#cd1818' : '#ddd'}; border-radius: 8px; padding: 12px; cursor: pointer; flex: 1 1 250px; max-width: 320px; display: flex; align-items: flex-start; gap: 10px; transition: 0.3s;"
+                                                                onmouseover="if(!this.querySelector('input').checked) this.style.borderColor='#cd1818';"
+                                                                onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='#ddd';">
+                                                                <input type="checkbox" name="selectedVouchers" value="${v.id}"
+                                                                    class="voucher-checkbox discount-voucher"
+                                                                    style="accent-color: #cd1818; margin-top: 4px; width: 16px; height: 16px;"
+                                                                    data-discount-type="${v.discountType}"
+                                                                    data-discount-amount="${v.discountAmount}" <c:if
+                                                                    test="${isChecked}">checked
+                                                                </c:if>
+                                                                onchange="handleVoucherSelection(this, 'discount-voucher')">
+                                                                <div>
+                                                                    <div
+                                                                        style="font-weight: bold; color: #cd1818; font-size: 14px; margin-bottom: 5px; line-height: 1.2; display: flex; align-items: center; flex-wrap: wrap; gap: 5px;">
+                                                                        ${v.title}
+                                                                        <c:choose>
+                                                                            <c:when test="${v.discountType == 'PERCENT'}">
+                                                                                <span
+                                                                                    style="background: #cd1818; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;">
+                                                                                    -
+                                                                                    <fmt:formatNumber type="number" value="${v.discountAmount}" />%
+                                                                                </span>
+                                                                            </c:when>
+                                                                            <c:when test="${v.discountType == 'FIXED'}">
+                                                                                <span
+                                                                                    style="background: #cd1818; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;">
+                                                                                    -
+                                                                                    <fmt:formatNumber type="number" value="${v.discountAmount}" />
+                                                                                    VND
+                                                                                </span>
+                                                                            </c:when>
+                                                                        </c:choose>
+                                                                    </div>
+                                                                    <div style="font-size: 12px; color: #666; line-height: 1.4;">${v.description}
+                                                                    </div>
+                                                                </div>
+                                                            </label>
+                                                        </c:forEach>
+                                                    </div>
+                                                </c:otherwise>
                                             </c:choose>
                                         </div>
-                                        <div style="font-size: 12px; color: #666; line-height: 1.4;">${v.description}
-                                        </div>
-                                    </div>
-                                    </label>
-                                    </c:forEach>
-                        </div>
-                    </div>
-                    </c:if>
+                                    </c:if>
 
                     <c:if test="${not empty freeshipVouchers}">
                         <div class="cyber-checkout-box mt-4 mb-0" style="padding: 20px 30px;">

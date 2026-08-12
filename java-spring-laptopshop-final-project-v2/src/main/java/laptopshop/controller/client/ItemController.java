@@ -37,6 +37,7 @@ import laptopshop.domain.Payment;
 import laptopshop.service.ReviewService;
 import laptopshop.service.UserService;
 import laptopshop.service.VoucherService;
+import laptopshop.repository.VoucherUsageRepository;
 
 @Controller
 public class ItemController {
@@ -51,11 +52,12 @@ public class ItemController {
     private final ReviewService reviewService;
     private final UserService userService;
     private final VoucherService voucherService;
+    private final VoucherUsageRepository voucherUsageRepository;
 
     public ItemController(ProductService productService, BlogService blogService,
             PaymentService paymentService, VNPayService vnPayService,
             MoMoService moMoService, ZaloPayService zaloPayService,
-            EmailService emailService, ReviewService reviewService, UserService userService, VoucherService voucherService) {
+            EmailService emailService, ReviewService reviewService, UserService userService, VoucherService voucherService, VoucherUsageRepository voucherUsageRepository) {
         this.productService = productService;
         this.blogService = blogService;
         this.paymentService = paymentService;
@@ -66,6 +68,7 @@ public class ItemController {
         this.reviewService = reviewService;
         this.userService = userService;
         this.voucherService = voucherService;
+        this.voucherUsageRepository = voucherUsageRepository;
     }
 
     @GetMapping("/product/{id}")
@@ -77,11 +80,28 @@ public class ItemController {
         model.addAttribute("product", pr);
         model.addAttribute("id", id);
         java.util.List<laptopshop.domain.Voucher> activeVouchers = this.voucherService.getActiveVouchers();
+        HttpSession currentSession = request.getSession(false);
+        User sessionUser = null;
+        if (currentSession != null) {
+            String email = (String) currentSession.getAttribute("email");
+            if (email != null) {
+                sessionUser = this.userService.getUserByEmail(email);
+            }
+        }
+        final User currentUser = sessionUser;
+        
         java.util.List<laptopshop.domain.Voucher> applicableVouchers = activeVouchers.stream().filter(v -> {
-            if (v.getAppliesTo() == null || v.getAppliesTo().equals("ALL")) return true;
-            if (v.getAppliesTo().equals("FACTORY") && pr.getFactory() != null && v.getApplyValue() != null && pr.getFactory().equalsIgnoreCase(v.getApplyValue())) return true;
-            if (v.getAppliesTo().equals("TARGET") && pr.getTarget() != null && v.getApplyValue() != null && pr.getTarget().equalsIgnoreCase(v.getApplyValue())) return true;
-            return false;
+            boolean matches = false;
+            if (v.getAppliesTo() == null || v.getAppliesTo().equals("ALL")) matches = true;
+            else if (v.getAppliesTo().equals("FACTORY") && pr.getFactory() != null && v.getApplyValue() != null && pr.getFactory().equalsIgnoreCase(v.getApplyValue())) matches = true;
+            else if (v.getAppliesTo().equals("TARGET") && pr.getTarget() != null && v.getApplyValue() != null && pr.getTarget().equalsIgnoreCase(v.getApplyValue())) matches = true;
+            
+            if (matches && currentUser != null) {
+                if (this.voucherUsageRepository.existsValidUsage(currentUser, v, pr)) {
+                    matches = false;
+                }
+            }
+            return matches;
         }).collect(java.util.stream.Collectors.toList());
         java.util.List<laptopshop.domain.Voucher> discountVouchers = new java.util.ArrayList<>();
         java.util.List<laptopshop.domain.Voucher> freeshipVouchers = new java.util.ArrayList<>();
@@ -355,23 +375,60 @@ public class ItemController {
 
         java.util.List<laptopshop.domain.Voucher> activeVouchers = this.voucherService.getActiveVouchers();
         java.util.List<laptopshop.domain.Voucher> applicableVouchers = new java.util.ArrayList<>();
+        User finalUser = null;
+        if (email != null) {
+            finalUser = this.userService.getUserByEmail(email);
+        }
+
         for (laptopshop.domain.Voucher v : activeVouchers) {
+            boolean matches = false;
             if (v.getAppliesTo() == null || v.getAppliesTo().equals("ALL")) {
-                applicableVouchers.add(v);
+                matches = true;
             } else {
                 for (laptopshop.domain.CartDetail cd : cartDetails) {
                     laptopshop.domain.Product p = cd.getProduct();
                     if (p != null) {
                         if (v.getAppliesTo().equals("FACTORY") && p.getFactory() != null && v.getApplyValue() != null && p.getFactory().equalsIgnoreCase(v.getApplyValue())) {
-                            applicableVouchers.add(v);
+                            matches = true;
                             break;
                         }
                         if (v.getAppliesTo().equals("TARGET") && p.getTarget() != null && v.getApplyValue() != null && p.getTarget().equalsIgnoreCase(v.getApplyValue())) {
-                            applicableVouchers.add(v);
+                            matches = true;
                             break;
                         }
                     }
                 }
+            }
+            
+            if (matches && finalUser != null) {
+                boolean allApplicableUsed = true;
+                boolean foundApplicable = false;
+                for (laptopshop.domain.CartDetail cd : cartDetails) {
+                    laptopshop.domain.Product p = cd.getProduct();
+                    if (p == null) continue;
+                    boolean pMatches = false;
+                    if (v.getAppliesTo() == null || v.getAppliesTo().equals("ALL")) {
+                        pMatches = true;
+                    } else if ("FACTORY".equals(v.getAppliesTo()) && p.getFactory() != null && v.getApplyValue() != null && p.getFactory().equalsIgnoreCase(v.getApplyValue())) {
+                        pMatches = true;
+                    } else if ("TARGET".equals(v.getAppliesTo()) && p.getTarget() != null && v.getApplyValue() != null && p.getTarget().equalsIgnoreCase(v.getApplyValue())) {
+                        pMatches = true;
+                    }
+                    if (pMatches) {
+                        foundApplicable = true;
+                        if (!this.voucherUsageRepository.existsValidUsage(finalUser, v, p)) {
+                            allApplicableUsed = false;
+                            break;
+                        }
+                    }
+                }
+                if (foundApplicable && allApplicableUsed) {
+                    matches = false;
+                }
+            }
+            
+            if (matches) {
+                applicableVouchers.add(v);
             }
         }
         java.util.List<laptopshop.domain.Voucher> discountVouchers = new java.util.ArrayList<>();

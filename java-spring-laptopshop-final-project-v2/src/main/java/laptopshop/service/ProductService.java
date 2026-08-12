@@ -25,6 +25,8 @@ import laptopshop.repository.OrderDetailRepository;
 import laptopshop.repository.OrderRepository;
 import laptopshop.repository.ProductRepository;
 import laptopshop.repository.VoucherRepository;
+import laptopshop.repository.VoucherUsageRepository;
+import laptopshop.domain.VoucherUsage;
 import laptopshop.service.specification.ProductSpecs;
 
 @Service
@@ -36,6 +38,7 @@ public class ProductService {
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final VoucherRepository voucherRepository;
+    private final VoucherUsageRepository voucherUsageRepository;
 
     public ProductService(
             ProductRepository productRepository,
@@ -44,7 +47,8 @@ public class ProductService {
             UserService userService,
             OrderRepository orderRepository,
             OrderDetailRepository orderDetailRepository,
-            VoucherRepository voucherRepository) {
+            VoucherRepository voucherRepository,
+            VoucherUsageRepository voucherUsageRepository) {
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
         this.cartDetailRepository = cartDetailRepository;
@@ -52,6 +56,7 @@ public class ProductService {
         this.orderRepository = orderRepository;
         this.orderDetailRepository = orderDetailRepository;
         this.voucherRepository = voucherRepository;
+        this.voucherUsageRepository = voucherUsageRepository;
     }
 
     public Product createProduct(Product pr) {
@@ -436,35 +441,56 @@ public class ProductService {
                 }
 
                 StringBuilder appliedVoucherNames = new StringBuilder();
+                List<VoucherUsage> pendingUsages = new java.util.ArrayList<>();
+                
                 if (selectedVouchers != null && !selectedVouchers.isEmpty()) {
                     List<Voucher> vouchers = this.voucherRepository.findAllById(selectedVouchers);
                     for (Voucher v : vouchers) {
                         if ("ACTIVE".equals(v.getStatus())) {
-                            // verify condition
-                            boolean applicable = false;
-                            if (v.getAppliesTo() == null || v.getAppliesTo().equals("ALL")) {
-                                applicable = true;
-                            } else {
-                                for (CartDetail cd : cartDetails) {
-                                    Product p = cd.getProduct();
-                                    if (p != null) {
-                                        if (v.getAppliesTo().equals("FACTORY") && p.getFactory() != null && v.getApplyValue() != null && p.getFactory().equalsIgnoreCase(v.getApplyValue())) {
-                                            applicable = true; break;
+                            boolean isVoucherAppliedToOrder = false;
+
+                            for (CartDetail cd : cartDetails) {
+                                Product p = cd.getProduct();
+                                if (p == null) continue;
+
+                                boolean matches = false;
+                                if (v.getAppliesTo() == null || v.getAppliesTo().equals("ALL")) {
+                                    matches = true;
+                                } else if ("FACTORY".equals(v.getAppliesTo()) && p.getFactory() != null && v.getApplyValue() != null && p.getFactory().equalsIgnoreCase(v.getApplyValue())) {
+                                    matches = true;
+                                } else if ("TARGET".equals(v.getAppliesTo()) && p.getTarget() != null && v.getApplyValue() != null && p.getTarget().equalsIgnoreCase(v.getApplyValue())) {
+                                    matches = true;
+                                }
+
+                                if (matches) {
+                                    boolean alreadyUsed = false;
+                                    if (user != null && user.getId() != 0) {
+                                        alreadyUsed = this.voucherUsageRepository.existsValidUsage(user, v, p);
+                                    }
+
+                                    if (!alreadyUsed) {
+                                        isVoucherAppliedToOrder = true;
+                                        
+                                        if ("FIXED".equals(v.getDiscountType())) {
+                                            totalDiscount += v.getDiscountAmount() * cd.getQuantity();
+                                        } else if ("PERCENT".equals(v.getDiscountType())) {
+                                            totalDiscount += (cd.getPrice() * cd.getQuantity() * v.getDiscountAmount() / 100.0);
                                         }
-                                        if (v.getAppliesTo().equals("TARGET") && p.getTarget() != null && v.getApplyValue() != null && p.getTarget().equalsIgnoreCase(v.getApplyValue())) {
-                                            applicable = true; break;
+
+                                        if (user != null && user.getId() != 0) {
+                                            VoucherUsage usage = new VoucherUsage();
+                                            usage.setUser(user);
+                                            usage.setVoucher(v);
+                                            usage.setProduct(p);
+                                            pendingUsages.add(usage);
                                         }
                                     }
                                 }
                             }
 
-                            if (applicable) {
+                            if (isVoucherAppliedToOrder) {
                                 if ("FREESHIP".equals(v.getDiscountType())) {
                                     shippingDiscount += v.getDiscountAmount();
-                                } else if ("FIXED".equals(v.getDiscountType())) {
-                                    totalDiscount += v.getDiscountAmount() * totalQuantity;
-                                } else if ("PERCENT".equals(v.getDiscountType())) {
-                                    totalDiscount += (sum * v.getDiscountAmount() / 100.0);
                                 }
                                 if (appliedVoucherNames.length() > 0) {
                                     appliedVoucherNames.append(", ");
@@ -490,6 +516,13 @@ public class ProductService {
                 
                 order.setCreatedAt(LocalDateTime.now());
                 order = this.orderRepository.save(order);
+                
+                // save voucher usages
+                for (VoucherUsage usage : pendingUsages) {
+                    usage.setOrder(order);
+                    usage.setCreatedAt(LocalDateTime.now());
+                    this.voucherUsageRepository.save(usage);
+                }
 
                 // create orderDetail
 
