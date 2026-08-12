@@ -40,11 +40,7 @@
                                         <label class="form-label">Id:</label>
                                         <form:input type="text" class="form-control" path="id" />
                                     </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Code:</label>
-                                        <form:input type="text" class="form-control" path="code" />
-                                        <form:errors path="code" cssClass="text-danger" />
-                                    </div>
+
                                     <div class="mb-3">
                                         <label class="form-label">Title:</label>
                                         <form:input type="text" class="form-control" path="title" />
@@ -73,7 +69,7 @@
                                     <div class="row">
                                         <div class="mb-3 col-12 col-md-6">
                                             <label class="form-label">Valid Until:</label>
-                                            <form:input type="text" class="form-control" path="validUntil" />
+                                            <form:input type="date" class="form-control" path="validUntil" id="validUntilInput" />
                                             <form:errors path="validUntil" cssClass="text-danger" />
                                         </div>
                                         <div class="mb-3 col-12 col-md-6">
@@ -95,7 +91,8 @@
                                         </div>
                                         <div class="mb-3 col-12 col-md-6" id="applyValueContainer" style="display: none;">
                                             <label class="form-label">Condition Value:</label>
-                                            <form:input type="text" class="form-control" path="applyValue" placeholder="e.g. MACBOOK, GAMING" />
+                                            <form:select class="form-select" path="applyValue" id="applyValueSelect">
+                                            </form:select>
                                         </div>
                                     </div>
                                     
@@ -112,17 +109,53 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="/js/scripts.js"></script>
     <script>
+        const factoryOptions = [
+            {value: 'APPLE', text: 'Apple (MacBook)'},
+            {value: 'ASUS', text: 'Asus'},
+            {value: 'LENOVO', text: 'Lenovo'},
+            {value: 'DELL', text: 'Dell'},
+            {value: 'LG', text: 'LG'},
+            {value: 'ACER', text: 'Acer'}
+        ];
+
+        const targetOptions = [
+            {value: 'GAMING', text: 'Gaming'},
+            {value: 'SINHVIEN-VANPHONG', text: 'Student - Office'},
+            {value: 'THIET-KE-DO-HOA', text: 'Graphic Design'},
+            {value: 'MONG-NHE', text: 'Thin & Light'},
+            {value: 'DOANH-NHAN', text: 'Business'}
+        ];
+
+        var currentApplyValue = '${newVoucher.applyValue}';
+
         function toggleApplyValue() {
             var appliesTo = document.getElementById("appliesToSelect").value;
             var container = document.getElementById("applyValueContainer");
+            var select = document.getElementById("applyValueSelect");
+            
             if (appliesTo === "ALL" || appliesTo === "" || appliesTo === null) {
                 container.style.display = "none";
+                select.innerHTML = '';
             } else {
                 container.style.display = "block";
+                select.innerHTML = '';
+                var options = appliesTo === "FACTORY" ? factoryOptions : targetOptions;
+                options.forEach(function(opt) {
+                    var el = document.createElement("option");
+                    el.value = opt.value;
+                    el.textContent = opt.text;
+                    if (opt.value === currentApplyValue) {
+                        el.selected = true;
+                    }
+                    select.appendChild(el);
+                });
             }
         }
         document.addEventListener("DOMContentLoaded", function() {
             toggleApplyValue();
+            
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById("validUntilInput").setAttribute('min', today);
         });
     </script>
 </body>

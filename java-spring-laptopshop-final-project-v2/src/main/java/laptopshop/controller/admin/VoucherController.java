@@ -58,6 +58,15 @@ public class VoucherController {
             @ModelAttribute("newVoucher") @Valid Voucher pr,
             BindingResult newVoucherBindingResult,
             Model model) {
+        try {
+            java.time.LocalDate date = java.time.LocalDate.parse(pr.getValidUntil());
+            if (date.isBefore(java.time.LocalDate.now())) {
+                newVoucherBindingResult.rejectValue("validUntil", "error.validUntil", "Valid Until must be today or in the future");
+            }
+        } catch (Exception e) {
+            newVoucherBindingResult.rejectValue("validUntil", "error.validUntil", "Invalid date format");
+        }
+
         if (newVoucherBindingResult.hasErrors()) {
             return "admin/voucher/create";
         }
@@ -79,6 +88,15 @@ public class VoucherController {
     public String handleUpdateVoucher(
             @ModelAttribute("newVoucher") @Valid Voucher pr,
             BindingResult newVoucherBindingResult) {
+        try {
+            java.time.LocalDate date = java.time.LocalDate.parse(pr.getValidUntil());
+            if (date.isBefore(java.time.LocalDate.now())) {
+                newVoucherBindingResult.rejectValue("validUntil", "error.validUntil", "Valid Until must be today or in the future");
+            }
+        } catch (Exception e) {
+            newVoucherBindingResult.rejectValue("validUntil", "error.validUntil", "Invalid date format");
+        }
+
         if (newVoucherBindingResult.hasErrors()) {
             return "admin/voucher/update";
         }
@@ -86,7 +104,6 @@ public class VoucherController {
         Optional<Voucher> currentVoucher = this.voucherService.fetchVoucherById(pr.getId());
         if (currentVoucher.isPresent()) {
             Voucher dbVoucher = currentVoucher.get();
-            dbVoucher.setCode(pr.getCode());
             dbVoucher.setTitle(pr.getTitle());
             dbVoucher.setDescription(pr.getDescription());
             dbVoucher.setDiscountAmount(pr.getDiscountAmount());

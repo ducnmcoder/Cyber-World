@@ -135,7 +135,7 @@ public class ItemController {
         }
         
         java.util.List<Long> autoSelected = new java.util.ArrayList<>();
-        if (bestDiscountVoucher != null) autoSelected.add(bestDiscountVoucher.getId());
+        if (bestDiscountVoucher != null && currentUser != null) autoSelected.add(bestDiscountVoucher.getId());
         if (bestFreeshipVoucher != null) autoSelected.add(bestFreeshipVoucher.getId());
         
         // Create a sorted list where preselected are at the top
@@ -471,9 +471,12 @@ public class ItemController {
             session.removeAttribute("preselectedVouchers");
         } else {
             java.util.List<Long> autoSelected = new java.util.ArrayList<>();
-            if (bestDiscountVoucher != null) autoSelected.add(bestDiscountVoucher.getId());
-            if (bestFreeshipVoucher != null) autoSelected.add(bestFreeshipVoucher.getId());
-            model.addAttribute("preselectedVouchers", autoSelected);
+        if (bestDiscountVoucher != null) {
+            autoSelected.add(bestDiscountVoucher.getId());
+        }
+        if (bestFreeshipVoucher != null) {
+            autoSelected.add(bestFreeshipVoucher.getId());
+        }    model.addAttribute("preselectedVouchers", autoSelected);
         }
 
         return "client/cart/checkout";

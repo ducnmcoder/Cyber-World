@@ -18,9 +18,6 @@ public class Voucher implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @NotEmpty(message = "Code cannot be empty")
-    private String code;
 
     @NotNull
     @NotEmpty(message = "Title cannot be empty")
@@ -56,13 +53,6 @@ public class Voucher implements Serializable {
         this.id = id;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
 
     public String getTitle() {
         return title;

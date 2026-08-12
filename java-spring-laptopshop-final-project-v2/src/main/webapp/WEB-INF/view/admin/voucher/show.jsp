@@ -40,7 +40,6 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Code</th>
                                             <th>Title</th>
                                             <th>Discount</th>
                                             <th>Applies To</th>
@@ -53,7 +52,6 @@
                                         <c:forEach var="voucher" items="${vouchers}" varStatus="loop">
                                             <tr>
                                                 <th>${(currentPage - 1) * 5 + loop.count}</th>
-                                                <td>${voucher.code}</td>
                                                 <td>${voucher.title}</td>
                                                 <td>
                                                     <fmt:formatNumber type="number" value="${voucher.discountAmount}" />

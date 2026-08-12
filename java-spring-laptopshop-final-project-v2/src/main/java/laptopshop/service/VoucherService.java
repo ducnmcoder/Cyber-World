@@ -25,7 +25,28 @@ public class VoucherService {
     }
 
     public java.util.List<Voucher> getActiveVouchers() {
-        return this.voucherRepository.findByStatus("ACTIVE");
+        java.util.List<Voucher> activeVouchers = this.voucherRepository.findByStatus("ACTIVE");
+        java.time.LocalDate today = java.time.LocalDate.now();
+        return activeVouchers.stream().filter(v -> {
+            if (v.getValidUntil() == null) return true;
+            try {
+                java.time.LocalDate validUntil = java.time.LocalDate.parse(v.getValidUntil());
+                if (validUntil.isBefore(today)) {
+                    return false;
+                }
+            } catch (Exception e) {
+                try {
+                    java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    java.time.LocalDate validUntil = java.time.LocalDate.parse(v.getValidUntil(), formatter);
+                    if (validUntil.isBefore(today)) {
+                        return false;
+                    }
+                } catch (Exception ex) {
+                    // Ignore parse errors, let it show
+                }
+            }
+            return true;
+        }).collect(java.util.stream.Collectors.toList());
     }
 
     public Optional<Voucher> fetchVoucherById(long id) {

@@ -472,7 +472,7 @@ public class ProductService {
                                         isVoucherAppliedToOrder = true;
                                         
                                         if ("FIXED".equals(v.getDiscountType())) {
-                                            totalDiscount += v.getDiscountAmount() * cd.getQuantity();
+                                            totalDiscount += v.getDiscountAmount(); // Apply fixed discount once per product line
                                         } else if ("PERCENT".equals(v.getDiscountType())) {
                                             totalDiscount += (cd.getPrice() * cd.getQuantity() * v.getDiscountAmount() / 100.0);
                                         }

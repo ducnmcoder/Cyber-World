@@ -43,10 +43,7 @@
                                         <label class="form-label">Id:</label>
                                         <form:input type="text" class="form-control" path="id" />
                                     </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Code:</label>
-                                        <form:input type="text" class="form-control" path="code" disabled="true" />
-                                    </div>
+
                                     <div class="mb-3">
                                         <label class="form-label">Title:</label>
                                         <form:input type="text" class="form-control" path="title" disabled="true" />
