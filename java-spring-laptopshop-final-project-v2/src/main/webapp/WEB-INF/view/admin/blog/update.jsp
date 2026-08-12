@@ -49,18 +49,44 @@
                                                     <label class="form-label">Title:</label>
                                                     <form:input type="text" class="form-control" path="title" />
                                                 </div>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label">Type:</label>
+                                                    <form:select class="form-control" path="type" id="blogType">
+                                                        <form:option value="ARTICLE">Article</form:option>
+                                                        <form:option value="VIDEO">Video</form:option>
+                                                    </form:select>
+                                                </div>
+                                                <div class="mb-3" id="videoUrlContainer" style="${newBlog.type == 'VIDEO' ? '' : 'display: none;'}">
+                                                    <label class="form-label">Video URL (optional, if you have a link):</label>
+                                                    <form:input type="text" class="form-control" path="videoUrl" placeholder="Enter video link (e.g., YouTube URL)" />
+                                                    
+                                                    <label class="form-label mt-2">Or Upload Video File (max 200MB):</label>
+                                                    <input class="form-control" type="file" name="videoFile" accept=".mp4, .avi, .mkv, .webm" />
+                                                </div>
+                                                <script>
+                                                    $(document).ready(function() {
+                                                        $('#blogType').change(function() {
+                                                            if ($(this).val() === 'VIDEO') {
+                                                                $('#videoUrlContainer').show();
+                                                                
+                                                            } else {
+                                                                $('#videoUrlContainer').hide();
+                                                                
+                                                            }
+                                                        });
+                                                    });
+                                                </script>
                                                 <div class="mb-3">
                                                     <label class="form-label">Content:</label>
                                                     <form:textarea class="form-control" path="content" rows="8" />
                                                 </div>
-                                                <div class="mb-3">
-                                                    <label for="blogFile" class="form-label">Image:</label>
+                                                <div class="mb-3" id="imageContainer" >
+                                                    <label class="form-label">Image URL (optional, if you have a link):</label><input class="form-control" type="text" name="imageUrl" placeholder="Enter image link (e.g., https://...)" value="${(not empty newBlog.image and newBlog.image.startsWith('http')) ? newBlog.image : ''}" /><label for="blogFile" class="form-label mt-2">Or Upload Image File:</label>
                                                     <input class="form-control" type="file" id="blogFile"
                                                         name="blogFile" accept=".png, .jpg, .jpeg" />
-                                                </div>
-                                                <div class="mb-3">
-                                                    <img style="max-height: 250px;" alt="Blog preview" id="blogPreview"
-                                                        src="/images/blog/${newBlog.image}" />
+                                                    <img style="max-height: 250px; margin-top: 10px;" alt="Blog preview" id="blogPreview"
+                                                        src="${newBlog.displayImage}" />
                                                 </div>
                                                 <button type="submit" class="btn btn-warning">Update</button>
                                                 <a href="/admin/blog" class="btn btn-secondary ms-2">Cancel</a>
@@ -79,3 +105,4 @@
             </body>
 
             </html>
+

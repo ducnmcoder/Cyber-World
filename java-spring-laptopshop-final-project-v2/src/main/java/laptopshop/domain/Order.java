@@ -25,6 +25,18 @@ public class Order implements Serializable {
 
     private double totalPrice;
 
+    @Column(name = "discount_amount")
+    private Double discountAmount = 0.0;
+
+    @Column(name = "shipping_fee")
+    private Double shippingFee = 0.0;
+
+    @Column(name = "shipping_discount_amount")
+    private Double shippingDiscountAmount = 0.0;
+
+    @Column(name = "applied_vouchers", columnDefinition = "TEXT")
+    private String appliedVouchers;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -33,6 +45,9 @@ public class Order implements Serializable {
     private String receiverAddress;
 
     private String receiverPhone;
+
+    @Column(name = "receiver_email")
+    private String receiverEmail;
 
     private String status;
 
@@ -46,6 +61,9 @@ public class Order implements Serializable {
     @Column(name = "tracking_code")
     private String trackingCode;
 
+    @Column(name = "shipping_provider")
+    private String shippingProvider;
+
     // user id
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -56,6 +74,24 @@ public class Order implements Serializable {
 
     @OneToMany(mappedBy = "order")
     private List<Payment> payments;
+
+    @Column(name = "refund_name")
+    private String refundName;
+
+    @Column(name = "refund_phone")
+    private String refundPhone;
+
+    @Column(name = "refund_bank_account")
+    private String refundBankAccount;
+
+    @Column(name = "refund_bank_name")
+    private String refundBankName;
+
+    @Column(name = "refund_reason", columnDefinition = "TEXT")
+    private String refundReason;
+
+    @Column(name = "refund_proofs", columnDefinition = "TEXT")
+    private String refundProofs;
 
     public long getId() {
         return id;
@@ -75,6 +111,11 @@ public class Order implements Serializable {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public String getFormattedCreatedAt() {
+        if (this.createdAt == null) return "";
+        return java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm").format(this.createdAt);
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
@@ -153,6 +194,14 @@ public class Order implements Serializable {
         this.trackingCode = trackingCode;
     }
 
+    public String getShippingProvider() {
+        return shippingProvider;
+    }
+
+    public void setShippingProvider(String shippingProvider) {
+        this.shippingProvider = shippingProvider;
+    }
+
     public List<Payment> getPayments() {
         return payments;
     }
@@ -161,9 +210,96 @@ public class Order implements Serializable {
         this.payments = payments;
     }
 
+    public String getRefundName() {
+        return refundName;
+    }
+
+    public void setRefundName(String refundName) {
+        this.refundName = refundName;
+    }
+
+    public String getRefundPhone() {
+        return refundPhone;
+    }
+
+    public void setRefundPhone(String refundPhone) {
+        this.refundPhone = refundPhone;
+    }
+
+    public String getRefundBankAccount() {
+        return refundBankAccount;
+    }
+
+    public void setRefundBankAccount(String refundBankAccount) {
+        this.refundBankAccount = refundBankAccount;
+    }
+
+    public String getRefundBankName() {
+        return refundBankName;
+    }
+
+    public void setRefundBankName(String refundBankName) {
+        this.refundBankName = refundBankName;
+    }
+
+    public String getRefundReason() {
+        return refundReason;
+    }
+
+    public void setRefundReason(String refundReason) {
+        this.refundReason = refundReason;
+    }
+
+    public String getRefundProofs() {
+        return refundProofs;
+    }
+
+    public void setRefundProofs(String refundProofs) {
+        this.refundProofs = refundProofs;
+    }
+
+    public String getReceiverEmail() {
+        return receiverEmail;
+    }
+
+    public void setReceiverEmail(String receiverEmail) {
+        this.receiverEmail = receiverEmail;
+    }
+
     @Override
     public String toString() {
         return "Order [id=" + id + ", totalPrice=" + totalPrice + ", paymentMethod=" + paymentMethod + "]";
     }
 
+    public Double getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(Double discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
+    public String getAppliedVouchers() {
+        return appliedVouchers;
+    }
+
+    public void setAppliedVouchers(String appliedVouchers) {
+        this.appliedVouchers = appliedVouchers;
+    }
+
+    public Double getShippingFee() {
+        return shippingFee;
+    }
+
+    public void setShippingFee(Double shippingFee) {
+        this.shippingFee = shippingFee;
+    }
+
+    public Double getShippingDiscountAmount() {
+        return shippingDiscountAmount;
+    }
+
+    public void setShippingDiscountAmount(Double shippingDiscountAmount) {
+        this.shippingDiscountAmount = shippingDiscountAmount;
+    }
 }

@@ -18,16 +18,19 @@ import laptopshop.domain.Order;
 import laptopshop.domain.Payment;
 import laptopshop.service.OrderService;
 import laptopshop.service.PaymentService;
+import laptopshop.service.EmailService;
 
 @Controller
 public class OrderController {
 
     private final OrderService orderService;
     private final PaymentService paymentService;
+    private final EmailService emailService;
 
-    public OrderController(OrderService orderService, PaymentService paymentService) {
+    public OrderController(OrderService orderService, PaymentService paymentService, EmailService emailService) {
         this.orderService = orderService;
         this.paymentService = paymentService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/admin/order")
@@ -60,11 +63,12 @@ public class OrderController {
     }
 
     @GetMapping("/admin/order/{id}")
-    public String getOrderDetailPage(Model model, @PathVariable long id, @RequestParam(value = "page", defaultValue = "1") String page) {
+    public String getOrderDetailPage(Model model, @PathVariable long id, @RequestParam(value = "page", defaultValue = "1") String page, @RequestParam(value = "source", required = false) String source) {
         Order order = this.orderService.fetchOrderById(id).get();
         model.addAttribute("order", order);
         model.addAttribute("id", id);
         model.addAttribute("page", page);
+        model.addAttribute("source", source);
         model.addAttribute("orderDetails", order.getOrderDetails());
         model.addAttribute("payments", this.paymentService.getPaymentsByOrder(order));
         return "admin/order/detail";
@@ -87,6 +91,9 @@ public class OrderController {
     @GetMapping("/admin/order/update/{id}")
     public String getUpdateOrderPage(Model model, @PathVariable long id, @RequestParam(value = "page", defaultValue = "1") String page) {
         Optional<Order> currentOrder = this.orderService.fetchOrderById(id);
+        if (currentOrder.isPresent() && "CANCELLED".equals(currentOrder.get().getStatus())) {
+            return "redirect:/admin/order?page=" + page;
+        }
         model.addAttribute("newOrder", currentOrder.get());
         model.addAttribute("page", page);
         return "admin/order/update";
@@ -94,7 +101,80 @@ public class OrderController {
 
     @PostMapping("/admin/order/update")
     public String handleUpdateOrder(@ModelAttribute("newOrder") Order order, @RequestParam(value = "page", defaultValue = "1") String page) {
-        this.orderService.updateOrder(order);
+        Optional<Order> currentOrderOpt = this.orderService.fetchOrderById(order.getId());
+        if(currentOrderOpt.isPresent()) {
+            Order currentOrder = currentOrderOpt.get();
+            if ("CANCELLED".equals(currentOrder.getStatus())) {
+                return "redirect:/admin/order?page=" + page;
+            }
+            boolean statusChangedToShipping = !"SHIPPING".equals(currentOrder.getStatus()) && "SHIPPING".equals(order.getStatus());
+            boolean statusChangedToComplete = !"COMPLETE".equals(currentOrder.getStatus()) && "COMPLETE".equals(order.getStatus());
+            
+            this.orderService.updateOrder(order);
+            
+            if (statusChangedToShipping || statusChangedToComplete) {
+                String email = currentOrder.getReceiverEmail() != null && !currentOrder.getReceiverEmail().isEmpty() 
+                                    ? currentOrder.getReceiverEmail() 
+                                    : (currentOrder.getUser() != null ? currentOrder.getUser().getEmail() : null);
+                if (email != null && !email.isEmpty()) {
+                    // Fetch full updated order
+                    Order updatedOrder = this.orderService.fetchOrderById(order.getId()).get();
+                    if (statusChangedToShipping) {
+                        this.emailService.sendShippingEmail(email, updatedOrder);
+                    } else if (statusChangedToComplete) {
+                        this.emailService.sendCompleteEmail(email, updatedOrder);
+                    }
+                }
+            }
+        } else {
+            this.orderService.updateOrder(order);
+        }
         return "redirect:/admin/order?page=" + page;
+    }
+
+    @PostMapping("/admin/order/refund/approve")
+    public String handleApproveRefund(@RequestParam("orderId") long orderId, @RequestParam(value = "page", defaultValue = "1") String page, @RequestParam(value = "source", required = false) String source) {
+        Optional<Order> currentOrder = this.orderService.fetchOrderById(orderId);
+        if (currentOrder.isPresent()) {
+            Order order = currentOrder.get();
+            order.setStatus("RETURNED"); // Mark as returned/approved
+            this.orderService.updateOrder(order);
+            
+            // Send email
+            String email = order.getReceiverEmail() != null && !order.getReceiverEmail().isEmpty() 
+                                    ? order.getReceiverEmail() 
+                                    : (order.getUser() != null ? order.getUser().getEmail() : null);
+            if (email != null && !email.isEmpty()) {
+                this.emailService.sendRefundApprovalEmail(email, order);
+            }
+        }
+        String redirectUrl = "/admin/order/" + orderId + "?page=" + page;
+        if (source != null && !source.isEmpty()) {
+            redirectUrl += "&source=" + source;
+        }
+        return "redirect:" + redirectUrl;
+    }
+
+    @PostMapping("/admin/order/refund/reject")
+    public String handleRejectRefund(@RequestParam("orderId") long orderId, @RequestParam(value = "page", defaultValue = "1") String page, @RequestParam(value = "source", required = false) String source) {
+        Optional<Order> currentOrder = this.orderService.fetchOrderById(orderId);
+        if (currentOrder.isPresent()) {
+            Order order = currentOrder.get();
+            order.setStatus("REFUND_REJECTED"); // Mark as rejected so it stays in refund history
+            this.orderService.updateOrder(order);
+            
+            // Send email
+            String email = order.getReceiverEmail() != null && !order.getReceiverEmail().isEmpty() 
+                                    ? order.getReceiverEmail() 
+                                    : (order.getUser() != null ? order.getUser().getEmail() : null);
+            if (email != null && !email.isEmpty()) {
+                this.emailService.sendRefundRejectionEmail(email, order, null);
+            }
+        }
+        String redirectUrl = "/admin/order/" + orderId + "?page=" + page;
+        if (source != null && !source.isEmpty()) {
+            redirectUrl += "&source=" + source;
+        }
+        return "redirect:" + redirectUrl;
     }
 }

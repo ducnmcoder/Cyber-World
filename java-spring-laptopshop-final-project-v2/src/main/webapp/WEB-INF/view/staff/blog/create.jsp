@@ -52,8 +52,16 @@
                                                     <label class="form-label">Content:</label>
                                                     <form:textarea class="form-control" path="content" rows="8" />
                                                 </div>
+
                                                 <div class="mb-3">
-                                                    <label for="blogFile" class="form-label">Image:</label>
+                                                    <label class="form-label">Type:</label>
+                                                    <form:select class="form-control" path="type" id="blogType">
+                                                        <form:option value="ARTICLE">Article</form:option>
+                                                        <form:option value="VIDEO">Video</form:option>
+                                                    </form:select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Image URL (optional, if you have a link):</label><input class="form-control" type="text" name="imageUrl" placeholder="Enter image link (e.g., https://...)" /><label for="blogFile" class="form-label mt-2">Or Upload Image File:</label>
                                                     <input class="form-control" type="file" id="blogFile"
                                                         name="blogFile" accept=".png, .jpg, .jpeg" />
                                                 </div>
@@ -78,3 +86,4 @@
             </body>
 
             </html>
+

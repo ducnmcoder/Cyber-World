@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import laptopshop.domain.Order;
 import laptopshop.domain.OrderDetail;
+import laptopshop.domain.Product;
 import laptopshop.domain.Payment;
 import laptopshop.domain.User;
 import laptopshop.repository.OrderDetailRepository;
@@ -41,6 +42,10 @@ public class OrderService {
 
     public List<Order> fetchOrdersByStatus(String status) {
         return this.orderRepository.findByStatus(status);
+    }
+
+    public Page<Order> fetchOrdersByStatuses(List<String> statuses, Pageable pageable) {
+        return this.orderRepository.findByStatusIn(statuses, pageable);
     }
 
     public Optional<Order> fetchOrderById(long id) {
@@ -78,6 +83,8 @@ public class OrderService {
             Order currentOrder = orderOptional.get();
             currentOrder.setStatus(order.getStatus());
             currentOrder.setPaymentStatus(order.getPaymentStatus());
+            currentOrder.setTrackingCode(order.getTrackingCode());
+              currentOrder.setShippingProvider(order.getShippingProvider());
             this.orderRepository.save(currentOrder);
         }
     }
@@ -94,6 +101,52 @@ public class OrderService {
 
     public List<Order> fetchOrderByUser(User user) {
         return this.orderRepository.findByUser(user);
+    }
+
+    @Transactional
+    public void updateDeliveryInfo(long orderId, String receiverName, String receiverPhone, String receiverAddress) {
+        Optional<Order> opt = this.orderRepository.findById(orderId);
+        if (opt.isPresent()) {
+            Order order = opt.get();
+            order.setReceiverName(receiverName);
+            order.setReceiverPhone(receiverPhone);
+            order.setReceiverAddress(receiverAddress);
+            this.orderRepository.save(order);
+        }
+    }
+
+    @Transactional
+    public void cancelOrder(long orderId, String reason, String refundName, String refundPhone, String bankName, String bankAccount) {
+        Optional<Order> opt = this.orderRepository.findById(orderId);
+        if (opt.isPresent()) {
+            Order order = opt.get();
+            if ("PENDING".equals(order.getStatus())) {
+                order.setStatus("CANCELLED");
+                order.setRefundReason(reason);
+                if (!"COD".equals(order.getPaymentMethod())) {
+                    order.setRefundName(refundName);
+                    order.setRefundPhone(refundPhone);
+                    order.setRefundBankName(bankName);
+                    order.setRefundBankAccount(bankAccount);
+                }
+                this.orderRepository.save(order);
+
+                // Restock products
+                if (order.getOrderDetails() != null) {
+                    for (OrderDetail cd : order.getOrderDetails()) {
+                        Product product = cd.getProduct();
+                        if (product != null) {
+                            long currentQuantity = product.getQuantity() != null ? product.getQuantity() : 0;
+                            product.setQuantity(currentQuantity + cd.getQuantity());
+
+                            long currentSold = product.getSold() != null ? product.getSold() : 0;
+                            long remainingSold = currentSold - cd.getQuantity();
+                            product.setSold(remainingSold < 0 ? 0 : remainingSold);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public List<Object[]> fetchMonthlyRevenue() {
@@ -187,4 +240,7 @@ public class OrderService {
         return this.orderDetailRepository.findTopProductsByYearMonthDayAndHour(year, month, day, hour, limit);
     }
 
+    public List<Object[]> fetchRevenueByBrand(int year) {
+        return this.orderDetailRepository.findRevenueByBrandByYear(year);
+    }
 }

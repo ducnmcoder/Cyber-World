@@ -1,7 +1,9 @@
 package laptopshop.controller.client;
 
 import java.util.List;
-
+import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +30,7 @@ import laptopshop.service.ProductService;
 import laptopshop.service.UserService;
 import laptopshop.service.BlogService;
 import laptopshop.domain.Blog;
+import laptopshop.service.EmailService;
 
 @Controller
 public class HomePageController {
@@ -36,18 +40,21 @@ public class HomePageController {
     private final PasswordEncoder passwordEncoder;
     private final OrderService orderService;
     private final BlogService blogService;
+    private final EmailService emailService;
 
     public HomePageController(
             ProductService productService,
             UserService userService,
             PasswordEncoder passwordEncoder,
             OrderService orderService,
-            BlogService blogService) {
+            BlogService blogService,
+            EmailService emailService) {
         this.productService = productService;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.orderService = orderService;
         this.blogService = blogService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/")
@@ -72,24 +79,18 @@ public class HomePageController {
         model.addAttribute("totalElements", prs.getTotalElements());
         model.addAttribute("currentPage", page);
 
-        List<Blog> blogs = this.blogService.fetchAllBlogs(PageRequest.of(0, 5)).getContent();
-        model.addAttribute("blogs", blogs);
+        List<Blog> latestNews = this.blogService.fetchLatestNews(PageRequest.of(0, 5, Sort.by("createdAt").descending())).getContent();
+        model.addAttribute("latestNews", latestNews);
+
+        List<Blog> latestBlogs = this.blogService.fetchLatestBlogs(PageRequest.of(0, 5, Sort.by("createdAt").descending())).getContent();
+        model.addAttribute("blogs", latestBlogs); // keep 'blogs' variable name for backward compatibility on Latest Blogs section
 
         return "thymeleaf/client/homepage/show";
     }
 
     @GetMapping("/blog")
-    public String getBlogPage(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
-        if (page < 1) page = 1;
-
-        Pageable pageable = PageRequest.of(page - 1, 6);
-        Page<Blog> blogPage = this.blogService.fetchAllBlogs(pageable);
-        
-        model.addAttribute("blogs", blogPage.getContent());
-        model.addAttribute("totalPages", blogPage.getTotalPages());
-        model.addAttribute("currentPage", page);
-
-        return "thymeleaf/client/blog/show";
+    public String getBlogPageRedirect() {
+        return "redirect:/blogs";
     }
 
     @GetMapping("/register")
@@ -122,9 +123,10 @@ public class HomePageController {
             userRole = this.userService.handleSaveRole(userRole);
         }
         user.setRole(userRole);
+        user.setAvatar("avatar.jpg");
         // save
         this.userService.handleSaveUser(user);
-        return "redirect:/login";
+        return "redirect:/login?registered";
 
     }
 
@@ -134,7 +136,7 @@ public class HomePageController {
         return "thymeleaf/client/auth/login";
     }
 
-    @GetMapping("/access-deny")
+    @org.springframework.web.bind.annotation.RequestMapping("/access-deny")
     public String getDenyPage(Model model) {
 
         return "client/auth/deny";
@@ -148,9 +150,98 @@ public class HomePageController {
         currentUser.setId(id);
 
         List<Order> orders = this.orderService.fetchOrderByUser(currentUser);
-        model.addAttribute("orders", orders);
+        
+        // Exclude cancelled orders from the history
+        List<Order> activeOrders = orders.stream()
+                .filter(order -> !"CANCELLED".equals(order.getStatus()))
+                .collect(java.util.stream.Collectors.toList());
+                
+        model.addAttribute("orders", activeOrders);
 
         return "client/cart/order-history";
     }
 
+    @PostMapping("/update-delivery-info")
+    public String updateDeliveryInfo(@RequestParam("orderId") long orderId,
+                                     @RequestParam("receiverName") String receiverName,
+                                     @RequestParam("receiverPhone") String receiverPhone,
+                                     @RequestParam("receiverAddress") String receiverAddress,
+                                     HttpServletRequest request,
+                                     org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            return "redirect:/login";
+        }
+        
+        Optional<Order> opt = this.orderService.fetchOrderById(orderId);
+        if (opt.isPresent()) {
+            Order order = opt.get();
+            User sessionUser = (User) session.getAttribute("user");
+            if (order.getUser() == null || order.getUser().getId() != sessionUser.getId()) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Unauthorized access to order.");
+                return "redirect:/order-history";
+            }
+            if ("PENDING".equals(order.getStatus())) {
+                long hours = ChronoUnit.HOURS.between(order.getCreatedAt(), LocalDateTime.now());
+                if (hours < 6) {
+                    this.orderService.updateDeliveryInfo(orderId, receiverName, receiverPhone, receiverAddress);
+                    redirectAttributes.addFlashAttribute("successMessage", "Delivery information updated successfully.");
+                } else {
+                    redirectAttributes.addFlashAttribute("errorMessage", "Cannot edit delivery info after 6 hours.");
+                }
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", "Cannot edit delivery info when order is no longer pending.");
+            }
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Order not found.");
+        }
+        return "redirect:/order-history";
+    }
+
+    @PostMapping("/order/cancel")
+    public String cancelOrder(HttpServletRequest request, 
+                            @RequestParam("orderId") long orderId, 
+                            @RequestParam("reason") String reason,
+                            @RequestParam(value = "refundName", required = false) String refundName,
+                            @RequestParam(value = "refundPhone", required = false) String refundPhone,
+                            @RequestParam(value = "refundBankName", required = false) String bankName,
+                            @RequestParam(value = "refundBankAccount", required = false) String bankAccount,
+                            RedirectAttributes redirectAttributes) {
+        
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            return "redirect:/login";
+        }
+        
+        Optional<Order> opt = this.orderService.fetchOrderById(orderId);
+        if (opt.isPresent()) {
+            Order order = opt.get();
+            User sessionUser = (User) session.getAttribute("user");
+            
+            // Check authorization
+            if (order.getUser() == null || order.getUser().getId() != sessionUser.getId()) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Unauthorized access to order.");
+                return "redirect:/order-history";
+            }
+            
+            if ("PENDING".equals(order.getStatus())) {
+                this.orderService.cancelOrder(orderId, reason, refundName, refundPhone, bankName, bankAccount);
+                
+                // Send cancellation email
+                String userEmail = sessionUser.getEmail();
+                if (userEmail != null && !userEmail.isEmpty()) {
+                    this.emailService.sendOrderCancellationEmail(userEmail, order, reason);
+                }
+                
+                redirectAttributes.addFlashAttribute("successMessage", "Order cancelled successfully!");
+                return "redirect:/order-history";
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", "Cannot cancel an order that is no longer pending.");
+                return "redirect:/order-history";
+            }
+        }
+        
+        redirectAttributes.addFlashAttribute("errorMessage", "Order not found.");
+        return "redirect:/order-history";
+    }
 }

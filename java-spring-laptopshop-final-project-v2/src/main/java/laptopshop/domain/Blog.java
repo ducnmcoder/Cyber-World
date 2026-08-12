@@ -38,6 +38,12 @@ public class Blog implements Serializable {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+    
+    private String type; // "ARTICLE" or "VIDEO"
+    
+    private String videoUrl;
+    
+    private String category; // "NEWS" or "BLOG"
 
     @PrePersist
     public void prePersist() {
@@ -96,6 +102,41 @@ public class Blog implements Serializable {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    @jakarta.persistence.Transient
+    public String getDisplayImage() {
+        if (this.image == null || this.image.trim().isEmpty()) {
+            return "/client/img/hero-img-2.png";
+        }
+        if (this.image.startsWith("http")) {
+            return this.image;
+        }
+        return "/images/blog/" + this.image;
     }
 
     @Override

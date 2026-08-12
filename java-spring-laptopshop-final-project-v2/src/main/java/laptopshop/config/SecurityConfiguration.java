@@ -68,11 +68,12 @@ public class SecurityConfiguration {
 
                         .requestMatchers("/", "/login", "/product/**", "/register", "/products/**",
                                 "/client/**", "/css/**", "/js/**", "/images/**",
-                                "/about", "/contact", "/api/contact/footer", "/api/chatbot", "/blogs", "/blog", "/blog/**", "/error",
+                                "/about", "/contact", "/api/contact/footer", "/api/chatbot", "/blogs", "/blog", "/blog/**", "/news", "/news/**", "/error",
                                 "/add-product-to-cart/**", "/add-product-from-view-detail", "/api/add-product-to-cart", "/buy-now",
                                 "/cart", "/checkout", "/place-order", "/delete-cart-product/**",
                                 "/confirm-checkout", "/thanks", "/payment-failed",
-                                "/api/payment/**", "/feedback")
+                                "/api/payment/**", "/feedback",
+                                "/forgot-password", "/verify-code", "/reset-password")
                         .permitAll()
 
                         .requestMatchers("/admin").hasRole("OWNER")
@@ -87,7 +88,6 @@ public class SecurityConfiguration {
 
                 .sessionManagement((sessionManagement) -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                        .invalidSessionUrl("/logout?expired")
                         .maximumSessions(1)
                         .maxSessionsPreventsLogin(false))
 

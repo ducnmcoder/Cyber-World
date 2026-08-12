@@ -55,12 +55,23 @@
                                                                     value="${order.totalPrice}" /> VND
                                                             </td>
                                                             <td>${order.user != null ? order.user.email : order.receiverName}</td>
-                                                            <td>${order.status}</td>
+                                                            <td>
+                                                                <c:choose>
+                                                                    <c:when test="${order.status == 'REFUND_REQUESTED'}">
+                                                                        <span class="badge bg-warning text-dark">${order.status}</span>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        ${order.status}
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </td>
                                                             <td>
                                                                 <a href="/admin/order/${order.id}?page=${currentPage}"
                                                                     class="btn btn-success">View</a>
-                                                                <a href="/admin/order/update/${order.id}?page=${currentPage}"
-                                                                    class="btn btn-warning  mx-2">Update</a>
+                                                                <c:if test="${order.status ne 'CANCELLED'}">
+                                                                    <a href="/admin/order/update/${order.id}?page=${currentPage}"
+                                                                        class="btn btn-warning  mx-2">Update</a>
+                                                                </c:if>
                                                                 <form action="/admin/order/delete?page=${currentPage}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this order?');">
                                                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                                                     <input type="hidden" name="id" value="${order.id}" />

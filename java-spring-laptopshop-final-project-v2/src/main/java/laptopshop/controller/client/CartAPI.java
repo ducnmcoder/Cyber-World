@@ -13,6 +13,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 class CartRequest {
     private long quantity;
     private long productId;
+    private java.util.List<Long> selectedVouchers;
+
+    public java.util.List<Long> getSelectedVouchers() {
+        return selectedVouchers;
+    }
+
+    public void setSelectedVouchers(java.util.List<Long> selectedVouchers) {
+        this.selectedVouchers = selectedVouchers;
+    }
 
     public long getQuantity() {
         return quantity;
@@ -49,6 +58,10 @@ public class CartAPI {
         String email = (String) session.getAttribute("email");
         this.productService.handleAddProductToCart(email, cartRequest.getProductId(), session,
                 cartRequest.getQuantity());
+
+        if (cartRequest.getSelectedVouchers() != null && !cartRequest.getSelectedVouchers().isEmpty()) {
+            session.setAttribute("preselectedVouchers", cartRequest.getSelectedVouchers());
+        }
 
         int sum = (int) session.getAttribute("sum");
 

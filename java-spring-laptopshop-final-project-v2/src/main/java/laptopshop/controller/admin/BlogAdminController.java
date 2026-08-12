@@ -44,7 +44,7 @@ public class BlogAdminController {
         }
 
         Pageable pageable = PageRequest.of(page - 1, 10);
-        Page<Blog> blogsPage = this.blogService.fetchAllBlogs(pageable);
+        Page<Blog> blogsPage = this.blogService.fetchLatestBlogs(pageable);
         List<Blog> blogs = blogsPage.getContent();
 
         model.addAttribute("blogs", blogs);
@@ -55,15 +55,31 @@ public class BlogAdminController {
 
     @GetMapping("/admin/blog/create")
     public String getCreateBlogPage(Model model) {
-        model.addAttribute("newBlog", new Blog());
+        Blog blog = new Blog();
+        blog.setCategory("BLOG");
+        model.addAttribute("newBlog", blog);
         return "admin/blog/create";
     }
 
     @PostMapping("/admin/blog/create")
     public String handleCreateBlog(@ModelAttribute("newBlog") Blog blog,
-            @RequestParam("blogFile") MultipartFile file) {
-        String image = this.uploadService.handleSaveUploadFile(file, "blog");
-        blog.setImage(image);
+            @RequestParam(value = "blogFile", required = false) MultipartFile file, @RequestParam(value = "imageUrl", required = false) String imageUrl,
+            @RequestParam(value = "videoFile", required = false) MultipartFile videoFile) {
+        
+        blog.setCategory("BLOG");
+        
+        if (file != null && !file.isEmpty()) {
+            String image = this.uploadService.handleSaveUploadFile(file, "blog");
+            blog.setImage(image);
+        } else if (imageUrl != null && !imageUrl.trim().isEmpty()) {
+            blog.setImage(imageUrl.trim());
+        }
+
+        if ("VIDEO".equals(blog.getType()) && videoFile != null && !videoFile.isEmpty()) {
+            String videoName = this.uploadService.handleSaveUploadFile(videoFile, "blog");
+            blog.setVideoUrl("/images/blog/" + videoName);
+        }
+
         this.blogService.handleSaveBlog(blog);
         return "redirect:/admin/blog";
     }
@@ -89,16 +105,27 @@ public class BlogAdminController {
 
     @PostMapping("/admin/blog/update")
     public String handleUpdateBlog(@ModelAttribute("newBlog") Blog blog,
-            @RequestParam("blogFile") MultipartFile file) {
+            @RequestParam(value = "blogFile", required = false) MultipartFile file, @RequestParam(value = "imageUrl", required = false) String imageUrl,
+            @RequestParam(value = "videoFile", required = false) MultipartFile videoFile) {
         Optional<Blog> blogOptional = this.blogService.fetchBlogById(blog.getId());
         if (blogOptional.isPresent()) {
             Blog currentBlog = blogOptional.get();
-            if (!file.isEmpty()) {
+            if (file != null && !file.isEmpty()) {
                 String image = this.uploadService.handleSaveUploadFile(file, "blog");
                 currentBlog.setImage(image);
+            } else if (imageUrl != null && !imageUrl.trim().isEmpty()) {
+                currentBlog.setImage(imageUrl.trim());
+            }
+            if ("VIDEO".equals(blog.getType()) && videoFile != null && !videoFile.isEmpty()) {
+                String videoName = this.uploadService.handleSaveUploadFile(videoFile, "blog");
+                currentBlog.setVideoUrl("/images/blog/" + videoName);
+            } else if (blog.getVideoUrl() != null && !blog.getVideoUrl().isEmpty()) {
+                currentBlog.setVideoUrl(blog.getVideoUrl());
             }
             currentBlog.setTitle(blog.getTitle());
             currentBlog.setContent(blog.getContent());
+            currentBlog.setType(blog.getType());
+            currentBlog.setCategory("BLOG");
             this.blogService.handleSaveBlog(currentBlog);
         }
         return "redirect:/admin/blog";
@@ -115,6 +142,121 @@ public class BlogAdminController {
     public String postDeleteBlog(@ModelAttribute("newBlog") Blog blog) {
         this.blogService.deleteBlogById(blog.getId());
         return "redirect:/admin/blog";
+    }
+
+    // NEWS ENDPOINTS
+    @GetMapping("/admin/news")
+    public String getNewsList(Model model,
+            @RequestParam("page") Optional<String> pageOptional) {
+
+        int page = 1;
+        try {
+            if (pageOptional.isPresent()) {
+                page = Integer.parseInt(pageOptional.get());
+            }
+        } catch (Exception e) {
+            // page = 1
+        }
+
+        Pageable pageable = PageRequest.of(page - 1, 10, org.springframework.data.domain.Sort.by("createdAt").descending());
+        Page<Blog> blogsPage = this.blogService.fetchLatestNews(pageable);
+        List<Blog> blogs = blogsPage.getContent();
+
+        model.addAttribute("blogs", blogs);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", blogsPage.getTotalPages());
+        return "admin/news/show";
+    }
+
+    @GetMapping("/admin/news/create")
+    public String getCreateNewsPage(Model model) {
+        Blog blog = new Blog();
+        blog.setCategory("NEWS");
+        model.addAttribute("newBlog", blog);
+        return "admin/news/create";
+    }
+
+    @PostMapping("/admin/news/create")
+    public String handleCreateNews(@ModelAttribute("newBlog") Blog blog,
+            @RequestParam(value = "blogFile", required = false) MultipartFile file, @RequestParam(value = "imageUrl", required = false) String imageUrl,
+            @RequestParam(value = "videoFile", required = false) MultipartFile videoFile) {
+        
+        blog.setCategory("NEWS");
+        
+        if (file != null && !file.isEmpty()) {
+            String image = this.uploadService.handleSaveUploadFile(file, "blog");
+            blog.setImage(image);
+        } else if (imageUrl != null && !imageUrl.trim().isEmpty()) {
+            blog.setImage(imageUrl.trim());
+        }
+
+        if ("VIDEO".equals(blog.getType()) && videoFile != null && !videoFile.isEmpty()) {
+            String videoName = this.uploadService.handleSaveUploadFile(videoFile, "blog");
+            blog.setVideoUrl("/images/blog/" + videoName);
+        }
+
+        this.blogService.handleSaveBlog(blog);
+        return "redirect:/admin/news";
+    }
+
+    @GetMapping("/admin/news/{id}")
+    public String getNewsDetail(Model model, @PathVariable long id) {
+        Optional<Blog> blogOptional = this.blogService.fetchBlogById(id);
+        if (blogOptional.isPresent()) {
+            model.addAttribute("blog", blogOptional.get());
+            model.addAttribute("id", id);
+        }
+        return "admin/news/detail";
+    }
+
+    @GetMapping("/admin/news/update/{id}")
+    public String getUpdateNewsPage(Model model, @PathVariable long id) {
+        Optional<Blog> currentBlog = this.blogService.fetchBlogById(id);
+        if (currentBlog.isPresent()) {
+            model.addAttribute("newBlog", currentBlog.get());
+        }
+        return "admin/news/update";
+    }
+
+    @PostMapping("/admin/news/update")
+    public String handleUpdateNews(@ModelAttribute("newBlog") Blog blog,
+            @RequestParam(value = "blogFile", required = false) MultipartFile file, @RequestParam(value = "imageUrl", required = false) String imageUrl,
+            @RequestParam(value = "videoFile", required = false) MultipartFile videoFile) {
+        Optional<Blog> blogOptional = this.blogService.fetchBlogById(blog.getId());
+        if (blogOptional.isPresent()) {
+            Blog currentBlog = blogOptional.get();
+            if (file != null && !file.isEmpty()) {
+                String image = this.uploadService.handleSaveUploadFile(file, "blog");
+                currentBlog.setImage(image);
+            } else if (imageUrl != null && !imageUrl.trim().isEmpty()) {
+                currentBlog.setImage(imageUrl.trim());
+            }
+            if ("VIDEO".equals(blog.getType()) && videoFile != null && !videoFile.isEmpty()) {
+                String videoName = this.uploadService.handleSaveUploadFile(videoFile, "blog");
+                currentBlog.setVideoUrl("/images/blog/" + videoName);
+            } else if (blog.getVideoUrl() != null && !blog.getVideoUrl().isEmpty()) {
+                currentBlog.setVideoUrl(blog.getVideoUrl());
+            }
+            currentBlog.setTitle(blog.getTitle());
+            currentBlog.setContent(blog.getContent());
+            currentBlog.setType(blog.getType());
+            currentBlog.setCategory("NEWS");
+            this.blogService.handleSaveBlog(currentBlog);
+        }
+        return "redirect:/admin/news";
+    }
+
+    @GetMapping("/admin/news/delete/{id}")
+    public String getDeleteNewsPage(Model model, @PathVariable long id) {
+        model.addAttribute("id", id);
+        model.addAttribute("newBlog", new Blog());
+        return "admin/news/delete";
+    }
+
+    @PostMapping("/admin/news/delete")
+    public String postDeleteNews(@ModelAttribute("newBlog") Blog blog) {
+        this.blogService.deleteBlogById(blog.getId());
+        return "redirect:/admin/news";
     }
 
 }

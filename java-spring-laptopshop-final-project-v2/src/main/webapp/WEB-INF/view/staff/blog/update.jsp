@@ -53,14 +53,22 @@
                                                     <label class="form-label">Content:</label>
                                                     <form:textarea class="form-control" path="content" rows="8" />
                                                 </div>
+
                                                 <div class="mb-3">
-                                                    <label for="blogFile" class="form-label">Image:</label>
+                                                    <label class="form-label">Type:</label>
+                                                    <form:select class="form-control" path="type" id="blogType">
+                                                        <form:option value="ARTICLE">Article</form:option>
+                                                        <form:option value="VIDEO">Video</form:option>
+                                                    </form:select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Image URL (optional, if you have a link):</label><input class="form-control" type="text" name="imageUrl" placeholder="Enter image link (e.g., https://...)" value="${(not empty newBlog.image and newBlog.image.startsWith('http')) ? newBlog.image : ''}" /><label for="blogFile" class="form-label mt-2">Or Upload Image File:</label>
                                                     <input class="form-control" type="file" id="blogFile"
                                                         name="blogFile" accept=".png, .jpg, .jpeg" />
                                                 </div>
                                                 <div class="mb-3">
                                                     <img style="max-height: 250px;" alt="Blog preview" id="blogPreview"
-                                                        src="/images/blog/${newBlog.image}" />
+                                                        src="${newBlog.displayImage}" />
                                                 </div>
                                                 <button type="submit" class="btn btn-warning">Update</button>
                                                 <a href="/staff/blog" class="btn btn-secondary ms-2">Cancel</a>
@@ -79,3 +87,4 @@
             </body>
 
             </html>
+

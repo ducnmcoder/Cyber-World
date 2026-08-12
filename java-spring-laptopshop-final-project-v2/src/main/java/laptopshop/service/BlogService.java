@@ -26,6 +26,30 @@ public class BlogService {
         return this.blogRepository.findAll(pageable);
     }
 
+    public Page<Blog> fetchBlogsByType(String type, Pageable pageable) {
+        return this.blogRepository.findBlogsByType(type, pageable);
+    }
+
+    public Page<Blog> fetchLatestNews(Pageable pageable) {
+        return this.blogRepository.findLatestNews(pageable);
+    }
+
+    public Page<Blog> fetchLatestBlogs(Pageable pageable) {
+        return this.blogRepository.findLatestBlogs(pageable);
+    }
+
+    public Page<Blog> fetchBlogsByCategoryAndType(String category, String type, Pageable pageable) {
+        return this.blogRepository.findBlogsByCategoryAndType(category, type, pageable);
+    }
+
+    public Page<Blog> fetchBlogsByCategoryAndNoVideo(String category, Pageable pageable) {
+        return this.blogRepository.findBlogsByCategoryAndNoVideo(category, pageable);
+    }
+
+    public Page<Blog> fetchBlogsByCategoryAndHasVideo(String category, Pageable pageable) {
+        return this.blogRepository.findBlogsByCategoryAndHasVideo(category, pageable);
+    }
+
     public Optional<Blog> fetchBlogById(long id) {
         return this.blogRepository.findById(id);
     }
