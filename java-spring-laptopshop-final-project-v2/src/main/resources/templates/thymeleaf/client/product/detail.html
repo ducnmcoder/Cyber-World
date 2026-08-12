@@ -1356,20 +1356,40 @@
 
                         <div class="voucher-list">
                             <label th:each="v, iter : ${vouchers}"
-                                th:class="${iter.index < 3 ? 'voucher-option' : 'voucher-option extra-voucher'}"
+                                th:class="${iter.index < 3 ? 'voucher-option' : 'voucher-option extra-voucher'} + (${preselectedVouchers != null and #lists.contains(preselectedVouchers, v.id)} ? ' selected' : '')"
                                 th:style="${iter.index < 3 ? '' : 'display: none;'}">
                                 <input type="checkbox" class="product-voucher-checkbox" th:value="${v.id}"
                                     th:data-discount-type="${v.discountType}"
                                     th:data-discount-amount="${v.discountAmount}"
-                                    onchange="this.parentElement.classList.toggle('selected', this.checked); calculateDetailPrice();">
+                                    th:checked="${preselectedVouchers != null and #lists.contains(preselectedVouchers, v.id)}"
+                                    onchange="handleVoucherSelectionThymeleaf(this); this.parentElement.classList.toggle('selected', this.checked); calculateDetailPrice();">
+                                <script th:if="${iter.index == 0}">
+                                    function handleVoucherSelectionThymeleaf(checkbox) {
+                                        const isFreeship = checkbox.getAttribute('data-discount-type') === 'FREESHIP';
+                                        if (checkbox.checked) {
+                                            document.querySelectorAll('.product-voucher-checkbox').forEach(cb => {
+                                                if (cb !== checkbox) {
+                                                    const cbIsFreeship = cb.getAttribute('data-discount-type') === 'FREESHIP';
+                                                    if (cbIsFreeship === isFreeship) {
+                                                        cb.checked = false;
+                                                        cb.parentElement.classList.remove('selected');
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+                                </script>
                                 <div class="voucher-content">
                                     <div class="voucher-title"
                                         style="display: flex; align-items: center; flex-wrap: wrap; gap: 5px;">
-                                        <span th:text="${v.title}">Title</span>
+                                        <span th:text="${v.title}" th:style="${v.discountType == 'FREESHIP' ? 'color: #28a745;' : ''}">Title</span>
                                         <span th:if="${v.discountType == 'PERCENT'}"
                                             style="background: #cd1818; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;"
                                             th:text="'- ' + ${#numbers.formatDecimal(v.discountAmount, 1, 'POINT', 0, 'COMMA')} + '%'"></span>
                                         <span th:if="${v.discountType == 'FIXED'}"
+                                            style="background: #cd1818; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;"
+                                            th:text="'- ' + ${#numbers.formatDecimal(v.discountAmount, 1, 'POINT', 0, 'COMMA')} + ' VND'"></span>
+                                        <span th:if="${v.discountType == 'FREESHIP'}"
                                             style="background: #cd1818; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;"
                                             th:text="'- ' + ${#numbers.formatDecimal(v.discountAmount, 1, 'POINT', 0, 'COMMA')} + ' VND'"></span>
                                     </div>

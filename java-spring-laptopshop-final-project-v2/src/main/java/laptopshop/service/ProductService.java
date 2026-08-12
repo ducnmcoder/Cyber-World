@@ -372,7 +372,7 @@ public class ProductService {
 
     public Order handlePlaceOrder(
             User user, HttpSession session,
-            String receiverName, String receiverAddress, String receiverPhone, String receiverEmail,
+            String receiverName, String receiverAddress, String receiverPhone, String receiverEmail, String receiverProvince,
             String paymentMethod, List<Long> selectedVouchers) {
 
         // step 1: get cart
@@ -424,6 +424,15 @@ public class ProductService {
 
                 // Calculate Discounts
                 double totalDiscount = 0.0;
+                double shippingDiscount = 0.0;
+                double defaultShippingFee = 100000.0; // Default for other provinces
+                
+                if (receiverProvince != null) {
+                    if (receiverProvince.contains("Hồ Chí Minh") || receiverProvince.contains("Hà Nội")) {
+                        defaultShippingFee = 50000.0;
+                    }
+                }
+
                 StringBuilder appliedVoucherNames = new StringBuilder();
                 if (selectedVouchers != null && !selectedVouchers.isEmpty()) {
                     List<Voucher> vouchers = this.voucherRepository.findAllById(selectedVouchers);
@@ -448,10 +457,12 @@ public class ProductService {
                             }
 
                             if (applicable) {
-                                if ("FIXED".equals(v.getDiscountType())) {
+                                if ("FREESHIP".equals(v.getDiscountType())) {
+                                    shippingDiscount += v.getDiscountAmount();
+                                } else if ("FIXED".equals(v.getDiscountType())) {
                                     totalDiscount += v.getDiscountAmount();
                                 } else if ("PERCENT".equals(v.getDiscountType())) {
-                                    totalDiscount += (sum * v.getDiscountAmount() / 100);
+                                    totalDiscount += (sum * v.getDiscountAmount() / 100.0);
                                 }
                                 if (appliedVoucherNames.length() > 0) {
                                     appliedVoucherNames.append(", ");
@@ -462,11 +473,17 @@ public class ProductService {
                     }
                 }
                 
-                sum = sum - totalDiscount;
+                if (shippingDiscount > defaultShippingFee) {
+                    shippingDiscount = defaultShippingFee;
+                }
+
+                sum = sum + defaultShippingFee - totalDiscount - shippingDiscount;
                 if (sum < 0) sum = 0;
                 
                 order.setTotalPrice(sum);
                 order.setDiscountAmount(totalDiscount);
+                order.setShippingFee(defaultShippingFee);
+                order.setShippingDiscountAmount(shippingDiscount);
                 order.setAppliedVouchers(appliedVoucherNames.toString());
                 
                 order.setCreatedAt(LocalDateTime.now());

@@ -62,6 +62,7 @@
                                             <form:select class="form-select" path="discountType">
                                                 <form:option value="FIXED">FIXED (VND)</form:option>
                                                 <form:option value="PERCENT">PERCENT (%)</form:option>
+                                                <form:option value="FREESHIP">FREESHIP (Miễn phí vận chuyển)</form:option>
                                             </form:select>
                                         </div>
                                     </div>

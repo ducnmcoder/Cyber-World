@@ -394,13 +394,20 @@
         const token = $("meta[name='_csrf']").attr("content");
         const header = $("meta[name='_csrf_header']").attr("content");
         const quantity = $("#cartDetails0\\.quantity").val();
+
+        // Gather selected vouchers
+        let selectedVouchers = [];
+        $('.voucher-checkbox:checked').each(function () {
+            selectedVouchers.push(parseInt($(this).val()));
+        });
+
         $.ajax({
             url: `${window.location.origin}/api/add-product-to-cart`,
             beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },
             type: "POST",
-            data: JSON.stringify({ quantity: quantity, productId: productId }),
+            data: JSON.stringify({ quantity: quantity, productId: productId, selectedVouchers: selectedVouchers }),
             contentType: "application/json",
 
             success: function (response) {

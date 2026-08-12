@@ -28,6 +28,12 @@ public class Order implements Serializable {
     @Column(name = "discount_amount")
     private Double discountAmount = 0.0;
 
+    @Column(name = "shipping_fee")
+    private Double shippingFee = 0.0;
+
+    @Column(name = "shipping_discount_amount")
+    private Double shippingDiscountAmount = 0.0;
+
     @Column(name = "applied_vouchers", columnDefinition = "TEXT")
     private String appliedVouchers;
 
@@ -279,5 +285,21 @@ public class Order implements Serializable {
 
     public void setAppliedVouchers(String appliedVouchers) {
         this.appliedVouchers = appliedVouchers;
+    }
+
+    public Double getShippingFee() {
+        return shippingFee;
+    }
+
+    public void setShippingFee(Double shippingFee) {
+        this.shippingFee = shippingFee;
+    }
+
+    public Double getShippingDiscountAmount() {
+        return shippingDiscountAmount;
+    }
+
+    public void setShippingDiscountAmount(Double shippingDiscountAmount) {
+        this.shippingDiscountAmount = shippingDiscountAmount;
     }
 }

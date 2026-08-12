@@ -83,8 +83,56 @@ public class ItemController {
             if (v.getAppliesTo().equals("TARGET") && pr.getTarget() != null && v.getApplyValue() != null && pr.getTarget().equalsIgnoreCase(v.getApplyValue())) return true;
             return false;
         }).collect(java.util.stream.Collectors.toList());
-        model.addAttribute("vouchers", applicableVouchers);
+        java.util.List<laptopshop.domain.Voucher> discountVouchers = new java.util.ArrayList<>();
+        java.util.List<laptopshop.domain.Voucher> freeshipVouchers = new java.util.ArrayList<>();
+        
+        laptopshop.domain.Voucher bestDiscountVoucher = null;
+        double maxDiscountAmount = -1;
 
+        laptopshop.domain.Voucher bestFreeshipVoucher = null;
+        double maxFreeshipAmount = -1;
+
+        for (laptopshop.domain.Voucher v : applicableVouchers) {
+            if ("FREESHIP".equals(v.getDiscountType())) {
+                freeshipVouchers.add(v);
+                if (v.getDiscountAmount() > maxFreeshipAmount) {
+                    maxFreeshipAmount = v.getDiscountAmount();
+                    bestFreeshipVoucher = v;
+                }
+            } else {
+                discountVouchers.add(v);
+                double currentDiscount = 0;
+                if ("FIXED".equals(v.getDiscountType())) {
+                    currentDiscount = v.getDiscountAmount();
+                } else if ("PERCENT".equals(v.getDiscountType())) {
+                    currentDiscount = pr.getPrice() * v.getDiscountAmount() / 100.0;
+                }
+                if (currentDiscount > maxDiscountAmount) {
+                    maxDiscountAmount = currentDiscount;
+                    bestDiscountVoucher = v;
+                }
+            }
+        }
+        
+        java.util.List<Long> autoSelected = new java.util.ArrayList<>();
+        if (bestDiscountVoucher != null) autoSelected.add(bestDiscountVoucher.getId());
+        if (bestFreeshipVoucher != null) autoSelected.add(bestFreeshipVoucher.getId());
+        
+        // Create a sorted list where preselected are at the top
+        java.util.List<laptopshop.domain.Voucher> sortedVouchers = new java.util.ArrayList<>();
+        if (bestDiscountVoucher != null) sortedVouchers.add(bestDiscountVoucher);
+        if (bestFreeshipVoucher != null) sortedVouchers.add(bestFreeshipVoucher);
+        
+        for (laptopshop.domain.Voucher v : applicableVouchers) {
+            if (!autoSelected.contains(v.getId())) {
+                sortedVouchers.add(v);
+            }
+        }
+        
+        model.addAttribute("discountVouchers", discountVouchers);
+        model.addAttribute("freeshipVouchers", freeshipVouchers);
+        model.addAttribute("preselectedVouchers", autoSelected);
+        model.addAttribute("vouchers", sortedVouchers);
         // Reviews pagination
         Pageable pageable = PageRequest.of(0, 50, Sort.by("createdAt").descending());
         Page<Review> reviews = this.reviewService.getApprovedReviewsByProduct(pr, pageable);
@@ -323,12 +371,49 @@ public class ItemController {
                 }
             }
         }
-        model.addAttribute("vouchers", applicableVouchers);
+        java.util.List<laptopshop.domain.Voucher> discountVouchers = new java.util.ArrayList<>();
+        java.util.List<laptopshop.domain.Voucher> freeshipVouchers = new java.util.ArrayList<>();
+        
+        laptopshop.domain.Voucher bestDiscountVoucher = null;
+        double maxDiscountAmount = -1;
+
+        laptopshop.domain.Voucher bestFreeshipVoucher = null;
+        double maxFreeshipAmount = -1;
+
+        for (laptopshop.domain.Voucher v : applicableVouchers) {
+            if ("FREESHIP".equals(v.getDiscountType())) {
+                freeshipVouchers.add(v);
+                if (v.getDiscountAmount() > maxFreeshipAmount) {
+                    maxFreeshipAmount = v.getDiscountAmount();
+                    bestFreeshipVoucher = v;
+                }
+            } else {
+                discountVouchers.add(v);
+                double currentDiscount = 0;
+                if ("FIXED".equals(v.getDiscountType())) {
+                    currentDiscount = v.getDiscountAmount();
+                } else if ("PERCENT".equals(v.getDiscountType())) {
+                    currentDiscount = totalPrice * v.getDiscountAmount() / 100.0;
+                }
+                if (currentDiscount > maxDiscountAmount) {
+                    maxDiscountAmount = currentDiscount;
+                    bestDiscountVoucher = v;
+                }
+            }
+        }
+        
+        model.addAttribute("discountVouchers", discountVouchers);
+        model.addAttribute("freeshipVouchers", freeshipVouchers);
 
         java.util.List<Long> preselectedVouchers = (java.util.List<Long>) session.getAttribute("preselectedVouchers");
         if (preselectedVouchers != null) {
             model.addAttribute("preselectedVouchers", preselectedVouchers);
             session.removeAttribute("preselectedVouchers");
+        } else {
+            java.util.List<Long> autoSelected = new java.util.ArrayList<>();
+            if (bestDiscountVoucher != null) autoSelected.add(bestDiscountVoucher.getId());
+            if (bestFreeshipVoucher != null) autoSelected.add(bestFreeshipVoucher.getId());
+            model.addAttribute("preselectedVouchers", autoSelected);
         }
 
         return "client/cart/checkout";
@@ -381,6 +466,7 @@ public class ItemController {
             @RequestParam("receiverName") String receiverName,
             @RequestParam("receiverAddress") String receiverAddress,
             @RequestParam("receiverPhone") String receiverPhone,
+            @RequestParam(value = "receiverProvince", required = false) String receiverProvince,
             @RequestParam(value = "receiverEmail", required = false) String receiverEmail,
             @RequestParam(value = "paymentMethod", defaultValue = "COD") String paymentMethod,
             @RequestParam(value = "selectedVouchers", required = false) java.util.List<Long> selectedVouchers,
@@ -403,7 +489,7 @@ public class ItemController {
         try {
             // Create order with payment method
             order = this.productService.handlePlaceOrder(
-                    currentUser, session, receiverName, receiverAddress, receiverPhone, receiverEmail, paymentMethod, selectedVouchers);
+                    currentUser, session, receiverName, receiverAddress, receiverPhone, receiverEmail, receiverProvince, paymentMethod, selectedVouchers);
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/checkout";
